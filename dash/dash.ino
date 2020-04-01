@@ -28,19 +28,8 @@ void setup() {
   oilPressure.setSegments(blank);
 }
 
-int value = 1;
-
-int ohms = 43;
-
 void loop() {
-
   oilPressure.showNumberDec(readOilPSI());
-
-  ohms += 1;
-  if (ohms > 250) {
-    ohms = 43;
-  }
-
 
   delay(TEST_DELAY);
 }
@@ -53,7 +42,14 @@ void loop() {
 // 75    75
 // 100   43
 CircularBuffer<float,OIL_PRESSURE_WINDOW> oilPSIWindow;
+
+int ohms = 43;
 int readOilSensorResistance() {
+  // replace this with the actual reading from the analog pin
+  ohms += 1;
+  if (ohms > 250) {
+    ohms = 43;
+  }
   return ohms;
 }
 
