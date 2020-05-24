@@ -2,13 +2,22 @@
 #include <TM1637Display.h>
 #include <CircularBuffer.h>
 
+#define WINDOW_SIZE 30
+
 // digital pins
 #define OIL_PRESSURE_CLK 26
 #define OIL_PRESSURE_DIO 27
-#define OIL_PRESSURE_WINDOW 5
-#define OIL_VIN_PIN 0
+#define OIL_PRESSURE_VIN_PIN 0
 
-#define TEST_DELAY   100
+#define OIL_TEMP_CLK = 28
+#define OIL_TEMP_DIO = 29
+#define OIL_TEMP_PIN = 1
+#define OIL_TEMP_R1_K_OHM = 10
+#define OIL_TEMP_NOMINAL_RESISTANCE = 50000
+#define OIL_TEMP_NOMINAL_TEMP = 25
+#define OIL_TEMP_BETA_COEFFICIENT = 3892
+
+#define TEST_DELAY   5
 
 // https://www.makerguides.com/wp-content/uploads/2019/08/7-segment-display-annotated.jpg
 
@@ -30,34 +39,52 @@ const uint8_t SEG_FAIL[] = {
 
 
 
-TM1637Display oilPressure(OIL_PRESSURE_CLK, OIL_PRESSURE_DIO);
+TM1637Display oilPressureDisplay(OIL_PRESSURE_CLK, OIL_PRESSURE_DIO);
+TM1637Display oilTempDisplay(OIL_TEMP_CLK, OIL_TEMP_DIO);
 
 void setup() {
-  oilPressure.setBrightness(0x0f);
-  oilPressure.setSegments(SEG_FAIL);
+  oilPressureDisplay.setBrightness(0x0f);
+  oilPressureDisplay.setSegments(SEG_FAIL);
+
+  oilTempDisplay.setBrightness(0x0f);
+  oilTempDisplay.setSegments(SEG_SHIT);
 
   delay(5000);
 
   uint8_t blank[] = { 0x00, 0x00, 0x00, 0x00 };
-  oilPressure.setSegments(blank);
+  oilPressureDisplay.setSegments(blank);
+  oilTempDisplay.setSegments(blank);
 }
 
 void loop() {
-  oilPressure.showNumberDec(readOilPSI());
-
+  oilPressureDisplay.showNumberDec(readOilPSI());
+  oilTempDisplay.showNumberDec(readOilTemp());
   delay(TEST_DELAY);
 }
 
-CircularBuffer<float,OIL_PRESSURE_WINDOW> oilPSIWindow;
-
-float readOilPSI() {
-  float psi = ((float) analogRead(OIL_VIN_PIN) / 1024) * 200;
+CircularBuffer<double,WINDOW_SIZE> oilPSIWindow;
+double readOilPSI() {
+  double psi = (((double)(analogRead(OIL_PRESSURE_VIN_PIN) - 122)) / 1024) * 200;
   oilPSIWindow.push(psi);
+  return avg(&oilPSIWindow);
+}
 
-  float total = 0;
-  for (int i = 0; i <= oilPSIWindow.size(); i++) {
-    total += oilPSIWindow[i];
+
+CircularBuffer<double,WINDOW_SIZE> oilTempWindow;
+double readOilTemp() {
+  int vin = 5;
+  double vout = (double)((analogRead(OIL_TEMP_PIN) * vin) / 1024);
+  double ohms = (OIL_TEMP_R1_K_OHM * 1000) * (1 / ((vin - vout) - 1));
+  double tempC = 1 / ( ( Math.log( ohms / OIL_TEMP_NOMINAL_RESISTANCE )) / OIL_TEMP_BETA_COEFFICIENT + 1 / ( OIL_TEMP_NOMINAL_TEMP + 273.15 ) ) - 273.15;
+  double tempF = (tempC * 1.8) + 32;
+  oilTempWindow.push(tempF);
+  return avg(&oilTempWindow);
+}
+
+double avg(CircularBuffer<double,WINDOW_SIZE> &cb) {
+  double total = 0;
+  for (int i = 0; i <= cb->size(); i++) {
+    total += cb[i];
   }
-
-  return max(total / oilPSIWindow.size(), 0);
+  return max(total / cb->size())
 }
