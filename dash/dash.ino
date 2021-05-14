@@ -10,7 +10,7 @@
 #define WINDOW_SIZE 30
 
 // digital pins
-#define IDIOT_LIGHT 30
+#define IDIOT_LIGHT 29
 #define OIL_PRESSURE_CLK 22
 #define OIL_PRESSURE_DIO 23
 #define OIL_PRESSURE_VIN_PIN 0
@@ -23,8 +23,8 @@
 #define OIL_TEMP_NOMINAL_TEMP 25
 #define OIL_TEMP_BETA_COEFFICIENT 3892
 
-#define AUX_MESSAGE_CLK 28
-#define AUX_MESSAGE_DIO 29
+#define AUX_MESSAGE_CLK 30
+#define AUX_MESSAGE_DIO 31
 
 #define COOLANT_PRESSURE_CLK 26
 #define COOLANT_PRESSURE_DIO 27
@@ -114,6 +114,7 @@ const uint8_t SEG_TP[] = {
 TM1637Display oilPressureDisplay(OIL_PRESSURE_CLK, OIL_PRESSURE_DIO);
 TM1637Display coolantPressureDisplay(COOLANT_PRESSURE_CLK, COOLANT_PRESSURE_DIO);
 TM1637Display oilTemperatureDisplay(OIL_TEMP_CLK, OIL_TEMP_DIO);
+TM1637Display auxMessageDisplay(AUX_MESSAGE_CLK, AUX_MESSAGE_DIO);
 
 void setup() {
   Serial.begin(57600);
@@ -122,23 +123,26 @@ void setup() {
   pinMode(IDIOT_LIGHT, OUTPUT);
   digitalWrite(IDIOT_LIGHT, HIGH);
 
-  if (rf95.init()) {
-    radioAvailable = true;
-    rf95.setTxPower(20, false);
-  } else {
-    radioAvailable = false;
-    Serial.println("radio init failed");
-  }
-
   oilPressureDisplay.setBrightness(0x0f);
   oilTemperatureDisplay.setBrightness(0x0f);
   coolantPressureDisplay.setBrightness(0x0f);
+  auxMessageDisplay.setBrightness(0x0f);
 
   oilPressureDisplay.setSegments(SEG_OIL);
   coolantPressureDisplay.setSegments(SEG_COOL);
   oilTemperatureDisplay.setSegments(SEG_OIL);
+  auxMessageDisplay.setSegments(SEG_FAIL);
 
   delay(2000);
+  
+  if (rf95.init()) {
+    radioAvailable = true;
+    rf95.setTxPower(20, false);
+    auxMessageDisplay.showNumberDec(1337);
+  } else {
+    radioAvailable = false;
+    Serial.println("radio init failed");
+  }
 
   oilPressureDisplay.setSegments(SEG_PSI);
   coolantPressureDisplay.setSegments(SEG_PSI);
@@ -167,6 +171,20 @@ void loop() {
   sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
 
   showIdiotLight(oilPressure, coolantPressure, oilTemperature);
+
+  if (rf95.available()) {
+    uint8_t buf[RH_RF95_MAX_MESSAGE_LEN + 1];
+    uint8_t len = sizeof(buf);
+    if (rf95.recv(buf, &len)) {
+      buf[len] = 0;
+      Serial.println((char*)buf);
+      Serial.print("RSSI: ");
+      Serial.println(rf95.lastRssi(), DEC);
+    } else {
+      Serial.println("recv failed");
+    }
+  }
+  
   delay(TEST_DELAY);
 }
 
