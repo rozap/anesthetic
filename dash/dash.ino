@@ -3,10 +3,14 @@
 #include <TM1637Display.h>
 #include <CircularBuffer.h>
 
+/* Radio */
+#include <SPI.h>
+#include <RH_RF95.h>
+
 #define WINDOW_SIZE 30
 
 // digital pins
-#define IDIOT_LIGHT 30
+#define IDIOT_LIGHT 29
 #define OIL_PRESSURE_CLK 22
 #define OIL_PRESSURE_DIO 23
 #define OIL_PRESSURE_VIN_PIN 0
@@ -19,11 +23,45 @@
 #define OIL_TEMP_NOMINAL_TEMP 25
 #define OIL_TEMP_BETA_COEFFICIENT 3892
 
+#define AUX_MESSAGE_CLK 30
+#define AUX_MESSAGE_DIO 31
+
 #define COOLANT_PRESSURE_CLK 26
 #define COOLANT_PRESSURE_DIO 27
 #define COOLANT_PRESSURE_VIN_PIN 2
 
-#define TEST_DELAY 5
+#define TEST_DELAY 500
+
+RH_RF95 rf95;
+bool radioAvailable;
+
+/*
+|Code|English             |Unit                 |
+|T_C |Coolant temperature |Tenths of a degree F |
+|P_C |Coolant pressure    |PSI                  |
+|T_O |Oil temperature     |Tenths of a degree F |
+|P_O |Oil pressure        |PSI                  |
+|RPM |RPM                 |RPM                  |
+|SPD |GPS Speed           |Tenths of a MPH      |
+|TIM |GPS Lap Time        |Deciseconds          |
+|FLT |Fault               |Fault code, see below|
+
+Fault code
+Digit 0 is the least significant, 5 is the most significant.
+|Digit|Meaning
+|0    |Idiot light. 0: Light off 1: Light on    |
+|1    |Oil pres warning. 0: Nominal 1: Fault    |
+|2    |Oil temp warning. 0: Nominal 1: Fault    |
+|3    |Coolant temp warning. 0: Nominal 1: Fault|
+|4    |Coolant pres warning. 0: Nominal 1: Fault|
+*/
+
+char* RADIO_MSG_COOLANT_PRES = "P_C";
+char* RADIO_MSG_OIL_TEMP = "T_O";
+char* RADIO_MSG_OIL_PRES = "P_O";
+char* RADIO_MSG_FAULT = "FLT";
+
+char radioMsgBuf[32];
 
 // https://www.makerguides.com/wp-content/uploads/2019/08/7-segment-display-annotated.jpg
 
@@ -76,20 +114,35 @@ const uint8_t SEG_TP[] = {
 TM1637Display oilPressureDisplay(OIL_PRESSURE_CLK, OIL_PRESSURE_DIO);
 TM1637Display coolantPressureDisplay(COOLANT_PRESSURE_CLK, COOLANT_PRESSURE_DIO);
 TM1637Display oilTemperatureDisplay(OIL_TEMP_CLK, OIL_TEMP_DIO);
+TM1637Display auxMessageDisplay(AUX_MESSAGE_CLK, AUX_MESSAGE_DIO);
 
 void setup() {
+  Serial.begin(57600);
+  while (!Serial) ; // Wait for serial port to be available
+
   pinMode(IDIOT_LIGHT, OUTPUT);
   digitalWrite(IDIOT_LIGHT, HIGH);
 
   oilPressureDisplay.setBrightness(0x0f);
   oilTemperatureDisplay.setBrightness(0x0f);
   coolantPressureDisplay.setBrightness(0x0f);
+  auxMessageDisplay.setBrightness(0x0f);
 
   oilPressureDisplay.setSegments(SEG_OIL);
   coolantPressureDisplay.setSegments(SEG_COOL);
   oilTemperatureDisplay.setSegments(SEG_OIL);
+  auxMessageDisplay.setSegments(SEG_FAIL);
 
   delay(2000);
+  
+  if (rf95.init()) {
+    radioAvailable = true;
+    rf95.setTxPower(20, false);
+    auxMessageDisplay.showNumberDec(1337);
+  } else {
+    radioAvailable = false;
+    Serial.println("radio init failed");
+  }
 
   oilPressureDisplay.setSegments(SEG_PSI);
   coolantPressureDisplay.setSegments(SEG_PSI);
@@ -109,11 +162,44 @@ void loop() {
   double oilTemperature = readOilTemp();
 
   oilPressureDisplay.showNumberDec(oilPressure);
+  sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
+
   coolantPressureDisplay.showNumberDec(coolantPressure);
+  sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
+
   oilTemperatureDisplay.showNumberDec(oilTemperature);
+  sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
 
   showIdiotLight(oilPressure, coolantPressure, oilTemperature);
+
+  if (rf95.available()) {
+    uint8_t buf[RH_RF95_MAX_MESSAGE_LEN + 1];
+    uint8_t len = sizeof(buf);
+    if (rf95.recv(buf, &len)) {
+      buf[len] = 0;
+      Serial.println((char*)buf);
+      Serial.print("RSSI: ");
+      Serial.println(rf95.lastRssi(), DEC);
+    } else {
+      Serial.println("recv failed");
+    }
+  }
+  
   delay(TEST_DELAY);
+}
+
+void sendRadioMessage(char* msg, uint16_t data) {
+  if (!radioAvailable) {
+    return;
+  }
+
+  int bytesWritten = sprintf(radioMsgBuf, "%s:%u\n", msg, data);
+
+  Serial.print("Radio message:");
+  Serial.print(radioMsgBuf);
+
+  rf95.send(radioMsgBuf, bytesWritten);
+  rf95.waitPacketSent();
 }
 
 CircularBuffer<double,WINDOW_SIZE> oilPSIWindow;
@@ -146,15 +232,28 @@ double readOilTemp() {
 
 
 double showIdiotLight(double oilPressure, double coolantPressure, double oilTemperature) {
-  if (
-    (oilPressure < 15) ||
-    (coolantPressure < 5) ||
-    (oilTemperature > 240)
-  ) {
+  bool oilPressBad = oilPressure < 15;
+  bool coolantPressBad = coolantPressure < 5;
+  bool oilTempBad = oilTemperature > 240;
+  bool idiotLight =
+    oilPressBad ||
+    coolantPressBad ||
+    oilTempBad;
+
+  if (idiotLight) {
     digitalWrite(IDIOT_LIGHT, HIGH);
   } else {
     digitalWrite(IDIOT_LIGHT, LOW);
   }
+
+  sendRadioMessage(
+    RADIO_MSG_FAULT,
+    idiotLight &
+    oilPressBad << 1 &
+    oilTempBad << 2 &
+    /* coolantTempBad << 3 & */
+    coolantPressBad << 4
+  );
 }
 
 double avg(CircularBuffer<double,WINDOW_SIZE> &cb) {
