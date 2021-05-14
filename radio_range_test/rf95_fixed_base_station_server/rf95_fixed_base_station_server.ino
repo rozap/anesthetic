@@ -25,12 +25,13 @@ void setup() {
 
 void loop() {
   if (rf95.available()) {
-    uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
+    uint8_t buf[RH_RF95_MAX_MESSAGE_LEN + 1];
     uint8_t len = sizeof(buf);
     if (rf95.recv(buf, &len)) {
       Serial.println("====");
       Serial.println(c++, DEC);
       Serial.print("got request: ");
+      buf[len] = 0;
       Serial.println((char*)buf);
       Serial.print("RSSI: ");
       Serial.println(rf95.lastRssi(), DEC);
