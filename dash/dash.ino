@@ -131,7 +131,7 @@ void setup() {
   oilPressureDisplay.setSegments(SEG_OIL);
   coolantPressureDisplay.setSegments(SEG_COOL);
   oilTemperatureDisplay.setSegments(SEG_OIL);
-  auxMessageDisplay.setSegments(SEG_FAIL);
+  auxMessageDisplay.showNumberDec(8888);
 
   delay(2000);
   
