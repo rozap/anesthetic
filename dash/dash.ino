@@ -193,7 +193,7 @@ void sendRadioMessage(char* msg, uint16_t data) {
     return;
   }
 
-  int bytesWritten = sprintf(radioMsgBuf, "%s:%u\n", msg, data);
+  int bytesWritten = sprintf(radioMsgBuf, "%s:%05u\n", msg, data);
 
   Serial.print("Radio message:");
   Serial.print(radioMsgBuf);
