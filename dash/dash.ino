@@ -133,7 +133,7 @@ void setup() {
   oilTemperatureDisplay.setSegments(SEG_OIL);
   auxMessageDisplay.showNumberDec(8888);
 
-  delay(2000);
+  delay(500);
   
   if (rf95.init()) {
     radioAvailable = true;
@@ -148,7 +148,7 @@ void setup() {
   coolantPressureDisplay.setSegments(SEG_PSI);
   oilTemperatureDisplay.setSegments(SEG_TP);
 
-  delay(2000);
+  delay(500);
 
   uint8_t blank[] = { 0x00, 0x00, 0x00, 0x00 };
   oilPressureDisplay.setSegments(blank);
