@@ -7,7 +7,7 @@
 #include <SPI.h>
 #include <RH_RF95.h>
 
-#define WINDOW_SIZE 30
+#define WINDOW_SIZE 10
 
 // digital pins
 #define IDIOT_LIGHT 29
@@ -30,7 +30,7 @@
 #define COOLANT_PRESSURE_DIO 23
 #define COOLANT_PRESSURE_VIN_PIN 2
 
-#define TEST_DELAY 500
+#define TEST_DELAY 10
 
 RH_RF95 rf95;
 bool radioAvailable;
