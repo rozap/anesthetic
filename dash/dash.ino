@@ -128,9 +128,9 @@ void setup() {
   coolantPressureDisplay.setBrightness(0x0f);
   auxMessageDisplay.setBrightness(0x0f);
 
-  oilPressureDisplay.setSegments(SEG_OIL);
-  coolantPressureDisplay.setSegments(SEG_COOL);
-  oilTemperatureDisplay.setSegments(SEG_OIL);
+  oilPressureDisplay.showNumberDec(8888);
+  coolantPressureDisplay.showNumberDec(8888);
+  oilTemperatureDisplay.showNumberDec(8888);
   auxMessageDisplay.showNumberDec(8888);
 
   delay(500);
@@ -143,6 +143,12 @@ void setup() {
     radioAvailable = false;
     Serial.println("radio init failed");
   }
+
+  oilPressureDisplay.setSegments(SEG_OIL);
+  coolantPressureDisplay.setSegments(SEG_COOL);
+  oilTemperatureDisplay.setSegments(SEG_OIL);
+
+  delay(500);
 
   oilPressureDisplay.setSegments(SEG_PSI);
   coolantPressureDisplay.setSegments(SEG_PSI);
