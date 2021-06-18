@@ -109,7 +109,33 @@ const uint8_t SEG_TP[] = {
   0x00
 };
 
+const uint8_t SEG_RSSI[] = {
+  SEG_A | SEG_F | SEG_E,
+  SEG_A | SEG_F | SEG_G | SEG_C | SEG_D,
+  SEG_A | SEG_F | SEG_G | SEG_C | SEG_D,
+  SEG_B | SEG_C
+};
 
+const uint8_t SEG_NO[] = {
+  SEG_E | SEG_G | SEG_C,
+  SEG_A | SEG_B | SEG_C | SEG_D | SEG_E | SEG_F,
+  0x00,
+  0x00
+};
+
+const uint8_t SEG_INOP[] = {
+  SEG_B | SEG_C,
+  SEG_E | SEG_G | SEG_C,
+  SEG_A | SEG_B | SEG_C | SEG_D | SEG_E | SEG_F,
+  SEG_E | SEG_F | SEG_A | SEG_B | SEG_G
+};
+
+const uint8_t SEG_RDIO[] = {
+  SEG_A | SEG_F | SEG_E,
+  SEG_G | SEG_E | SEG_D | SEG_C | SEG_B,
+  SEG_C,
+  SEG_E | SEG_G | SEG_C | SEG_D
+};
 
 TM1637Display oilPressureDisplay(OIL_PRESSURE_CLK, OIL_PRESSURE_DIO);
 TM1637Display coolantPressureDisplay(COOLANT_PRESSURE_CLK, COOLANT_PRESSURE_DIO);
@@ -136,6 +162,7 @@ void setup() {
   delay(500);
   
   if (rf95.init()) {
+    Serial.println("radio init ok");
     radioAvailable = true;
     rf95.setTxPower(20, false);
     auxMessageDisplay.showNumberDec(1337);
@@ -147,6 +174,7 @@ void setup() {
   oilPressureDisplay.setSegments(SEG_OIL);
   coolantPressureDisplay.setSegments(SEG_COOL);
   oilTemperatureDisplay.setSegments(SEG_OIL);
+  auxMessageDisplay.setSegments(SEG_RSSI);
 
   delay(500);
 
@@ -189,6 +217,10 @@ void loop() {
     } else {
       Serial.println("recv failed");
     }
+  }
+
+  if (!radioAvailable) {
+    auxMessageDisplay.setSegments(millis() % 2000 > 1000 ? SEG_RDIO : SEG_INOP);
   }
   
   delay(TEST_DELAY);
