@@ -27,6 +27,10 @@
 
 /* Sensor sampling */
 #define SAMPLE_PERIOD_MS 250
+
+// To avoid blocking on the radio, set this to a value
+// that pretty much guarantees we'll have sent the packet
+// by the time we try to send again.
 #define RADIO_UPDATE_PERIOD_MS 2000
 #define WINDOW_SIZE 10
 
@@ -237,20 +241,20 @@ void loop() {
     oilTemperature = readOilTemp();
 
     oilPressureDisplay.showNumberDec(oilPressure);
-    sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
-
     coolantPressureDisplay.showNumberDec(coolantPressure);
-    sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
-
     oilTemperatureDisplay.showNumberDec(oilTemperature);
-    sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
-
     showIdiotLight(oilPressure, coolantPressure, oilTemperature);
   }
 
   if (millisNow - lastRadioMillis > RADIO_UPDATE_PERIOD_MS) {
     lastRadioMillis = millisNow;
 
+    // TODO: If we stagger these, they won't block each other.
+    // As it is, the last 2 messages end up blocking on the
+    // previous message being sent, which takes ~hundreds of
+    // ms each time. It would be nice for the main loop to have
+    // a fairly consistent runtime i.e. for easy animations and
+    // blinkenlichten.
     sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
     sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
     sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
@@ -298,7 +302,8 @@ void sendRadioMessage(char* msg, uint16_t data) {
   Serial.print(radioMsgBuf);
 
   rf95.send(radioMsgBuf, bytesWritten);
-  rf95.waitPacketSent();
+  // Not necessary - send() will wait all by itself if needed.
+  //rf95.waitPacketSent();
 }
 
 CircularBuffer<double,WINDOW_SIZE> oilPSIWindow;
