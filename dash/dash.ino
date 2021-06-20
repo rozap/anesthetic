@@ -7,6 +7,24 @@
 #include <SPI.h>
 #include <RH_RF95.h>
 
+/* Tach */
+#include "Wire.h"
+
+#define TACH_LIGHT_SHIFT (1<<15)
+#define TACH_LIGHT_G1 (1<<14)
+#define TACH_LIGHT_G2 (1<<13)
+#define TACH_LIGHT_G3 (1<<12)
+#define TACH_LIGHT_Y1 (1<<11)
+#define TACH_LIGHT_Y2 (1<<10)
+#define TACH_LIGHT_Y3 (1<<9)
+#define TACH_LIGHT_R1 (1<<8)
+#define TACH_LIGHT_R2 (1<<0)
+
+// TODO Configure via radio?
+#define SHIFT_RPM 3800
+#define REDLINE_RPM 6000
+#define FIRST_LIGHT_RPM 1000
+
 #define WINDOW_SIZE 10
 
 // digital pins
@@ -146,13 +164,21 @@ void setup() {
   Serial.begin(57600);
   while (!Serial) ; // Wait for serial port to be available
 
+  Wire.begin();
+  tachInit();
+
   pinMode(IDIOT_LIGHT, OUTPUT);
   digitalWrite(IDIOT_LIGHT, HIGH);
+  tachLights(TACH_LIGHT_SHIFT);
 
   oilPressureDisplay.setBrightness(0x0f);
   oilTemperatureDisplay.setBrightness(0x0f);
   coolantPressureDisplay.setBrightness(0x0f);
   auxMessageDisplay.setBrightness(0x0f);
+
+  tachBootAnimation();
+
+  delay(500);
 
   oilPressureDisplay.showNumberDec(8888);
   coolantPressureDisplay.showNumberDec(8888);
@@ -171,6 +197,8 @@ void setup() {
     Serial.println("radio init failed");
   }
 
+  tachLights(0xffff);
+
   oilPressureDisplay.setSegments(SEG_OIL);
   coolantPressureDisplay.setSegments(SEG_COOL);
   oilTemperatureDisplay.setSegments(SEG_OIL);
@@ -188,6 +216,7 @@ void setup() {
   oilPressureDisplay.setSegments(blank);
   coolantPressureDisplay.setSegments(blank);
   oilTemperatureDisplay.setSegments(blank);
+  tachLights(0);
 }
 
 void loop() {
@@ -223,6 +252,12 @@ void loop() {
     auxMessageDisplay.setSegments(millis() % 2000 > 1000 ? SEG_RDIO : SEG_INOP);
   }
   
+  uint16_t fake_rpm = millis()*2 % 14000;
+  fake_rpm = fake_rpm > 7000 ? 14000 - fake_rpm : fake_rpm;
+  tachSetRpm(fake_rpm);
+
+  // TODO  Switch to a non-blocking way of sampling (i.e.,
+  // remember the last millis() sampled.
   delay(TEST_DELAY);
 }
 
