@@ -25,9 +25,12 @@
 #define REDLINE_RPM 6000
 #define FIRST_LIGHT_RPM 1000
 
+/* Sensor sampling */
+#define SAMPLE_PERIOD_MS 250
+#define RADIO_UPDATE_PERIOD_MS 2000
 #define WINDOW_SIZE 10
 
-// digital pins
+/* Pin assignments */
 #define IDIOT_LIGHT 29
 #define OIL_PRESSURE_CLK 25
 #define OIL_PRESSURE_DIO 23
@@ -47,8 +50,6 @@
 #define COOLANT_PRESSURE_CLK 24
 #define COOLANT_PRESSURE_DIO 23
 #define COOLANT_PRESSURE_VIN_PIN 2
-
-#define TEST_DELAY 10
 
 RH_RF95 rf95;
 bool radioAvailable;
@@ -219,21 +220,41 @@ void setup() {
   tachLights(0);
 }
 
+long lastSampleMillis = 0;
+long lastRadioMillis = 0;
+
+volatile uint16_t rpm = 0;
+double oilPressure = 0;
+double coolantPressure = 0;
+double oilTemperature = 0;
+
 void loop() {
-  double oilPressure = readOilPSI();
-  double coolantPressure = readCoolantPSI();
-  double oilTemperature = readOilTemp();
+  long millisNow = millis();
+  if (millisNow - lastSampleMillis > SAMPLE_PERIOD_MS) {
+    lastSampleMillis = millisNow;
+    oilPressure = readOilPSI();
+    coolantPressure = readCoolantPSI();
+    oilTemperature = readOilTemp();
 
-  oilPressureDisplay.showNumberDec(oilPressure);
-  sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
+    oilPressureDisplay.showNumberDec(oilPressure);
+    sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
 
-  coolantPressureDisplay.showNumberDec(coolantPressure);
-  sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
+    coolantPressureDisplay.showNumberDec(coolantPressure);
+    sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
 
-  oilTemperatureDisplay.showNumberDec(oilTemperature);
-  sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
+    oilTemperatureDisplay.showNumberDec(oilTemperature);
+    sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
 
-  showIdiotLight(oilPressure, coolantPressure, oilTemperature);
+    showIdiotLight(oilPressure, coolantPressure, oilTemperature);
+  }
+
+  if (millisNow - lastRadioMillis > RADIO_UPDATE_PERIOD_MS) {
+    lastRadioMillis = millisNow;
+
+    sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
+    sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
+    sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
+  }
 
   if (rf95.available()) {
     uint8_t buf[RH_RF95_MAX_MESSAGE_LEN + 1];
@@ -251,14 +272,19 @@ void loop() {
   if (!radioAvailable) {
     auxMessageDisplay.setSegments(millis() % 2000 > 1000 ? SEG_RDIO : SEG_INOP);
   }
-  
-  uint16_t fake_rpm = millis()*2 % 14000;
-  fake_rpm = fake_rpm > 7000 ? 14000 - fake_rpm : fake_rpm;
-  tachSetRpm(fake_rpm);
 
-  // TODO  Switch to a non-blocking way of sampling (i.e.,
-  // remember the last millis() sampled.
-  delay(TEST_DELAY);
+  // TODO: Need to set this in a pin change interrupt routine.
+  // This is just a silly animation hack.
+  rpm = millis()*2 % 14000;
+  rpm = rpm > 7000 ? 14000 - rpm : rpm;
+
+
+  // Prevent interrupts because rpm is a 2-byte value, and is therefore
+  // not atomically accessed.
+  noInterrupts();
+  uint16_t rpmCopy = rpm;
+  interrupts();
+  tachSetRpm(rpmCopy);
 }
 
 void sendRadioMessage(char* msg, uint16_t data) {

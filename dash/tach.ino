@@ -23,6 +23,10 @@ void tachConfig(uint8_t configByte) {
   Wire.endTransmission();
 }
 
+void tachInit() {
+  tachConfig(SAA_BRIGHTNESS);
+}
+
 void tachLights(uint16_t lights) {
   tachInit(); // In case someone unplugged the wire. Cheap to re-init anyway.
   Wire.beginTransmission(SAA_ADDR);
@@ -30,10 +34,6 @@ void tachLights(uint16_t lights) {
   Wire.write((lights >> 8) & 0xff);
   Wire.write(lights & 0xff);
   Wire.endTransmission();
-}
-
-void tachInit() {
-  tachConfig(SAA_BRIGHTNESS);
 }
 
 void tachBootAnimation() {
