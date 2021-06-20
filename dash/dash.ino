@@ -91,6 +91,28 @@ char radioMsgBuf[32];
 // anes
 // thet
 // ic
+
+const uint8_t SEG_ANES[] = {
+  SEG_E | SEG_F | SEG_A | SEG_B | SEG_C | SEG_G,
+  SEG_E | SEG_G | SEG_C,
+  SEG_A | SEG_F | SEG_G | SEG_E | SEG_D,
+  SEG_A | SEG_F | SEG_G | SEG_C | SEG_D
+};
+
+const uint8_t SEG_0THE[] = {
+  0,
+  SEG_A | SEG_F | SEG_E,
+  SEG_F | SEG_E | SEG_G | SEG_C,
+  SEG_A | SEG_F | SEG_G | SEG_E | SEG_D
+};
+
+const uint8_t SEG_TIC0[] = {
+  SEG_A | SEG_F | SEG_E,
+  SEG_B | SEG_C,
+  SEG_A | SEG_F | SEG_E | SEG_D,
+  0
+};
+
 const uint8_t SEG_SHIT[] = {
   SEG_A | SEG_F | SEG_G | SEG_C | SEG_D,
   SEG_F | SEG_E | SEG_B | SEG_C | SEG_G,
@@ -160,6 +182,8 @@ const uint8_t SEG_RDIO[] = {
   SEG_E | SEG_G | SEG_C | SEG_D
 };
 
+const uint8_t SEG_BLANK[] = { 0, 0, 0, 0 };
+
 TM1637Display oilPressureDisplay(OIL_PRESSURE_CLK, OIL_PRESSURE_DIO);
 TM1637Display coolantPressureDisplay(COOLANT_PRESSURE_CLK, COOLANT_PRESSURE_DIO);
 TM1637Display oilTemperatureDisplay(OIL_TEMP_CLK, OIL_TEMP_DIO);
@@ -174,23 +198,17 @@ void setup() {
 
   pinMode(IDIOT_LIGHT, OUTPUT);
   digitalWrite(IDIOT_LIGHT, HIGH);
-  tachLights(TACH_LIGHT_SHIFT);
 
-  oilPressureDisplay.setBrightness(0x0f);
-  oilTemperatureDisplay.setBrightness(0x0f);
-  coolantPressureDisplay.setBrightness(0x0f);
-  auxMessageDisplay.setBrightness(0x0f);
+  oilPressureDisplay.setBrightness(0, false);
+  oilTemperatureDisplay.setBrightness(0, false);
+  coolantPressureDisplay.setBrightness(0, false);
+  auxMessageDisplay.setBrightness(0, false);
+  oilPressureDisplay.setSegments(SEG_BLANK);
+  coolantPressureDisplay.setSegments(SEG_BLANK);
+  oilTemperatureDisplay.setSegments(SEG_BLANK);
+  auxMessageDisplay.setSegments(SEG_BLANK);
 
   tachBootAnimation();
-
-  delay(500);
-
-  oilPressureDisplay.showNumberDec(8888);
-  coolantPressureDisplay.showNumberDec(8888);
-  oilTemperatureDisplay.showNumberDec(8888);
-  auxMessageDisplay.showNumberDec(8888);
-
-  delay(500);
   
   if (rf95.init()) {
     Serial.println("radio init ok");
@@ -202,25 +220,65 @@ void setup() {
     Serial.println("radio init failed");
   }
 
-  tachLights(0xffff);
+  uint8_t d = 100;
+  for (uint8_t brt = 1; brt<8; brt++) {
+    oilTemperatureDisplay.setBrightness(brt);
+    oilTemperatureDisplay.setSegments(SEG_ANES);
+    delay(d);
+  }
+  for (uint8_t brt = 1; brt<8; brt++) {
+    coolantPressureDisplay.setBrightness(brt);
+    coolantPressureDisplay.setSegments(SEG_0THE);
+    delay(d);
+  }
+  for (uint8_t brt = 1; brt<8; brt++) {
+    auxMessageDisplay.setBrightness(brt);
+    auxMessageDisplay.setSegments(SEG_TIC0);
+    delay(d);
+  }
 
-  oilPressureDisplay.setSegments(SEG_OIL);
-  coolantPressureDisplay.setSegments(SEG_COOL);
-  oilTemperatureDisplay.setSegments(SEG_OIL);
-  auxMessageDisplay.setSegments(SEG_RSSI);
+  delay(250);
+
+  for (uint8_t brt = 4; brt>0; brt--) {
+    oilTemperatureDisplay.setBrightness(brt);
+    oilTemperatureDisplay.setSegments(SEG_ANES);
+    coolantPressureDisplay.setBrightness(brt);
+    coolantPressureDisplay.setSegments(SEG_0THE);
+    auxMessageDisplay.setBrightness(brt);
+    auxMessageDisplay.setSegments(SEG_TIC0);
+    delay(75);
+  }
+
+  oilPressureDisplay.setSegments(SEG_BLANK);
+  coolantPressureDisplay.setSegments(SEG_BLANK);
+  oilTemperatureDisplay.setSegments(SEG_BLANK);
+  auxMessageDisplay.setSegments(SEG_BLANK);
+
+  delay(1000);
+
+  oilPressureDisplay.setBrightness(7);
+  oilTemperatureDisplay.setBrightness(7);
+  coolantPressureDisplay.setBrightness(7);
+  auxMessageDisplay.setBrightness(7);
+  oilPressureDisplay.showNumberDec(8888);
+  coolantPressureDisplay.showNumberDec(8888);
+  oilTemperatureDisplay.showNumberDec(8888);
+  auxMessageDisplay.showNumberDec(8888);
+  tachLights(0xffff);
 
   delay(500);
 
   oilPressureDisplay.setSegments(SEG_PSI);
   coolantPressureDisplay.setSegments(SEG_PSI);
   oilTemperatureDisplay.setSegments(SEG_TP);
+  auxMessageDisplay.setSegments(SEG_RSSI);
+
 
   delay(500);
 
-  uint8_t blank[] = { 0x00, 0x00, 0x00, 0x00 };
-  oilPressureDisplay.setSegments(blank);
-  coolantPressureDisplay.setSegments(blank);
-  oilTemperatureDisplay.setSegments(blank);
+  oilPressureDisplay.setSegments(SEG_BLANK);
+  coolantPressureDisplay.setSegments(SEG_BLANK);
+  oilTemperatureDisplay.setSegments(SEG_BLANK);
   tachLights(0);
 }
 
