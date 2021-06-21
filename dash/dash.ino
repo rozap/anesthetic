@@ -41,7 +41,9 @@
 #define VBAT_VIN_PIN 4
 // Resistor divider ratio. Value read from ADC is multiplied by this
 // to get real voltage.
-#define VBAT_RATIO 0.25
+#define VBAT_RATIO 3.03
+#define VBAT_WARN_MIN 12.8
+#define VBAT_WARN_MAX 15.0
 
 #define OIL_PRESSURE_CLK 25
 #define OIL_PRESSURE_DIO 23
@@ -351,7 +353,7 @@ void loop() {
     sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
     sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
     sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
-    sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)batteryVoltage);
+    sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage));
     sendRadioMessage(RADIO_MSG_RPM, (uint16_t)rpm);
     sendRadioMessage(RADIO_MSG_FAULT, idiotLight);
   }
@@ -424,7 +426,6 @@ CircularBuffer<double,WINDOW_SIZE> batteryVoltageWindow;
 double readBatteryVoltage() {
   // TODO: Calibrate ADC.
   double vbat =
-    1000.0 * // millivolts
     VBAT_RATIO * // resistor divider
     5.0 * // full scale of ADC (volts)
     (double)analogRead(VBAT_VIN_PIN) /
@@ -439,7 +440,6 @@ double readOilPSI() {
   oilPSIWindow.push(psi);
   return avg(oilPSIWindow);
 }
-
 
 CircularBuffer<double,WINDOW_SIZE> coolantPSIWindow;
 double readCoolantPSI() {
@@ -466,7 +466,7 @@ bool shouldShowIdiotLight() {
   bool oilPressBad = oilPressure < 15;
   bool coolantPressBad = coolantPressure < 5;
   bool oilTempBad = oilTemperature > 240;
-  bool vbatBad = batteryVoltage < 12.8;
+  bool vbatBad = batteryVoltage < VBAT_WARN_MIN || batteryVoltage > VBAT_WARN_MAX;
   return oilPressBad ||
     coolantPressBad ||
     oilTempBad ||
