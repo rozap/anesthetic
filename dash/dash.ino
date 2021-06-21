@@ -10,7 +10,7 @@
 /* Tach */
 #include "Wire.h"
 
-#define TACH_LIGHT_SHIFT (1<<15)
+#define TACH_LIGHT_IDIOT (1<<15)
 #define TACH_LIGHT_G1 (1<<14)
 #define TACH_LIGHT_G2 (1<<13)
 #define TACH_LIGHT_G3 (1<<12)
@@ -80,10 +80,6 @@ Fault code
 Digit 0 is the least significant, 5 is the most significant.
 |Digit|Meaning
 |0    |Idiot light. 0: Light off 1: Light on    |
-|1    |Oil pres warning. 0: Nominal 1: Fault    |
-|2    |Oil temp warning. 0: Nominal 1: Fault    |
-|3    |Coolant temp warning. 0: Nominal 1: Fault|
-|4    |Coolant pres warning. 0: Nominal 1: Fault|
 */
 
 char* RADIO_MSG_COOLANT_PRES = "P_C";
@@ -298,6 +294,7 @@ double oilPressure = 0;
 double coolantPressure = 0;
 double oilTemperature = 0;
 double batteryVoltage = 0;
+bool idiotLight = false;
 
 void loop() {
   long millisNow = millis();
@@ -307,11 +304,11 @@ void loop() {
     coolantPressure = readCoolantPSI();
     oilTemperature = readOilTemp();
     batteryVoltage = readBatteryVoltage();
+    idiotLight = shouldShowIdiotLight();
 
     oilPressureDisplay.showNumberDec(oilPressure);
     coolantPressureDisplay.showNumberDec(coolantPressure);
     oilTemperatureDisplay.showNumberDec(oilTemperature);
-    showIdiotLight(oilPressure, coolantPressure, oilTemperature);
   }
 
   if (millisNow - lastRadioMillis > RADIO_UPDATE_PERIOD_MS) {
@@ -327,6 +324,8 @@ void loop() {
     sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
     sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
     sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)batteryVoltage);
+    sendRadioMessage(RADIO_MSG_FAULT, idiotLight);
+
   }
 
   if (rf95.available()) {
@@ -357,7 +356,7 @@ void loop() {
   noInterrupts();
   uint16_t rpmCopy = rpm;
   interrupts();
-  tachSetRpm(rpmCopy);
+  updateTach(rpmCopy, idiotLight);
 }
 
 void sendRadioMessage(char* msg, uint16_t data) {
@@ -417,29 +416,13 @@ double readOilTemp() {
 }
 
 
-double showIdiotLight(double oilPressure, double coolantPressure, double oilTemperature) {
+bool shouldShowIdiotLight() {
   bool oilPressBad = oilPressure < 15;
   bool coolantPressBad = coolantPressure < 5;
   bool oilTempBad = oilTemperature > 240;
-  bool idiotLight =
-    oilPressBad ||
+  return oilPressBad ||
     coolantPressBad ||
     oilTempBad;
-
-  if (idiotLight) {
-    digitalWrite(IDIOT_LIGHT, HIGH);
-  } else {
-    digitalWrite(IDIOT_LIGHT, LOW);
-  }
-
-  sendRadioMessage(
-    RADIO_MSG_FAULT,
-    idiotLight &
-    oilPressBad << 1 &
-    oilTempBad << 2 &
-    /* coolantTempBad << 3 & */
-    coolantPressBad << 4
-  );
 }
 
 double avg(CircularBuffer<double,WINDOW_SIZE> &cb) {
