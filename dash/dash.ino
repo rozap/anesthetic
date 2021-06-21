@@ -21,7 +21,6 @@
 #define TACH_LIGHT_R2 (1<<0)
 
 // TODO Configure via radio?
-#define SHIFT_RPM 3800
 #define REDLINE_RPM 6000
 #define FIRST_LIGHT_RPM 1000
 
