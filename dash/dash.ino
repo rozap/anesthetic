@@ -36,6 +36,10 @@
 /* Pin assignments */
 // Must support interrupts. https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/
 #define TACH_SIGNAL_PIN 18
+// It takes a fixed time for the tach ISR to record the time.
+// Subtract that process time from the measured time.
+// This is determined experimentally.
+#define TACH_ISR_OFFSET_MICROS 2
 
 #define VBAT_VIN_PIN 4
 // Resistor divider ratio. Value read from ADC is multiplied by this
@@ -309,6 +313,7 @@ volatile uint32_t microsAtLastTachPulse = 0;
 volatile uint32_t microsAtPenultimateTachPulse = 0;
 
 void onTachPulseISR() {
+  uint32_t microsNow = micros(); // Call micros() asap so we don't include processor time.
   // Called whenever there's a rising edge on the tach pin.
   // Needs to run as fast as possible to prevent other interrupts
   // (such as the clock/delay()) from getting postponed.
@@ -319,7 +324,7 @@ void onTachPulseISR() {
   // not atomically accessed.
   noInterrupts();
   microsAtPenultimateTachPulse = microsAtLastTachPulse;
-  microsAtLastTachPulse = micros();
+  microsAtLastTachPulse = microsNow;
   interrupts();
 }
 
@@ -399,6 +404,8 @@ double readRpm() {
   noInterrupts();
   uint32_t tachPeriodMicros = microsAtLastTachPulse - microsAtPenultimateTachPulse;
   interrupts();
+  tachPeriodMicros -= TACH_ISR_OFFSET_MICROS;
+
   if (tachPeriodMicros > 0) {
     rpmNow =
       // rpm/hz
