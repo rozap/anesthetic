@@ -83,11 +83,11 @@ Digit 0 is the least significant, 5 is the most significant.
 |0    |Idiot light. 0: Light off 1: Light on    |
 */
 
-char* RADIO_MSG_COOLANT_PRES = "P_C";
-char* RADIO_MSG_OIL_TEMP = "T_O";
-char* RADIO_MSG_OIL_PRES = "P_O";
-char* RADIO_MSG_FAULT = "FLT";
-char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
+const char* RADIO_MSG_COOLANT_PRES = "P_C";
+const char* RADIO_MSG_OIL_TEMP = "T_O";
+const char* RADIO_MSG_OIL_PRES = "P_O";
+const char* RADIO_MSG_FAULT = "FLT";
+const char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
 
 char radioMsgBuf[32];
 
@@ -393,7 +393,7 @@ void loop() {
   updateTach(rpm, idiotLight);
 }
 
-void sendRadioMessage(char* msg, uint16_t data) {
+void sendRadioMessage(const char* msg, uint16_t data) {
   if (!radioAvailable) {
     return;
   }
@@ -403,7 +403,7 @@ void sendRadioMessage(char* msg, uint16_t data) {
   Serial.print("Radio message:");
   Serial.print(radioMsgBuf);
 
-  rf95.send(radioMsgBuf, bytesWritten);
+  rf95.send((const unsigned char*)radioMsgBuf, bytesWritten);
   // Not necessary - send() will wait all by itself if needed.
   //rf95.waitPacketSent();
 }
