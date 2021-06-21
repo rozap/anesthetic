@@ -35,6 +35,8 @@
 #define WINDOW_SIZE 10
 
 /* Pin assignments */
+// Must support interrupts. https://www.arduino.cc/reference/en/language/functions/external-interrupts/attachinterrupt/
+#define TACH_SIGNAL_PIN 18
 
 #define VBAT_VIN_PIN 4
 // Resistor divider ratio. Value read from ADC is multiplied by this
@@ -280,17 +282,43 @@ void setup() {
   coolantPressureDisplay.setSegments(SEG_BLANK);
   oilTemperatureDisplay.setSegments(SEG_BLANK);
   tachLights(0);
+
+  attachInterrupt(digitalPinToInterrupt(TACH_SIGNAL_PIN), onTachPulseISR, RISING);
 }
 
 long lastSampleMillis = 0;
 long lastRadioMillis = 0;
 
-volatile uint16_t rpm = 0;
+uint16_t rpm = 0;
 double oilPressure = 0;
 double coolantPressure = 0;
 double oilTemperature = 0;
 double batteryVoltage = 0;
 bool idiotLight = false;
+
+// Note: These are 32-bit because tach pulse lengths at low engine RPMs don't comfortably
+// fit in a 16-bit microsecond value. They technically do, but barely.
+// These values are volatile because they're accessed in an ISR.
+
+// Time last saw a pulse.
+volatile uint32_t microsAtLastTachPulse = 0;
+// Time saw previous pulse.
+volatile uint32_t microsAtPenultimateTachPulse = 0;
+
+void onTachPulseISR() {
+  // Called whenever there's a rising edge on the tach pin.
+  // Needs to run as fast as possible to prevent other interrupts
+  // (such as the clock/delay()) from getting postponed.
+  // Since doing 32-bit math is pretty slow on this micro,
+  // we just write down some numbers and do the processing later.
+
+  // Prevent interrupts because these are multibyte values, and are therefore
+  // not atomically accessed.
+  noInterrupts();
+  microsAtPenultimateTachPulse = microsAtLastTachPulse;
+  microsAtLastTachPulse = micros();
+  interrupts();
+}
 
 void loop() {
   long millisNow = millis();
@@ -340,18 +368,29 @@ void loop() {
     auxMessageDisplay.setSegments(millis() % 2000 > 1000 ? SEG_RDIO : SEG_INOP);
   }
 
-  // TODO: Need to set this in a pin change interrupt routine.
-  // This is just a silly animation hack.
-  rpm = millis()*2 % 14000;
-  rpm = rpm > 7000 ? 14000 - rpm : rpm;
-
-
-  // Prevent interrupts because rpm is a 2-byte value, and is therefore
+  // Prevent interrupts because these are multibyte values, and are therefore
   // not atomically accessed.
   noInterrupts();
-  uint16_t rpmCopy = rpm;
+  uint32_t tachPeriodMicros = microsAtLastTachPulse - microsAtPenultimateTachPulse;
   interrupts();
-  updateTach(rpmCopy, idiotLight);
+  if (tachPeriodMicros > 0) {
+    rpm =
+      // rpm/hz
+      60.0 *
+      // pulse freq in hz
+      (1e-6 / (double)tachPeriodMicros) /
+      // num cylinders
+      4.0;
+    // If the value is completely nonsensical, it's much more likely that the engine is off
+    // or the circuitry went bad somehow vs. the engine spontaneously becoming a rotary.
+    if (rpm > 10000) {
+      rpm = 0;
+    }
+  } else {
+    rpm = 0;
+  }
+
+  updateTach(rpm, idiotLight);
 }
 
 void sendRadioMessage(char* msg, uint16_t data) {
