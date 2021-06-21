@@ -36,6 +36,12 @@
 
 /* Pin assignments */
 #define IDIOT_LIGHT 29
+
+#define VBAT_VIN_PIN 4
+// Resistor divider ratio. Value read from ADC is multiplied by this
+// to get real voltage.
+#define VBAT_RATIO 0.25
+
 #define OIL_PRESSURE_CLK 25
 #define OIL_PRESSURE_DIO 23
 #define OIL_PRESSURE_VIN_PIN 0
@@ -64,6 +70,7 @@ bool radioAvailable;
 |P_C |Coolant pressure    |PSI                  |
 |T_O |Oil temperature     |Tenths of a degree F |
 |P_O |Oil pressure        |PSI                  |
+|VBA |Battery voltage     |Millivolts           |
 |RPM |RPM                 |RPM                  |
 |SPD |GPS Speed           |Tenths of a MPH      |
 |TIM |GPS Lap Time        |Deciseconds          |
@@ -83,6 +90,7 @@ char* RADIO_MSG_COOLANT_PRES = "P_C";
 char* RADIO_MSG_OIL_TEMP = "T_O";
 char* RADIO_MSG_OIL_PRES = "P_O";
 char* RADIO_MSG_FAULT = "FLT";
+char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
 
 char radioMsgBuf[32];
 
@@ -289,6 +297,7 @@ volatile uint16_t rpm = 0;
 double oilPressure = 0;
 double coolantPressure = 0;
 double oilTemperature = 0;
+double batteryVoltage = 0;
 
 void loop() {
   long millisNow = millis();
@@ -297,6 +306,7 @@ void loop() {
     oilPressure = readOilPSI();
     coolantPressure = readCoolantPSI();
     oilTemperature = readOilTemp();
+    batteryVoltage = readBatteryVoltage();
 
     oilPressureDisplay.showNumberDec(oilPressure);
     coolantPressureDisplay.showNumberDec(coolantPressure);
@@ -316,6 +326,7 @@ void loop() {
     sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
     sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
     sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
+    sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)batteryVoltage);
   }
 
   if (rf95.available()) {
@@ -362,6 +373,19 @@ void sendRadioMessage(char* msg, uint16_t data) {
   rf95.send(radioMsgBuf, bytesWritten);
   // Not necessary - send() will wait all by itself if needed.
   //rf95.waitPacketSent();
+}
+
+CircularBuffer<double,WINDOW_SIZE> batteryVoltageWindow;
+double readBatteryVoltage() {
+  // TODO: Calibrate ADC.
+  double vbat =
+    1000.0 * // millivolts
+    VBAT_RATIO * // resistor divider
+    5.0 * // full scale of ADC (volts)
+    (double)analogRead(VBAT_VIN_PIN) /
+    1024.0; // full scale of ADC (counts)
+  batteryVoltageWindow.push(vbat);
+  return avg(batteryVoltageWindow);
 }
 
 CircularBuffer<double,WINDOW_SIZE> oilPSIWindow;
