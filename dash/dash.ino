@@ -29,10 +29,14 @@
 /* Sensor sampling */
 #define SAMPLE_PERIOD_MS 25
 
+// The radio blocks the main loop if we try to send a message
+// but the radio hasn't had a chance to send it yet. To avoid this,
+// we send out each radio message type in sequence separated by a length
+// of time configured here.
 // To avoid blocking on the radio, set this to a value
 // that pretty much guarantees we'll have sent the packet
 // by the time we try to send again.
-#define RADIO_UPDATE_PERIOD_MS 2000
+#define RADIO_UPDATE_PERIOD_MS 1000
 #define WINDOW_SIZE 10
 
 /* Pin assignments */
@@ -99,6 +103,7 @@ const char* RADIO_MSG_RPM = "RPM";
 
 
 char radioMsgBuf[32];
+uint8_t messageCounter = 0; // Which message to send this time.
 
 // https://www.makerguides.com/wp-content/uploads/2019/08/7-segment-display-annotated.jpg
 
@@ -366,20 +371,15 @@ void loop() {
   if (millisNow - lastRadioMillis > RADIO_UPDATE_PERIOD_MS) {
     lastRadioMillis = millisNow;
 
-    // TODO: If we stagger these, they won't block each other.
-    // As it is, the last 2 messages end up blocking on the
-    // previous message being sent, which takes ~hundreds of
-    // ms each time. It would be nice for the main loop to have
-    // a fairly consistent runtime i.e. for easy animations and
-    // blinkenlichten.
-    // Also, the long pause causes the tach to noticeably stall
-    // every couple seconds.
-    sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
-    sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
-    sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
-    sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage));
-    sendRadioMessage(RADIO_MSG_RPM, (uint16_t)rpm);
-    sendRadioMessage(RADIO_MSG_FAULT, idiotLight);
+    switch(messageCounter++) {
+      case(0): sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure); break;
+      case(1): sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure); break;
+      case(2): sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature); break;
+      case(3): sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage)); break;
+      case(4): sendRadioMessage(RADIO_MSG_RPM, (uint16_t)rpm); break;
+      case(5): sendRadioMessage(RADIO_MSG_FAULT, idiotLight); break;
+      default: messageCounter = 0;
+    }
   }
 
   if (rf95.available()) {
