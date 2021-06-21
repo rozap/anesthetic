@@ -35,7 +35,6 @@
 #define WINDOW_SIZE 10
 
 /* Pin assignments */
-#define IDIOT_LIGHT 29
 
 #define VBAT_VIN_PIN 4
 // Resistor divider ratio. Value read from ADC is multiplied by this
@@ -200,9 +199,6 @@ void setup() {
   Wire.begin();
   tachInit();
 
-  pinMode(IDIOT_LIGHT, OUTPUT);
-  digitalWrite(IDIOT_LIGHT, HIGH);
-
   oilPressureDisplay.setBrightness(0, false);
   oilTemperatureDisplay.setBrightness(0, false);
   coolantPressureDisplay.setBrightness(0, false);
@@ -325,7 +321,6 @@ void loop() {
     sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
     sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)batteryVoltage);
     sendRadioMessage(RADIO_MSG_FAULT, idiotLight);
-
   }
 
   if (rf95.available()) {
@@ -420,9 +415,11 @@ bool shouldShowIdiotLight() {
   bool oilPressBad = oilPressure < 15;
   bool coolantPressBad = coolantPressure < 5;
   bool oilTempBad = oilTemperature > 240;
+  bool vbatBad = batteryVoltage < 12.8;
   return oilPressBad ||
     coolantPressBad ||
-    oilTempBad;
+    oilTempBad ||
+    vbatBad;
 }
 
 double avg(CircularBuffer<double,WINDOW_SIZE> &cb) {
