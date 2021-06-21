@@ -406,12 +406,12 @@ double readRpm() {
       // rpm/hz
       60.0 *
       // pulse freq in hz
-      (1e-6 / (double)tachPeriodMicros) /
+      (1e6 / (double)tachPeriodMicros) /
       // num cylinders
       4.0;
     // If the value is completely nonsensical, it's much more likely that the engine is off
     // or the circuitry went bad somehow vs. the engine spontaneously becoming a rotary.
-    if (rpm > 10000) {
+    if (rpmNow > 10000) {
       rpmNow = 0;
     }
   } else {
