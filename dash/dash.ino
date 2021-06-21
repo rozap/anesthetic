@@ -88,6 +88,8 @@ const char* RADIO_MSG_OIL_TEMP = "T_O";
 const char* RADIO_MSG_OIL_PRES = "P_O";
 const char* RADIO_MSG_FAULT = "FLT";
 const char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
+const char* RADIO_MSG_RPM = "RPM";
+
 
 char radioMsgBuf[32];
 
@@ -350,6 +352,7 @@ void loop() {
     sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
     sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
     sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)batteryVoltage);
+    sendRadioMessage(RADIO_MSG_RPM, (uint16_t)rpm);
     sendRadioMessage(RADIO_MSG_FAULT, idiotLight);
   }
 
