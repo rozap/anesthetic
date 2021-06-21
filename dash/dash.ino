@@ -347,7 +347,14 @@ void loop() {
     coolantPressure = readCoolantPSI();
     oilTemperature = readOilTemp();
     batteryVoltage = readBatteryVoltage();
-    rpm = readRpm();
+    double rpmNow = readRpm();
+    if (rpmNow >= 0) {
+      // RPM value is nonsensical - either the engine is off,
+      // there was an odd electrical pulse, or something else.
+      // TODO: Timeout waiting for a tach pulse and set RPM
+      // to zero. Nice to have.
+      rpm = rpmNow;
+    }
 
     idiotLight = shouldShowIdiotLight();
 
@@ -365,6 +372,8 @@ void loop() {
     // ms each time. It would be nice for the main loop to have
     // a fairly consistent runtime i.e. for easy animations and
     // blinkenlichten.
+    // Also, the long pause causes the tach to noticeably stall
+    // every couple seconds.
     sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure);
     sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure);
     sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature);
@@ -427,11 +436,13 @@ double readRpm() {
       4.0;
     // If the value is completely nonsensical, it's much more likely that the engine is off
     // or the circuitry went bad somehow vs. the engine spontaneously becoming a rotary.
-    if (rpmNow > 10000) {
-      rpmNow = 0;
+    // This can happen if there's a particularly noisy transient that double-triggers the
+    // interrupt in a very quick succession.
+    if (rpmNow > 9000) {
+      rpmNow = -1; // Invalid
     }
   } else {
-    rpmNow = 0;
+    rpmNow = -1; // Invalid
   }
 
   return rpmNow;
