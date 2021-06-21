@@ -10,6 +10,8 @@
 /* Tach */
 #include "Wire.h"
 
+//#define SKIP_INTRO_ANIM
+
 #define TACH_LIGHT_IDIOT (1<<15)
 #define TACH_LIGHT_G1 (1<<14)
 #define TACH_LIGHT_G2 (1<<13)
@@ -217,7 +219,9 @@ void setup() {
   oilTemperatureDisplay.setSegments(SEG_BLANK);
   auxMessageDisplay.setSegments(SEG_BLANK);
 
+  #ifndef SKIP_INTRO_ANIM
   tachBootAnimation();
+  #endif
   
   if (rf95.init()) {
     Serial.println("radio init ok");
@@ -229,6 +233,7 @@ void setup() {
     Serial.println("radio init failed");
   }
 
+  #ifndef SKIP_INTRO_ANIM
   uint8_t d = 100;
   for (uint8_t brt = 1; brt<8; brt++) {
     oilTemperatureDisplay.setBrightness(brt);
@@ -289,6 +294,12 @@ void setup() {
   coolantPressureDisplay.setSegments(SEG_BLANK);
   oilTemperatureDisplay.setSegments(SEG_BLANK);
   tachLights(0);
+  #else
+  oilPressureDisplay.setBrightness(7);
+  oilTemperatureDisplay.setBrightness(7);
+  coolantPressureDisplay.setBrightness(7);
+  auxMessageDisplay.setBrightness(7);
+  #endif
 
   attachInterrupt(digitalPinToInterrupt(TACH_SIGNAL_PIN), onTachPulseISR, RISING);
 }
