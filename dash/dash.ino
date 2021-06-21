@@ -392,7 +392,6 @@ void sendRadioMessage(const char* msg, uint16_t data) {
   //rf95.waitPacketSent();
 }
 
-CircularBuffer<double,WINDOW_SIZE> rpmWindow;
 double readRpm() {
   double rpmNow;
   // Prevent interrupts because these are multibyte values, and are therefore
@@ -417,8 +416,7 @@ double readRpm() {
     rpmNow = 0;
   }
 
-  rpmWindow.push(rpmNow);
-  return avg(rpmWindow);
+  return rpmNow;
 }
 
 CircularBuffer<double,WINDOW_SIZE> batteryVoltageWindow;
