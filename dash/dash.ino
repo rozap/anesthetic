@@ -27,7 +27,7 @@
 #define FIRST_LIGHT_RPM 1000
 
 /* Sensor sampling */
-#define SAMPLE_PERIOD_MS 250
+#define SAMPLE_PERIOD_MS 25
 
 // To avoid blocking on the radio, set this to a value
 // that pretty much guarantees we'll have sent the packet
