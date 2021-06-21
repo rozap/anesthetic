@@ -328,6 +328,8 @@ void loop() {
     coolantPressure = readCoolantPSI();
     oilTemperature = readOilTemp();
     batteryVoltage = readBatteryVoltage();
+    rpm = readRpm();
+
     idiotLight = shouldShowIdiotLight();
 
     oilPressureDisplay.showNumberDec(oilPressure);
@@ -368,28 +370,6 @@ void loop() {
     auxMessageDisplay.setSegments(millis() % 2000 > 1000 ? SEG_RDIO : SEG_INOP);
   }
 
-  // Prevent interrupts because these are multibyte values, and are therefore
-  // not atomically accessed.
-  noInterrupts();
-  uint32_t tachPeriodMicros = microsAtLastTachPulse - microsAtPenultimateTachPulse;
-  interrupts();
-  if (tachPeriodMicros > 0) {
-    rpm =
-      // rpm/hz
-      60.0 *
-      // pulse freq in hz
-      (1e-6 / (double)tachPeriodMicros) /
-      // num cylinders
-      4.0;
-    // If the value is completely nonsensical, it's much more likely that the engine is off
-    // or the circuitry went bad somehow vs. the engine spontaneously becoming a rotary.
-    if (rpm > 10000) {
-      rpm = 0;
-    }
-  } else {
-    rpm = 0;
-  }
-
   updateTach(rpm, idiotLight);
 }
 
@@ -406,6 +386,35 @@ void sendRadioMessage(const char* msg, uint16_t data) {
   rf95.send((const unsigned char*)radioMsgBuf, bytesWritten);
   // Not necessary - send() will wait all by itself if needed.
   //rf95.waitPacketSent();
+}
+
+CircularBuffer<double,WINDOW_SIZE> rpmWindow;
+double readRpm() {
+  double rpmNow;
+  // Prevent interrupts because these are multibyte values, and are therefore
+  // not atomically accessed.
+  noInterrupts();
+  uint32_t tachPeriodMicros = microsAtLastTachPulse - microsAtPenultimateTachPulse;
+  interrupts();
+  if (tachPeriodMicros > 0) {
+    rpmNow =
+      // rpm/hz
+      60.0 *
+      // pulse freq in hz
+      (1e-6 / (double)tachPeriodMicros) /
+      // num cylinders
+      4.0;
+    // If the value is completely nonsensical, it's much more likely that the engine is off
+    // or the circuitry went bad somehow vs. the engine spontaneously becoming a rotary.
+    if (rpm > 10000) {
+      rpmNow = 0;
+    }
+  } else {
+    rpmNow = 0;
+  }
+
+  rpmWindow.push(rpmNow);
+  return avg(rpmWindow);
 }
 
 CircularBuffer<double,WINDOW_SIZE> batteryVoltageWindow;
