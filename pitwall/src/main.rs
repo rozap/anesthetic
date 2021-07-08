@@ -1,26 +1,33 @@
 mod util;
-use std::fs::File;
-use std::io::Write;
+mod window;
+mod widgets;
+mod constants;
+mod connection;
+
+use constants::{DEFAULT_BG};
+
 use std::path::Path;
 use std::{env, usize};
 use std::{error::Error, io};
-use termion::input::TermRead;
 use termion::{event::Key, input::MouseTerminal, raw::IntoRawMode, screen::AlternateScreen};
 use tui::backend::Backend;
 use tui::layout::{Corner, Rect};
-use tui::{Frame, symbols};
-use tui::widgets::{Axis, Chart, Dataset, GraphType, List, ListItem};
+use tui::{Frame};
+use tui::widgets::{List, ListItem};
 use tui::{
     backend::TermionBackend,
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     text::{Span, Spans},
-    widgets::{Block, Borders, Gauge, Tabs},
+    widgets::{Block, Borders, Tabs},
     Terminal,
 };
 use util::event::{Event, Events};
 use util::TabsState;
-// use std::{thread, time};
+use widgets::{gauge, chart};
+use connection::{Connection};
+
+use crate::connection::LogLevel;
 
 struct BsodApp<'a> {
     tabs: TabsState<'a>,
@@ -35,7 +42,6 @@ struct SensorConstants {
 }
 
 
-const WINDOW_SIZE: usize = 50;
 const SENSOR_CONSTANTS: SensorConstants = SensorConstants {
     oil_pressure_max: 80,
     oil_temp_max: 260,
@@ -44,203 +50,6 @@ const SENSOR_CONSTANTS: SensorConstants = SensorConstants {
     rpm_max: 7000,
 };
 
-
-fn gauge<'a>(title: String, label: String, value: u16, max: u16) -> Gauge<'a> {
-    let percent = ((value as f32) / (max as f32)) * 100.0;
-    Gauge::default()
-        .block(Block::default().title(title).borders(Borders::ALL))
-        .gauge_style(Style::default().fg(Color::LightCyan).bg(Color::DarkGray))
-        .percent(percent.round().min(100.0) as u16)
-        .label(label)
-}
-
-fn chart<'a>(area: Rect, title: String, x_title: &'a str, y_title: &'a str, series: &'a Vec<Vec<(f64, f64)>>, colors: Vec<Color>, x_labels: Vec<&'a str>, min: u16, max: u16, step: usize) -> Chart<'a> {
-    let max_len = series.iter().fold(0, |acc, s| acc.max(s.len()));
-    let attributes: Vec<(&Color, &str)> = colors.iter().zip(x_labels).collect();
-    let datasets = series.iter().zip(attributes).map(|(s, (color, label))| {
-        Dataset::default()
-        .name(label)
-        .graph_type(GraphType::Line)
-        .marker(symbols::Marker::Dot)
-        .style(Style::default().bg(DEFAULT_BG).fg(color.to_owned()))
-        .data(s)
-    }).collect();
-
-    let ticks = (min..max + 1).step_by(step).map(|num| {
-        Span::styled(format!("{}", num), Style::default().add_modifier(Modifier::BOLD))
-    }).collect();
-
-    Chart::new(datasets)
-        .block(
-            Block::default()
-                .title(Span::styled(
-                    title,
-                    Style::default()
-                        .fg(Color::Cyan)
-                        .add_modifier(Modifier::BOLD),
-                ))
-                .borders(Borders::ALL),
-        )
-        .x_axis(
-            Axis::default()
-                .title(x_title)
-                .style(Style::default().fg(Color::Gray))
-                .bounds([0.0, max_len as f64]),
-        )
-        .y_axis(
-            Axis::default()
-                .title(y_title)
-                .style(Style::default().fg(Color::Gray))
-                .labels(ticks)
-                .bounds([min as f64, max as f64]),
-        )
-}
-
-struct Window {
-    buf: Vec<u16>,
-    size: usize,
-}
-
-impl Window {
-    fn new(size: usize) -> Window {
-        Window { size: size, buf: vec![0; size] }
-    }
-
-    fn last(&self) -> u16 {
-        self.buf[0]
-    }
-
-    fn put(&mut self, value: &str) -> Result<(), String> {
-        match value.parse::<u16>() {
-            Ok(v) => {
-                if self.buf.len() >= self.size {
-                    self.buf.pop();
-                }
-                self.buf.insert(0, v);
-                Ok(())
-            }
-            Err(e) => Err(format!("Failed to parse as uint: {}", e)),
-        }
-    }
-
-    fn last_n(&self, n: usize) -> Vec<(f64, u16)> {
-        self.buf[0..n.min(self.buf.len())].iter().rev().enumerate().map(|(i, v)| {
-            (i as f64, v.to_owned())
-        }).collect()
-    }
-}
-enum LogLevel {
-    Info,
-    Warn,
-    Error
-}
-
-struct Connection {
-    oil_temps: Window,
-    oil_pressures: Window,
-    coolant_pressures: Window,
-    voltages: Window,
-    rpms: Window,
-    rssis: Window,
-    file: File,
-
-    counter: u128,
-    events: Vec<(u128, String, LogLevel)>
-}
-
-
-impl Connection {
-    fn init(filename: &Path) -> Result<Connection, io::Error> {
-        Ok(Connection {
-            file: File::open(filename)?,
-            oil_temps: Window::new(WINDOW_SIZE),
-            oil_pressures: Window::new(WINDOW_SIZE),
-            coolant_pressures: Window::new(WINDOW_SIZE),
-            rpms: Window::new(WINDOW_SIZE),
-            rssis: Window::new(WINDOW_SIZE),
-            voltages: Window::new(WINDOW_SIZE),
-            counter: 0,
-            events: vec![
-                (0, "w e l c o m e  t o  l e m o n s  d o m i n a t i o n".to_owned(), LogLevel::Info)
-            ]
-        })
-    }
-
-    pub fn log(&mut self, lvl: LogLevel, msg: String) {
-        self.events.push((self.counter, msg, lvl));
-    }
-
-    pub fn read(&mut self) {
-        let result = match self.file.read_line() {
-            Ok(Some(line)) => {
-                self.counter = self.counter + 1;
-
-
-                match line
-                    .split_ascii_whitespace()
-                    .collect::<Vec<&str>>()
-                    .as_slice()
-                {
-                    [_month, _day, _time, keyvalue] => {
-                        match keyvalue.split(":").collect::<Vec<&str>>().as_slice() {
-                            ["P_C", value] => {
-                                self.coolant_pressures.put(value);
-                                Some((LogLevel::Info, line))
-                            }
-                            ["P_O", value] => {
-                                self.oil_pressures.put(value);
-                                Some((LogLevel::Info, line))
-                            }
-                            ["T_O", value] => {
-                                self.oil_temps.put(value);
-                                Some((LogLevel::Info, line))
-                            }
-                            ["VBA", value] => {
-                                self.voltages.put(value);
-                                Some((LogLevel::Info, line))
-                            }
-                            ["RPM", value] => {
-                                self.rpms.put(value);
-                                Some((LogLevel::Info, line))
-                            }
-                            ["RSI", value] => {
-                                self.rssis.put("0");
-                                Some((LogLevel::Info, line))
-                            }
-                            ["FLT", value] => {
-                                Some((LogLevel::Warn, format!("Fault: {}", value)))
-                            }
-                            _ => Some((LogLevel::Error, format!("Invalid key value pair {}", keyvalue))),
-                        }
-                    }
-
-                    _ => {
-                        if line.is_empty() {
-                            None
-                        } else {
-                            Some((LogLevel::Error, format!("Invalid data line '{}'", line)))
-                        }
-                    },
-                }
-            }
-            Ok(None) => Some((LogLevel::Error, format!("Empty line?"))),
-            Err(e) => Some((LogLevel::Error, format!("Failed to read line: {}", e))),
-        };
-
-
-
-        match result {
-            Some((level, line)) => {
-                self.log(level, line.clone());
-            }
-            None => {
-                // noop
-            }
-
-        };
-
-    }
-}
 
 
 fn to_volt(v: u16) -> f64 {
@@ -311,7 +120,7 @@ where B: Backend {
 }
 
 
-const DEFAULT_BG: Color = Color::Black;
+
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
@@ -361,7 +170,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             let size = f.size();
             let chunks = Layout::default()
                 .direction(Direction::Vertical)
-                .margin(5)
+                .margin(1)
                 .constraints([Constraint::Length(3), Constraint::Min(0)].as_ref())
                 .split(size);
 
@@ -395,9 +204,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 
             let main_chunks = Layout::default()
                 .direction(Direction::Vertical)
-                .margin(2)
+                .margin(1)
                 .constraints(
-                    [Constraint::Percentage(50), Constraint::Percentage(50)].as_ref(),
+                    [Constraint::Percentage(75), Constraint::Percentage(25)].as_ref(),
                 )
                 .split(body);
 
@@ -562,6 +371,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 Key::Char('p') => app.tabs.goto(2),
                 Key::Char('v') => app.tabs.goto(3),
                 Key::Char('r') => app.tabs.goto(4),
+                Key::Char('e') => app.tabs.goto(5),
                 _ => {}
             }
         }
