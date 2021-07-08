@@ -11,7 +11,7 @@ use tui::{
 use crate::constants::DEFAULT_BG;
 
 
-pub fn gauge<'a>(title: String, label: String, value: u16, max: u16) -> Gauge<'a> {
+pub fn gauge<'a>(title: String, label: String, value: i16, max: i16) -> Gauge<'a> {
   let percent = ((value as f32) / (max as f32)) * 100.0;
   Gauge::default()
       .block(Block::default().title(title).borders(Borders::ALL))
@@ -20,7 +20,7 @@ pub fn gauge<'a>(title: String, label: String, value: u16, max: u16) -> Gauge<'a
       .label(label)
 }
 
-pub fn chart<'a>(area: Rect, title: String, x_title: &'a str, y_title: &'a str, series: &'a Vec<Vec<(f64, f64)>>, colors: Vec<Color>, x_labels: Vec<&'a str>, min: u16, max: u16, step: usize) -> Chart<'a> {
+pub fn chart<'a>(area: Rect, title: String, x_title: &'a str, y_title: &'a str, series: &'a Vec<Vec<(f64, f64)>>, colors: Vec<Color>, x_labels: Vec<&'a str>, min: i16, max: i16, step: usize) -> Chart<'a> {
   let max_len = series.iter().fold(0, |acc, s| acc.max(s.len()));
   let attributes: Vec<(&Color, &str)> = colors.iter().zip(x_labels).collect();
   let datasets = series.iter().zip(attributes).map(|(s, (color, label))| {

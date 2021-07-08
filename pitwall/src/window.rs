@@ -1,33 +1,46 @@
 pub struct Window {
-  buf: Vec<u16>,
-  size: usize,
+    buf: Vec<i16>,
+    size: usize,
 }
 
 impl Window {
-  pub fn new(size: usize) -> Window {
-      Window { size: size, buf: vec![0; size] }
-  }
+    pub fn new(size: usize) -> Window {
+        Window {
+            size: size,
+            buf: vec![0; size],
+        }
+    }
 
-  pub fn last(&self) -> u16 {
-      self.buf[0]
-  }
+    pub fn last(&self) -> Option<&i16> {
+        self.buf.last()
+    }
 
-  pub fn put(&mut self, value: &str) -> Result<(), String> {
-      match value.parse::<u16>() {
-          Ok(v) => {
-              if self.buf.len() >= self.size {
-                  self.buf.pop();
-              }
-              self.buf.insert(0, v);
-              Ok(())
-          }
-          Err(e) => Err(format!("Failed to parse as uint: {}", e)),
-      }
-  }
+    pub fn put(&mut self, value: &str) -> Result<(), String> {
+        match value.parse::<i16>() {
+            Ok(v) => {
+                self.buf.push(v);
+                Ok(())
+            }
+            Err(e) => Err(format!("Failed to parse as uint: {}", e)),
+        }
+    }
 
-  pub fn last_n(&self, n: usize) -> Vec<(f64, u16)> {
-      self.buf[0..n.min(self.buf.len())].iter().rev().enumerate().map(|(i, v)| {
-          (i as f64, v.to_owned())
-      }).collect()
-  }
+    pub fn last_n(&self, n: usize) -> Vec<(usize, i16)> {
+        let start = if n > self.buf.len() {
+            0
+        } else {
+            (self.buf.len() - n).max(0)
+        };
+        let end = if self.buf.len() > 0 {
+            self.buf.len() - 1
+        } else {
+            0
+        };
+
+        return self.buf[start..end]
+            .iter()
+            .enumerate()
+            .map(|(i, v)| (i, v.to_owned()))
+            .collect();
+    }
 }

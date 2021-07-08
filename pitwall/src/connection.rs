@@ -78,7 +78,7 @@ impl Connection {
                               Some((LogLevel::Info, line))
                           }
                           ["RSI", value] => {
-                              self.rssis.put("0");
+                              self.rssis.put(value);
                               Some((LogLevel::Info, line))
                           }
                           ["FLT", value] => {
