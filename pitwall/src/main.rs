@@ -1,11 +1,12 @@
-mod util;
-mod window;
-mod widgets;
-mod constants;
 mod connection;
+mod constants;
+mod util;
+mod widgets;
+mod window;
 
-use constants::{DEFAULT_BG};
+use constants::DEFAULT_BG;
 
+use connection::Connection;
 use std::path::Path;
 use std::time::Duration;
 use std::{env, usize};
@@ -13,8 +14,8 @@ use std::{error::Error, io};
 use termion::{event::Key, input::MouseTerminal, raw::IntoRawMode, screen::AlternateScreen};
 use tui::backend::Backend;
 use tui::layout::{Corner, Rect};
-use tui::{Frame};
 use tui::widgets::{List, ListItem};
+use tui::Frame;
 use tui::{
     backend::TermionBackend,
     layout::{Constraint, Direction, Layout},
@@ -25,8 +26,7 @@ use tui::{
 };
 use util::event::{Event, Events};
 use util::TabsState;
-use widgets::{gauge, chart};
-use connection::{Connection};
+use widgets::{chart, gauge};
 
 use crate::connection::LogLevel;
 
@@ -35,13 +35,13 @@ struct BsodApp<'a> {
 }
 
 struct SensorConstants {
-    oil_temp_max: u16,
-    oil_pressure_max: u16,
-    coolant_pressure_max: u16,
-    voltage_max: u16,
-    rpm_max: u16,
+    oil_temp_max: i16,
+    oil_pressure_max: i16,
+    coolant_pressure_max: i16,
+    voltage_max: i16,
+    rpm_max: i16,
+    rssi_max: i16,
 }
-
 
 const SENSOR_CONSTANTS: SensorConstants = SensorConstants {
     oil_pressure_max: 80,
@@ -49,79 +49,93 @@ const SENSOR_CONSTANTS: SensorConstants = SensorConstants {
     coolant_pressure_max: 80,
     voltage_max: 16 * 1000,
     rpm_max: 7000,
+    rssi_max: 0,
 };
 
-
-
-fn to_volt(v: u16) -> f64 {
+fn to_volt(v: i16) -> f64 {
     (v as f64) / 1000.0
 }
 fn render_gauges<'a, B>(frame: &'a mut Frame<B>, area: Rect, connection: &Connection)
-where B: Backend {
+where
+    B: Backend,
+{
     let gauge_chunks = Layout::default()
         .direction(Direction::Vertical)
         .margin(0)
         .constraints(
             [
-                Constraint::Percentage(20),
-                Constraint::Percentage(20),
-                Constraint::Percentage(20),
-                Constraint::Percentage(20),
-                Constraint::Percentage(20),
+                Constraint::Percentage(16),
+                Constraint::Percentage(16),
+                Constraint::Percentage(16),
+                Constraint::Percentage(16),
+                Constraint::Percentage(16),
+                Constraint::Percentage(16),
             ]
             .as_ref(),
         )
         .split(area);
 
-    let oil_temp = connection.oil_temps.last();
-    let oil_temp_gauge = gauge(
-        format!("Oil Temperature"),
-        format!("{} F", oil_temp),
-        oil_temp,
-        SENSOR_CONSTANTS.oil_temp_max,
-    );
+    connection.oil_temps.last().map(|ot| {
+        let oil_temp_gauge = gauge(
+            format!("Oil Temperature"),
+            format!("{} F", ot),
+            *ot,
+            SENSOR_CONSTANTS.oil_temp_max,
+        );
+        frame.render_widget(oil_temp_gauge, gauge_chunks[0]);
+    });
 
-    let oil_pressure = connection.oil_pressures.last();
-    let oil_pressure_gauge = gauge(
-        format!("Oil Pressure"),
-        format!("{} PSI", oil_pressure),
-        oil_pressure,
-        SENSOR_CONSTANTS.oil_pressure_max,
-    );
+    connection.oil_pressures.last().map(|op| {
+        let oil_pressure_gauge = gauge(
+            format!("Oil Pressure"),
+            format!("{} PSI", op),
+            *op,
+            SENSOR_CONSTANTS.oil_pressure_max,
+        );
+        frame.render_widget(oil_pressure_gauge, gauge_chunks[1]);
+    });
 
-    let coolant_pressure = connection.coolant_pressures.last();
-    let coolant_pressure_gauge = gauge(
-        format!("Coolant Pressure"),
-        format!("{} PSI", coolant_pressure),
-        coolant_pressure,
-        SENSOR_CONSTANTS.coolant_pressure_max,
-    );
+    connection.coolant_pressures.last().map(|cp| {
+        let coolant_pressure_gauge = gauge(
+            format!("Coolant Pressure"),
+            format!("{} PSI", cp),
+            *cp,
+            SENSOR_CONSTANTS.coolant_pressure_max,
+        );
+        frame.render_widget(coolant_pressure_gauge, gauge_chunks[2]);
+    });
 
-    let voltage = connection.voltages.last();
-    let voltage_gauge = gauge(
-        format!("Volts"),
-        format!("{:.2} volts", to_volt(voltage)),
-        voltage,
-        SENSOR_CONSTANTS.voltage_max,
-    );
+    connection.voltages.last().map(|v| {
+        let voltage_gauge = gauge(
+            format!("Volts"),
+            format!("{:.2} volts", to_volt(*v)),
+            *v,
+            SENSOR_CONSTANTS.voltage_max,
+        );
+        frame.render_widget(voltage_gauge, gauge_chunks[3]);
+    });
 
-    let rpm = connection.rpms.last();
-    let rpm_gauge = gauge(
-        format!("Max RPM"),
-        format!("{} rpm", rpm),
-        rpm,
-        SENSOR_CONSTANTS.rpm_max,
-    );
+    connection.rpms.last().map(|rpm| {
+        let rpm_gauge = gauge(
+            format!("Max RPM"),
+            format!("{} rpm", rpm),
+            *rpm,
+            SENSOR_CONSTANTS.rpm_max,
+        );
+        frame.render_widget(rpm_gauge, gauge_chunks[4]);
+    });
 
-    frame.render_widget(oil_temp_gauge, gauge_chunks[0]);
-    frame.render_widget(oil_pressure_gauge, gauge_chunks[1]);
-    frame.render_widget(coolant_pressure_gauge, gauge_chunks[2]);
-    frame.render_widget(voltage_gauge, gauge_chunks[3]);
-    frame.render_widget(rpm_gauge, gauge_chunks[4]);
+    connection.rssis.last().map(|rssi| {
+        let rssi_gauge = gauge(
+            format!("Signal"),
+            format!("{} rssi", rssi),
+            rssi + 100,
+            SENSOR_CONSTANTS.rssi_max + 100,
+        );
+
+        frame.render_widget(rssi_gauge, gauge_chunks[5]);
+    });
 }
-
-
-
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
@@ -145,11 +159,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut connection = match Connection::init(port) {
         Ok(c) => c,
-        Err(e) => {
-            return Err("Failed to open a connection".into())
-        },
+        Err(e) => return Err("Failed to open a connection".into()),
     };
-
 
     // App
 
@@ -157,21 +168,24 @@ fn main() -> Result<(), Box<dyn Error>> {
     let stdout = MouseTerminal::from(stdout);
     let stdout = AlternateScreen::from(stdout);
     let backend = TermionBackend::new(stdout);
-
     let mut terminal = Terminal::new(backend)?;
     let events = Events::new();
     let mut app = BsodApp {
         // add tabs here
-        tabs: TabsState::new(vec!["Main", "Temperatures", "Pressures", "Voltages", "RPMs"]),
+        tabs: TabsState::new(vec![
+            "Main",
+            "Temperatures",
+            "Pressures",
+            "Voltages",
+            "RPMs",
+        ]),
     };
-
 
     // Main loop
     loop {
         connection.read();
 
-
-        let res = terminal.draw(|f| {
+        terminal.draw(|f| {
             let size = f.size();
             let chunks = Layout::default()
                 .direction(Direction::Vertical)
@@ -210,23 +224,19 @@ fn main() -> Result<(), Box<dyn Error>> {
             let main_chunks = Layout::default()
                 .direction(Direction::Vertical)
                 .margin(1)
-                .constraints(
-                    [Constraint::Percentage(75), Constraint::Percentage(25)].as_ref(),
-                )
+                .constraints([Constraint::Percentage(75), Constraint::Percentage(25)].as_ref())
                 .split(body);
 
             f.render_widget(block, body);
 
-
-            let events: Vec<ListItem> = connection.events
+            let events: Vec<ListItem> = connection
+                .events
                 .iter()
                 .rev()
-                .filter(|(_counter, _event, level)| {
-                    match level {
-                        &LogLevel::Error => true,
-                        &LogLevel::Warn => true,
-                        &LogLevel::Info => false
-                    }
+                .filter(|(_counter, _event, level)| match level {
+                    &LogLevel::Error => true,
+                    &LogLevel::Warn => true,
+                    &LogLevel::Info => false,
                 })
                 .map(|(counter, event, level)| {
                     // Colorcode the level depending on its type
@@ -268,15 +278,15 @@ fn main() -> Result<(), Box<dyn Error>> {
                 .start_corner(Corner::BottomLeft);
             f.render_widget(events_list, main_chunks[1]);
 
-
             match app.tabs.index {
-                0 => {
-                    render_gauges(f, main_chunks[0], &connection)
-                }
+                0 => render_gauges(f, main_chunks[0], &connection),
                 1 => {
-                    let data = vec![
-                        connection.oil_temps.last_n(512).iter().map(|(i, t)| (i.to_owned(), t.to_owned() as f64)).collect()
-                    ];
+                    let data = vec![connection
+                        .oil_temps
+                        .last_n(512)
+                        .iter()
+                        .map(|(i, t)| (i.to_owned() as f64, t.to_owned() as f64))
+                        .collect()];
 
                     let c = chart(
                         main_chunks[0],
@@ -288,15 +298,25 @@ fn main() -> Result<(), Box<dyn Error>> {
                         vec!["Oil Temp"],
                         100,
                         SENSOR_CONSTANTS.oil_temp_max,
-                        40
+                        40,
                     );
 
                     f.render_widget(c, main_chunks[0])
                 }
                 2 => {
                     let data = vec![
-                        connection.oil_pressures.last_n(512).iter().map(|(i, t)| (i.to_owned(), t.to_owned() as f64)).collect(),
-                        connection.coolant_pressures.last_n(512).iter().map(|(i, t)| (i.to_owned(), t.to_owned() as f64)).collect()
+                        connection
+                            .oil_pressures
+                            .last_n(512)
+                            .iter()
+                            .map(|(i, t)| (i.to_owned() as f64, t.to_owned() as f64))
+                            .collect(),
+                        connection
+                            .coolant_pressures
+                            .last_n(512)
+                            .iter()
+                            .map(|(i, t)| (i.to_owned() as f64, t.to_owned() as f64))
+                            .collect(),
                     ];
 
                     let c = chart(
@@ -306,21 +326,23 @@ fn main() -> Result<(), Box<dyn Error>> {
                         "Pressure (PSI)",
                         &data,
                         vec![Color::Cyan, Color::Red],
-                        vec![
-                            "Oil Pressure",
-                            "Coolant Pressure"
-                        ],
+                        vec!["Oil Pressure", "Coolant Pressure"],
                         0,
-                        SENSOR_CONSTANTS.oil_pressure_max.max(SENSOR_CONSTANTS.coolant_pressure_max),
-                        20
+                        SENSOR_CONSTANTS
+                            .oil_pressure_max
+                            .max(SENSOR_CONSTANTS.coolant_pressure_max),
+                        20,
                     );
 
                     f.render_widget(c, main_chunks[0])
-                },
+                }
                 3 => {
-                    let data = vec![
-                        connection.voltages.last_n(512).iter().map(|(i, v)| (i.to_owned(), to_volt(v.to_owned()))).collect(),
-                    ];
+                    let data = vec![connection
+                        .voltages
+                        .last_n(512)
+                        .iter()
+                        .map(|(i, v)| (i.to_owned() as f64, to_volt(v.to_owned())))
+                        .collect()];
 
                     let c = chart(
                         main_chunks[0],
@@ -329,20 +351,21 @@ fn main() -> Result<(), Box<dyn Error>> {
                         "Volts (V)",
                         &data,
                         vec![Color::Green],
-                        vec![
-                            "Voltage"
-                        ],
+                        vec!["Voltage"],
                         10,
-                        to_volt(SENSOR_CONSTANTS.voltage_max).ceil() as u16,
-                        1
+                        to_volt(SENSOR_CONSTANTS.voltage_max).ceil() as i16,
+                        1,
                     );
 
                     f.render_widget(c, main_chunks[0])
-                },
+                }
                 4 => {
-                    let data = vec![
-                        connection.rpms.last_n(512).iter().map(|(i, t)| (i.to_owned(), t.to_owned() as f64)).collect()
-                    ];
+                    let data = vec![connection
+                        .rpms
+                        .last_n(512)
+                        .iter()
+                        .map(|(i, t)| (i.to_owned() as f64, t.to_owned() as f64))
+                        .collect()];
 
                     let c = chart(
                         main_chunks[0],
@@ -354,7 +377,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                         vec!["RPM"],
                         1000,
                         SENSOR_CONSTANTS.rpm_max,
-                        1000
+                        1000,
                     );
 
                     f.render_widget(c, main_chunks[0])
@@ -362,7 +385,6 @@ fn main() -> Result<(), Box<dyn Error>> {
                 _ => panic!("invalid tab?"),
             };
         })?;
-
 
         if let Event::Input(input) = events.next()? {
             match input {
