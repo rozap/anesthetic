@@ -7,6 +7,7 @@ mod connection;
 use constants::{DEFAULT_BG};
 
 use std::path::Path;
+use std::time::Duration;
 use std::{env, usize};
 use std::{error::Error, io};
 use termion::{event::Key, input::MouseTerminal, raw::IntoRawMode, screen::AlternateScreen};
@@ -125,20 +126,24 @@ where B: Backend {
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
     let program = args[0].clone();
-    let usage = format!("Usage: {} FILE [options]", program);
+    let usage = format!("Usage: {} dev [options]", program);
 
-    let filename = match &args[..] {
+    let port = match &args[..] {
         [_, file] => {
             // let wtf = String::from(f);
-            Path::new(&file).to_owned()
+            serialport::new(file, 57600).timeout(Duration::from_millis(500)).open().expect("Failed to open port!")
         },
         _ => {
             println!("{}", usage);
+            let ports = serialport::available_ports().expect("No ports found!");
+            for p in ports {
+                println!("{}", p.port_name);
+            }
             return Err("No file provided".into())
         }
     };
 
-    let mut connection = match Connection::init(&filename) {
+    let mut connection = match Connection::init(port) {
         Ok(c) => c,
         Err(e) => {
             return Err("Failed to open a connection".into())
@@ -259,7 +264,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 })
                 .collect();
             let events_list = List::new(events)
-                .block(Block::default().borders(Borders::ALL).title(format!("Event Log [received {} messages]", connection.counter)))
+                .block(Block::default().borders(Borders::ALL).title(format!("Event Log [received {} messages, {} errors]", connection.counter, connection.error_counter)))
                 .start_corner(Corner::BottomLeft);
             f.render_widget(events_list, main_chunks[1]);
 
