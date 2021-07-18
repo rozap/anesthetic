@@ -462,14 +462,16 @@ double readBatteryVoltage() {
 
 CircularBuffer<double,WINDOW_SIZE> oilPSIWindow;
 double readOilPSI() {
-  double psi = (((double)(analogRead(OIL_PRESSURE_VIN_PIN) - 122)) / 1024) * 200;
+  //double psi = (((double)(analogRead(OIL_PRESSURE_VIN_PIN) - 122)) / 1024.0) * 200.0;
+  double psi = map(analogRead(OIL_PRESSURE_VIN_PIN), 102, 930, 0, 80);
   oilPSIWindow.push(psi);
   return avg(oilPSIWindow);
 }
 
 CircularBuffer<double,WINDOW_SIZE> coolantPSIWindow;
 double readCoolantPSI() {
-  double psi = (((double)(analogRead(COOLANT_PRESSURE_VIN_PIN) - 122)) / 1024) * 80;
+  //double psi = (((double)(analogRead(COOLANT_PRESSURE_VIN_PIN) - 122)) / 1024.0) * 80.0;
+  double psi = map(analogRead(COOLANT_PRESSURE_VIN_PIN), 102, 930, 0, 80);
   coolantPSIWindow.push(psi);
   return avg(coolantPSIWindow);
 }
@@ -480,10 +482,11 @@ CircularBuffer<double,WINDOW_SIZE> oilTempWindow;
 double readOilTemp() {
   int vin = 5;
   double vout = (double)((analogRead(OIL_TEMP_PIN) * vin) / 1024);
-  double ohms = (OIL_TEMP_R1_K_OHM * 1000) * (1 / ((vin - vout) - 1));
+  double ohms = (((OIL_TEMP_R2_K_OHM * 1000) * vin) / vout) - OIL_TEMP_R2_K_OHM;
   double tempC = 1 / ( ( log( ohms / OIL_TEMP_NOMINAL_RESISTANCE )) / OIL_TEMP_BETA_COEFFICIENT + 1 / ( OIL_TEMP_NOMINAL_TEMP + 273.15 ) ) - 273.15;
   double tempF = (tempC * 1.8) + 32;
-  oilTempWindow.push(tempF);
+  //oilTempWindow.push(tempF);
+  oilTempWindow.push(analogRead(OIL_TEMP_PIN));
   return avg(oilTempWindow);
 }
 
