@@ -61,7 +61,7 @@ impl Connection {
                     .collect::<Vec<&str>>()
                     .as_slice()
                 {
-                    [_month, _day, _time, keyvalue] => {
+                    [keyvalue] => {
                         match keyvalue.split(":").collect::<Vec<&str>>().as_slice() {
                             ["P_C", value] => {
                                 self.coolant_pressures.put(value);
@@ -110,8 +110,12 @@ impl Connection {
             }
             Ok(None) => Some((LogLevel::Error, format!("Empty line?"))),
             Err(e) => {
-                self.inc_error();
-                Some((LogLevel::Error, format!("Failed to read line: {}", e)))
+                if e.kind() == io::ErrorKind::TimedOut {
+                    None
+                } else {
+                    self.inc_error();
+                    Some((LogLevel::Error, format!("Failed to read line: {}", e)))
+                }
             }
         };
 

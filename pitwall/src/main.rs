@@ -145,7 +145,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let port = match &args[..] {
         [_, file] => {
             // let wtf = String::from(f);
-            serialport::new(file, 57600).timeout(Duration::from_millis(500)).open().expect("Failed to open port!")
+            serialport::new(file, 57600).timeout(Duration::from_millis(10)).open().expect("Failed to open port!")
         },
         _ => {
             println!("{}", usage);
@@ -236,7 +236,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 .filter(|(_counter, _event, level)| match level {
                     &LogLevel::Error => true,
                     &LogLevel::Warn => true,
-                    &LogLevel::Info => false,
+                    &LogLevel::Info => true,
                 })
                 .map(|(counter, event, level)| {
                     // Colorcode the level depending on its type
