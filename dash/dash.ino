@@ -23,7 +23,7 @@
 #define TACH_LIGHT_R2 (1<<0)
 
 // TODO Configure via radio?
-#define REDLINE_RPM 6000
+#define REDLINE_RPM 5700
 #define FIRST_LIGHT_RPM 1000
 
 /* Sensor sampling */
