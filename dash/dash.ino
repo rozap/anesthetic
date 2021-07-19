@@ -79,7 +79,7 @@ bool radioAvailable;
 /*
 |Code|English             |Unit                 |
 |T_C |Coolant temperature |Tenths of a degree F |
-|P_C |Coolant pressure    |PSI                  |
+|P_C |Coolant pressure    |Tenths of a PSI      |
 |T_O |Oil temperature     |Tenths of a degree F |
 |P_O |Oil pressure        |PSI                  |
 |VBA |Battery voltage     |Millivolts           |
@@ -401,7 +401,7 @@ void sendTelemetryPacket() {
   int bytesWritten = sprintf(radioMsgBuf,
     "%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n",
     RADIO_MSG_OIL_PRES, (uint16_t)oilPressure,
-    RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure,
+    RADIO_MSG_COOLANT_PRES, (uint16_t)(coolantPressure*10.0),
     RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature,
     RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage),
     RADIO_MSG_RPM, (uint16_t)rpm,
