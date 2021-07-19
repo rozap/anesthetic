@@ -512,7 +512,7 @@ bool shouldShowIdiotLight() {
 double avg(CircularBuffer<double,WINDOW_SIZE> &cb) {
   if (cb.size() == 0) return 0;
   double total = 0;
-  for (int i = 0; i <= cb.size(); i++) {
+  for (int i = 0; i < cb.size(); i++) {
     total += cb[i];
   }
   return total / cb.size();
