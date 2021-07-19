@@ -62,9 +62,9 @@
 #define OIL_TEMP_DIO 23
 #define OIL_TEMP_PIN 1
 #define OIL_TEMP_R2_K_OHM 10
-#define OIL_TEMP_NOMINAL_RESISTANCE 50000
-#define OIL_TEMP_NOMINAL_TEMP 25
-#define OIL_TEMP_BETA_COEFFICIENT 3892
+#define OIL_TEMP_NOMINAL_RESISTANCE 50000.0
+#define OIL_TEMP_NOMINAL_TEMP 25.0
+#define OIL_TEMP_BETA_COEFFICIENT 3892.0
 
 #define AUX_MESSAGE_CLK 22
 #define AUX_MESSAGE_DIO 23
@@ -483,13 +483,17 @@ double readCoolantPSI() {
 // https://www.amazon.com/Universal-Water-Temperature-Sensor-Sender/dp/B0771KB6FN/ref=sr_1_17?dchild=1&keywords=oil+temperature+sensor&qid=1590294751&sr=8-17
 CircularBuffer<double,WINDOW_SIZE> oilTempWindow;
 double readOilTemp() {
-  int vin = 5;
-  double vout = (double)((analogRead(OIL_TEMP_PIN) * vin) / 1024);
+  double vin = 5.0; // Supply voltage, output is ratiometric to this.
+  
+  // Min seen in practice (~75F day): ~180
+  // Max seen in mild driving (~75F day): ~690
+  double analogReadValue = analogRead(OIL_TEMP_PIN);
+  
+  double vout = (double)((analogReadValue * vin) / 1024.0);
   double ohms = (((OIL_TEMP_R2_K_OHM * 1000) * vin) / vout) - OIL_TEMP_R2_K_OHM;
   double tempC = 1 / ( ( log( ohms / OIL_TEMP_NOMINAL_RESISTANCE )) / OIL_TEMP_BETA_COEFFICIENT + 1 / ( OIL_TEMP_NOMINAL_TEMP + 273.15 ) ) - 273.15;
   double tempF = (tempC * 1.8) + 32;
-  //oilTempWindow.push(tempF);
-  oilTempWindow.push(analogRead(OIL_TEMP_PIN));
+  oilTempWindow.push(tempF);
   return avg(oilTempWindow);
 }
 
