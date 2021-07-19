@@ -428,6 +428,7 @@ double readRpm() {
 
   if (tachPeriodMicros > 0) {
     rpmNow =
+      2.0 * // Intake/exhaust stroke 
       // rpm/hz
       60.0 *
       // pulse freq in hz
