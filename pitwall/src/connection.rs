@@ -99,7 +99,9 @@ impl Connection {
                     }
 
                     _ => {
-                        if line.is_empty() {
+                        if line == "init ok" {
+                            None
+                        } else if line.is_empty() {
                             None
                         } else {
                             self.inc_error();
