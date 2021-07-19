@@ -434,11 +434,14 @@ double readRpm() {
       (1e6 / (double)tachPeriodMicros) /
       // num cylinders
       4.0;
+    // OK I hate this but we compared the result of this with the car and there's a pretty severe linear discrepancy so....
+    // we're going to trust what the gauge says.
+    rpmNow = 1.107 * rpmNow - 454;
     // If the value is completely nonsensical, it's much more likely that the engine is off
     // or the circuitry went bad somehow vs. the engine spontaneously becoming a rotary.
     // This can happen if there's a particularly noisy transient that double-triggers the
     // interrupt in a very quick succession.
-    if (rpmNow > 9000) {
+    if (rpmNow > 9000 || rpmNow < 0) {
       rpmNow = -1; // Invalid
     }
   } else {
