@@ -10,6 +10,15 @@ use tui::{
 
 use crate::constants::DEFAULT_BG;
 
+pub fn rsi_gauge<'a>(title: String, label: String, value: i16, max: i16) -> Gauge<'a> {
+  //let percent = ((value as f32) / (max as f32)) * 100.0;
+  let percent = 100.0 - ((value as f32) / (max as f32)) * 100.0;
+  Gauge::default()
+      .block(Block::default().title(title).borders(Borders::ALL))
+      .gauge_style(Style::default().fg(Color::LightCyan).bg(Color::DarkGray))
+      .percent(percent.round().min(100.0) as u16)
+      .label(label)
+}
 
 pub fn gauge<'a>(title: String, label: String, value: i16, max: i16) -> Gauge<'a> {
   let percent = ((value as f32) / (max as f32)) * 100.0;

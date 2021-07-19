@@ -26,7 +26,7 @@ use tui::{
 };
 use util::event::{Event, Events};
 use util::TabsState;
-use widgets::{chart, gauge};
+use widgets::{chart, gauge, rsi_gauge};
 
 use crate::connection::LogLevel;
 
@@ -40,7 +40,7 @@ struct SensorConstants {
     coolant_pressure_max: i16,
     voltage_max: i16,
     rpm_max: i16,
-    rssi_max: i16,
+    rssi_min: i16,
 }
 
 const SENSOR_CONSTANTS: SensorConstants = SensorConstants {
@@ -49,7 +49,7 @@ const SENSOR_CONSTANTS: SensorConstants = SensorConstants {
     coolant_pressure_max: 45,
     voltage_max: 16 * 1000,
     rpm_max: 7000,
-    rssi_max: 0,
+    rssi_min: -150,
 };
 
 fn to_volt(v: i16) -> f64 {
@@ -126,11 +126,11 @@ where
     });
 
     connection.rssis.last().map(|rssi| {
-        let rssi_gauge = gauge(
+        let rssi_gauge = rsi_gauge(
             format!("Signal"),
             format!("{} rssi", rssi),
-            rssi + 100,
-            SENSOR_CONSTANTS.rssi_max + 100,
+            *rssi,
+            SENSOR_CONSTANTS.rssi_min,
         );
 
         frame.render_widget(rssi_gauge, gauge_chunks[5]);
