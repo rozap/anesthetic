@@ -102,8 +102,7 @@ const char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
 const char* RADIO_MSG_RPM = "RPM";
 
 
-char radioMsgBuf[32];
-uint8_t messageCounter = 0; // Which message to send this time.
+char radioMsgBuf[RH_RF95_MAX_MESSAGE_LEN];
 
 // https://www.makerguides.com/wp-content/uploads/2019/08/7-segment-display-annotated.jpg
 
@@ -370,16 +369,7 @@ void loop() {
 
   if (millisNow - lastRadioMillis > RADIO_UPDATE_PERIOD_MS) {
     lastRadioMillis = millisNow;
-
-    switch(messageCounter++) {
-      case(0): sendRadioMessage(RADIO_MSG_OIL_PRES, (uint16_t)oilPressure); break;
-      case(1): sendRadioMessage(RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure); break;
-      case(2): sendRadioMessage(RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature); break;
-      case(3): sendRadioMessage(RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage)); break;
-      case(4): sendRadioMessage(RADIO_MSG_RPM, (uint16_t)rpm); break;
-      case(5): sendRadioMessage(RADIO_MSG_FAULT, idiotLight); break;
-      default: messageCounter = 0;
-    }
+    sendTelemetryPacket();
   }
 
   if (rf95.available()) {
@@ -402,12 +392,21 @@ void loop() {
   updateTach(rpm, idiotLight);
 }
 
-void sendRadioMessage(const char* msg, uint16_t data) {
+// Send one packet containing all telemetry information, separated by newlines.
+void sendTelemetryPacket() {
   if (!radioAvailable) {
     return;
   }
 
-  int bytesWritten = sprintf(radioMsgBuf, "%s:%05u\n", msg, data);
+  int bytesWritten = sprintf(radioMsgBuf,
+    "%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n",
+    RADIO_MSG_OIL_PRES, (uint16_t)oilPressure,
+    RADIO_MSG_COOLANT_PRES, (uint16_t)coolantPressure,
+    RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature,
+    RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage),
+    RADIO_MSG_RPM, (uint16_t)rpm,
+    RADIO_MSG_FAULT, (uint16_t)idiotLight
+  );
 
   Serial.print("Radio message:");
   Serial.print(radioMsgBuf);
