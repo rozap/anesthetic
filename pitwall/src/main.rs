@@ -26,7 +26,7 @@ use tui::{
 };
 use util::event::{Event, Events};
 use util::TabsState;
-use widgets::{chart, gauge, rsi_gauge};
+use widgets::{chart, gauge};
 
 use crate::connection::LogLevel;
 
@@ -49,7 +49,7 @@ const SENSOR_CONSTANTS: SensorConstants = SensorConstants {
     coolant_pressure_max: 45,
     voltage_max: 16 * 1000,
     rpm_max: 7000,
-    rssi_min: -150,
+    rssi_min: -150, // 0 RSSI = Best possible signal. More negative RSSI = worse signal.
 };
 
 fn to_volt(v: i16) -> f64 {
@@ -126,11 +126,11 @@ where
     });
 
     connection.rssis.last().map(|rssi| {
-        let rssi_gauge = rsi_gauge(
+        let rssi_gauge = gauge(
             format!("Signal"),
             format!("{} rssi", rssi),
-            *rssi,
-            SENSOR_CONSTANTS.rssi_min,
+            -SENSOR_CONSTANTS.rssi_min + *rssi, // Value (hacked to make it work with gauge).
+            -SENSOR_CONSTANTS.rssi_min // Max (hacked to make it work with gauge).
         );
 
         frame.render_widget(rssi_gauge, gauge_chunks[5]);
