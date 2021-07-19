@@ -52,9 +52,9 @@ impl Connection {
     }
 
     pub fn read(&mut self) {
-        self.counter = self.counter + 1;
         let result = match self.port.read_line() {
             Ok(Some(line)) => {
+                self.counter = self.counter + 1;
 
                 match line
                     .split_ascii_whitespace()
