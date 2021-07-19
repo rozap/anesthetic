@@ -44,9 +44,9 @@ struct SensorConstants {
 }
 
 const SENSOR_CONSTANTS: SensorConstants = SensorConstants {
-    oil_pressure_max: 80,
+    oil_pressure_max: 45,
     oil_temp_max: 260,
-    coolant_pressure_max: 80,
+    coolant_pressure_max: 45,
     voltage_max: 16 * 1000,
     rpm_max: 7000,
     rssi_max: 0,
