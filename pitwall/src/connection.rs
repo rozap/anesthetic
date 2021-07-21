@@ -16,6 +16,7 @@ pub struct Connection {
     pub voltages: Window,
     pub rpms: Window,
     pub rssis: Window,
+    pub mission_elapsed_time: u16,
     port: Box<dyn SerialPort>,
 
     pub counter: u128,
@@ -33,6 +34,7 @@ impl Connection {
             rpms: Window::new(WINDOW_SIZE),
             rssis: Window::new(WINDOW_SIZE),
             voltages: Window::new(WINDOW_SIZE),
+            mission_elapsed_time: 0,
             counter: 0,
             error_counter: 0,
             events: vec![(
@@ -82,6 +84,13 @@ impl Connection {
                             ["RPM", value] => {
                                 self.rpms.put(value);
                                 Some((LogLevel::Info, line))
+                            }
+                            ["MET", value] => {
+                                self.mission_elapsed_time = value.parse::<u16>().unwrap();
+                                let seconds: u16 = self.mission_elapsed_time % 60;
+                                let mins: u16 = (self.mission_elapsed_time / 60) % 60;
+                                let hours: u16 = (self.mission_elapsed_time / 60 / 60) % 60;
+                                Some((LogLevel::Info, format!("MET: {:02}:{:02}:{:02}", hours, mins, seconds)))
                             }
                             ["RSI", value] => {
                                 self.rssis.put(value);
