@@ -25,14 +25,15 @@ impl Window {
         }
     }
 
-    pub fn last_n(&self, n: usize) -> Vec<(usize, i16)> {
-        let start = if n > self.buf.len() {
+    pub fn last_n(&self, n: usize, offset: usize) -> Vec<(usize, i16)> {
+        let curs = n + offset;
+        let start = if curs > self.buf.len() {
             0
         } else {
-            (self.buf.len() - n).max(0)
+            (self.buf.len() - curs).max(0)
         };
         let end = if self.buf.len() > 0 {
-            self.buf.len() - 1
+            (start + n).min(self.buf.len() - 1)
         } else {
             0
         };

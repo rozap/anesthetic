@@ -181,9 +181,16 @@ fn main() -> Result<(), Box<dyn Error>> {
         ]),
     };
 
+    let mut offset = 0;
+    let window_size = 256;
+    let step_size = 128;
+    let mut paused = false;
+
     // Main loop
     loop {
-        connection.read();
+        if !paused {
+            connection.read();
+        }
 
         terminal.draw(|f| {
             let size = f.size();
@@ -219,7 +226,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 );
             f.render_widget(tabs, chunks[0]);
             let body = chunks[1];
-            let block = Block::default().borders(Borders::ALL).title("Graphs");
+            let block = Block::default().borders(Borders::ALL).title(format!("Graphs [offset: {}, stopped: {}]", offset, paused));
 
             let main_chunks = Layout::default()
                 .direction(Direction::Vertical)
@@ -236,7 +243,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 .filter(|(_counter, _event, level)| match level {
                     &LogLevel::Error => true,
                     &LogLevel::Warn => true,
-                    &LogLevel::Info => true,
+                    &LogLevel::Info => false,
                 })
                 .map(|(counter, event, level)| {
                     // Colorcode the level depending on its type
@@ -283,7 +290,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 1 => {
                     let data = vec![connection
                         .oil_temps
-                        .last_n(512)
+                        .last_n(window_size, offset)
                         .iter()
                         .map(|(i, t)| (i.to_owned() as f64, t.to_owned() as f64))
                         .collect()];
@@ -307,13 +314,13 @@ fn main() -> Result<(), Box<dyn Error>> {
                     let data = vec![
                         connection
                             .oil_pressures
-                            .last_n(512)
+                            .last_n(window_size, offset)
                             .iter()
                             .map(|(i, t)| (i.to_owned() as f64, t.to_owned() as f64))
                             .collect(),
                         connection
                             .coolant_pressures
-                            .last_n(512)
+                            .last_n(window_size, offset)
                             .iter()
                             .map(|(i, t)| (i.to_owned() as f64, t.to_owned() as f64))
                             .collect(),
@@ -339,7 +346,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 3 => {
                     let data = vec![connection
                         .voltages
-                        .last_n(512)
+                        .last_n(window_size, offset)
                         .iter()
                         .map(|(i, v)| (i.to_owned() as f64, to_volt(v.to_owned())))
                         .collect()];
@@ -362,7 +369,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 4 => {
                     let data = vec![connection
                         .rpms
-                        .last_n(512)
+                        .last_n(window_size, offset)
                         .iter()
                         .map(|(i, t)| (i.to_owned() as f64, t.to_owned() as f64))
                         .collect()];
@@ -399,6 +406,15 @@ fn main() -> Result<(), Box<dyn Error>> {
                 Key::Char('v') => app.tabs.goto(3),
                 Key::Char('r') => app.tabs.goto(4),
                 Key::Char('e') => app.tabs.goto(5),
+                Key::Char('a') => offset = offset + step_size,
+                Key::Char('d') => {
+                    if step_size < offset {
+                        offset = offset - step_size
+                    } else {
+                        offset = 0
+                    }
+                },
+                Key::Char('s') => paused = !paused,
                 _ => {}
             }
         }
