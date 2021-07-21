@@ -87,6 +87,7 @@ bool radioAvailable;
 |SPD |GPS Speed           |Tenths of a MPH      |
 |TIM |GPS Lap Time        |Deciseconds          |
 |FLT |Fault               |Fault code, see below|
+|MET |Mission Elapsed Time|Seconds              |
 
 Fault code
 Digit 0 is the least significant, 5 is the most significant.
@@ -100,6 +101,7 @@ const char* RADIO_MSG_OIL_PRES = "P_O";
 const char* RADIO_MSG_FAULT = "FLT";
 const char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
 const char* RADIO_MSG_RPM = "RPM";
+const char* RADIO_MSG_MET = "MET";
 
 
 char radioMsgBuf[RH_RF95_MAX_MESSAGE_LEN];
@@ -207,6 +209,8 @@ TM1637Display coolantPressureDisplay(COOLANT_PRESSURE_CLK, COOLANT_PRESSURE_DIO)
 TM1637Display oilTemperatureDisplay(OIL_TEMP_CLK, OIL_TEMP_DIO);
 TM1637Display auxMessageDisplay(AUX_MESSAGE_CLK, AUX_MESSAGE_DIO);
 
+long missionStartTimeMillis;
+
 void setup() {
   Serial.begin(57600);
   while (!Serial) ; // Wait for serial port to be available
@@ -289,9 +293,7 @@ void setup() {
   oilPressureDisplay.setSegments(SEG_PSI);
   coolantPressureDisplay.setSegments(SEG_PSI);
   oilTemperatureDisplay.setSegments(SEG_TP);
-  auxMessageDisplay.setSegments(SEG_RSSI);
-
-
+  auxMessageDisplay.showNumberDec(0);
   delay(500);
 
   oilPressureDisplay.setSegments(SEG_BLANK);
@@ -306,6 +308,7 @@ void setup() {
   #endif
 
   attachInterrupt(digitalPinToInterrupt(TACH_SIGNAL_PIN), onTachPulseISR, RISING);
+  missionStartTimeMillis = millis();
 }
 
 long lastSampleMillis = 0;
@@ -365,6 +368,21 @@ void loop() {
     oilPressureDisplay.showNumberDec(oilPressure);
     coolantPressureDisplay.showNumberDec(coolantPressure);
     oilTemperatureDisplay.showNumberDec(oilTemperature);
+
+    uint16_t missionElapsedTimeS = (millis() - missionStartTimeMillis) / 1000;
+    // Convert seconds elapsed to minute:second coded as decimal to send
+    // to the display.
+    uint16_t minutesSecondsCodedDecimal =
+      (missionElapsedTimeS % 60) +
+      (missionElapsedTimeS / 60) * 100;
+    auxMessageDisplay.showNumberDec(minutesSecondsCodedDecimal, /*leading_zero*/ true);
+
+
+    // Flash radio inop message every so often if it's broken.
+    // Will obscure the timer, ah well.
+    if (!radioAvailable && millis() % 2000 > 1000) {
+      auxMessageDisplay.setSegments(SEG_INOP);
+    }
   }
 
   if (millisNow - lastRadioMillis > RADIO_UPDATE_PERIOD_MS) {
@@ -385,10 +403,6 @@ void loop() {
     }
   }
 
-  if (!radioAvailable) {
-    auxMessageDisplay.setSegments(millis() % 2000 > 1000 ? SEG_RDIO : SEG_INOP);
-  }
-
   updateTach(rpm, idiotLight);
 }
 
@@ -399,13 +413,14 @@ void sendTelemetryPacket() {
   }
 
   int bytesWritten = sprintf(radioMsgBuf,
-    "%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n",
+    "%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n",
     RADIO_MSG_OIL_PRES, (uint16_t)oilPressure,
     RADIO_MSG_COOLANT_PRES, (uint16_t)(coolantPressure*10.0),
     RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature,
     RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage),
     RADIO_MSG_RPM, (uint16_t)rpm,
-    RADIO_MSG_FAULT, (uint16_t)idiotLight
+    RADIO_MSG_FAULT, (uint16_t)idiotLight,
+    RADIO_MSG_MET, (uint16_t)((millis() - missionStartTimeMillis) / 1000)
   );
 
   Serial.print("Radio message:");
