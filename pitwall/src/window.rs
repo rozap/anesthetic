@@ -19,6 +19,9 @@ impl Window {
         match value.parse::<i16>() {
             Ok(v) => {
                 self.buf.push(v);
+                if self.buf.len() > (self.size * 2) {
+                    self.buf = self.buf[self.size..self.buf.len()].to_vec();
+                }
                 Ok(())
             }
             Err(e) => Err(format!("Failed to parse as uint: {}", e)),
