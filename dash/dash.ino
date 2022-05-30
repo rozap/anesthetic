@@ -480,8 +480,28 @@ double readBatteryVoltage() {
 
 CircularBuffer<double,WINDOW_SIZE> oilPSIWindow;
 double readOilPSI() {
-  //double psi = (((double)(analogRead(OIL_PRESSURE_VIN_PIN) - 122)) / 1024.0) * 200.0;
-  double psi = map(analogRead(OIL_PRESSURE_VIN_PIN), 102, 930, 0, 80);
+  // Transducer is resistive. Circuit in car:
+  // (5V)--\/\/\/---(Vpsi)---\/\/\/---(GND)
+  //       Rs=100     |       Rpsi
+  //                 ADC0
+  // Rs is a fixed resistor.
+  // Rpsi is the transducer.
+  //
+  // From manufacturer of AutoMeter 2242 100psi transducer
+  // PSI | Ohm | Expected Vpsi w/Rs = 100ohm
+  //   1 | 250 | 3.57
+  //  10 | 215 | 3.41
+  //  25 | 158 | 3.06
+  //  50 | 111 | 2.63
+  //  75 |  75 | 2.14
+  // 100 |  43 | 1.50
+  //
+  // This formula comes from "oil pressure transducer calibration.ods"
+  double analogReading = analogRead(OIL_PRESSURE_VIN_PIN);
+  double psi = -0.2379 * analogReading + 175.9278;
+  if (psi < 0 || !isfinite(psi)) {
+    psi = 0;
+  }
   oilPSIWindow.push(psi);
   return avg(oilPSIWindow);
 }
