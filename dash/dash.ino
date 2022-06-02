@@ -88,6 +88,7 @@ bool radioAvailable;
 |TIM |GPS Lap Time        |Deciseconds          |
 |FLT |Fault               |Fault code, see below|
 |MET |Mission Elapsed Time|Seconds              |
+|PIT |Return To Pits!     |!0=Return Now 0=Race |
 
 Fault code
 Digit 0 is the least significant, 5 is the most significant.
@@ -102,6 +103,7 @@ const char* RADIO_MSG_FAULT = "FLT";
 const char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
 const char* RADIO_MSG_RPM = "RPM";
 const char* RADIO_MSG_MET = "MET";
+const char* RADIO_MSG_PIT = "PIT";
 
 
 char radioMsgBuf[RH_RF95_MAX_MESSAGE_LEN];
@@ -160,6 +162,13 @@ const uint8_t SEG_OIL[] = {
   0x00
 };
 
+const uint8_t SEG_PITS[] = {
+  SEG_A | SEG_F | SEG_B | SEG_G | SEG_E,
+  SEG_F | SEG_E,
+  SEG_F | SEG_G | SEG_E,
+  SEG_A | SEG_F | SEG_G | SEG_C | SEG_D
+};
+
 const uint8_t SEG_PSI[] = {
   SEG_A | SEG_F | SEG_B | SEG_G | SEG_E,
   SEG_A | SEG_F | SEG_G | SEG_C | SEG_D,
@@ -210,6 +219,7 @@ TM1637Display oilTemperatureDisplay(OIL_TEMP_CLK, OIL_TEMP_DIO);
 TM1637Display auxMessageDisplay(AUX_MESSAGE_CLK, AUX_MESSAGE_DIO);
 
 long missionStartTimeMillis;
+bool returnToPitsRequested;
 
 void setup() {
   Serial.begin(57600);
@@ -309,6 +319,7 @@ void setup() {
 
   attachInterrupt(digitalPinToInterrupt(TACH_SIGNAL_PIN), onTachPulseISR, RISING);
   missionStartTimeMillis = millis();
+  returnToPitsRequested = false;
 }
 
 long lastSampleMillis = 0;
@@ -383,6 +394,11 @@ void loop() {
     if (!radioAvailable && millis() % 2000 > 1000) {
       auxMessageDisplay.setSegments(SEG_INOP);
     }
+
+    // Flash "PITS" in MET display if pitting is requested.
+    if (returnToPitsRequested && millis() % 500 > 250) {
+      auxMessageDisplay.setSegments(SEG_PITS);
+    }
   }
 
   if (millisNow - lastRadioMillis > RADIO_UPDATE_PERIOD_MS) {
@@ -396,6 +412,12 @@ void loop() {
     if (rf95.recv(buf, &len)) {
       buf[len] = 0;
       Serial.println((char*)buf);
+      // For now we only accept one command (RADIO_MSG_PIT). Make better when appropriate.
+      if (strncmp(RADIO_MSG_PIT, buf, strlen(RADIO_MSG_PIT)) == 0) {
+        int parsed;
+        sscanf(buf, "PIT:%d", &parsed);
+        returnToPitsRequested = parsed != 0;
+      }
       Serial.print("RSSI: ");
       Serial.println(rf95.lastRssi(), DEC);
     } else {
@@ -480,8 +502,28 @@ double readBatteryVoltage() {
 
 CircularBuffer<double,WINDOW_SIZE> oilPSIWindow;
 double readOilPSI() {
-  //double psi = (((double)(analogRead(OIL_PRESSURE_VIN_PIN) - 122)) / 1024.0) * 200.0;
-  double psi = map(analogRead(OIL_PRESSURE_VIN_PIN), 102, 930, 0, 80);
+  // Transducer is resistive. Circuit in car:
+  // (5V)--\/\/\/---(Vpsi)---\/\/\/---(GND)
+  //       Rs=100     |       Rpsi
+  //                 ADC0
+  // Rs is a fixed resistor.
+  // Rpsi is the transducer.
+  //
+  // From manufacturer of AutoMeter 2242 100psi transducer
+  // PSI | Ohm | Expected Vpsi w/Rs = 100ohm
+  //   1 | 250 | 3.57
+  //  10 | 215 | 3.41
+  //  25 | 158 | 3.06
+  //  50 | 111 | 2.63
+  //  75 |  75 | 2.14
+  // 100 |  43 | 1.50
+  //
+  // This formula comes from "oil pressure transducer calibration.ods"
+  double analogReading = analogRead(OIL_PRESSURE_VIN_PIN);
+  double psi = -0.2379 * analogReading + 175.9278;
+  if (psi < 0 || !isfinite(psi)) {
+    psi = 0;
+  }
   oilPSIWindow.push(psi);
   return avg(oilPSIWindow);
 }
