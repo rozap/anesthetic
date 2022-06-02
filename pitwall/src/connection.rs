@@ -1,6 +1,8 @@
 use crate::{constants::WINDOW_SIZE, window::Window};
 use serialport::SerialPort;
-use std::{fs::File, io, path::Path};
+use std::io;
+use std::io::prelude::*;
+
 use termion::input::TermRead;
 
 pub enum LogLevel {
@@ -51,6 +53,10 @@ impl Connection {
 
     fn inc_error(&mut self) {
         self.error_counter = self.error_counter + 1;
+    }
+
+    pub fn write(&mut self, msg: &str) -> io::Result<usize> {
+        self.port.write(msg.as_bytes())
     }
 
     pub fn read(&mut self) {
