@@ -72,6 +72,7 @@
 #define COOLANT_PRESSURE_CLK 24
 #define COOLANT_PRESSURE_DIO 23
 #define COOLANT_PRESSURE_VIN_PIN 2
+#define COOLANT_TEMPERATURE_VIN_PIN 5
 
 RH_RF95 rf95;
 bool radioAvailable;
@@ -97,6 +98,7 @@ Digit 0 is the least significant, 5 is the most significant.
 */
 
 const char* RADIO_MSG_COOLANT_PRES = "P_C";
+const char* RADIO_MSG_COOLANT_TEMP = "T_C";
 const char* RADIO_MSG_OIL_TEMP = "T_O";
 const char* RADIO_MSG_OIL_PRES = "P_O";
 const char* RADIO_MSG_FAULT = "FLT";
@@ -328,6 +330,7 @@ long lastRadioMillis = 0;
 uint16_t rpm = 0;
 double oilPressure = 0;
 double coolantPressure = 0;
+double coolantTemperature = 0;
 double oilTemperature = 0;
 double batteryVoltage = 0;
 bool idiotLight = false;
@@ -363,6 +366,7 @@ void loop() {
     lastSampleMillis = millisNow;
     oilPressure = readOilPSI();
     coolantPressure = readCoolantPSI();
+    coolantTemperature = readCoolantTemperature();
     oilTemperature = readOilTemp();
     batteryVoltage = readBatteryVoltage();
     double rpmNow = readRpm();
@@ -435,9 +439,10 @@ void sendTelemetryPacket() {
   }
 
   int bytesWritten = sprintf(radioMsgBuf,
-    "%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n",
+    "%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n",
     RADIO_MSG_OIL_PRES, (uint16_t)oilPressure,
     RADIO_MSG_COOLANT_PRES, (uint16_t)(coolantPressure*10.0),
+    RADIO_MSG_COOLANT_TEMP, (uint16_t)(coolantTemperature*10.0),
     RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature,
     RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage),
     RADIO_MSG_RPM, (uint16_t)rpm,
@@ -536,6 +541,14 @@ double readCoolantPSI() {
   return avg(coolantPSIWindow);
 }
 
+CircularBuffer<double,WINDOW_SIZE> coolantTempWindow;
+double readCoolantTemperature() {
+  double analogReading = analogRead(COOLANT_TEMPERATURE_VIN_PIN);
+  double temp = -0.000127 * analogReading * analogReading - 0.080997 * analogReading + 269.151692;
+  coolantTempWindow.push(temp);
+  return avg(coolantTempWindow);
+}
+
 
 // https://www.amazon.com/Universal-Water-Temperature-Sensor-Sender/dp/B0771KB6FN/ref=sr_1_17?dchild=1&keywords=oil+temperature+sensor&qid=1590294751&sr=8-17
 CircularBuffer<double,WINDOW_SIZE> oilTempWindow;
@@ -558,10 +571,12 @@ double readOilTemp() {
 bool shouldShowIdiotLight() {
   bool oilPressBad = oilPressure < 15;
   bool coolantPressBad = coolantPressure < 5;
+  bool coolantTempBad = coolantTemperature > 220.0;
   bool oilTempBad = oilTemperature > 240;
   bool vbatBad = batteryVoltage < VBAT_WARN_MIN || batteryVoltage > VBAT_WARN_MAX;
   return oilPressBad ||
     coolantPressBad ||
+    coolantTempBad ||
     oilTempBad ||
     vbatBad;
 }
