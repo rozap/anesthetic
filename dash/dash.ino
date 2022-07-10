@@ -445,7 +445,7 @@ void sendTelemetryPacket() {
     RADIO_MSG_OIL_PRES, (uint16_t)oilPressure,
     RADIO_MSG_COOLANT_PRES, (uint16_t)(coolantPressure*10.0),
     RADIO_MSG_COOLANT_TEMP, (uint16_t)(coolantTemperature*10.0),
-    RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature*10.0,
+    RADIO_MSG_OIL_TEMP, (uint16_t)(oilTemperature*10.0),
     RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage),
     RADIO_MSG_RPM, (uint16_t)rpm,
     RADIO_MSG_FAULT, (uint16_t)idiotLight,
