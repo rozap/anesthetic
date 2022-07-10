@@ -51,6 +51,8 @@
 // Resistor divider ratio. Value read from ADC is multiplied by this
 // to get real voltage.
 #define VBAT_RATIO 3.03
+// Measured ratio correction
+#define VBAT_FUDGE_FACTOR 1.107438
 #define VBAT_WARN_MIN 12.8
 #define VBAT_WARN_MAX 15.0
 
@@ -497,6 +499,7 @@ CircularBuffer<double,WINDOW_SIZE> batteryVoltageWindow;
 double readBatteryVoltage() {
   // TODO: Calibrate ADC.
   double vbat =
+    VBAT_FUDGE_FACTOR *
     VBAT_RATIO * // resistor divider
     5.0 * // full scale of ADC (volts)
     (double)analogRead(VBAT_VIN_PIN) /
