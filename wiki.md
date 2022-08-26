@@ -22,5 +22,13 @@
       * https://www.amazon.com/gp/product/B075NRLJX6/ref=ewc_pr_img_1?smid=A1FJ1WMPKJVUMQ&psc=1
       * https://www.amazon.com/Thrush-17715-Turbo-Muffler/dp/B00029J3AW
     
+## Cooling
+### Oil cooler
+ * Stock VR6 oil cooler is cooled by the coolant. An external cooler is wise. 
+   * https://www.vwvortex.com/threads/external-oil-cooler-diy-for-mk3-vr6-s-w-earls-parts.2138601/
+   * https://usrallyteam.com/index.php?main_page=product_info&products_id=1855 (very expensive)
+   * 1177ERL? Doesn't look like it'll work though.
+### Coolant Cooling
+  * 
 # Weight
   * fun carbon fiber thread: https://grassrootsmotorsports.com/forum/build-projects-and-project-cars/forget-tt5-lets-go-off-the-deep-end-twin-turbo-v8-widebody-boxster/193174/page3/
