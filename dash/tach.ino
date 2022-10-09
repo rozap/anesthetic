@@ -51,7 +51,7 @@ void tachBootAnimation() {
 
 void updateTach(uint16_t rpm, bool idiotLight) {
   uint16_t lights = 0;
-  if (idiotLight) { lights |= TACH_LIGHT_IDIOT; }
+  if (idiotLight && ((millis() % 100) > 50)) { lights |= TACH_LIGHT_IDIOT; }
 
   if (rpm >= REDLINE_RPM) {
     // Blink red lights! Hope the engine survived.
