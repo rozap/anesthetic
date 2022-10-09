@@ -225,6 +225,8 @@ TM1637Display auxMessageDisplay(AUX_MESSAGE_CLK, AUX_MESSAGE_DIO);
 long missionStartTimeMillis;
 bool returnToPitsRequested;
 
+bool oilTemperatureSensorInstalled;
+
 void setup() {
   Serial.begin(57600);
   while (!Serial) ; // Wait for serial port to be available
@@ -321,6 +323,12 @@ void setup() {
   auxMessageDisplay.setBrightness(7);
   #endif
 
+  // Arbitrary limit, input will float  to a large negative value if disconnected.
+  oilTemperatureSensorInstalled = readOilTemp() > -32.0;
+  if (!oilTemperatureSensorInstalled) {
+    oilTemperatureDisplay.setSegments(SEG_INOP);
+  }
+
   attachInterrupt(digitalPinToInterrupt(TACH_SIGNAL_PIN), onTachPulseISR, RISING);
   missionStartTimeMillis = millis();
   returnToPitsRequested = false;
@@ -369,7 +377,7 @@ void loop() {
     oilPressure = readOilPSI();
     coolantPressure = readCoolantPSI();
     coolantTemperature = readCoolantTemperature();
-    oilTemperature = readOilTemp();
+    oilTemperature = oilTemperatureSensorInstalled ? readOilTemp() : 0.0;
     batteryVoltage = readBatteryVoltage();
     double rpmNow = readRpm();
     if (rpmNow >= 0) {
@@ -384,7 +392,9 @@ void loop() {
 
     oilPressureDisplay.showNumberDec(oilPressure);
     coolantPressureDisplay.showNumberDec(coolantPressure);
-    oilTemperatureDisplay.showNumberDec(oilTemperature);
+    if (oilTemperatureSensorInstalled) {
+      oilTemperatureDisplay.showNumberDec(oilTemperature);
+    }
 
     uint16_t missionElapsedTimeS = (millis() - missionStartTimeMillis) / 1000;
     // Convert seconds elapsed to minute:second coded as decimal to send
