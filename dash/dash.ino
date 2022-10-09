@@ -585,7 +585,7 @@ bool shouldShowIdiotLight() {
   bool oilPressBad = oilPressure < 15;
   bool coolantPressBad = coolantPressure < 5;
   bool coolantTempBad = coolantTemperature > 220.0;
-  bool oilTempBad = oilTemperature > 240;
+  bool oilTempBad = oilTemperatureSensorInstalled && oilTemperature > 240;
   bool vbatBad = batteryVoltage < VBAT_WARN_MIN || batteryVoltage > VBAT_WARN_MAX;
   return oilPressBad ||
     coolantPressBad ||
