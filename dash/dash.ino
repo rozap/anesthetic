@@ -225,12 +225,20 @@ TM1637Display auxMessageDisplay(AUX_MESSAGE_CLK, AUX_MESSAGE_DIO);
 long missionStartTimeMillis;
 bool returnToPitsRequested;
 
-bool oilTemperatureSensorInstalled;
-bool coolantPressureSensorInstalled;
+typedef struct {
+  bool oilTemperature : 1;
+  bool oilPressure : 1;
+  bool coolantPressure : 1;
+  bool coolantTemperature : 1;
+  bool batteryVoltage : 1;
+} Issues;
+Issues issuesAcknowledged;
 
 void setup() {
   Serial.begin(57600);
   while (!Serial) ; // Wait for serial port to be available
+
+  memset(&issuesAcknowledged, 0, sizeof(issuesAcknowledged));
 
   Wire.begin();
   tachInit();
@@ -324,17 +332,6 @@ void setup() {
   auxMessageDisplay.setBrightness(7);
   #endif
 
-  // Arbitrary limit, input will float  to a large negative value if disconnected.
-  oilTemperatureSensorInstalled = readOilTemp() > -32.0;
-  if (!oilTemperatureSensorInstalled) {
-    oilTemperatureDisplay.setSegments(SEG_INOP);
-  }
-
-  coolantPressureSensorInstalled = false;
-  if (!coolantPressureSensorInstalled) {
-    coolantPressureDisplay.setSegments(SEG_INOP);
-  }
-
   attachInterrupt(digitalPinToInterrupt(TACH_SIGNAL_PIN), onTachPulseISR, RISING);
   missionStartTimeMillis = millis();
   returnToPitsRequested = false;
@@ -349,7 +346,7 @@ double coolantPressure = 0;
 double coolantTemperature = 0;
 double oilTemperature = 0;
 double batteryVoltage = 0;
-bool idiotLight = false;
+bool checkEngineLight = false;
 
 // Note: These are 32-bit because tach pulse lengths at low engine RPMs don't comfortably
 // fit in a 16-bit microsecond value. They technically do, but barely.
@@ -380,11 +377,11 @@ void loop() {
   long millisNow = millis();
   if (millisNow - lastSampleMillis > SAMPLE_PERIOD_MS) {
     lastSampleMillis = millisNow;
-    oilPressure = readOilPSI();
-    coolantPressure = readCoolantPSI();
-    coolantTemperature = readCoolantTemperature();
-    oilTemperature = oilTemperatureSensorInstalled ? readOilTemp() : 0.0;
-    batteryVoltage = readBatteryVoltage();
+    oilPressure = issuesAcknowledged.oilPressure ? -1.0 : readOilPSI();
+    coolantPressure = issuesAcknowledged.coolantPressure ? -1.0 : readCoolantPSI();
+    coolantTemperature = issuesAcknowledged.coolantTemperature ? -1.0 : readCoolantTemperature();
+    oilTemperature = issuesAcknowledged.oilTemperature ? -1.0 : readOilTemp();
+    batteryVoltage = issuesAcknowledged.batteryVoltage ? -1.0 : readBatteryVoltage();
     double rpmNow = readRpm();
     if (rpmNow >= 0) {
       // RPM value is nonsensical - either the engine is off,
@@ -394,13 +391,22 @@ void loop() {
       rpm = rpmNow;
     }
 
-    idiotLight = shouldShowIdiotLight();
+    Issues currentIssues = findIssues();
+    checkEngineLight = shouldShowCheckEngineLight(currentIssues);
 
-    oilPressureDisplay.showNumberDec(oilPressure);
-    if (coolantPressureSensorInstalled) {
+    if (issuesAcknowledged.oilPressure) {
+      oilPressureDisplay.setSegments(SEG_INOP);
+    } else {
+      oilPressureDisplay.showNumberDec(oilPressure);
+    }
+    if (issuesAcknowledged.coolantPressure) {
+      coolantPressureDisplay.setSegments(SEG_INOP);
+    } else {
       coolantPressureDisplay.showNumberDec(coolantPressure);
     }
-    if (oilTemperatureSensorInstalled) {
+    if (issuesAcknowledged.oilTemperature) {
+      oilTemperatureDisplay.setSegments(SEG_INOP);
+    } else {
       oilTemperatureDisplay.showNumberDec(oilTemperature);
     }
 
@@ -449,7 +455,7 @@ void loop() {
     }
   }
 
-  updateTach(rpm, idiotLight);
+  updateTach(rpm, checkEngineLight);
 }
 
 // Send one packet containing all telemetry information, separated by newlines.
@@ -466,7 +472,7 @@ void sendTelemetryPacket() {
     RADIO_MSG_OIL_TEMP, (uint16_t)(oilTemperature*10.0),
     RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage),
     RADIO_MSG_RPM, (uint16_t)rpm,
-    RADIO_MSG_FAULT, (uint16_t)idiotLight,
+    RADIO_MSG_FAULT, (uint16_t)checkEngineLight,
     RADIO_MSG_MET, (uint16_t)((millis() - missionStartTimeMillis) / 1000)
   );
 
@@ -589,12 +595,22 @@ double readOilTemp() {
 }
 
 
-bool shouldShowIdiotLight() {
-  bool oilPressBad = oilPressure < 15;
-  bool coolantPressBad = coolantPressureSensorInstalled && coolantPressure < 5;
-  bool coolantTempBad = coolantTemperature > 220.0;
-  bool oilTempBad = oilTemperatureSensorInstalled && oilTemperature > 240;
-  bool vbatBad = batteryVoltage < VBAT_WARN_MIN || batteryVoltage > VBAT_WARN_MAX;
+Issues findIssues() {
+  Issues issues;
+  issues.oilPressure = oilPressure < 15;
+  issues.coolantPressure = coolantPressure < 5;
+  issues.coolantTemperature = coolantTemperature > 220.0;
+  issues.oilTemperature = oilTemperature > 240;
+  issues.batteryVoltage = batteryVoltage < VBAT_WARN_MIN || batteryVoltage > VBAT_WARN_MAX;
+
+}
+
+bool shouldShowCheckEngineLight(Issues currentIssues) {
+  bool oilPressBad = !issuesAcknowledged.oilPressure && currentIssues.oilPressure;
+  bool coolantPressBad = !issuesAcknowledged.coolantPressure && currentIssues.coolantPressure;
+  bool coolantTempBad = !issuesAcknowledged.coolantTemperature && currentIssues.coolantTemperature;
+  bool oilTempBad = !issuesAcknowledged.oilTemperature && currentIssues.oilTemperature;
+  bool vbatBad = !issuesAcknowledged.batteryVoltage && currentIssues.batteryVoltage;
   return oilPressBad ||
     coolantPressBad ||
     coolantTempBad ||
