@@ -106,8 +106,10 @@ const char* RADIO_MSG_OIL_PRES = "P_O";
 const char* RADIO_MSG_FAULT = "FLT";
 const char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
 const char* RADIO_MSG_RPM = "RPM";
-const char* RADIO_MSG_MET = "MET";
+const char* RADIO_MSG_MET = "MET"; // Mission elapsed time
 const char* RADIO_MSG_PIT = "PIT";
+const char* RADIO_MSG_ACK = "ACK"; // Acknowledge current issues
+const char* RADIO_MSG_NAK = "NAK"; // Un-acknowledge current issues
 
 
 char radioMsgBuf[RH_RF95_MAX_MESSAGE_LEN];
@@ -232,13 +234,17 @@ typedef struct {
   bool coolantTemperature : 1;
   bool batteryVoltage : 1;
 } Issues;
+
+void initIssues(Issues *issues) {
+  memset(issues, 0, sizeof(Issues));
+}
 Issues issuesAcknowledged;
 
 void setup() {
   Serial.begin(57600);
   while (!Serial) ; // Wait for serial port to be available
 
-  memset(&issuesAcknowledged, 0, sizeof(issuesAcknowledged));
+  initIssues(&issuesAcknowledged);
 
   Wire.begin();
   tachInit();
@@ -442,11 +448,16 @@ void loop() {
     if (rf95.recv(buf, &len)) {
       buf[len] = 0;
       Serial.println((char*)buf);
-      // For now we only accept one command (RADIO_MSG_PIT). Make better when appropriate.
       if (strncmp(RADIO_MSG_PIT, buf, strlen(RADIO_MSG_PIT)) == 0) {
         int parsed;
         sscanf(buf, "PIT:%d", &parsed);
         returnToPitsRequested = parsed != 0;
+      }
+      if (strncmp(RADIO_MSG_ACK, buf, strlen(RADIO_MSG_ACK)) == 0) {
+        issuesAcknowledged = findIssues();
+      }
+      if (strncmp(RADIO_MSG_NAK, buf, strlen(RADIO_MSG_NAK)) == 0) {
+        initIssues(&issuesAcknowledged);
       }
       Serial.print("RSSI: ");
       Serial.println(rf95.lastRssi(), DEC);
