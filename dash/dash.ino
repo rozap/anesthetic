@@ -226,6 +226,7 @@ long missionStartTimeMillis;
 bool returnToPitsRequested;
 
 bool oilTemperatureSensorInstalled;
+bool coolantPressureSensorInstalled;
 
 void setup() {
   Serial.begin(57600);
@@ -329,6 +330,11 @@ void setup() {
     oilTemperatureDisplay.setSegments(SEG_INOP);
   }
 
+  coolantPressureSensorInstalled = false;
+  if (!coolantPressureSensorInstalled) {
+    coolantPressureDisplay.setSegments(SEG_INOP);
+  }
+
   attachInterrupt(digitalPinToInterrupt(TACH_SIGNAL_PIN), onTachPulseISR, RISING);
   missionStartTimeMillis = millis();
   returnToPitsRequested = false;
@@ -391,7 +397,9 @@ void loop() {
     idiotLight = shouldShowIdiotLight();
 
     oilPressureDisplay.showNumberDec(oilPressure);
-    coolantPressureDisplay.showNumberDec(coolantPressure);
+    if (coolantPressureSensorInstalled) {
+      coolantPressureDisplay.showNumberDec(coolantPressure);
+    }
     if (oilTemperatureSensorInstalled) {
       oilTemperatureDisplay.showNumberDec(oilTemperature);
     }
@@ -583,7 +591,7 @@ double readOilTemp() {
 
 bool shouldShowIdiotLight() {
   bool oilPressBad = oilPressure < 15;
-  bool coolantPressBad = coolantPressure < 5;
+  bool coolantPressBad = coolantPressureSensorInstalled && coolantPressure < 5;
   bool coolantTempBad = coolantTemperature > 220.0;
   bool oilTempBad = oilTemperatureSensorInstalled && oilTemperature > 240;
   bool vbatBad = batteryVoltage < VBAT_WARN_MIN || batteryVoltage > VBAT_WARN_MAX;
