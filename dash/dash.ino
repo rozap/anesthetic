@@ -51,6 +51,8 @@
 // Resistor divider ratio. Value read from ADC is multiplied by this
 // to get real voltage.
 #define VBAT_RATIO 3.03
+// Measured ratio correction
+#define VBAT_FUDGE_FACTOR 1.107438
 #define VBAT_WARN_MIN 12.8
 #define VBAT_WARN_MAX 15.0
 
@@ -104,8 +106,10 @@ const char* RADIO_MSG_OIL_PRES = "P_O";
 const char* RADIO_MSG_FAULT = "FLT";
 const char* RADIO_MSG_BATTERY_VOLTAGE = "VBA";
 const char* RADIO_MSG_RPM = "RPM";
-const char* RADIO_MSG_MET = "MET";
+const char* RADIO_MSG_MET = "MET"; // Mission elapsed time
 const char* RADIO_MSG_PIT = "PIT";
+const char* RADIO_MSG_ACK = "ACK"; // Acknowledge current issues
+const char* RADIO_MSG_NAK = "NAK"; // Un-acknowledge current issues
 
 
 char radioMsgBuf[RH_RF95_MAX_MESSAGE_LEN];
@@ -223,9 +227,24 @@ TM1637Display auxMessageDisplay(AUX_MESSAGE_CLK, AUX_MESSAGE_DIO);
 long missionStartTimeMillis;
 bool returnToPitsRequested;
 
+typedef struct {
+  bool oilTemperature : 1;
+  bool oilPressure : 1;
+  bool coolantPressure : 1;
+  bool coolantTemperature : 1;
+  bool batteryVoltage : 1;
+} Issues;
+
+void initIssues(Issues *issues) {
+  memset(issues, 0, sizeof(Issues));
+}
+Issues issuesAcknowledged;
+
 void setup() {
   Serial.begin(57600);
   while (!Serial) ; // Wait for serial port to be available
+
+  initIssues(&issuesAcknowledged);
 
   Wire.begin();
   tachInit();
@@ -333,7 +352,7 @@ double coolantPressure = 0;
 double coolantTemperature = 0;
 double oilTemperature = 0;
 double batteryVoltage = 0;
-bool idiotLight = false;
+bool checkEngineLight = false;
 
 // Note: These are 32-bit because tach pulse lengths at low engine RPMs don't comfortably
 // fit in a 16-bit microsecond value. They technically do, but barely.
@@ -364,11 +383,11 @@ void loop() {
   long millisNow = millis();
   if (millisNow - lastSampleMillis > SAMPLE_PERIOD_MS) {
     lastSampleMillis = millisNow;
-    oilPressure = readOilPSI();
-    coolantPressure = readCoolantPSI();
-    coolantTemperature = readCoolantTemperature();
-    oilTemperature = readOilTemp();
-    batteryVoltage = readBatteryVoltage();
+    oilPressure = issuesAcknowledged.oilPressure ? -1.0 : readOilPSI();
+    coolantPressure = issuesAcknowledged.coolantPressure ? -1.0 : readCoolantPSI();
+    coolantTemperature = issuesAcknowledged.coolantTemperature ? -1.0 : readCoolantTemperature();
+    oilTemperature = issuesAcknowledged.oilTemperature ? -1.0 : readOilTemp();
+    batteryVoltage = issuesAcknowledged.batteryVoltage ? -1.0 : readBatteryVoltage();
     double rpmNow = readRpm();
     if (rpmNow >= 0) {
       // RPM value is nonsensical - either the engine is off,
@@ -378,11 +397,24 @@ void loop() {
       rpm = rpmNow;
     }
 
-    idiotLight = shouldShowIdiotLight();
+    Issues currentIssues = findIssues();
+    checkEngineLight = shouldShowCheckEngineLight(currentIssues);
 
-    oilPressureDisplay.showNumberDec(oilPressure);
-    coolantPressureDisplay.showNumberDec(coolantPressure);
-    oilTemperatureDisplay.showNumberDec(oilTemperature);
+    if (issuesAcknowledged.oilPressure) {
+      oilPressureDisplay.setSegments(SEG_INOP);
+    } else {
+      oilPressureDisplay.showNumberDec(oilPressure);
+    }
+    if (issuesAcknowledged.coolantPressure) {
+      coolantPressureDisplay.setSegments(SEG_INOP);
+    } else {
+      coolantPressureDisplay.showNumberDec(coolantPressure);
+    }
+    if (issuesAcknowledged.oilTemperature) {
+      oilTemperatureDisplay.setSegments(SEG_INOP);
+    } else {
+      oilTemperatureDisplay.showNumberDec(oilTemperature);
+    }
 
     uint16_t missionElapsedTimeS = (millis() - missionStartTimeMillis) / 1000;
     // Convert seconds elapsed to minute:second coded as decimal to send
@@ -416,11 +448,16 @@ void loop() {
     if (rf95.recv(buf, &len)) {
       buf[len] = 0;
       Serial.println((char*)buf);
-      // For now we only accept one command (RADIO_MSG_PIT). Make better when appropriate.
       if (strncmp(RADIO_MSG_PIT, buf, strlen(RADIO_MSG_PIT)) == 0) {
         int parsed;
         sscanf(buf, "PIT:%d", &parsed);
         returnToPitsRequested = parsed != 0;
+      }
+      if (strncmp(RADIO_MSG_ACK, buf, strlen(RADIO_MSG_ACK)) == 0) {
+        issuesAcknowledged = findIssues();
+      }
+      if (strncmp(RADIO_MSG_NAK, buf, strlen(RADIO_MSG_NAK)) == 0) {
+        initIssues(&issuesAcknowledged);
       }
       Serial.print("RSSI: ");
       Serial.println(rf95.lastRssi(), DEC);
@@ -429,7 +466,7 @@ void loop() {
     }
   }
 
-  updateTach(rpm, idiotLight);
+  updateTach(rpm, checkEngineLight);
 }
 
 // Send one packet containing all telemetry information, separated by newlines.
@@ -443,10 +480,10 @@ void sendTelemetryPacket() {
     RADIO_MSG_OIL_PRES, (uint16_t)oilPressure,
     RADIO_MSG_COOLANT_PRES, (uint16_t)(coolantPressure*10.0),
     RADIO_MSG_COOLANT_TEMP, (uint16_t)(coolantTemperature*10.0),
-    RADIO_MSG_OIL_TEMP, (uint16_t)oilTemperature,
+    RADIO_MSG_OIL_TEMP, (uint16_t)(oilTemperature*10.0),
     RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage),
     RADIO_MSG_RPM, (uint16_t)rpm,
-    RADIO_MSG_FAULT, (uint16_t)idiotLight,
+    RADIO_MSG_FAULT, (uint16_t)checkEngineLight,
     RADIO_MSG_MET, (uint16_t)((millis() - missionStartTimeMillis) / 1000)
   );
 
@@ -497,6 +534,7 @@ CircularBuffer<double,WINDOW_SIZE> batteryVoltageWindow;
 double readBatteryVoltage() {
   // TODO: Calibrate ADC.
   double vbat =
+    VBAT_FUDGE_FACTOR *
     VBAT_RATIO * // resistor divider
     5.0 * // full scale of ADC (volts)
     (double)analogRead(VBAT_VIN_PIN) /
@@ -568,12 +606,22 @@ double readOilTemp() {
 }
 
 
-bool shouldShowIdiotLight() {
-  bool oilPressBad = oilPressure < 15;
-  bool coolantPressBad = coolantPressure < 5;
-  bool coolantTempBad = coolantTemperature > 220.0;
-  bool oilTempBad = oilTemperature > 240;
-  bool vbatBad = batteryVoltage < VBAT_WARN_MIN || batteryVoltage > VBAT_WARN_MAX;
+Issues findIssues() {
+  Issues issues;
+  issues.oilPressure = oilPressure < 15;
+  issues.coolantPressure = coolantPressure < 5;
+  issues.coolantTemperature = coolantTemperature > 220.0;
+  issues.oilTemperature = oilTemperature > 240;
+  issues.batteryVoltage = batteryVoltage < VBAT_WARN_MIN || batteryVoltage > VBAT_WARN_MAX;
+
+}
+
+bool shouldShowCheckEngineLight(Issues currentIssues) {
+  bool oilPressBad = !issuesAcknowledged.oilPressure && currentIssues.oilPressure;
+  bool coolantPressBad = !issuesAcknowledged.coolantPressure && currentIssues.coolantPressure;
+  bool coolantTempBad = !issuesAcknowledged.coolantTemperature && currentIssues.coolantTemperature;
+  bool oilTempBad = !issuesAcknowledged.oilTemperature && currentIssues.oilTemperature;
+  bool vbatBad = !issuesAcknowledged.batteryVoltage && currentIssues.batteryVoltage;
   return oilPressBad ||
     coolantPressBad ||
     coolantTempBad ||
