@@ -1,0 +1,23 @@
+#Project Attributes.
+#TunerStudio by EFI Analytics, Inc
+#Last Saved on: Fri Dec 16 18:13:14 PST 2022
+#Fri Dec 16 18:13:14 PST 2022
+commPort=
+ecuSettings=AFR|CAN_COMMANDS_OFF|FAHRENHEIT|NEW_COMMS|enablehardware_test_OFF|resetcontrol_standard|
+selectedComDriver=Multi Interface MegaSquirt Driver
+projectDescription=
+CommSettingzenCommDriver.RS232\ Serial\ Interface2nd\ Com\ Port=
+projectName=vrsiX19
+ecuConfigFile=mainController.ini
+CommSettingMSCommDriver.RS232\ Serial\ Interface2nd\ Com\ Port=
+CommSettingzenCommDriver.RS232\ Serial\ InterfaceBluetooth\ Port=false
+CommSettingMSCommDriver.RS232\ Serial\ InterfaceBluetooth\ Port=false
+CommSettingMSCommDriver.controllerInterfaceId=RS232 Serial Interface
+CommSettingzenCommDriver.RS232\ Serial\ InterfaceBaud\ Rate=115200
+CommSettingzenCommDriver.controllerInterfaceId=RS232 Serial Interface
+useCommonDashboardDir=false
+CommSettingzenCommDriver.RS232\ Serial\ InterfaceCom\ Port=/dev/ttyACM0
+dashBoardFile=/dashboard//dashboard.dash
+CommSettingMSCommDriver.RS232\ Serial\ InterfaceCom\ Port=/dev/ttyACM0
+CommSettingMSCommDriver.RS232\ Serial\ InterfaceBaud\ Rate=115200
+baudRate=115200
