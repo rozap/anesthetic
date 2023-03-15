@@ -2,7 +2,7 @@
 Computer is a WYSE N03D configured in BIOS (pw: Fireport) to always turn on when power is applied.
 
 Network is set up static IP 192.168.66.5
-Front camera is also static @ 192.168.66.10
+Camera are also static @ 192.168.66.10, .11, .12, .13
 
 Computer auto logins to an i3 (window manager) session that starts an ffplay instance to show cameras.
 
