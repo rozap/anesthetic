@@ -1,0 +1,60 @@
+# Computer info
+Computer is a WYSE N03D configured in BIOS (pw: Fireport) to always turn on when power is applied.
+
+Network is set up static IP 192.168.66.5
+Front camera is also static @ 192.168.66.10
+
+Computer auto logins to an i3 (window manager) session that starts an ffplay instance to show cameras.
+
+User is bsod:bsodracing, root pw is the same.
+
+WM is i3 because tiling makes sense in this application. Default modifier is the Win key. https://i3wm.org/docs/userguide.html#_default_keybindings
+
+Win+Shift+e exits.
+Win+Shift+x powers off the machine RIGHT NOW. It does give ffmpeg a chance to shut down with a SIGINT.
+Win+Enter spawns a terminal.
+
+Autologin is done via systemd service as per https://vincent.bernat.ch/en/blog/2021-startx-systemd
+tl;dr Added an auto login service at /etc/systemd/system/x11-autologin.service
+
+on X startup, .xsessionrc runs ~/view-cams which is a dirty script that just continually runs ffplay to show the cams. Probably could be improved? Maybe https://unix.stackexchange.com/questions/676251/bash-script-invoked-by-systemd-that-starts-gui-app
+it also runs ~/record-cams, which is another dirty script that mounts /mnt/usb and dumps video to it. Should be a systemd service and we really should handle live-pulling the USB. At least it gracefully handles the device not being present on start.
+
+camera IPs are configured in ~/cam-config.rc. This is read in .xsessionrc.
+
+Shutdown is handled cleanly to avoid ffmpeg leaving broken partial segments on disk. 
+1. Disabled HandlePowerKey in /etc/systemd/logind.conf
+2. Installed acpid and wrote /etc/acpi/poweroff.sh and /etc/acpi/power
+```
+  root@x19:~# cat /etc/acpi/poweroff.sh 
+  #!/bin/bash
+  date >> tmp/poweroff
+  echo "Waiting for ffmpeg." >> /tmp/poweroff
+  ~bsod/abort-ffmpeg
+  echo "Done. Powering off." >> /tmp/poweroff
+  sleep 2
+  systemctl poweroff
+
+  root@x19:~# cat /etc/acpi/events/power
+  event=button/power LNXPWRBN
+  action=/etc/acpi/poweroff.sh "%e"
+```
+Edited i3 config at ~/.config/i3/config to override default poweroff behavior (else it just kills the session lol). This bypasses ACPID :( thanks i3.
+
+# Camera info
+
+Panasonic WV-VC30 and similar from Panasonic Arbitrator.
+
+Default creds: admin:12345
+High res stream:
+ffplay rtsp://admin:@192.168.66.34:554/MediaInput/h264
+
+Lower latency display stream, lower res:
+ffplay -fflags nobuffer -flags low_delay -rtsp_transport tcp rtsp://admin:@192.168.66.34:554/MediaInput/h264/stream_2
+
+JPEG snapshot:
+curl 'http://192.168.66.34/SnapshotJPEG?Resolution=1920x1024' | display -
+
+Capture to disk:
+ffmpeg -i rtsp://admin:@192.168.66.34:554/MediaInput/h264 -vcodec copy -acodec copy -map 0 -f segment -segment_time 300 -segment_format mp4 "stream_1-%03d.mp4"
+ffmpeg -i rtsp://admin:@192.168.66.34:554/MediaInput/h264/stream_2 -vcodec copy -acodec copy -map 0 -f segment -segment_time 300 -segment_format mp4 "stream_2-%03d.mp4"
