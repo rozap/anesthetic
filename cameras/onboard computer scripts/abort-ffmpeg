@@ -1,0 +1,2 @@
+#! /usr/bin/env bash
+timeout -k 10 5 killall -INT -w ffmpeg

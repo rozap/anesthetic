@@ -1,0 +1,84 @@
+#! /usr/bin/env ruby
+# TODO this should really be a systemd service :)
+require_relative 'lib/process_keep_alive'
+require_relative 'lib/driver_message'
+
+FRONT_CAM = ENV['FRONT_CAM']
+REAR_CAM_LEFT = ENV['REAR_CAM_LEFT']
+REAR_CAM_RIGHT = ENV['REAR_CAM_RIGHT']
+#REAR_CAM_CENTER = ENV['REAR_CAM_CENTER']
+
+if FRONT_CAM.nil? || FRONT_CAM.empty?
+  STDERR.puts "FRONT_CAM not configured."
+  exit 1
+end
+
+if REAR_CAM_LEFT.nil? || REAR_CAM_LEFT.empty?
+  STDERR.puts "REAR_CAM_LEFT not configured."
+  exit 1
+end
+
+if REAR_CAM_RIGHT.nil? || REAR_CAM_RIGHT.empty?
+  STDERR.puts "REAR_CAM_RIGHT not configured."
+  exit 1
+end
+
+#if REAR_CAM_CENTER.nil? || REAR_CAM_CENTER.empty?
+  #STDERR.puts "REAR_CAM_CENTER not configured."
+  #exit 1
+#end
+
+
+def ffplay_command(rtsp_url, window_title, overlay_png)
+  # Flags are a hard-won concoction/house of cards to reduce latency to a minimum.
+  # All of them are important!
+  # -vf setpts=0        : play frames immediately, don't wait for frame rate. Lets video catch up if it gets behind, too.
+  # -fflags nobuffer    : reduce startup time by not buffering data for initial stream analysis
+  # -flags low_delay    : tells codecs that we gotta go fast
+  # -rtsp_transport     : minimal effect on latency, but reduces video glitching if packets go screwy
+  # -an                 : don't play audio (not latency related)
+  # -window_title        : sets title of window; used by window manager to position window as expected (see ~/i3-sort-windows)
+  [
+    'ffplay',
+    '-loglevel', 'error',
+    '-vf', "movie=#{overlay_png} [watermark]; [in][watermark] overlay=0:0,setpts=0 [out]",
+    '-fflags', 'nobuffer',
+    '-flags', 'low_delay',
+    '-rtsp_transport', 'tcp',
+    '-window_title', window_title,
+    '-an',
+    rtsp_url
+  ]
+end
+
+
+FRONT_CAM_URL = "rtsp://admin:@#{FRONT_CAM}:554/MediaInput/h264/stream_2"
+REAR_CAM_LEFT_URL = "rtsp://admin:@#{REAR_CAM_LEFT}:554/MediaInput/h264/stream_2"
+REAR_CAM_RIGHT_URL = "rtsp://admin:@#{REAR_CAM_RIGHT}:554/MediaInput/h264/stream_2"
+#REAR_CAM_CENTER_URL = "rtsp://admin:@#{REAR_CAM_CENTER}:554/MediaInput/h264/stream_2"
+
+  DriverMessage.new('Visual feed starting.').show(timeout: 5)
+
+  # PLEASE NOTE: The window title (i.e. '0 FRONT') determines the visual
+  # order in which these cams are displayed to the user.
+  cmnds = [
+    #ffplay_command(FRONT_CAM_URL, '0 FRONT'),
+    ffplay_command(REAR_CAM_LEFT_URL, '1 LEFT', 'overlay-l.png'),
+    #ffplay_command(REAR_CAM_CENTER_URL, '2 CENTER', 'overlay-c.png'),
+    #ffplay_command(REAR_CAM_RIGHT_URL, '3 RIGHT', 'overlay-r.png')
+  ]
+
+  puts 'Commands:'
+  cmnds.each do |cmnd|
+    puts cmnd.join ' '
+  end
+
+  cams = cmnds.map do |cmd|
+    ProcessKeepAlive.new(command: cmd)
+  end
+
+loop do
+  cams.each(&:start_if_not_running)
+  sleep 5
+  system('~/i3-sort-windows') # Sort windows so they are always in the same order.
+end

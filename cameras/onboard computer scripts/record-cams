@@ -1,0 +1,99 @@
+#! /usr/bin/env ruby
+# TODO this should really be a systemd service :)
+require 'pathname'
+require 'fileutils'
+require 'open3'
+require_relative 'lib/process_keep_alive'
+require_relative 'lib/driver_message'
+
+cam_mountpt = '/mnt/usb'
+front_cam_path = "#{cam_mountpt}/RACE_VIDEOS/FRONT_CAM"
+rear_cam_left_path = "#{cam_mountpt}/RACE_VIDEOS/REAR_CAM_LEFT"
+rear_cam_right_path = "#{cam_mountpt}/RACE_VIDEOS/REAR_CAM_RIGHT"
+#rear_cam_center_path = "#{cam_mountpt}/RACE_VIDEOS/REAR_CAM_CENTER"
+
+no_media_present_msg = DriverMessage.new('Waiting for recording USB drive.')
+
+FRONT_CAM = ENV['FRONT_CAM']
+REAR_CAM_LEFT = ENV['REAR_CAM_LEFT']
+REAR_CAM_RIGHT = ENV['REAR_CAM_RIGHT']
+#REAR_CAM_CENTER = ENV['REAR_CAM_CENTER']
+
+if FRONT_CAM.nil? || FRONT_CAM.empty?
+  STDERR.puts "FRONT_CAM not configured."
+  exit 1
+end
+
+if REAR_CAM_LEFT.nil? || REAR_CAM_LEFT.empty?
+  STDERR.puts "REAR_CAM_LEFT not configured."
+  exit 1
+end
+
+if REAR_CAM_RIGHT.nil? || REAR_CAM_RIGHT.empty?
+  STDERR.puts "REAR_CAM_RIGHT not configured."
+  exit 1
+end
+
+#if REAR_CAM_CENTER.nil? || REAR_CAM_CENTER.empty?
+#  STDERR.puts "REAR_CAM_CENTER not configured."
+#  exit 1
+#end
+
+loop do
+  if Pathname.new(cam_mountpt).mountpoint?
+    puts "Video drive mounted. Recording."
+    no_media_present_msg.hide
+
+    DriverMessage.new('Recording started.').show(timeout: 5)
+    FileUtils.mkdir_p front_cam_path
+    FileUtils.mkdir_p rear_cam_left_path
+    FileUtils.mkdir_p rear_cam_right_path
+    #FileUtils.mkdir_p rear_cam_center_path
+
+    cmnds = [
+      [
+        'ffmpeg', '-loglevel', 'error', '-i', "rtsp://admin:@#{FRONT_CAM}:554/MediaInput/h264",
+        '-vcodec', 'copy', '-acodec', 'copy', '-map', '0', '-f', 'segment', '-strftime', '1',
+        '-segment_time', '300', '-segment_format', 'mp4',
+        "#{front_cam_path}/front-%Y-%m-%d_%H-%M-%S-seg-%03d.mp4"
+      ],
+      [
+        'ffmpeg', '-loglevel', 'error', '-i', "rtsp://admin:@#{REAR_CAM_LEFT}:554/MediaInput/h264",
+        '-vcodec', 'copy', '-c:a', 'aac', '-b:a', '96k', '-map', '0', '-f', 'segment', '-strftime', '1',
+        '-segment_time', '300', '-segment_format', 'mp4',
+        "#{rear_cam_left_path}/rear_left-%Y-%m-%d_%H-%M-%S-seg-%03d.mp4"
+      ],
+      [
+        'ffmpeg', '-loglevel', 'error', '-i', "rtsp://admin:@#{REAR_CAM_RIGHT}:554/MediaInput/h264",
+        '-vcodec', 'copy', '-c:a', 'aac', '-b:a', '96k', '-map', '0', '-f', 'segment', '-strftime', '1',
+        '-segment_time', '300', '-segment_format', 'mp4',
+        "#{rear_cam_right_path}/rear_right-%Y-%m-%d_%H-%M-%S-seg-%03d.mp4"
+      ],
+      #[
+      #  'ffmpeg', '-loglevel', 'error', '-i', "rtsp://admin:@#{REAR_CAM_CENTER}:554/MediaInput/h264",
+      #  '-vcodec', 'copy', '-c:a', 'aac', '-b:a', '96k', '-map', '0', '-f', 'segment', '-strftime', '1',
+      #  '-segment_time', '300', '-segment_format', 'mp4',
+      #  "#{rear_cam_center_path}/rear_center-%Y-%m-%d_%H-%M-%S-seg-%03d.mp4"
+      #]
+    ]
+
+    puts 'Commands:'
+    cmnds.each do |cmnd|
+      puts cmnd.join ' '
+    end
+
+    cams = cmnds.map do |cmd|
+      ProcessKeepAlive.new(command: cmd)
+    end
+
+    loop do
+      cams.each(&:start_if_not_running)
+      sleep 5
+    end
+  else
+    puts "Video drive not mounted. Attempting mount."
+    no_media_present_msg.show
+    `sudo mount /mnt/usb`
+  end
+  sleep 5
+end

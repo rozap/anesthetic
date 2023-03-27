@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+./abort-ffmpeg
+systemctl poweroff

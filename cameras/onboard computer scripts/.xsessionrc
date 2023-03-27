@@ -1,0 +1,4 @@
+./set-monitor-resolution
+. $HOME/cam-config.rc
+./view-cams | tee view-cams.log &
+./record-cams | tee record-cams.log &
