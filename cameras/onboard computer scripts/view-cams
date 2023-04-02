@@ -41,7 +41,7 @@ def ffplay_command(rtsp_url, window_title, overlay_png)
   [
     'ffplay',
     '-loglevel', 'error',
-    '-vf', "movie=#{overlay_png} [watermark]; [in][watermark] overlay=0:0,setpts=0 [out]",
+    '-vf', "movie=#{overlay_png} [watermark]; [in][watermark] overlay=0:0,setpts=0 [intermediate],[intermediate] hflip[out]",
     '-fflags', 'nobuffer',
     '-flags', 'low_delay',
     '-rtsp_transport', 'tcp',
