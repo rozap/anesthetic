@@ -93,6 +93,7 @@ loop do
   else
     puts "Video drive not mounted. Attempting mount."
     no_media_present_msg.show
+    `sudo fsck -y /dev/sdb1` rescue nil
     `sudo mount /mnt/usb`
   end
   sleep 5
