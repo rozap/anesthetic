@@ -54,19 +54,19 @@ loop do
       [
         'ffmpeg', '-loglevel', 'error', '-i', "rtsp://admin:@#{FRONT_CAM}:554/MediaInput/h264",
         '-vcodec', 'copy', '-acodec', 'copy', '-map', '0', '-f', 'segment', '-strftime', '1',
-        '-segment_time', '300', '-segment_format', 'mp4',
+        '-segment_time', '30', '-segment_format', 'mp4',
         "#{front_cam_path}/front-%Y-%m-%d_%H-%M-%S-seg-%03d.mp4"
       ],
       [
         'ffmpeg', '-loglevel', 'error', '-i', "rtsp://admin:@#{REAR_CAM_LEFT}:554/MediaInput/h264",
         '-vcodec', 'copy', '-c:a', 'aac', '-b:a', '96k', '-map', '0', '-f', 'segment', '-strftime', '1',
-        '-segment_time', '300', '-segment_format', 'mp4',
+        '-segment_time', '30', '-segment_format', 'mp4',
         "#{rear_cam_left_path}/rear_left-%Y-%m-%d_%H-%M-%S-seg-%03d.mp4"
       ],
       [
         'ffmpeg', '-loglevel', 'error', '-i', "rtsp://admin:@#{REAR_CAM_RIGHT}:554/MediaInput/h264",
         '-vcodec', 'copy', '-c:a', 'aac', '-b:a', '96k', '-map', '0', '-f', 'segment', '-strftime', '1',
-        '-segment_time', '300', '-segment_format', 'mp4',
+        '-segment_time', '30', '-segment_format', 'mp4',
         "#{rear_cam_right_path}/rear_right-%Y-%m-%d_%H-%M-%S-seg-%03d.mp4"
       ],
       #[
