@@ -1,3 +1,20 @@
+# How to use.
+1. Just apply power to the computer and it will record to the first USB drive connected.
+2. Pull the files off the SSD.
+3. Combine the videos into per-day per-camera files with the combine_and_fix_videos script. This is repeated per camera folder.
+4. Then up to you. You can make vertically stacked videos like this:
+
+```
+#TODO when we have worthwhile front cam footage.... add that.
+#TODO the cams desync sometimes because of missing segments from either cam. Not much that I can do about that.
+#Substitute filenames as needed.
+ffmpeg -i rear_left-2023-04-01.mp4 -i rear_right-2023-04-01.mp4 -filter_complex vstack=inputs=2 -c:v libx264 -crf 32 -c:a copy 04-01.mp4
+```
+  Or just reencode in a much more space efficient manner:
+```
+ffmpeg -i rear_left-2023-04-01.mp4 -c:v libx264 -crf 32 -c:a copy 04-01.mp4
+```
+
 # Computer info
 Computer is a WYSE N03D configured in BIOS (pw: Fireport) to always turn on when power is applied.
 

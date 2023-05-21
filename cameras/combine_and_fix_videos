@@ -1,0 +1,94 @@
+#! /usr/bin/env ruby
+
+require 'tmpdir'
+require 'tempfile'
+require 'parallel'
+
+if ARGV.length != 2
+  STDERR.puts "Combines race video files by day. Fixes file issues due to accidental unsafe shutdowns. Needs ffmpeg and anthwlock/untrunc (github)."
+  STDERR.puts "usage: combine_and_fix_videos [source_path] [output_path]"
+  exit 1
+end
+
+if `which untrunc`.empty?
+  STDERR.puts "You need to have `untrunc` on the PATH. https://github.com/anthwlock/untrunc"
+  exit 2
+end
+
+if `which ffmpeg`.empty?
+  STDERR.puts "You need to have `ffmpeg` on the PATH."
+  exit 2
+end
+
+source_dir = ARGV[0].strip
+out_dir = ARGV[1].strip
+
+source_files = Dir.glob("#{source_dir}/*-seg-*.mp4").sort
+
+def file_is_ok(file)
+  # Yes I know quotes in filenames breaks this. Sorry, I'm not operating as a professional software dev while I'm
+  # working on race cars. sosumi.aiff
+  `ffprobe -v fatal "#{file}"`
+  $?.success?
+end
+
+failed = []
+Dir.mktmpdir('race_videos') do |tmpdir|
+  puts "Workdir is #{tmpdir}"
+  # find at least one uncorrupted file to use as untrunc reference. We can do all this in one pass but I'm lazy.
+  puts 'Checking file health.'
+  sample_file = source_files.find do |source_file|
+    file_is_ok(source_file)
+  end
+  
+  if sample_file.nil?
+    STDERR.puts 'All source files are corrupted :( Untrunc needs at least one working file. Maybe add a non-corrupted video file from another session.'
+  else
+    puts "Using sample file: #{sample_file}"
+    cam_name = /^(.*)-20\d\d/.match(File.basename(sample_file))[1]
+    # Figure out and fix corrupted files.
+    fixed_source_files = Parallel.map(source_files.each_with_index, in_threads: 8) do |source_file, idx|
+      puts "Checking/fixing #{idx}/#{source_files.length}"
+      if file_is_ok(source_file)
+        source_file
+      else
+        # untrunc the file.
+        puts "#{source_file} truncated, fixing"
+        bn = File.basename(source_file)
+        fixed_path = "#{tmpdir}/#{bn}_fixed.mp4"
+        `untrunc -n -dst "#{fixed_path}" "#{sample_file}" "#{source_file}"`
+        if $?.success?
+          puts "Fixed."
+          fixed_path
+        else
+          puts "Unable to fix #{source_file}. Skipping."
+          nil
+        end
+      end
+    end.compact
+    
+    source_files_with_date = fixed_source_files.group_by {|fn| /(20\d\d-\d\d-\d\d)/.match(fn)[1]}
+    source_files_with_date.each do |date, files|
+      out_path = File.join(out_dir, "#{cam_name}-#{date}.mp4")
+      Tempfile.create do |source_list_file|
+        files.each do |source_file|
+          source_list_file.puts "file '#{source_file}'"
+        end
+        source_list_file.close
+        puts "Processing #{date}"
+        stdout = `ffmpeg -v error -safe 0 -f concat -i "#{source_list_file.path}" -c copy "#{out_path}"`
+        if $?.success?
+          puts "Successfully created #{out_path}."
+        else
+          STDERR.puts stdout
+          STDERR.puts "Failed to create #{out_path}"
+          failed << out_path
+        end
+      end
+    end
+  end
+end
+unless failed.empty?
+  STDERR.puts "Failed to create some videos."
+  exit 3
+end

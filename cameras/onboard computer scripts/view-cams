@@ -29,7 +29,7 @@ end
 #end
 
 
-def ffplay_command(rtsp_url, window_title, overlay_png)
+def ffplay_command(rtsp_url, window_title)
   # Flags are a hard-won concoction/house of cards to reduce latency to a minimum.
   # All of them are important!
   # -vf setpts=0        : play frames immediately, don't wait for frame rate. Lets video catch up if it gets behind, too.
@@ -41,7 +41,7 @@ def ffplay_command(rtsp_url, window_title, overlay_png)
   [
     'ffplay',
     '-loglevel', 'error',
-    '-vf', "movie=#{overlay_png} [watermark]; [in][watermark] overlay=0:0,setpts=0 [out]",
+    '-vf', "setpts=0 [intermediate],[intermediate] hflip[out]",
     '-fflags', 'nobuffer',
     '-flags', 'low_delay',
     '-rtsp_transport', 'tcp',
@@ -63,9 +63,9 @@ REAR_CAM_RIGHT_URL = "rtsp://admin:@#{REAR_CAM_RIGHT}:554/MediaInput/h264/stream
   # order in which these cams are displayed to the user.
   cmnds = [
     #ffplay_command(FRONT_CAM_URL, '0 FRONT'),
-    ffplay_command(REAR_CAM_LEFT_URL, '1 LEFT', 'overlay-l.png'),
-    #ffplay_command(REAR_CAM_CENTER_URL, '2 CENTER', 'overlay-c.png'),
-    #ffplay_command(REAR_CAM_RIGHT_URL, '3 RIGHT', 'overlay-r.png')
+    ffplay_command(REAR_CAM_LEFT_URL, '1 LEFT'),
+    #ffplay_command(REAR_CAM_CENTER_URL, '2 CENTER'),
+    #ffplay_command(REAR_CAM_RIGHT_URL, '3 RIGHT')
   ]
 
   puts 'Commands:'
