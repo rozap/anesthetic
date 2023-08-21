@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "SpeeduinoConnector")(type "KiCad")(uri "${KIPRJMOD}/SpeeduinoConnector.pretty")(options "")(descr "Speeduino's counter-clockwise pin header."))
+  (lib (name "ProtoAreas")(type "KiCad")(uri "${KIPRJMOD}/ProtoAreas.pretty")(options "")(descr ""))
+)
