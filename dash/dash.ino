@@ -220,7 +220,7 @@ const uint8_t SEG_RDIO[] = {
 const uint8_t SEG_BLANK[] = { 0, 0, 0, 0 };
 
 TM1637Display oilPressureDisplay(OIL_PRESSURE_CLK, OIL_PRESSURE_DIO);
-TM1637Display coolantPressureDisplay(COOLANT_PRESSURE_CLK, COOLANT_PRESSURE_DIO);
+TM1637Display coolantTemperatureDisplay(COOLANT_PRESSURE_CLK, COOLANT_PRESSURE_DIO);
 TM1637Display oilTemperatureDisplay(OIL_TEMP_CLK, OIL_TEMP_DIO);
 TM1637Display auxMessageDisplay(AUX_MESSAGE_CLK, AUX_MESSAGE_DIO);
 
@@ -251,17 +251,17 @@ void setup() {
 
   oilPressureDisplay.setBrightness(0, false);
   oilTemperatureDisplay.setBrightness(0, false);
-  coolantPressureDisplay.setBrightness(0, false);
+  coolantTemperatureDisplay.setBrightness(0, false);
   auxMessageDisplay.setBrightness(0, false);
   oilPressureDisplay.setSegments(SEG_BLANK);
-  coolantPressureDisplay.setSegments(SEG_BLANK);
+  coolantTemperatureDisplay.setSegments(SEG_BLANK);
   oilTemperatureDisplay.setSegments(SEG_BLANK);
   auxMessageDisplay.setSegments(SEG_BLANK);
 
   #ifndef SKIP_INTRO_ANIM
   tachBootAnimation();
   #endif
-  
+
   if (rf95.init()) {
     Serial.println("radio init ok");
     radioAvailable = true;
@@ -280,8 +280,8 @@ void setup() {
     delay(d);
   }
   for (uint8_t brt = 1; brt<8; brt++) {
-    coolantPressureDisplay.setBrightness(brt);
-    coolantPressureDisplay.setSegments(SEG_0THE);
+    coolantTemperatureDisplay.setBrightness(brt);
+    coolantTemperatureDisplay.setSegments(SEG_0THE);
     delay(d);
   }
   for (uint8_t brt = 1; brt<8; brt++) {
@@ -295,15 +295,15 @@ void setup() {
   for (uint8_t brt = 4; brt>0; brt--) {
     oilTemperatureDisplay.setBrightness(brt);
     oilTemperatureDisplay.setSegments(SEG_ANES);
-    coolantPressureDisplay.setBrightness(brt);
-    coolantPressureDisplay.setSegments(SEG_0THE);
+    coolantTemperatureDisplay.setBrightness(brt);
+    coolantTemperatureDisplay.setSegments(SEG_0THE);
     auxMessageDisplay.setBrightness(brt);
     auxMessageDisplay.setSegments(SEG_TIC0);
     delay(75);
   }
 
   oilPressureDisplay.setSegments(SEG_BLANK);
-  coolantPressureDisplay.setSegments(SEG_BLANK);
+  coolantTemperatureDisplay.setSegments(SEG_BLANK);
   oilTemperatureDisplay.setSegments(SEG_BLANK);
   auxMessageDisplay.setSegments(SEG_BLANK);
 
@@ -311,10 +311,10 @@ void setup() {
 
   oilPressureDisplay.setBrightness(7);
   oilTemperatureDisplay.setBrightness(7);
-  coolantPressureDisplay.setBrightness(7);
+  coolantTemperatureDisplay.setBrightness(7);
   auxMessageDisplay.setBrightness(7);
   oilPressureDisplay.showNumberDec(8888);
-  coolantPressureDisplay.showNumberDec(8888);
+  coolantTemperatureDisplay.showNumberDec(8888);
   oilTemperatureDisplay.showNumberDec(8888);
   auxMessageDisplay.showNumberDec(8888);
   tachLights(0xffff);
@@ -322,19 +322,19 @@ void setup() {
   delay(500);
 
   oilPressureDisplay.setSegments(SEG_PSI);
-  coolantPressureDisplay.setSegments(SEG_PSI);
+  coolantTemperatureDisplay.setSegments(SEG_PSI);
   oilTemperatureDisplay.setSegments(SEG_TP);
   auxMessageDisplay.showNumberDec(0);
   delay(500);
 
   oilPressureDisplay.setSegments(SEG_BLANK);
-  coolantPressureDisplay.setSegments(SEG_BLANK);
+  coolantTemperatureDisplay.setSegments(SEG_BLANK);
   oilTemperatureDisplay.setSegments(SEG_BLANK);
   tachLights(0);
   #else
   oilPressureDisplay.setBrightness(7);
   oilTemperatureDisplay.setBrightness(7);
-  coolantPressureDisplay.setBrightness(7);
+  coolantTemperatureDisplay.setBrightness(7);
   auxMessageDisplay.setBrightness(7);
   #endif
 
@@ -405,10 +405,10 @@ void loop() {
     } else {
       oilPressureDisplay.showNumberDec(oilPressure);
     }
-    if (issuesAcknowledged.coolantPressure) {
-      coolantPressureDisplay.setSegments(SEG_INOP);
+    if (issuesAcknowledged.coolantTemperature) {
+      coolantTemperatureDisplay.setSegments(SEG_INOP);
     } else {
-      coolantPressureDisplay.showNumberDec(coolantPressure);
+      coolantTemperatureDisplay.showNumberDec(coolantTemperature);
     }
     if (issuesAcknowledged.oilTemperature) {
       oilTemperatureDisplay.setSegments(SEG_INOP);
@@ -506,7 +506,7 @@ double readRpm() {
 
   if (tachPeriodMicros > 0) {
     rpmNow =
-      2.0 * // Intake/exhaust stroke 
+      2.0 * // Intake/exhaust stroke
       // rpm/hz
       60.0 *
       // pulse freq in hz
@@ -592,11 +592,11 @@ double readCoolantTemperature() {
 CircularBuffer<double,WINDOW_SIZE> oilTempWindow;
 double readOilTemp() {
   double vin = 5.0; // Supply voltage, output is ratiometric to this.
-  
+
   // Min seen in practice (~75F day): ~180
   // Max seen in mild driving (~75F day): ~690
   double analogReadValue = analogRead(OIL_TEMP_PIN);
-  
+
   double vout = (double)((analogReadValue * vin) / 1024.0);
   double ohms = (((OIL_TEMP_R2_K_OHM * 1000) * vin) / vout) - OIL_TEMP_R2_K_OHM;
   double tempC = 1 / ( ( log( ohms / OIL_TEMP_NOMINAL_RESISTANCE )) / OIL_TEMP_BETA_COEFFICIENT + 1 / ( OIL_TEMP_NOMINAL_TEMP + 273.15 ) ) - 273.15;
