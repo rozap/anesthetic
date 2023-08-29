@@ -3,8 +3,6 @@
 #define RX 0
 #define TX 1
 SoftwareSerial SoftSerial(RX, TX);
-unsigned char buffer[64]; // buffer array for data receive over serial port
-int count = 0;            // counter for buffer array
 
 TinyGPSPlus gps;
 const char *RADIO_MSG_GPS = "GPS";
@@ -13,8 +11,8 @@ char buf[128];
 
 void setup()
 {
-  SoftSerial.begin(9600); // the SoftSerial baud rate
-  Serial.begin(9600);     // the Serial port of Arduino baud rate.
+  SoftSerial.begin(9600);
+  Serial.begin(9600);
 }
 
 void loop()
