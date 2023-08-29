@@ -16,14 +16,9 @@
             "intelliSenseMode": "gcc-x64",
             "includePath": [
                 "/home/chris/.arduino15/packages/arduino/hardware/avr/1.8.5/cores/arduino",
-                "/home/chris/.arduino15/packages/arduino/hardware/avr/1.8.5/variants/mega",
-                "/home/chris/Arduino/libraries/TM1637",
-                "/home/chris/Arduino/libraries/CircularBuffer",
+                "/home/chris/.arduino15/packages/arduino/hardware/avr/1.8.5/variants/eightanaloginputs",
                 "/home/chris/.arduino15/packages/arduino/hardware/avr/1.8.5/libraries/SoftwareSerial/src",
                 "/home/chris/Arduino/libraries/TinyGPSPlus/src",
-                "/home/chris/.arduino15/packages/arduino/hardware/avr/1.8.5/libraries/SPI/src",
-                "/home/chris/Arduino/libraries/RadioHead",
-                "/home/chris/.arduino15/packages/arduino/hardware/avr/1.8.5/libraries/Wire/src",
                 "/home/chris/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include",
                 "/home/chris/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include-fixed",
                 "/home/chris/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include"
@@ -36,7 +31,7 @@
             "defines": [
                 "F_CPU=16000000L",
                 "ARDUINO=10813",
-                "ARDUINO_AVR_MEGA2560",
+                "ARDUINO_AVR_PRO",
                 "ARDUINO_ARCH_AVR",
                 "__DBL_MIN_EXP__=(-125)",
                 "__HQ_FBIT__=15",

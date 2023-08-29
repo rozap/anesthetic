@@ -2,6 +2,8 @@
 #include <math.h>
 #include <TM1637Display.h>
 #include <CircularBuffer.h>
+#include <SoftwareSerial.h>
+#include <TinyGPSPlus.h>
 
 /* Radio */
 #include <SPI.h>
@@ -26,8 +28,11 @@
 #define REDLINE_RPM 7000
 #define FIRST_LIGHT_RPM 3000
 
-/* Sensor sampling */
-#define SAMPLE_PERIOD_MS 25
+/* GPS Stuff */
+#define GPS_TX 7
+#define GPS_RX 8
+SoftwareSerial SoftSerial(GPS_RX, GPS_TX);
+TinyGPSPlus gps;
 
 // The radio blocks the main loop if we try to send a message
 // but the radio hasn't had a chance to send it yet. To avoid this,
@@ -37,6 +42,7 @@
 // that pretty much guarantees we'll have sent the packet
 // by the time we try to send again.
 #define RADIO_UPDATE_PERIOD_MS 1000
+#define SAMPLE_PERIOD_MS 25
 #define WINDOW_SIZE 10
 
 /* Pin assignments */
@@ -110,6 +116,7 @@ const char* RADIO_MSG_MET = "MET"; // Mission elapsed time
 const char* RADIO_MSG_PIT = "PIT";
 const char* RADIO_MSG_ACK = "ACK"; // Acknowledge current issues
 const char* RADIO_MSG_NAK = "NAK"; // Un-acknowledge current issues
+const char* RADIO_MSG_GPS = "GPS";
 
 
 char radioMsgBuf[RH_RF95_MAX_MESSAGE_LEN];
@@ -290,6 +297,9 @@ void setup() {
     delay(d);
   }
 
+  // gps software serial
+  SoftSerial.begin(9600);
+
   delay(250);
 
   for (uint8_t brt = 4; brt>0; brt--) {
@@ -381,6 +391,13 @@ void onTachPulseISR() {
 
 void loop() {
   long millisNow = millis();
+
+  while (SoftSerial.available()) {
+    if (gps.encode(SoftSerial.read())) {
+      pushGPSDatum();
+    }
+  }
+
   if (millisNow - lastSampleMillis > SAMPLE_PERIOD_MS) {
     lastSampleMillis = millisNow;
     oilPressure = issuesAcknowledged.oilPressure ? -1.0 : readOilPSI();
@@ -469,6 +486,57 @@ void loop() {
   updateTach(rpm, checkEngineLight);
 }
 
+
+char lat[12];
+char lng[12];
+char speed[8];
+u16 gpsBufOffset = 0;
+
+// each gps frame is 58 bytes long + plus newline and null termination = 60 bytes
+// the gps reads max 10 times per second, or every 100 millis
+// so for at a 1s LoRa message rate, for gpsBuf to hold everything
+// we need 60 * 10 bytes in the buf
+#define GPS_FRAME_SIZE 60
+#define GPS_MAX_SAMPLE_RATE_MILLIS 100
+#define GPS_BUF_SIZE (RADIO_UPDATE_PERIOD_MS / GPS_MAX_SAMPLE_RATE_MILLIS) * GPS_FRAME_SIZE
+char gpsBuf[GPS_BUF_SIZE];
+
+void pushGPSDatum() {
+  if (gps.location.isValid() && gps.date.isValid() && gps.time.isValid())
+  {
+
+    dtostrf(gps.location.lat(), 11, 6, lat);
+    dtostrf(gps.location.lng(), 11, 6, lng);
+    dtostrf(gps.speed.mph(), 7, 2, speed);
+
+    if ((gpsBufOffset + GPS_FRAME_SIZE) >= GPS_BUF_SIZE) {
+      gpsBufOffset = 0;
+    }
+
+    int bytesWritten = sprintf(&(gpsBuf[gpsBufOffset]),
+            "L%s,%s|%04u-%02u-%02uT%02u:%02u:%02u.%02u|%s",
+            RADIO_MSG_GPS,
+            lat,
+            lng,
+            gps.date.year(),
+            gps.date.month(),
+            gps.date.day(),
+            gps.time.hour(),
+            gps.time.minute(),
+            gps.time.second(),
+            gps.time.centisecond(),
+            speed
+    );
+    gpsBufOffset += bytesWritten;
+  }
+}
+
+char* dumpGPSBuf() {
+  gpsBuf[gpsBufOffset] = 0;
+  gpsBufOffset = 0;
+  return gpsBuf;
+}
+
 // Send one packet containing all telemetry information, separated by newlines.
 void sendTelemetryPacket() {
   if (!radioAvailable) {
@@ -476,7 +544,7 @@ void sendTelemetryPacket() {
   }
 
   int bytesWritten = sprintf(radioMsgBuf,
-    "%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n",
+    "%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%05u\n%s:%s",
     RADIO_MSG_OIL_PRES, (uint16_t)oilPressure,
     RADIO_MSG_COOLANT_PRES, (uint16_t)(coolantPressure*10.0),
     RADIO_MSG_COOLANT_TEMP, (uint16_t)(coolantTemperature*10.0),
@@ -484,7 +552,8 @@ void sendTelemetryPacket() {
     RADIO_MSG_BATTERY_VOLTAGE, (uint16_t)(1000.0 * batteryVoltage),
     RADIO_MSG_RPM, (uint16_t)rpm,
     RADIO_MSG_FAULT, (uint16_t)checkEngineLight,
-    RADIO_MSG_MET, (uint16_t)((millis() - missionStartTimeMillis) / 1000)
+    RADIO_MSG_MET, (uint16_t)((millis() - missionStartTimeMillis) / 1000),
+    RADIO_MSG_GPS, dumpGPSBuf()
   );
 
   Serial.print("Radio message:");
