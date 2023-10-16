@@ -75,3 +75,8 @@ curl 'http://192.168.66.34/SnapshotJPEG?Resolution=1920x1024' | display -
 Capture to disk:
 ffmpeg -i rtsp://admin:@192.168.66.34:554/MediaInput/h264 -vcodec copy -acodec copy -map 0 -f segment -segment_time 300 -segment_format mp4 "stream_1-%03d.mp4"
 ffmpeg -i rtsp://admin:@192.168.66.34:554/MediaInput/h264/stream_2 -vcodec copy -acodec copy -map 0 -f segment -segment_time 300 -segment_format mp4 "stream_2-%03d.mp4"
+
+
+Livestream: docs TODO
+$ ffmpeg -threads:v 2 -thread_queue_size 512 -rtsp_transport tcp -i rtsp://admin:@192.168.66.10:554/MediaInput/h264/stream_2 -f lavfi -i anullsrc -c:v copy -c:a aac -shortest -f flv rtmp://a.rtmp.youtube.com/live2/$STREAM_KEY
+ffmpeg -threads:v 2 -thread_queue_size 512 -rtsp_transport tcp -i rtsp://admin:@192.168.66.10:554/MediaInput/h264/stream_2 -f lavfi -i anullsrc -c:v libx264 -preset fast -crf 26 -threads 2 -x264-params keyint=60:scenecut=0 -c:a aac -shortest -f flv rtmp://a.rtmp.youtube.com/live2/$STREAM_KEY
