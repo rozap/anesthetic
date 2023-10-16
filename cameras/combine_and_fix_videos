@@ -67,7 +67,7 @@ Dir.mktmpdir('race_videos') do |tmpdir|
       end
     end.compact
     
-    FileUtils.mkdir_p(out_path)
+    FileUtils.mkdir_p(out_dir)
     source_files_with_date = fixed_source_files.group_by {|fn| /(20\d\d-\d\d-\d\d)/.match(fn)[1]}
     source_files_with_date.each do |date, files|
       out_path = File.join(out_dir, "#{cam_name}-#{date}.mp4")
