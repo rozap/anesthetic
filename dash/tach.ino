@@ -71,6 +71,6 @@ void updateTach(uint16_t rpm, bool idiotLight) {
       case 2: lights |= TACH_LIGHT_G2;
       case 1: lights |= TACH_LIGHT_G1;
     }
-  } 
+  }
   tachLights(lights);
 }

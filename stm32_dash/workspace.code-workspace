@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"name": "stm32_dash",
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"cmath": "cpp",
+			"random": "cpp"
+		}
+	}
+}

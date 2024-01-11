@@ -1,7 +1,7 @@
 #Project Attributes.
 #TunerStudio by EFI Analytics, Inc
-#Last Saved on: Sun May 21 00:11:26 PDT 2023
-#Sun May 21 00:11:26 PDT 2023
+#Last Saved on: Sun May 21 00:11:32 PDT 2023
+#Sun May 21 00:11:32 PDT 2023
 CommSettingMSCommDriver.RS232\ Serial\ InterfaceBaud\ Rate=115200
 gaugeLimitsGauge\ Limits_Y=387
 gaugeLimitsGauge\ Limits_X=757
