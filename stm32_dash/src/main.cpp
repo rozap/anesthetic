@@ -484,6 +484,9 @@ void processResponse()
   // currentStatus.fanDuty = speeduinoResponse[121];
 }
 
+/**
+ * Discards all data in Serial2's input buffer.
+*/
 void clearRx()
 {
   while (Serial2.available() > 0)
@@ -492,6 +495,15 @@ void clearRx()
   }
 }
 
+/**
+ * Wait for the Speeduino to respond with a packet header, which is:
+ * 0x6E ('n')
+ * 0x32 ('2')
+ * ...followed by one length byte (0-255).
+ * 
+ * The packet length is returned if a packet header is found within
+ * timeout (500ms), else -1 is returned.
+*/
 int popHeader()
 {
   Serial2.setTimeout(500);
@@ -519,7 +531,14 @@ void requestData()
   Serial1.println("requested data");
 
   int nLength = popHeader();
-  if (nLength > 0)
+
+  if (nLength >= RESPONSE_LEN)
+  {
+    Serial1.println("Response pkt bigger than rec'v buf");
+    Serial1.print("nLength=");
+    Serial1.println(nLength);
+  }
+  else if (nLength > 0)
   {
     Serial1.print("nLength=");
     Serial1.println(nLength);
@@ -562,7 +581,8 @@ void renderNoConnection()
 }
 
 
-void renderWarning() {
+void renderWarning()
+{
   clearScreen();
   int padding = 10;
   
