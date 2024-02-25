@@ -27,6 +27,12 @@
 #include <SPI.h>
 #include <CircularBuffer.h>
 
+// If this is defined, uses data in mock_pkt.h instead of actually reading from the serial port.
+//#define USE_MOCK_DATA
+#ifdef USE_MOCK_DATA
+#include "mock_pkt.h"
+#endif
+
 // Serial1: RX: A10, TX: A9. Debug and programming port.
 HardwareSerial DebugSerial = Serial1;
 
@@ -513,6 +519,9 @@ void clearRx()
 */
 int popHeader()
 {
+  #ifdef USE_MOCK_DATA
+  return ___single_speeduino_pkt_bin[2];
+  #else
   SpeeduinoSerial.setTimeout(500);
   if (SpeeduinoSerial.find('n'))
   {
@@ -527,6 +536,7 @@ int popHeader()
     }
   }
   return -1;
+  #endif
 }
 
 void requestData()
@@ -550,7 +560,12 @@ void requestData()
     DebugSerial.print("nLength=");
     DebugSerial.println(nLength);
 
+    #ifdef USE_MOCK_DATA
+    uint8_t nRead = ___single_speeduino_pkt_bin[2];
+    memcpy(speeduinoResponse, ___single_speeduino_pkt_bin + 3, ___single_speeduino_pkt_bin_len - 3);
+    #else
     uint8_t nRead = SpeeduinoSerial.readBytes(speeduinoResponse, nLength);
+    #endif
     DebugSerial.print("nRead=");
     DebugSerial.println(nRead);
 
