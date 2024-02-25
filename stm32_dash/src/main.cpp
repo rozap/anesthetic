@@ -678,8 +678,6 @@ void setup()
   requestFrame = false;
   renderNoConnection();
 
-  while (!DebugSerial)
-    ;
   DebugSerial.begin(115200);
   delay(500);
 
