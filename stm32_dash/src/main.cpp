@@ -1,8 +1,9 @@
 /*
   dance to update firmware:
-    * plug in USB
-    * push NRST and BOOT0 at the same time (push NRST slightly before?)
-    * upload
+    1 plug in USB
+    2 Hold down the BOOT0 button then tap NRST. This will put the device into bootloader mode. You can now release both buttons.
+    3 Upload. No rush, there isn't a timeout.
+    4 Repeat from step 2 to upload firmware the next time. No need to unplug USB.
   wtf:
     * pin3 has to be ON to program the thing
       * press reset each time to program
