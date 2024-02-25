@@ -549,7 +549,7 @@ void requestData()
     DebugSerial.print("nLength=");
     DebugSerial.println(nLength);
 
-    uint8_t nRead = Serial2.readBytes(speeduinoResponse, nLength);
+    uint8_t nRead = SpeeduinoSerial.readBytes(speeduinoResponse, nLength);
     DebugSerial.print("nRead=");
     DebugSerial.println(nRead);
 
