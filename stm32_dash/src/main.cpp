@@ -27,6 +27,12 @@
 #include <SPI.h>
 #include <CircularBuffer.h>
 
+// Serial1: RX: A10, TX: A9. Debug and programming port.
+HardwareSerial DebugSerial = Serial1;
+
+// Serial2: RX: A3, TX: A2. Connected to Speeduino.
+HardwareSerial SpeeduinoSerial = Serial2;
+
 #define WIDTH 320
 #define HEIGHT 240
 
@@ -490,9 +496,9 @@ void processResponse()
 */
 void clearRx()
 {
-  while (Serial2.available() > 0)
+  while (SpeeduinoSerial.available() > 0)
   {
-    Serial2.read();
+    SpeeduinoSerial.read();
   }
 }
 
@@ -507,17 +513,17 @@ void clearRx()
 */
 int popHeader()
 {
-  Serial2.setTimeout(500);
-  if (Serial2.find('n'))
+  SpeeduinoSerial.setTimeout(500);
+  if (SpeeduinoSerial.find('n'))
   {
-    Serial1.println("Found N");
+    DebugSerial.println("Found N");
 
-    if (Serial2.find(0x32))
+    if (SpeeduinoSerial.find(0x32))
     {
-      while (!Serial2.available())
+      while (!SpeeduinoSerial.available())
         ;
-      Serial1.println("Return packetlen");
-      return Serial2.read();
+      DebugSerial.println("Return packetlen");
+      return SpeeduinoSerial.read();
     }
   }
   return -1;
@@ -527,29 +533,29 @@ void requestData()
 {
 
   // clearRx();
-  Serial2.write("n"); // Send n to request real time data
-  Serial1.println("requested data");
+  SpeeduinoSerial.write("n"); // Send n to request real time data
+  DebugSerial.println("requested data");
 
   int nLength = popHeader();
 
   if (nLength >= RESPONSE_LEN)
   {
-    Serial1.println("Response pkt bigger than rec'v buf");
-    Serial1.print("nLength=");
-    Serial1.println(nLength);
+    DebugSerial.println("Response pkt bigger than rec'v buf");
+    DebugSerial.print("nLength=");
+    DebugSerial.println(nLength);
   }
   else if (nLength > 0)
   {
-    Serial1.print("nLength=");
-    Serial1.println(nLength);
+    DebugSerial.print("nLength=");
+    DebugSerial.println(nLength);
 
     uint8_t nRead = Serial2.readBytes(speeduinoResponse, nLength);
-    Serial1.print("nRead=");
-    Serial1.println(nRead);
+    DebugSerial.print("nRead=");
+    DebugSerial.println(nRead);
 
     if (nRead < nLength)
     {
-      Serial1.println("nRead < nLength");
+      DebugSerial.println("nRead < nLength");
       bumpTimeout();
     }
     else
@@ -562,7 +568,7 @@ void requestData()
   }
   else
   {
-    Serial1.println("popHeader -1");
+    DebugSerial.println("popHeader -1");
     bumpTimeout();
   }
 }
@@ -672,15 +678,15 @@ void setup()
   requestFrame = false;
   renderNoConnection();
 
-  while (!Serial1)
+  while (!DebugSerial)
     ;
-  Serial1.begin(115200); // ftdi serial
+  DebugSerial.begin(115200);
   delay(500);
 
-  Serial2.setRx(PA3);
-  Serial2.setTx(PA2);
-  Serial2.setTimeout(500);
-  Serial2.begin(115200); // speeduino runs at 115200
+  SpeeduinoSerial.setRx(PA3);
+  SpeeduinoSerial.setTx(PA2);
+  SpeeduinoSerial.setTimeout(500);
+  SpeeduinoSerial.begin(115200); // speeduino runs at 115200
 
   delay(250);
 }
