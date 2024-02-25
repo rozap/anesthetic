@@ -543,6 +543,7 @@ void requestData()
     DebugSerial.println("Response pkt bigger than rec'v buf");
     DebugSerial.print("nLength=");
     DebugSerial.println(nLength);
+    clearRx();
   }
   else if (nLength > 0)
   {
