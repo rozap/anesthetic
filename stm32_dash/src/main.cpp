@@ -208,7 +208,8 @@ double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
   return total / cb.size();
 }
 
-void clearLine() {
+void clearLine()
+{
   tft.fillRect(tft.getCursorX(), tft.getCursorY(), tft.width(), tft.getCursorY() + tft.textsize, BACKGROUND_COLOR);
 }
 
@@ -561,19 +562,18 @@ void renderNoConnection()
   tft.println("No Connection");
 }
 
-
-void renderWarning() {
+void renderWarning()
+{
   clearScreen();
   int padding = 10;
-  
+
   tft.fillRect(padding, padding, WIDTH - padding, HEIGHT - padding, ILI9341_RED);
 
   tft.setCursor(padding * 2, padding * 2);
   tft.setTextColor(ILI9341_LIGHTGREY);
   tft.setTextSize(3);
   tft.println(
-    "WARNING"
-  );
+      "WARNING");
   tft.setTextSize(2);
   tft.setCursor(tft.getCursorX() + (padding * 2), tft.getCursorY());
 
@@ -582,20 +582,23 @@ void renderWarning() {
 
 void renderNoData()
 {
-  // 
+  //
   // renderWarning();
   // return;
 
-  clearScreen();
   tft.setTextColor(ILI9341_LIGHTGREY);
   tft.setTextSize(4);
   tft.setCursor(0, 0);
+  clearLine();
   tft.println("No Data");
+  
   tft.setTextSize(2);
+  clearLine();
   tft.print("Timeouts ");
   tft.print(timeouts);
   tft.println("  ");
 
+  clearLine();
   tft.print("Fuel ");
   tft.print(readFuel());
   tft.println("%   ");
@@ -603,7 +606,7 @@ void renderNoData()
 
 void render()
 {
-  
+
   tft.setTextSize(3);
   tft.setCursor(0, 0);
   tft.setTextColor(ILI9341_CYAN);
@@ -676,18 +679,20 @@ void loop(void)
       clearScreen();
     }
 
-    // if we're going in between states, then
-    if (screenState == SCREEN_STATE_NO_DATA)
+    switch (screenState)
     {
+    case SCREEN_STATE_NO_DATA:
       renderNoData();
-    }
-    else if (screenState == SCREEN_STATE_NO_CONNECTION)
-    {
+      break;
+    case SCREEN_STATE_NO_CONNECTION:
       renderNoConnection();
-    }
-    else if (screenState == SCREEN_STATE_NORMAL)
-    {
+      break;
+    case SCREEN_STATE_NORMAL:
       render();
+      break;
+    default:
+      render();
+      break;
     }
   }
 

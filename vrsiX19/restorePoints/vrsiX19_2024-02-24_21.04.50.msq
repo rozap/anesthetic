@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-<bibliography author="TunerStudio MS Ultra 3.1.08 - EFI Analytics, Inc." tuneComment="205cc @ 3 bar&#10;I flowed mine on a flow bench...&#10;223cc/min @ 350 kpa&#10;&#10;15.5ms for injector pulse" writeDate="Sat Feb 24 23:08:39 PST 2024"/>
+<bibliography author="TunerStudio MS Ultra 3.1.08 - EFI Analytics, Inc." tuneComment="&lt;html&gt;Restore Point: Project close - &lt;br&gt;205cc @ 3 bar&#10;I flowed mine on a flow bench...&#10;223cc/min @ 350 kpa&#10;&#10;15.5ms for injector pulse" writeDate="Sat Feb 24 21:04:50 PST 2024"/>
 <versionInfo fileFormat="5.0" firmwareInfo="Speeduino+2023.05" nPages="15" signature="speeduino 202305"/>
 <page>
 <pcVariable name="tsCanId">"0"</pcVariable>
@@ -495,7 +495,7 @@
 <constant digits="0" name="maeMinChange" units="kPa">2.0</constant>
 <constant name="displayB1">"RPM"</constant>
 <constant name="displayB2">"RPM"</constant>
-<constant digits="1" name="reqFuel" units="ms">13.2</constant>
+<constant digits="1" name="reqFuel" units="ms">15.5</constant>
 <constant digits="0" name="divider">3.0</constant>
 <constant name="alternate">"Alternating"</constant>
 <constant name="crkngAddCLTAdv">"No"</constant>
@@ -1888,7 +1888,7 @@
 <constant name="fuelPressureEnable">"Off"</constant>
 <constant name="oilPressureEnable">"On"</constant>
 <constant name="oilPressureProtEnbl">"Off"</constant>
-<constant name="oilPressurePin">"A9"</constant>
+<constant name="oilPressurePin">"A17"</constant>
 <constant name="fuelPressurePin">"A14"</constant>
 <constant digits="0" name="fuelPressureMin" units="psi">-18.0</constant>
 <constant digits="0" name="fuelPressureMax" units="psi">168.0</constant>
