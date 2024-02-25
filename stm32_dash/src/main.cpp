@@ -522,7 +522,6 @@ int popHeader()
   return -1;
 }
 
-int unfucked = 0;
 void requestData()
 {
 
