@@ -27,6 +27,8 @@
 #include <SPI.h>
 #include <CircularBuffer.h>
 
+#include "boot_image.h"
+
 // If this is defined, uses data in mock_pkt.h instead of actually reading from the serial port.
 //#define USE_MOCK_DATA
 #ifdef USE_MOCK_DATA
@@ -680,6 +682,17 @@ void render()
   requestFrame = false;
 }
 
+void renderBootImage()
+{
+  uint32_t i = 0;
+  for (int y = 0; y < boot_image_height; y++) {
+    for (int x = 0; x < boot_image_width; x++) {
+      tft.drawPixel(x, y, boot_image_data[i]);
+      i++;
+    }
+  }
+}
+
 void setup()
 {
   delay(500);
@@ -705,6 +718,9 @@ void setup()
   SpeeduinoSerial.begin(115200); // speeduino runs at 115200
 
   delay(250);
+
+  renderBootImage();
+  delay(2000);
 }
 
 void loop(void)
