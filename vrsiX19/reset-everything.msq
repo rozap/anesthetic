@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-<bibliography author="TunerStudio MS Ultra 3.1.08 - EFI Analytics, Inc." tuneComment="205cc @ 3 bar&#10;I flowed mine on a flow bench...&#10;223cc/min @ 350 kpa&#10;&#10;15.5ms for injector pulse" writeDate="Mon Mar 25 21:26:22 PDT 2024"/>
+<bibliography author="TunerStudio MS Ultra 3.1.08 - EFI Analytics, Inc." tuneComment="" writeDate="Sun Feb 25 13:26:29 PST 2024"/>
 <versionInfo fileFormat="5.0" firmwareInfo="Speeduino+2024.02" nPages="15" signature="speeduino 202402"/>
 <page>
 <pcVariable name="tsCanId">"0"</pcVariable>
@@ -29,11 +29,11 @@
          180.0 
          175.0 
          168.0 
-         155.0 
-         128.0 
-         113.0 
-         102.0 
-         101.0 
+         154.0 
+         134.0 
+         121.0 
+         112.0 
+         104.0 
          102.0 
          100.0 
       </pcVariable>
@@ -475,11 +475,11 @@
          180.0 
          175.0 
          168.0 
-         155.0 
-         128.0 
-         113.0 
-         102.0 
-         101.0 
+         154.0 
+         134.0 
+         121.0 
+         112.0 
+         104.0 
          102.0 
          100.0 
       </constant>
@@ -495,8 +495,8 @@
 <constant digits="0" name="maeMinChange" units="kPa">2.0</constant>
 <constant name="displayB1">"RPM"</constant>
 <constant name="displayB2">"RPM"</constant>
-<constant digits="1" name="reqFuel" units="ms">15.3</constant>
-<constant digits="0" name="divider">3.0</constant>
+<constant digits="1" name="reqFuel" units="ms">12.2</constant>
+<constant digits="0" name="divider">2.0</constant>
 <constant name="alternate">"Alternating"</constant>
 <constant name="crkngAddCLTAdv">"No"</constant>
 <constant name="includeAFR">"No"</constant>
@@ -513,16 +513,16 @@
 <constant name="mapSample">"Cycle Average"</constant>
 <constant name="twoStroke">"Four-stroke"</constant>
 <constant name="injType">"Port"</constant>
-<constant name="nCylinders">"6"</constant>
+<constant name="nCylinders">"4"</constant>
 <constant name="algorithm">"MAP"</constant>
 <constant name="fixAngEnable">"Off"</constant>
-<constant name="nInjectors">"6"</constant>
+<constant name="nInjectors">"4"</constant>
 <constant name="engineType">"Even fire"</constant>
 <constant name="flexEnabled">"Off"</constant>
 <constant name="legacyMAP">"No"</constant>
 <constant name="baroCorr">"Off"</constant>
 <constant name="injLayout">"Paired"</constant>
-<constant name="perToothIgn">"No"</constant>
+<constant name="perToothIgn">"Yes"</constant>
 <constant name="dfcoEnabled">"Off"</constant>
 <constant digits="0" name="aeColdTaperMax" units="F">139.986</constant>
 <constant digits="0" name="dutyLim" units="%">90.0</constant>
@@ -533,7 +533,7 @@
 <constant digits="0" name="tpsMax" units="ADC">230.0</constant>
 <constant digits="0" name="mapMin" units="kpa">10.0</constant>
 <constant digits="0" name="mapMax" units="kpa">260.0</constant>
-<constant digits="0" name="fpPrime" units="s">3.0</constant>
+<constant digits="0" name="fpPrime" units="s">6.0</constant>
 <constant digits="1" name="stoich" units=":1">14.7</constant>
 <constant digits="0" name="oddfire2" units="deg">0.0</constant>
 <constant digits="0" name="oddfire3" units="deg">0.0</constant>
@@ -558,8 +558,8 @@
 <constant name="rtc_mode">"Off"</constant>
 <constant name="incorporateAFR">"No"</constant>
 <constant cols="1" digits="0" name="asePct" rows="4" units="%">
-         50.0 
-         50.0 
+         25.0 
+         20.0 
          15.0 
          10.0 
       </constant>
@@ -576,8 +576,8 @@
          175.986 
       </constant>
 <constant cols="1" digits="1" name="primePulse" rows="4" units="ms">
-         4.5 
-         3.5 
+         4.0 
+         3.0 
          2.0 
          1.0 
       </constant>
@@ -632,22 +632,22 @@
 </page>
 <page number="1" size="288">
 <constant cols="16" digits="0" name="veTable" rows="16" units="%">
-         40.0 43.0 43.0 37.0 31.0 30.0 27.0 19.0 15.0 17.0 31.0 34.0 34.0 34.0 34.0 34.0 
-         29.0 46.0 41.0 39.0 30.0 29.0 27.0 21.0 18.0 24.0 47.0 49.0 50.0 51.0 51.0 50.0 
-         28.0 23.0 24.0 29.0 31.0 37.0 40.0 29.0 29.0 43.0 50.0 52.0 54.0 54.0 54.0 54.0 
-         38.0 32.0 34.0 33.0 34.0 41.0 43.0 42.0 44.0 49.0 53.0 56.0 58.0 58.0 58.0 59.0 
-         43.0 37.0 37.0 35.0 40.0 43.0 47.0 44.0 52.0 59.0 56.0 60.0 61.0 62.0 62.0 63.0 
-         46.0 26.0 35.0 38.0 43.0 45.0 46.0 38.0 42.0 51.0 61.0 64.0 65.0 65.0 65.0 66.0 
-         49.0 30.0 43.0 42.0 46.0 49.0 49.0 48.0 57.0 73.0 66.0 68.0 69.0 69.0 69.0 69.0 
-         52.0 55.0 48.0 46.0 49.0 53.0 55.0 55.0 61.0 71.0 68.0 71.0 72.0 72.0 72.0 72.0 
-         48.0 50.0 52.0 53.0 54.0 56.0 60.0 67.0 77.0 88.0 73.0 75.0 75.0 74.0 74.0 74.0 
-         49.0 52.0 53.0 63.0 60.0 57.0 59.0 63.0 74.0 97.0 79.0 78.0 78.0 77.0 76.0 76.0 
-         63.0 66.0 70.0 73.0 72.0 58.0 58.0 64.0 74.0 85.0 82.0 80.0 81.0 80.0 79.0 79.0 
-         65.0 68.0 72.0 72.0 100.0 69.0 61.0 69.0 78.0 78.0 81.0 83.0 84.0 83.0 83.0 83.0 
-         67.0 69.0 74.0 80.0 127.0 85.0 66.0 68.0 73.0 87.0 82.0 86.0 87.0 86.0 85.0 86.0 
-         69.0 71.0 75.0 80.0 127.0 94.0 63.0 68.0 87.0 100.0 81.0 88.0 90.0 89.0 87.0 87.0 
-         70.0 72.0 75.0 78.0 123.0 83.0 58.0 67.0 78.0 84.0 77.0 89.0 91.0 90.0 89.0 89.0 
-         71.0 72.0 74.0 77.0 87.0 93.0 84.0 79.0 83.0 88.0 86.0 89.0 91.0 91.0 90.0 91.0 
+         40.0 40.0 40.0 40.0 40.0 39.0 38.0 37.0 36.0 35.0 34.0 34.0 34.0 34.0 34.0 34.0 
+         41.0 41.0 42.0 43.0 43.0 42.0 41.0 40.0 40.0 40.0 48.0 49.0 50.0 51.0 51.0 50.0 
+         40.0 41.0 42.0 44.0 45.0 47.0 47.0 45.0 45.0 47.0 50.0 52.0 54.0 54.0 54.0 54.0 
+         43.0 44.0 46.0 49.0 51.0 52.0 52.0 49.0 48.0 50.0 53.0 56.0 58.0 58.0 58.0 59.0 
+         47.0 48.0 51.0 53.0 56.0 57.0 56.0 54.0 53.0 54.0 57.0 60.0 61.0 62.0 62.0 63.0 
+         50.0 52.0 55.0 57.0 58.0 59.0 59.0 58.0 57.0 59.0 62.0 64.0 65.0 65.0 65.0 66.0 
+         53.0 56.0 59.0 60.0 61.0 62.0 62.0 61.0 62.0 63.0 66.0 68.0 69.0 69.0 69.0 69.0 
+         56.0 59.0 62.0 65.0 64.0 65.0 67.0 65.0 65.0 67.0 70.0 71.0 72.0 72.0 72.0 72.0 
+         59.0 61.0 65.0 68.0 69.0 70.0 70.0 69.0 68.0 71.0 74.0 75.0 75.0 74.0 74.0 74.0 
+         61.0 64.0 67.0 70.0 73.0 73.0 73.0 71.0 71.0 73.0 76.0 78.0 78.0 77.0 76.0 76.0 
+         63.0 66.0 70.0 74.0 77.0 77.0 75.0 73.0 73.0 76.0 79.0 80.0 81.0 80.0 79.0 79.0 
+         65.0 68.0 72.0 77.0 79.0 79.0 78.0 76.0 76.0 78.0 82.0 83.0 84.0 83.0 83.0 83.0 
+         67.0 69.0 74.0 79.0 81.0 81.0 79.0 78.0 78.0 80.0 84.0 86.0 87.0 86.0 85.0 86.0 
+         69.0 71.0 75.0 80.0 81.0 81.0 80.0 79.0 79.0 82.0 85.0 88.0 90.0 89.0 87.0 87.0 
+         70.0 72.0 75.0 78.0 80.0 80.0 80.0 79.0 80.0 83.0 86.0 89.0 91.0 90.0 89.0 89.0 
+         71.0 72.0 74.0 77.0 80.0 81.0 80.0 80.0 82.0 84.0 86.0 89.0 91.0 91.0 90.0 91.0 
       </constant>
 <constant cols="1" digits="0" name="rpmBins" rows="16" units="RPM">
          500.0 
@@ -689,17 +689,17 @@
 <page number="2" size="288">
 <constant cols="16" digits="0" name="advTable1" rows="16" units="deg">
          17.0 18.0 19.0 20.0 21.0 24.0 25.0 27.0 28.0 29.0 30.0 31.0 32.0 32.0 33.0 34.0 
-         11.0 12.0 13.0 14.0 15.0 18.0 25.0 27.0 28.0 35.0 36.0 37.0 38.0 38.0 39.0 40.0 
-         9.0 9.0 9.0 18.0 19.0 22.0 31.0 33.0 34.0 35.0 36.0 37.0 38.0 38.0 39.0 40.0 
-         9.0 9.0 9.0 18.0 19.0 22.0 31.0 33.0 34.0 34.0 36.0 37.0 37.0 37.0 38.0 39.0 
-         9.0 9.0 9.0 18.0 19.0 22.0 31.0 32.0 34.0 34.0 36.0 37.0 37.0 37.0 38.0 39.0 
-         9.0 13.0 14.0 17.0 18.0 22.0 30.0 32.0 33.0 34.0 35.0 36.0 36.0 36.0 37.0 38.0 
-         9.0 13.0 16.0 17.0 18.0 21.0 30.0 31.0 32.0 33.0 34.0 35.0 36.0 36.0 37.0 38.0 
-         9.0 12.0 14.0 17.0 18.0 20.0 29.0 30.0 31.0 32.0 33.0 34.0 35.0 35.0 36.0 37.0 
-         2.0 5.0 7.0 17.0 18.0 19.0 28.0 30.0 31.0 32.0 33.0 34.0 34.0 34.0 35.0 35.0 
-         2.0 6.0 7.0 17.0 18.0 19.0 28.0 29.0 30.0 31.0 32.0 33.0 33.0 33.0 34.0 34.0 
-         3.0 6.0 7.0 17.0 18.0 19.0 28.0 29.0 30.0 31.0 31.0 32.0 32.0 32.0 33.0 33.0 
-         11.0 13.0 15.0 24.0 25.0 27.0 29.0 30.0 31.0 31.0 32.0 32.0 32.0 32.0 33.0 33.0 
+         17.0 18.0 19.0 20.0 21.0 24.0 25.0 27.0 28.0 35.0 36.0 37.0 38.0 38.0 39.0 40.0 
+         14.0 14.0 14.0 24.0 25.0 28.0 31.0 33.0 34.0 35.0 36.0 37.0 38.0 38.0 39.0 40.0 
+         14.0 14.0 14.0 24.0 25.0 28.0 31.0 33.0 34.0 34.0 36.0 37.0 37.0 37.0 38.0 39.0 
+         14.0 14.0 14.0 24.0 25.0 28.0 31.0 32.0 34.0 34.0 36.0 37.0 37.0 37.0 38.0 39.0 
+         15.0 19.0 20.0 23.0 24.0 28.0 30.0 32.0 33.0 34.0 35.0 36.0 36.0 36.0 37.0 38.0 
+         15.0 19.0 22.0 23.0 24.0 27.0 30.0 31.0 32.0 33.0 34.0 35.0 36.0 36.0 37.0 38.0 
+         16.0 19.0 21.0 23.0 24.0 26.0 29.0 30.0 31.0 32.0 33.0 34.0 35.0 35.0 36.0 37.0 
+         16.0 19.0 21.0 23.0 24.0 25.0 28.0 30.0 31.0 32.0 33.0 34.0 34.0 34.0 35.0 35.0 
+         16.0 20.0 21.0 23.0 24.0 25.0 28.0 29.0 30.0 31.0 32.0 33.0 33.0 33.0 34.0 34.0 
+         17.0 20.0 21.0 23.0 24.0 25.0 28.0 29.0 30.0 31.0 31.0 32.0 32.0 32.0 33.0 33.0 
+         19.0 21.0 23.0 24.0 25.0 27.0 29.0 30.0 31.0 31.0 32.0 32.0 32.0 32.0 33.0 33.0 
          20.0 22.0 24.0 26.0 27.0 29.0 31.0 32.0 32.0 32.0 33.0 33.0 33.0 33.0 34.0 34.0 
          22.0 24.0 26.0 28.0 29.0 30.0 32.0 34.0 34.0 34.0 34.0 34.0 34.0 34.0 34.0 34.0 
          23.0 25.0 26.0 28.0 29.0 30.0 33.0 34.0 35.0 35.0 35.0 35.0 35.0 35.0 35.0 36.0 
@@ -743,14 +743,14 @@
       </constant>
 </page>
 <page number="3" size="128">
-<constant digits="0" name="TrigAng" units="Deg">282.0</constant>
+<constant digits="0" name="TrigAng" units="Deg">0.0</constant>
 <constant digits="0" name="FixAng" units="Deg">0.0</constant>
 <constant digits="0" name="CrankAng" units="Deg">5.0</constant>
 <constant digits="0" name="TrigAngMul">0.0</constant>
 <constant name="TrigEdge">"RISING"</constant>
 <constant name="TrigSpeed">"Crank Speed"</constant>
 <constant name="IgInv">"Going Low"</constant>
-<constant name="TrigPattern">"Missing Tooth"</constant>
+<constant name="TrigPattern">"Dual Wheel"</constant>
 <constant name="TrigEdgeSec">"RISING"</constant>
 <constant name="fuelPumpPin">"Board Default"</constant>
 <constant name="useResync">"No"</constant>
@@ -764,12 +764,12 @@
 <constant name="boostType">"Open Loop"</constant>
 <constant name="useDwellLim">"On"</constant>
 <constant name="sparkMode">"Wasted Spark"</constant>
-<constant name="TrigFilter">"Weak"</constant>
+<constant name="TrigFilter">"Off"</constant>
 <constant name="ignCranklock">"Off"</constant>
 <constant digits="1" name="dwellcrank" units="ms">4.5</constant>
-<constant digits="1" name="dwellrun" units="ms">3.2</constant>
-<constant digits="0" name="numTeeth" units="teeth">60.0</constant>
-<constant digits="0" name="missingTeeth" units="teeth">2.0</constant>
+<constant digits="1" name="dwellrun" units="ms">3.0</constant>
+<constant digits="0" name="numTeeth" units="teeth">8.0</constant>
+<constant digits="0" name="missingTeeth" units="teeth">1.0</constant>
 <constant digits="0" name="crankRPM" units="rpm">400.0</constant>
 <constant digits="1" name="tpsflood" units="%">80.0</constant>
 <constant digits="0" name="SoftRevLim" units="rpm">6000.0</constant>
@@ -989,7 +989,7 @@
       </constant>
 </page>
 <page number="5" size="128">
-<constant name="egoAlgorithm">"PID"</constant>
+<constant name="egoAlgorithm">"No correction"</constant>
 <constant name="egoType">"Wide Band"</constant>
 <constant name="boostEnabled">"Off"</constant>
 <constant name="vvtEnabled">"Off"</constant>
@@ -1885,14 +1885,14 @@
 <constant digits="0" name="vvtCLMaxAng" units="deg">49.0</constant>
 <constant digits="1" name="crankingEnrichTaper" units="s">1.0</constant>
 <constant name="fuelPressureEnable">"Off"</constant>
-<constant name="oilPressureEnable">"On"</constant>
+<constant name="oilPressureEnable">"Off"</constant>
 <constant name="oilPressureProtEnbl">"Off"</constant>
-<constant name="oilPressurePin">"A9"</constant>
+<constant name="oilPressurePin">"A15"</constant>
 <constant name="fuelPressurePin">"A14"</constant>
 <constant digits="0" name="fuelPressureMin" units="psi">-18.0</constant>
 <constant digits="0" name="fuelPressureMax" units="psi">168.0</constant>
-<constant digits="0" name="oilPressureMin" units="psi">-10.0</constant>
-<constant digits="0" name="oilPressureMax" units="psi">100.0</constant>
+<constant digits="0" name="oilPressureMin" units="psi">-18.0</constant>
+<constant digits="0" name="oilPressureMax" units="psi">168.0</constant>
 <constant cols="1" digits="0" name="oilPressureProtMins" rows="4" units="psi">
          0.0 
          30.0 
