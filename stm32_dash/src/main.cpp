@@ -1,8 +1,9 @@
 /*
   dance to update firmware:
-    * plug in USB
-    * push NRST and BOOT0 at the same time (push NRST slightly before?)
-    * upload
+    1 plug in USB
+    2 Hold down the BOOT0 button then tap NRST. This will put the device into bootloader mode. You can now release both buttons.
+    3 Upload. No rush, there isn't a timeout.
+    4 Repeat from step 2 to upload firmware the next time. No need to unplug USB.
   wtf:
     * pin3 has to be ON to program the thing
       * press reset each time to program
@@ -25,6 +26,18 @@
 #include <TFT_eSPI.h>
 #include <SPI.h>
 #include <CircularBuffer.h>
+
+// If this is defined, uses data in mock_pkt.h instead of actually reading from the serial port.
+//#define USE_MOCK_DATA
+#ifdef USE_MOCK_DATA
+#include "mock_pkt.h"
+#endif
+
+// Serial1: RX: A10, TX: A9. Debug and programming port.
+HardwareSerial DebugSerial = Serial1;
+
+// Serial2: RX: A3, TX: A2. Connected to Speeduino.
+HardwareSerial SpeeduinoSerial = Serial2;
 
 #define WIDTH 320
 #define HEIGHT 240
@@ -485,53 +498,81 @@ void processResponse()
   // currentStatus.fanDuty = speeduinoResponse[121];
 }
 
+/**
+ * Discards all data in Serial2's input buffer.
+*/
 void clearRx()
 {
-  while (Serial2.available() > 0)
+  while (SpeeduinoSerial.available() > 0)
   {
-    Serial2.read();
+    SpeeduinoSerial.read();
   }
 }
 
+/**
+ * Wait for the Speeduino to respond with a packet header, which is:
+ * 0x6E ('n')
+ * 0x32 ('2')
+ * ...followed by one length byte (0-255).
+ * 
+ * The packet length is returned if a packet header is found within
+ * timeout (500ms), else -1 is returned.
+*/
 int popHeader()
 {
-  Serial2.setTimeout(500);
-  if (Serial2.find('n'))
+  #ifdef USE_MOCK_DATA
+  return ___single_speeduino_pkt_bin[2];
+  #else
+  SpeeduinoSerial.setTimeout(500);
+  if (SpeeduinoSerial.find('n'))
   {
-    Serial1.println("Found N");
+    DebugSerial.println("Found N");
 
-    if (Serial2.find(0x32))
+    if (SpeeduinoSerial.find(0x32))
     {
-      while (!Serial2.available())
+      while (!SpeeduinoSerial.available())
         ;
-      Serial1.println("Return packetlen");
-      return Serial2.read();
+      DebugSerial.println("Return packetlen");
+      return SpeeduinoSerial.read();
     }
   }
   return -1;
+  #endif
 }
 
-int unfucked = 0;
 void requestData()
 {
 
   // clearRx();
-  Serial2.write("n"); // Send n to request real time data
-  Serial1.println("requested data");
+  SpeeduinoSerial.write("n"); // Send n to request real time data
+  DebugSerial.println("requested data");
 
   int nLength = popHeader();
-  if (nLength > 0)
-  {
-    Serial1.print("nLength=");
-    Serial1.println(nLength);
 
-    uint8_t nRead = Serial2.readBytes(speeduinoResponse, nLength);
-    Serial1.print("nRead=");
-    Serial1.println(nRead);
+  if (nLength >= RESPONSE_LEN)
+  {
+    DebugSerial.println("Response pkt bigger than rec'v buf");
+    DebugSerial.print("nLength=");
+    DebugSerial.println(nLength);
+    clearRx();
+  }
+  else if (nLength > 0)
+  {
+    DebugSerial.print("nLength=");
+    DebugSerial.println(nLength);
+
+    #ifdef USE_MOCK_DATA
+    uint8_t nRead = ___single_speeduino_pkt_bin[2];
+    memcpy(speeduinoResponse, ___single_speeduino_pkt_bin + 3, ___single_speeduino_pkt_bin_len - 3);
+    #else
+    uint8_t nRead = SpeeduinoSerial.readBytes(speeduinoResponse, nLength);
+    #endif
+    DebugSerial.print("nRead=");
+    DebugSerial.println(nRead);
 
     if (nRead < nLength)
     {
-      Serial1.println("nRead < nLength");
+      DebugSerial.println("nRead < nLength");
       bumpTimeout();
     }
     else
@@ -544,7 +585,7 @@ void requestData()
   }
   else
   {
-    Serial1.println("popHeader -1");
+    DebugSerial.println("popHeader -1");
     bumpTimeout();
   }
 }
@@ -655,15 +696,13 @@ void setup()
   requestFrame = false;
   renderNoConnection();
 
-  while (!Serial1)
-    ;
-  Serial1.begin(115200); // ftdi serial
+  DebugSerial.begin(115200);
   delay(500);
 
-  Serial2.setRx(PA3);
-  Serial2.setTx(PA2);
-  Serial2.setTimeout(500);
-  Serial2.begin(115200); // speeduino runs at 115200
+  SpeeduinoSerial.setRx(PA3);
+  SpeeduinoSerial.setTx(PA2);
+  SpeeduinoSerial.setTimeout(500);
+  SpeeduinoSerial.begin(115200); // speeduino runs at 115200
 
   delay(250);
 }
