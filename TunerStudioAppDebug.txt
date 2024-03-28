@@ -11204,3 +11204,19 @@ Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException:
 3/27/24 10:34:39 PM :Info: vrsiX19 Tune Saved!
 3/27/24 10:34:39 PM :Debug: Fill Constants: 11
 3/27/24 10:34:39 PM :Info: Skip Restore Point for 'vrsiX19' because nothing changed since: vrsiX19_2024-03-27_22.34.33.msq
+3/27/24 10:38:46 PM :Debug: Received Instruction: Read Chunk 3, Page: 3
+3/27/24 10:38:46 PM :Info: Initiating read page 3 : 0:288
+3/27/24 10:40:09 PM :Info: dirtyData.size(): 0
+3/27/24 10:40:09 PM :Info: dirtyData.size(): 0
+3/27/24 10:40:09 PM :Debug: Flush lasted: 70ms.
+3/27/24 10:40:09 PM :Debug: Burn Page anonymous: -1
+3/27/24 10:40:09 PM :Debug: Received Instruction: , Page: 2
+3/27/24 10:40:14 PM :Info: Time to save msq: 81.56253
+3/27/24 10:40:14 PM :Info: Time to save msq: 16.817327
+3/27/24 10:40:14 PM :Info: vrsiX19 Tune Saved!
+3/27/24 10:40:14 PM :Debug: Fill Constants: 5
+3/27/24 10:40:14 PM :Debug: File does not exist, creating new:
+/home/chris/workspace/anesthetic/vrsiX19/restorePoints/vrsiX19_2024-03-27_22.40.14.msq
+3/27/24 10:40:14 PM :Info: Time to save msq: 4.639914
+3/27/24 10:40:14 PM :Info: vrsiX19 Restore point saved
+3/27/24 10:40:14 PM :Info: vrsiX19 Restore point saved to: vrsiX19_2024-03-27_22.40.14.msq
