@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-<bibliography author="TunerStudio MS Ultra 3.1.08 - EFI Analytics, Inc." tuneComment="205cc @ 3 bar&#10;I flowed mine on a flow bench...&#10;223cc/min @ 350 kpa&#10;&#10;15.5ms for injector pulse" writeDate="Wed Mar 27 22:34:39 PDT 2024"/>
+<bibliography author="TunerStudio MS Ultra 3.1.08 - EFI Analytics, Inc." tuneComment="&lt;html&gt;Restore Point: User Requested Save of Settings - &lt;br&gt;205cc @ 3 bar&#10;I flowed mine on a flow bench...&#10;223cc/min @ 350 kpa&#10;&#10;15.5ms for injector pulse" writeDate="Wed Mar 27 22:34:33 PDT 2024"/>
 <versionInfo fileFormat="5.0" firmwareInfo="Speeduino+2024.02" nPages="15" signature="speeduino 202402"/>
 <page>
 <pcVariable name="tsCanId">"0"</pcVariable>

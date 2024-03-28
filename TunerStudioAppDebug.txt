@@ -9594,3 +9594,1613 @@ Please check your Communications Settings.
 3/25/24 9:26:22 PM :Debug: ############################################# Save Project Backup ##########################################
 3/25/24 9:26:22 PM :Info: Finalizing Sensors
 Saved user properties successfully
+Starting on zen
+TunerStudio 3.1.08 started on Tue Mar 26 03:02:59 PDT 2024
+JRE 1.8.0_282, Linux 5.4.0-174-generic, amd64
+java.library.path=/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+TunerStudioMS.jar
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:GTK+, ClassName:'com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+3/26/24 3:03:00 AM :Debug: no update:defaultFont
+3/26/24 3:03:00 AM :Info: Initializing File Dialogs.
+3/26/24 3:03:00 AM :Info: Updating ai & t
+3/26/24 3:03:00 AM :Info: Loading Language Content.
+3/26/24 3:03:02 AM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+3/26/24 3:03:02 AM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+3/26/24 3:03:02 AM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+3/26/24 3:03:02 AM :Info: Initializing Plugin Services.
+3/26/24 3:03:02 AM :Info: Loading Plugins.
+3/26/24 3:03:02 AM :Info: Initializing Help.
+3/26/24 3:03:02 AM :Info: Initializing Edition Features.
+3/26/24 3:03:02 AM :Info: Initializing App Events.
+3/26/24 3:03:02 AM :Debug: App Name:TunerStudio, appEdition:MS Ultra
+3/26/24 3:03:02 AM :Info: Initializing Log Viewer Components.
+3/26/24 3:03:02 AM :Info: Initializing User Interface
+3/26/24 3:03:02 AM :Warning: Unable to set Main cluster for title:
+3/26/24 3:03:03 AM :Info: Checking for updates
+3/26/24 3:03:04 AM :Info: Loading Font list.
+3/26/24 3:03:04 AM :Debug: Time to retreive font name list: 71 ms.
+3/26/24 3:03:04 AM :Info: 
+3/26/24 3:03:04 AM :Info: Initializing UI Components.
+3/26/24 3:03:04 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+3/26/24 3:03:04 AM :Debug: EventTrigger playRacecarWOT Reset. expression: tps < 5
+3/26/24 3:03:04 AM :Info: Ready
+MS Ultramain: No check, last update check=Sat Mar 23 15:40:30 PDT 2024
+MS Ultraad: No check, last update check=Sat Mar 23 15:40:33 PDT 2024
+3/26/24 2:38:39 PM :Info: Update Check Completed
+Saved user properties successfully
+3/26/24 2:38:40 PM :Info: Opening Project ...
+3/26/24 2:38:40 PM :Debug: Opening project: /home/chris/workspace/anesthetic/vrsiX19
+3/26/24 2:38:40 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+3/26/24 2:38:40 PM :Debug: EventTrigger playRacecarWOT Reset. expression: tps < 5
+3/26/24 2:38:40 PM :Debug: EventTrigger Data log Reset. expression: 
+3/26/24 2:38:40 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+3/26/24 2:38:40 PM :Debug: EventTrigger playRacecarWOT Reset. expression: tps < 5
+3/26/24 2:38:40 PM :Debug: EventTrigger Stop Data log Reset. expression: 
+3/26/24 2:38:40 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+3/26/24 2:38:40 PM :Debug: EventTrigger playRacecarWOT Reset. expression: tps < 5
+3/26/24 2:38:40 PM :Debug: Reading translation file as plain text
+3/26/24 2:38:40 PM :Info: Supported iniSpecVersion=3.71
+3/26/24 2:38:40 PM :Debug: Filtered ConfigurationOptionGroup in 14ms.
+3/26/24 2:38:40 PM :Info: Supported iniSpecVersion=3.71
+3/26/24 2:38:40 PM :Info: Read file canPcVariables.ini: 0.667641ms
+3/26/24 2:38:40 PM :Info: Filtered ini: 0.056318ms
+3/26/24 2:38:40 PM :Info: No iniVersion defined
+3/26/24 2:38:40 PM :Info: Loading Trigger Wheels
+3/26/24 2:38:40 PM :Info: Loaded All known ini sections
+3/26/24 2:38:40 PM :Info: Parsed and validated ini "canPcVariables.ini" in : 12ms.
+3/26/24 2:38:40 PM :Info: Read file mainController.ini: 6.805501ms
+3/26/24 2:38:40 PM :Info: Filtered ini: 3.813272ms
+3/26/24 2:38:40 PM :Info: No iniVersion defined
+3/26/24 2:38:40 PM :Debug: ini signature: speeduino 202402
+3/26/24 2:38:40 PM :Info: Loading Trigger Wheels
+3/26/24 2:38:40 PM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+3/26/24 2:38:41 PM :Info: Loaded All known ini sections
+3/26/24 2:38:41 PM :Info: Parsed and validated ini "mainController.ini" in : 399ms.
+3/26/24 2:38:41 PM :Info: Supported iniSpecVersion=3.71
+3/26/24 2:38:41 PM :Info: Read file speeduinoSupplement.ecu: 7.977743ms
+3/26/24 2:38:41 PM :Info: Filtered ini: 0.072983ms
+3/26/24 2:38:41 PM :Info: No iniVersion defined
+3/26/24 2:38:41 PM :Info: Loading Trigger Wheels
+3/26/24 2:38:41 PM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+3/26/24 2:38:41 PM :Info: Validate Expressions disabled.
+3/26/24 2:38:41 PM :Info: Loaded All known ini sections
+3/26/24 2:38:41 PM :Info: Parsed ini "speeduinoSupplement.ecu" in : 10ms.
+3/26/24 2:38:41 PM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+3/26/24 2:38:41 PM :Info: Time to load primary config: 495.44705ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+3/26/24 2:38:41 PM :Debug: set baud to 115200
+3/26/24 2:38:41 PM :Debug: Adding Configuration: vrsiX19
+3/26/24 2:38:41 PM :Debug: controllerOnline = 0.0
+3/26/24 2:38:41 PM :Debug: Activating Event Trigger: TriggeredPage0 Refresh:  vssRefresh > 0 
+3/26/24 2:38:41 PM :Debug: Fill Constants: 11
+3/26/24 2:38:41 PM :Info: Tune opened, 3389 bytes updated. File:/home/chris/workspace/anesthetic/vrsiX19/CurrentTune.msq
+3/26/24 2:38:41 PM :Info: Tune opened, 3389 bytes updated. File:/home/chris/workspace/anesthetic/vrsiX19/CurrentTune.msq
+3/26/24 2:38:41 PM :Info: dirtyData.size(): 0
+3/26/24 2:38:41 PM :Info: dirtyData.size(): 0
+3/26/24 2:38:41 PM :Debug: Flush lasted: 70ms.
+3/26/24 2:38:41 PM :Info: dirtyData.size(): 0
+3/26/24 2:38:41 PM :Info: dirtyData.size(): 0
+3/26/24 2:38:41 PM :Debug: Flush lasted: 71ms.
+3/26/24 2:38:41 PM :Debug: Skip Burn, last write page: -2
+3/26/24 2:38:41 PM :Info: !!! Loaded config in 817
+3/26/24 2:38:41 PM :Info: !!! Activated Project 1023
+3/26/24 2:38:41 PM :Info: Opening Gauge Cluster..
+3/26/24 2:38:41 PM :Info: Time to load uncached dash: 348.34937ms, file: dashboard.dash
+3/26/24 2:38:41 PM :Debug: High Speed Paint: true
+3/26/24 2:38:42 PM :Info: 
+3/26/24 2:38:42 PM :Info: Com Thread created: COMM Thread66102.06105891398
+3/26/24 2:38:42 PM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+3/26/24 2:38:42 PM :Info: Comm Manager for vrsiX19 Started, thread ID: COMM Thread66102.06105891398
+3/26/24 2:38:42 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+3/26/24 2:38:42 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+3/26/24 2:38:42 PM :Debug: EventTrigger playRacecarWOT Reset. expression: tps < 5
+3/26/24 2:38:42 PM :Debug: Activating Event Trigger: cltTempWarning
+3/26/24 2:38:42 PM :Debug: Activating Event Trigger: playRacecarWOT
+3/26/24 2:38:42 PM :Debug: Deactivating Event Trigger: cltTempWarning
+3/26/24 2:38:42 PM :Debug: Activating Event Trigger: cltTempWarning
+3/26/24 2:38:42 PM :Info: EventTrigger: vrsiX19.cltTempWarning loaded and activated.
+3/26/24 2:38:42 PM :Debug: Deactivating Event Trigger: playRacecarWOT
+3/26/24 2:38:42 PM :Debug: Activating Event Trigger: playRacecarWOT
+3/26/24 2:38:42 PM :Info: EventTrigger: vrsiX19.playRacecarWOT loaded and activated.
+3/26/24 2:38:42 PM :Info: EventTrigger: vrsiX19.TriggeredPage0 Refresh:  vssRefresh > 0  not active.
+3/26/24 2:38:42 PM :Info: Time to load uncached dash: 232.72462ms, file: Acceleration_Performance.dash
+3/26/24 2:38:42 PM :Debug: High Speed Paint: false
+3/26/24 2:38:42 PM :Debug: !!! Opened Dash 2028
+3/26/24 2:38:42 PM :Info: vrsiX19 Ready
+3/26/24 2:38:42 PM :Debug: Tuning View Files loaded in 0.100601ms.
+3/26/24 2:38:49 PM :Debug: Received Instruction: Read Chunk 1, Page: 1
+3/26/24 2:38:49 PM :Info: Initiating read page 1 : 26:95
+3/26/24 2:38:49 PM :Debug: Received Instruction: Read Chunk 4, Page: 4
+3/26/24 2:38:49 PM :Info: Initiating read page 4 : 3:61
+3/26/24 2:38:49 PM :Debug: Received Instruction: Read Chunk 10, Page: 10
+3/26/24 2:38:49 PM :Info: Initiating read page 10 : 0:135
+3/26/24 4:52:02 PM :Info: Comm Read Thread Change! Old Thread:null, new Thread:COMM Thread66102.06105891398
+
+3/26/24 4:52:02 PM :Debug: Purged 2 orphaned bytes:
+3/26/24 4:52:02 PM :Debug: Time:8001.949s. 0x0 0x0 
+3/26/24 4:52:02 PM :Debug: Time:8001.949s. 
+
+3/26/24 4:52:02 PM :Debug: Time:8001.949s.   .    .  
+3/26/24 4:52:03 PM :Info: Local on CAN ID:0, blockingFactor: 121, tableBlockingFactor: 64
+3/26/24 4:52:03 PM :Info: Target device is local, using localBlockingFactors
+3/26/24 4:52:04 PM :Info: Sig Bytes:x73 x70 x65 x65 x64 x75 x69 x6E x6F x20 x32 x30 x32 x34 x30 x32       speeduino.202402
+3/26/24 4:52:05 PM :Info: Communicating with sig:speeduino 202402, Speeduino 2024.02
+3/26/24 4:52:05 PM :Debug: Received Instruction: Read All Tune Data, Page: 0
+3/26/24 4:52:05 PM :Debug: controllerOnline = 1.0
+3/26/24 4:52:05 PM :Debug: cltTempWarning: Trigger Expression: coolant > 230 = 0.0
+3/26/24 4:52:05 PM :Debug: playRacecarWOT: Trigger Expression: tps > 92 = 0.0
+3/26/24 4:52:05 PM :Debug: TriggeredPage0 Refresh:  vssRefresh > 0 : Trigger Expression:  vssRefresh > 0  = 0.0
+3/26/24 4:52:05 PM :Debug: CRC matches for page 1:xF0 x13 x11 xEF                                                       ....
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:1
+3/26/24 4:52:05 PM :Debug: CRC matches for page 2:x6D xD1 x90 x6F                                                       m..o
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:2
+3/26/24 4:52:05 PM :Debug: CRC matches for page 3:xD0 xDC xC0 x4B                                                       ...K
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:3
+3/26/24 4:52:05 PM :Debug: CRC matches for page 4:x10 x88 xE3 x2B                                                       ...+
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:4
+3/26/24 4:52:05 PM :Debug: CRC matches for page 5:x44 x34 xD2 x3D                                                       D4.=
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:5
+3/26/24 4:52:05 PM :Debug: CRC matches for page 6:xAD xA8 x2C xA1                                                       ..,.
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:6
+3/26/24 4:52:05 PM :Debug: CRC matches for page 7:xA8 xBA x1F x5E                                                       ...^
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:7
+3/26/24 4:52:05 PM :Debug: CRC matches for page 8:xA2 x47 xF1 x70                                                       .G.p
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:8
+3/26/24 4:52:05 PM :Info: CRC Mismatch, will need to refresh page from controller 
+3/26/24 4:52:05 PM :Info:    CRC from controller page 9:x3A xB7 x17 x39                                                       :..9
+3/26/24 4:52:05 PM :Info:    Local Data CRC for page 9: x5F x84 x02 xAB                                                       _...
+3/26/24 4:52:05 PM :Debug: Read page time: 64ms.
+3/26/24 4:52:05 PM :Info: Checksum page 9 data read: x3A xB7 x17 x39                                                       :..9
+3/26/24 4:52:05 PM :Debug: CRC matches for page 10:x72 x17 xC8 x3E                                                       r..>
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:10
+3/26/24 4:52:05 PM :Debug: CRC matches for page 11:x74 x8A xF8 xBC                                                       t...
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:11
+3/26/24 4:52:05 PM :Debug: CRC matches for page 12:x9D x30 x2B xB9                                                       .0+.
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:12
+3/26/24 4:52:05 PM :Debug: CRC matches for page 13:x09 xA6 x79 x25                                                       ..y%
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:13
+3/26/24 4:52:05 PM :Debug: CRC matches for page 14:xB3 x54 xFB xA1                                                       .T..
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:14
+3/26/24 4:52:05 PM :Debug: CRC matches for page 15:xA3 x7E x82 xE6                                                       .~..
+3/26/24 4:52:05 PM :Info: CrC matched skipped controller read on page:15
+3/26/24 4:52:05 PM :Debug: Read All Data
+3/26/24 4:52:05 PM :Debug: isBlank Time: 0 ms.
+3/26/24 4:52:05 PM :Debug: DiffTime: 28 ms.
+3/26/24 4:52:13 PM :Info: dirtyData.size(): 0
+3/26/24 4:52:13 PM :Info: dirtyData.size(): 0
+3/26/24 4:52:13 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:52:13 PM :Debug: Burn Page anonymous: -1
+3/26/24 4:52:13 PM :Debug: Received Instruction: , Page: 9
+3/26/24 4:52:13 PM :Info: skip burn to page:9, lastWritePage = -2
+3/26/24 4:52:13 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 9
+3/26/24 4:52:21 PM :Debug: Received Instruction: Read Chunk 1, Page: 1
+3/26/24 4:52:21 PM :Info: Initiating read page 1 : 4:10
+3/26/24 4:52:21 PM :Debug: Received Instruction: Read Chunk 4, Page: 4
+3/26/24 4:52:21 PM :Info: Initiating read page 4 : 31:10
+3/26/24 4:52:21 PM :Debug: CRC matches for page 1:xF0 x13 x11 xEF                                                       ....
+3/26/24 4:52:21 PM :Info: CrC matched skipped controller read on page:0
+3/26/24 4:52:21 PM :Debug: CRC matches for page 4:x10 x88 xE3 x2B                                                       ...+
+3/26/24 4:52:21 PM :Info: CrC matched skipped controller read on page:3
+3/26/24 4:52:26 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:52:27 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:52:29 PM :Info: dirtyData.size(): 0
+3/26/24 4:52:29 PM :Info: dirtyData.size(): 0
+3/26/24 4:52:29 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:52:29 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:52:29 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:52:29 PM :Info: Queueing burn to page:1
+3/26/24 4:52:29 PM :Debug: Burn time:9ms.
+3/26/24 4:52:29 PM :Debug: burned page 1
+3/26/24 4:52:29 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:52:29 PM :Debug: CRC matches for page 1:x94 x96 xDF x2C                                                       ...,
+3/26/24 4:52:30 PM :Info: Time to save msq: 123.73752
+3/26/24 4:52:31 PM :Info: dirtyData.size(): 0
+3/26/24 4:52:31 PM :Info: dirtyData.size(): 0
+3/26/24 4:52:31 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:52:31 PM :Debug: Burn Page anonymous: -1
+3/26/24 4:52:31 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:52:31 PM :Info: skip burn to page:1, lastWritePage = -2
+3/26/24 4:52:31 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+3/26/24 4:53:27 PM :Debug: Received Instruction: Read Chunk 1, Page: 1
+3/26/24 4:53:27 PM :Info: Initiating read page 1 : 0:83
+3/26/24 4:53:28 PM :Debug: CRC matches for page 1:x94 x96 xDF x2C                                                       ...,
+3/26/24 4:53:28 PM :Info: CrC matched skipped controller read on page:0
+3/26/24 4:53:31 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:32 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:34 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:34 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:34 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:53:34 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:53:34 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:53:34 PM :Info: Queueing burn to page:1
+3/26/24 4:53:34 PM :Debug: Burn time:9ms.
+3/26/24 4:53:34 PM :Debug: burned page 1
+3/26/24 4:53:34 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:53:34 PM :Debug: CRC matches for page 1:xFF x57 x83 xA7                                                       .W..
+3/26/24 4:53:36 PM :Info: Time to save msq: 13.040903
+3/26/24 4:53:37 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:39 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:39 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:39 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:53:39 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:53:39 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:53:39 PM :Info: Queueing burn to page:1
+3/26/24 4:53:39 PM :Debug: Burn time:6ms.
+3/26/24 4:53:39 PM :Debug: burned page 1
+3/26/24 4:53:39 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:53:39 PM :Debug: CRC matches for page 1:x12 x5C x65 x35                                                       .\e5
+3/26/24 4:53:41 PM :Info: Time to save msq: 9.339116
+3/26/24 4:53:43 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:44 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:45 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:47 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:47 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:47 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:53:47 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:53:47 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:53:47 PM :Info: Queueing burn to page:1
+3/26/24 4:53:47 PM :Debug: Burn time:7ms.
+3/26/24 4:53:47 PM :Debug: burned page 1
+3/26/24 4:53:47 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:53:47 PM :Debug: CRC matches for page 1:xAD x0B x6D xE1                                                       ..m.
+3/26/24 4:53:48 PM :Info: Time to save msq: 8.832055
+3/26/24 4:53:50 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:51 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:51 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:51 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:53:51 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:53:51 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:53:51 PM :Info: Queueing burn to page:1
+3/26/24 4:53:51 PM :Debug: Burn time:10ms.
+3/26/24 4:53:51 PM :Debug: burned page 1
+3/26/24 4:53:51 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:53:51 PM :Debug: CRC matches for page 1:x2A x62 xAF xD2                                                       *b..
+3/26/24 4:53:53 PM :Info: Time to save msq: 6.238762
+3/26/24 4:53:55 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:58 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:53:59 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:59 PM :Info: dirtyData.size(): 0
+3/26/24 4:53:59 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:53:59 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:53:59 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:53:59 PM :Info: Queueing burn to page:1
+3/26/24 4:53:59 PM :Debug: Burn time:9ms.
+3/26/24 4:53:59 PM :Debug: burned page 1
+3/26/24 4:53:59 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:53:59 PM :Debug: CRC matches for page 1:x87 xDC xB7 x12                                                       ....
+3/26/24 4:54:01 PM :Info: Time to save msq: 5.271729
+3/26/24 4:54:11 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:13 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:14 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:14 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:17 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:17 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:18 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:19 PM :Info: dirtyData.size(): 0
+3/26/24 4:54:19 PM :Info: dirtyData.size(): 0
+3/26/24 4:54:19 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:54:19 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:54:19 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:54:19 PM :Info: Queueing burn to page:1
+3/26/24 4:54:19 PM :Debug: Burn time:8ms.
+3/26/24 4:54:19 PM :Debug: burned page 1
+3/26/24 4:54:19 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:54:19 PM :Debug: CRC matches for page 1:x24 xA6 xA0 x94                                                       $...
+3/26/24 4:54:21 PM :Info: Time to save msq: 5.284334
+3/26/24 4:54:25 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:26 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:27 PM :Info: dirtyData.size(): 0
+3/26/24 4:54:27 PM :Info: dirtyData.size(): 0
+3/26/24 4:54:27 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:54:27 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:54:27 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:54:27 PM :Info: Queueing burn to page:1
+3/26/24 4:54:27 PM :Debug: Burn time:9ms.
+3/26/24 4:54:27 PM :Debug: burned page 1
+3/26/24 4:54:27 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:54:27 PM :Debug: CRC matches for page 1:x23 xC3 x94 x35                                                       #..5
+3/26/24 4:54:29 PM :Info: Time to save msq: 6.400982
+3/26/24 4:54:32 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:33 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:54:34 PM :Info: dirtyData.size(): 0
+3/26/24 4:54:34 PM :Info: dirtyData.size(): 0
+3/26/24 4:54:34 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:54:34 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:54:34 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:54:34 PM :Info: Queueing burn to page:1
+3/26/24 4:54:35 PM :Debug: Burn time:6ms.
+3/26/24 4:54:35 PM :Debug: burned page 1
+3/26/24 4:54:35 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:54:35 PM :Debug: CRC matches for page 1:x94 x5A x39 xE1                                                       .Z9.
+3/26/24 4:54:36 PM :Info: Time to save msq: 13.247214
+3/26/24 4:54:39 PM :Info: dirtyData.size(): 0
+3/26/24 4:54:40 PM :Info: dirtyData.size(): 0
+3/26/24 4:54:40 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:54:40 PM :Debug: Burn Page anonymous: -1
+3/26/24 4:54:40 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:54:40 PM :Info: skip burn to page:1, lastWritePage = -2
+3/26/24 4:54:40 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+3/26/24 4:55:02 PM :Debug: Received Instruction: Read Chunk 1, Page: 1
+3/26/24 4:55:02 PM :Info: Initiating read page 1 : 4:10
+3/26/24 4:55:02 PM :Debug: Received Instruction: Read Chunk 4, Page: 4
+3/26/24 4:55:02 PM :Info: Initiating read page 4 : 31:10
+3/26/24 4:55:02 PM :Debug: CRC matches for page 1:x94 x5A x39 xE1                                                       .Z9.
+3/26/24 4:55:02 PM :Info: CrC matched skipped controller read on page:0
+3/26/24 4:55:02 PM :Debug: CRC matches for page 4:x10 x88 xE3 x2B                                                       ...+
+3/26/24 4:55:02 PM :Info: CrC matched skipped controller read on page:3
+3/26/24 4:55:26 PM :Debug: Received Instruction: Read Chunk 1, Page: 1
+3/26/24 4:55:26 PM :Info: Initiating read page 1 : 0:83
+3/26/24 4:55:26 PM :Debug: CRC matches for page 1:x94 x5A x39 xE1                                                       .Z9.
+3/26/24 4:55:26 PM :Info: CrC matched skipped controller read on page:0
+3/26/24 4:55:32 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:55:33 PM :Info: dirtyData.size(): 0
+3/26/24 4:55:33 PM :Info: dirtyData.size(): 0
+3/26/24 4:55:33 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:55:33 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:55:33 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:55:33 PM :Info: Queueing burn to page:1
+3/26/24 4:55:33 PM :Debug: Burn time:7ms.
+3/26/24 4:55:33 PM :Debug: burned page 1
+3/26/24 4:55:33 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:55:33 PM :Debug: CRC matches for page 1:x5D xA6 x1D x9C                                                       ]...
+3/26/24 4:55:34 PM :Info: dirtyData.size(): 0
+3/26/24 4:55:34 PM :Info: dirtyData.size(): 0
+3/26/24 4:55:34 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:55:34 PM :Debug: Burn Page anonymous: -1
+3/26/24 4:55:34 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:55:34 PM :Info: skip burn to page:1, lastWritePage = -2
+3/26/24 4:55:34 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+3/26/24 4:55:35 PM :Info: Time to save msq: 10.484777
+3/26/24 4:55:37 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:55:38 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:55:42 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:55:43 PM :Info: dirtyData.size(): 0
+3/26/24 4:55:43 PM :Info: dirtyData.size(): 0
+3/26/24 4:55:43 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:55:43 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:55:43 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:55:43 PM :Info: Queueing burn to page:1
+3/26/24 4:55:43 PM :Debug: Burn time:14ms.
+3/26/24 4:55:43 PM :Debug: burned page 1
+3/26/24 4:55:43 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:55:43 PM :Debug: CRC matches for page 1:xF5 x8A x98 xAE                                                       ....
+3/26/24 4:55:45 PM :Info: Time to save msq: 11.050315
+3/26/24 4:56:01 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:02 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:02 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:02 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:56:02 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:56:02 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:56:02 PM :Info: Queueing burn to page:1
+3/26/24 4:56:03 PM :Debug: Burn time:6ms.
+3/26/24 4:56:03 PM :Debug: burned page 1
+3/26/24 4:56:03 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:56:03 PM :Debug: CRC matches for page 1:x94 xEB x79 x3F                                                       ..y?
+3/26/24 4:56:04 PM :Info: Time to save msq: 5.424991
+3/26/24 4:56:08 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:10 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:10 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:10 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:56:10 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:56:10 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:56:10 PM :Info: Queueing burn to page:1
+3/26/24 4:56:10 PM :Debug: Burn time:7ms.
+3/26/24 4:56:10 PM :Debug: burned page 1
+3/26/24 4:56:10 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:56:10 PM :Debug: CRC matches for page 1:x78 x43 xE7 x87                                                       xC..
+3/26/24 4:56:11 PM :Info: Time to save msq: 7.904986
+3/26/24 4:56:15 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:16 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:16 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:18 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:18 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:18 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:56:18 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:56:18 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:56:18 PM :Info: Queueing burn to page:1
+3/26/24 4:56:18 PM :Debug: Burn time:8ms.
+3/26/24 4:56:18 PM :Debug: burned page 1
+3/26/24 4:56:18 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:56:18 PM :Debug: CRC matches for page 1:xA9 xA1 x13 xC2                                                       ....
+3/26/24 4:56:19 PM :Info: Time to save msq: 9.409841
+3/26/24 4:56:32 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:33 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:36 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:38 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:39 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:41 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:41 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:42 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:42 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:56:42 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:56:42 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:56:42 PM :Info: Queueing burn to page:1
+3/26/24 4:56:42 PM :Debug: Burn time:2ms.
+3/26/24 4:56:42 PM :Debug: burned page 1
+3/26/24 4:56:42 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:56:42 PM :Debug: CRC matches for page 1:x56 xE7 x15 x37                                                       V..7
+3/26/24 4:56:43 PM :Info: Time to save msq: 4.752619
+3/26/24 4:56:49 PM :Debug: Received Instruction: Write Chunk, Page: 1
+3/26/24 4:56:51 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:51 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:51 PM :Debug: Flush lasted: 70ms.
+3/26/24 4:56:51 PM :Debug: Burn Page anonymous: 1
+3/26/24 4:56:51 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:56:51 PM :Info: Queueing burn to page:1
+3/26/24 4:56:51 PM :Debug: Burn time:9ms.
+3/26/24 4:56:51 PM :Debug: burned page 1
+3/26/24 4:56:51 PM :Debug: No Remaining Queue Write instructions
+3/26/24 4:56:51 PM :Debug: CRC matches for page 1:xC0 x4F x6B x4F                                                       .OkO
+3/26/24 4:56:53 PM :Info: Time to save msq: 6.592322
+3/26/24 4:56:53 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:54 PM :Info: dirtyData.size(): 0
+3/26/24 4:56:54 PM :Debug: Flush lasted: 71ms.
+3/26/24 4:56:54 PM :Debug: Burn Page anonymous: -1
+3/26/24 4:56:54 PM :Debug: Received Instruction: , Page: 1
+3/26/24 4:56:54 PM :Info: skip burn to page:1, lastWritePage = -2
+3/26/24 4:56:54 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+3/26/24 4:56:57 PM :Info: Time to load uncached dash: 15.749353ms, file: veAnalyze_veTable1Tbl.dash
+3/26/24 4:56:57 PM :Debug: High Speed Paint: true
+3/26/24 4:56:57 PM :Info: Time to load uncached dash: 9.433839ms, file: veAnalyze_veTable1Tbl_histogram.dash
+3/26/24 4:56:57 PM :Debug: High Speed Paint: true
+3/26/24 4:56:57 PM :Info: Time to load uncached dash: 13.531734ms, file: wueAnalyze_warmup_analyzer_curve.dash
+3/26/24 4:56:57 PM :Debug: High Speed Paint: true
+3/26/24 4:56:57 PM :Info: Time to load uncached dash: 42.98948ms, file: wueAnalyze_warmup_analyzer_curve_histogram.dash
+3/26/24 4:56:57 PM :Debug: High Speed Paint: true
+3/26/24 4:57:00 PM :Info: Logger Processor stopped.
+3/26/24 4:57:00 PM :Info: Logger Processor stopped.
+3/26/24 4:57:00 PM :Info: Logger Processor stopped.
+3/26/24 4:57:00 PM :Info: Logger Processor stopped.
+3/26/24 4:57:00 PM :Info: Time to load uncached dash: 10.481477ms, file: IgnitionLoggerCluster.dash
+3/26/24 4:57:00 PM :Debug: High Speed Paint: true
+3/26/24 4:57:00 PM :Debug: Deactivated fast paint IgnitionLoggerCluster
+3/26/24 4:59:16 PM :Debug: TuneViewPanel Activated.
+3/26/24 4:59:16 PM :Info: Time to load uncached dash: 15.243779ms, file: 4.3551711113709456E82665216573728261992tempDash
+3/26/24 4:59:16 PM :Debug: High Speed Paint: true
+3/26/24 4:59:16 PM :Info: Time to read TuneView_000.tuneView: 181.73499ms.
+3/26/24 4:59:16 PM :Debug: Closing TuneViewPanel Main Fuel
+3/26/24 4:59:16 PM :Debug: Deactivated fast paint null
+3/26/24 4:59:16 PM :Info: Loaded TuningView Components for Main Fuel in 166.42976ms.
+3/26/24 4:59:17 PM :Debug: TuneViewPanel Deactivated.
+3/26/24 4:59:33 PM :Debug: filtering record, no historic table close enough.
+3/26/24 4:59:45 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 4:59:45 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 4:59:52 PM :Debug: filtering record, no historic table close enough.
+3/26/24 4:59:52 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:00:08 PM :Debug: page: 2 offset: 37, len: 97
+3/26/24 5:00:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:00:23 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:00:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:00:23 PM :Debug: page: 2 offset: 119, len: 29
+3/26/24 5:00:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:00:38 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:00:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:00:38 PM :Debug: page: 2 offset: 119, len: 47
+3/26/24 5:00:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:00:53 PM :Debug: page: 2 offset: 20, len: 98
+3/26/24 5:00:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:01:08 PM :Debug: page: 2 offset: 21, len: 115
+3/26/24 5:01:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:01:08 PM :Debug: page: 2 offset: 136, len: 62
+3/26/24 5:01:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:01:23 PM :Debug: page: 2 offset: 6, len: 115
+3/26/24 5:01:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:01:23 PM :Debug: page: 2 offset: 121, len: 110
+3/26/24 5:01:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:01:38 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:01:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:01:38 PM :Debug: page: 2 offset: 119, len: 31
+3/26/24 5:01:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:01:53 PM :Debug: page: 2 offset: 7, len: 115
+3/26/24 5:01:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:01:53 PM :Debug: page: 2 offset: 122, len: 109
+3/26/24 5:01:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:02:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:02:08 PM :Debug: page: 2 offset: 52, len: 115
+3/26/24 5:02:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:02:08 PM :Debug: page: 2 offset: 167, len: 31
+3/26/24 5:02:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:02:23 PM :Debug: page: 2 offset: 82, len: 50
+3/26/24 5:02:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:02:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:02:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:03:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:03:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:03:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:03:39 PM :Debug: page: 2 offset: 36, len: 50
+3/26/24 5:03:39 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:03:39 PM :Debug: page: 2 offset: 36, len: 50
+3/26/24 5:03:39 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:03:42 PM :Debug: page: 2 offset: 38, len: 49
+3/26/24 5:03:42 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:04:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:04:10 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:04:14 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:04:14 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:04:18 PM :Info: dirtyData.size(): 0
+3/26/24 5:04:18 PM :Info: dirtyData.size(): 0
+3/26/24 5:04:18 PM :Debug: Flush lasted: 70ms.
+3/26/24 5:04:18 PM :Debug: Burn Page anonymous: 2
+3/26/24 5:04:18 PM :Debug: Received Instruction: , Page: 2
+3/26/24 5:04:18 PM :Info: Queueing burn to page:2
+3/26/24 5:04:18 PM :Debug: Burn time:36ms.
+3/26/24 5:04:18 PM :Debug: burned page 2
+3/26/24 5:04:18 PM :Debug: No Remaining Queue Write instructions
+3/26/24 5:04:18 PM :Debug: CRC matches for page 2:x2A xEA x72 xAB                                                       *.r.
+3/26/24 5:04:19 PM :Info: Time to save msq: 72.13438
+3/26/24 5:04:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:04:38 PM :Debug: page: 2 offset: 35, len: 34
+3/26/24 5:04:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:04:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:04:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:08 PM :Debug: page: 2 offset: 5, len: 115
+3/26/24 5:05:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:08 PM :Debug: page: 2 offset: 120, len: 113
+3/26/24 5:05:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:38 PM :Debug: page: 2 offset: 84, len: 35
+3/26/24 5:05:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:38 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:05:53 PM :Debug: page: 2 offset: 5, len: 115
+3/26/24 5:05:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:05:53 PM :Debug: page: 2 offset: 120, len: 110
+3/26/24 5:05:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:06:08 PM :Debug: page: 2 offset: 20, len: 115
+3/26/24 5:06:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:06:08 PM :Debug: page: 2 offset: 135, len: 99
+3/26/24 5:06:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:06:23 PM :Debug: page: 2 offset: 5, len: 115
+3/26/24 5:06:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:06:23 PM :Debug: page: 2 offset: 120, len: 98
+3/26/24 5:06:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:06:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:06:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:06:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:06:53 PM :Debug: page: 2 offset: 54, len: 96
+3/26/24 5:06:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:07:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:07:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:07:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:07:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:07:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:07:53 PM :Debug: page: 2 offset: 101, len: 115
+3/26/24 5:07:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:07:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:07:53 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:08:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:08:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:08:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:08:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:09:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:09:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:09:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:09:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:09:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:09:38 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:09:53 PM :Debug: page: 2 offset: 19, len: 115
+3/26/24 5:09:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:09:53 PM :Debug: page: 2 offset: 134, len: 63
+3/26/24 5:09:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:08 PM :Debug: page: 2 offset: 122, len: 97
+3/26/24 5:10:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:08 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:10:23 PM :Debug: page: 2 offset: 68, len: 115
+3/26/24 5:10:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:23 PM :Debug: page: 2 offset: 183, len: 30
+3/26/24 5:10:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:38 PM :Debug: page: 2 offset: 40, len: 115
+3/26/24 5:10:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:38 PM :Debug: page: 2 offset: 155, len: 78
+3/26/24 5:10:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:39 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:10:50 PM :Warning: No JavaFX, Can't play mp3.
+d.e: JavaFX Libraries not found, JavaFX is required for mp3 playback.
+	at aL.l.a(Unknown Source)
+	at d.g.a(Unknown Source)
+	at d.m.a(Unknown Source)
+	at d.g.a(Unknown Source)
+	at d.g.b(Unknown Source)
+	at R.n.a(Unknown Source)
+	at R.g.i(Unknown Source)
+	at R.g.b(Unknown Source)
+	at R.g.a(Unknown Source)
+	at R.e.a(Unknown Source)
+	at F.J.a(Unknown Source)
+	at F.J.z(Unknown Source)
+	at y.t.e(Unknown Source)
+	at y.u.run(Unknown Source)
+d.e: An Error occurred action name: playSoundFile
+JavaFX Libraries not found, JavaFX is required for mp3 playback.
+	at d.g.a(Unknown Source)
+	at d.m.a(Unknown Source)
+	at d.g.a(Unknown Source)
+	at d.g.b(Unknown Source)
+	at R.n.a(Unknown Source)
+	at R.g.i(Unknown Source)
+	at R.g.b(Unknown Source)
+	at R.g.a(Unknown Source)
+	at R.e.a(Unknown Source)
+	at F.J.a(Unknown Source)
+	at F.J.z(Unknown Source)
+	at y.t.e(Unknown Source)
+	at y.u.run(Unknown Source)
+3/26/24 5:10:50 PM :Warning: Failed to fire AppAction: playRacecar
+Error: An Error occurred action name: playRacecar
+An Error occurred action name: playSoundFile
+JavaFX Libraries not found, JavaFX is required for mp3 playback.
+3/26/24 5:10:50 PM :Debug: EventTrigger playRacecarWOT Triggered. expression: tps > 92
+3/26/24 5:10:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:10:53 PM :Debug: page: 2 offset: 136, len: 114
+3/26/24 5:10:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:11:08 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:11:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:11:08 PM :Debug: page: 2 offset: 119, len: 114
+3/26/24 5:11:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:11:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:11:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:11:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:11:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:12:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:12:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:12:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:12:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:12:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:12:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:12:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:08 PM :Debug: page: 2 offset: 217, len: 32
+3/26/24 5:13:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:09 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:13:09 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:13:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:23 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:13:23 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:13:53 PM :Debug: page: 2 offset: 135, len: 100
+3/26/24 5:13:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:14:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:14:08 PM :Debug: page: 2 offset: 41, len: 115
+3/26/24 5:14:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:14:08 PM :Debug: page: 2 offset: 156, len: 63
+3/26/24 5:14:08 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:14:34 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:14:36 PM :Info: dirtyData.size(): 0
+3/26/24 5:14:36 PM :Info: dirtyData.size(): 0
+3/26/24 5:14:36 PM :Debug: Flush lasted: 70ms.
+3/26/24 5:14:36 PM :Debug: Burn Page anonymous: 2
+3/26/24 5:14:36 PM :Debug: Received Instruction: , Page: 2
+3/26/24 5:14:36 PM :Info: Queueing burn to page:2
+3/26/24 5:14:36 PM :Debug: Burn time:45ms.
+3/26/24 5:14:36 PM :Debug: burned page 2
+3/26/24 5:14:36 PM :Debug: No Remaining Queue Write instructions
+3/26/24 5:14:36 PM :Debug: CRC matches for page 2:xE8 x7B xE2 x33                                                       .{.3
+3/26/24 5:14:37 PM :Info: Time to save msq: 13.701248
+3/26/24 5:15:02 PM :Debug: TuneViewPanel Activated.
+3/26/24 5:15:06 PM :Debug: TuneViewPanel Deactivated.
+3/26/24 5:15:19 PM :Debug: Received Instruction: Read Chunk 1, Page: 1
+3/26/24 5:15:19 PM :Info: Initiating read page 1 : 70:1
+3/26/24 5:15:19 PM :Debug: Received Instruction: Read Chunk 6, Page: 6
+3/26/24 5:15:19 PM :Info: Initiating read page 6 : 120:4
+3/26/24 5:15:19 PM :Debug: Received Instruction: Read Chunk 9, Page: 9
+3/26/24 5:15:19 PM :Debug: CRC matches for page 1:xC0 x4F x6B x4F                                                       .OkO
+3/26/24 5:15:19 PM :Info: CrC matched skipped controller read on page:0
+3/26/24 5:15:19 PM :Info: Initiating read page 9 : 153:1
+3/26/24 5:15:19 PM :Debug: CRC matches for page 6:xAD xA8 x2C xA1                                                       ..,.
+3/26/24 5:15:19 PM :Info: CrC matched skipped controller read on page:5
+3/26/24 5:15:19 PM :Debug: CRC matches for page 9:x3A xB7 x17 x39                                                       :..9
+3/26/24 5:15:19 PM :Info: CrC matched skipped controller read on page:8
+3/26/24 5:15:23 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:23 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:25 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:25 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:26 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:27 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:27 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:28 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:29 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:29 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:31 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:33 PM :Debug: Received Instruction: Write Chunk, Page: 6
+3/26/24 5:15:35 PM :Info: dirtyData.size(): 0
+3/26/24 5:15:35 PM :Info: dirtyData.size(): 0
+3/26/24 5:15:35 PM :Debug: Flush lasted: 70ms.
+3/26/24 5:15:35 PM :Debug: Burn Page anonymous: 6
+3/26/24 5:15:35 PM :Debug: Received Instruction: , Page: 6
+3/26/24 5:15:35 PM :Info: Queueing burn to page:6
+3/26/24 5:15:35 PM :Debug: Burn time:8ms.
+3/26/24 5:15:35 PM :Debug: burned page 6
+3/26/24 5:15:35 PM :Debug: No Remaining Queue Write instructions
+3/26/24 5:15:35 PM :Debug: CRC matches for page 6:x0C x71 x28 xF6                                                       .q(.
+3/26/24 5:15:37 PM :Info: Time to save msq: 14.229335
+3/26/24 5:15:44 PM :Info: dirtyData.size(): 0
+3/26/24 5:15:44 PM :Info: dirtyData.size(): 0
+3/26/24 5:15:44 PM :Debug: Flush lasted: 71ms.
+3/26/24 5:15:44 PM :Debug: Burn Page anonymous: -1
+3/26/24 5:15:44 PM :Debug: Received Instruction: , Page: 6
+3/26/24 5:15:44 PM :Info: skip burn to page:6, lastWritePage = -2
+3/26/24 5:15:44 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 6
+3/26/24 5:24:50 PM :Info: dirtyData.size(): 0
+3/26/24 5:24:50 PM :Info: dirtyData.size(): 0
+3/26/24 5:24:50 PM :Debug: Flush lasted: 71ms.
+3/26/24 5:24:50 PM :Debug: Burn Page anonymous: -1
+3/26/24 5:24:50 PM :Debug: Received Instruction: , Page: 6
+3/26/24 5:24:50 PM :Info: skip burn to page:6, lastWritePage = -2
+3/26/24 5:24:50 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 6
+3/26/24 5:25:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:25:22 PM :Debug: page: 2 offset: 34, len: 33
+3/26/24 5:25:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:25:37 PM :Debug: page: 2 offset: 100, len: 32
+3/26/24 5:25:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:25:52 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:25:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:25:52 PM :Debug: page: 2 offset: 119, len: 30
+3/26/24 5:25:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:26:07 PM :Debug: page: 2 offset: 4, len: 98
+3/26/24 5:26:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:26:37 PM :Debug: page: 2 offset: 5, len: 115
+3/26/24 5:26:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:26:37 PM :Debug: page: 2 offset: 120, len: 49
+3/26/24 5:26:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:26:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:26:52 PM :Debug: page: 2 offset: 23, len: 115
+3/26/24 5:26:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:26:52 PM :Debug: page: 2 offset: 138, len: 79
+3/26/24 5:26:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:27:07 PM :Debug: page: 2 offset: 21, len: 115
+3/26/24 5:27:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:27:07 PM :Debug: page: 2 offset: 136, len: 97
+3/26/24 5:27:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:27:22 PM :Debug: page: 2 offset: 38, len: 115
+3/26/24 5:27:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:27:22 PM :Debug: page: 2 offset: 153, len: 81
+3/26/24 5:27:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:27:37 PM :Debug: page: 2 offset: 4, len: 64
+3/26/24 5:27:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:27:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:27:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:22 PM :Debug: page: 2 offset: 121, len: 30
+3/26/24 5:28:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:22 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:28:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:37 PM :Debug: page: 2 offset: 22, len: 115
+3/26/24 5:28:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:37 PM :Debug: page: 2 offset: 137, len: 112
+3/26/24 5:28:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:52 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:28:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:52 PM :Debug: page: 2 offset: 119, len: 115
+3/26/24 5:28:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:28:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:07 PM :Debug: page: 2 offset: 9, len: 115
+3/26/24 5:29:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:07 PM :Debug: page: 2 offset: 124, len: 110
+3/26/24 5:29:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:22 PM :Debug: page: 2 offset: 19, len: 115
+3/26/24 5:29:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:22 PM :Debug: page: 2 offset: 134, len: 30
+3/26/24 5:29:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:52 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:29:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:29:52 PM :Debug: page: 2 offset: 119, len: 94
+3/26/24 5:29:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:37 PM :Debug: page: 2 offset: 197, len: 51
+3/26/24 5:30:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:38 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:30:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:30:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:31:07 PM :Debug: page: 2 offset: 22, len: 115
+3/26/24 5:31:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:31:07 PM :Debug: page: 2 offset: 137, len: 96
+3/26/24 5:31:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:31:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:31:22 PM :Debug: page: 2 offset: 23, len: 111
+3/26/24 5:31:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:31:37 PM :Debug: page: 2 offset: 39, len: 115
+3/26/24 5:31:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:31:37 PM :Debug: page: 2 offset: 154, len: 96
+3/26/24 5:31:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:31:52 PM :Debug: page: 2 offset: 66, len: 115
+3/26/24 5:31:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:31:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:07 PM :Debug: page: 2 offset: 24, len: 115
+3/26/24 5:32:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:07 PM :Debug: page: 2 offset: 139, len: 111
+3/26/24 5:32:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:22 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:32:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:22 PM :Debug: page: 2 offset: 119, len: 115
+3/26/24 5:32:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:52 PM :Debug: page: 2 offset: 165, len: 50
+3/26/24 5:32:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:32:53 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:33:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:33:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:33:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:33:07 PM :Debug: page: 2 offset: 197, len: 37
+3/26/24 5:33:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:33:22 PM :Debug: page: 2 offset: 37, len: 81
+3/26/24 5:33:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:33:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:33:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:34:26 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:34:27 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:34:31 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:34:31 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:34:33 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:34:45 PM :Info: dirtyData.size(): 0
+3/26/24 5:34:45 PM :Info: dirtyData.size(): 0
+3/26/24 5:34:45 PM :Debug: Flush lasted: 70ms.
+3/26/24 5:34:45 PM :Debug: Burn Page anonymous: 2
+3/26/24 5:34:45 PM :Debug: Received Instruction: , Page: 2
+3/26/24 5:34:45 PM :Info: Queueing burn to page:2
+3/26/24 5:34:45 PM :Debug: Burn time:47ms.
+3/26/24 5:34:45 PM :Debug: burned page 2
+3/26/24 5:34:45 PM :Debug: No Remaining Queue Write instructions
+3/26/24 5:34:46 PM :Debug: CRC matches for page 2:x7F xA1 xEC xE2                                                       ....
+3/26/24 5:34:47 PM :Info: Time to save msq: 15.156931
+3/26/24 5:35:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:35:07 PM :Debug: page: 2 offset: 73, len: 115
+3/26/24 5:35:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:35:07 PM :Debug: page: 2 offset: 188, len: 61
+3/26/24 5:35:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:35:22 PM :Debug: page: 2 offset: 38, len: 115
+3/26/24 5:35:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:35:22 PM :Debug: page: 2 offset: 153, len: 66
+3/26/24 5:35:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:35:37 PM :Debug: page: 2 offset: 40, len: 115
+3/26/24 5:35:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:35:37 PM :Debug: page: 2 offset: 155, len: 79
+3/26/24 5:35:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:35:52 PM :Debug: page: 2 offset: 36, len: 115
+3/26/24 5:35:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:35:52 PM :Debug: page: 2 offset: 151, len: 96
+3/26/24 5:35:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:07 PM :Debug: page: 2 offset: 5, len: 115
+3/26/24 5:36:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:07 PM :Debug: page: 2 offset: 120, len: 115
+3/26/24 5:36:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:22 PM :Debug: page: 2 offset: 54, len: 115
+3/26/24 5:36:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:22 PM :Debug: page: 2 offset: 169, len: 80
+3/26/24 5:36:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:37 PM :Debug: page: 2 offset: 4, len: 115
+3/26/24 5:36:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:37 PM :Debug: page: 2 offset: 119, len: 115
+3/26/24 5:36:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:36:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:07 PM :Debug: page: 2 offset: 181, len: 68
+3/26/24 5:37:07 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:37 PM :Debug: page: 2 offset: 20, len: 115
+3/26/24 5:37:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:37 PM :Debug: page: 2 offset: 135, len: 112
+3/26/24 5:37:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:37:38 PM :Debug: filtering record, no historic table close enough.
+3/26/24 5:37:52 PM :Debug: page: 2 offset: 165, len: 83
+3/26/24 5:37:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:38:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:38:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:38:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:38:52 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:38:53 PM :Debug: page: 2 offset: 148, len: 98
+3/26/24 5:38:53 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:39:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:39:22 PM :Debug: page: 2 offset: 164, len: 68
+3/26/24 5:39:22 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:39:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:39:37 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:39:38 PM :Debug: page: 2 offset: 119, len: 50
+3/26/24 5:39:38 PM :Debug: Received Instruction: Write Chunk, Page: 2
+3/26/24 5:40:58 PM :Debug: TuneViewPanel Activated.
+3/26/24 5:41:07 PM :Debug: TuneViewPanel Deactivated.
+3/26/24 5:41:12 PM :Debug: Deactivated fast paint VeAnalyzeConsole.Histogram.veTable1Tbl
+3/26/24 5:41:32 PM :Debug: Activate Logging Tabs
+Registration file not found. 
+3/26/24 5:41:32 PM :Debug: Time to notify update: 0
+3/26/24 5:41:32 PM :Debug: Activate Analysis Tabs
+3/26/24 5:41:33 PM :Debug: Waiting to enable Buttons.
+3/26/24 5:41:34 PM :Debug: Deactivate Analysis Tabs
+3/26/24 5:41:34 PM :Debug: TuneViewPanel Activated.
+3/26/24 5:41:36 PM :Debug: TuneViewPanel Deactivated.
+3/26/24 5:42:02 PM :Debug: Activate Logging Tabs
+3/26/24 5:42:02 PM :Debug: Activate Analysis Tabs
+3/26/24 5:42:03 PM :Debug: Waiting to enable Buttons.
+3/26/24 5:44:55 PM :Info: Auto Logging: Stopped Logging
+3/26/24 5:44:55 PM :Debug: EventTrigger Stop Data log Triggered. expression: 
+3/26/24 5:44:55 PM :Debug: Starting Log for 1 Configs.
+3/26/24 5:44:55 PM :Debug: Time to subscribe all data log channels: 0.497536
+3/26/24 5:44:55 PM :Debug: MLG header created
+3/26/24 5:44:55 PM :Info: Started Data Log to file: /home/chris/workspace/anesthetic/vrsiX19/DataLogs/2024-03-26_17.44.53.mlg
+3/26/24 5:44:55 PM :Info: Channels active on main config vrsiX19: 141
+3/26/24 5:44:55 PM :Info: Capturing DataLog
+3/26/24 5:44:56 PM :Debug: Skipping Record: nanCount=74
+3/26/24 5:44:56 PM :Debug: Skipping Record: nanCount=74
+3/26/24 5:44:56 PM :Debug: Skipping Record: nanCount=74
+3/26/24 5:44:56 PM :Debug: Waiting to enable Buttons.
+3/26/24 5:44:57 PM :Debug: Auto Detect Field mapping
+3/26/24 5:44:57 PM :Info: Started Data Loader Thread
+Begin load of 2024-03-26_17.44.53.mlg
+3/26/24 5:44:57 PM :Info: Opening Log, expected size: Field Count: 78, Records: 13
+3/26/24 5:44:57 PM :Debug: Setting Field mapping to: FieldMaps/MegaSquirt.properties
+java.lang.RuntimeException: /home/chris/TunerStudioMS/FieldMaps/MegaSquirt.properties does not exist
+	at h.g.b(Unknown Source)
+	at h.g.a(Unknown Source)
+	at j.c.a(Unknown Source)
+	at g.b.a(Unknown Source)
+	at g.b.b(Unknown Source)
+	at g.b.run(Unknown Source)
+Caused by: java.io.FileNotFoundException: FieldMaps/MegaSquirt.properties (No such file or directory)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(FileInputStream.java:195)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.io.FileInputStream.<init>(FileInputStream.java:93)
+	... 6 more
+java.lang.RuntimeException: /home/chris/TunerStudioMS/FieldMaps/MegaSquirt.properties does not exist
+	at h.g.b(Unknown Source)
+	at h.g.b(Unknown Source)
+	at j.c.a(Unknown Source)
+	at g.b.a(Unknown Source)
+	at g.b.b(Unknown Source)
+	at g.b.run(Unknown Source)
+Caused by: java.io.FileNotFoundException: FieldMaps/MegaSquirt.properties (No such file or directory)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(FileInputStream.java:195)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.io.FileInputStream.<init>(FileInputStream.java:93)
+	... 6 more
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Duty Cycle (Staging)" Error: No DataLogField for channel pulseLimit
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Fuel Temp" Error: No DataLogField for channel fuelTempRaw
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Trip Economy" Error: No DataLogField for channel avgKmPL
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Instant Economy" Error: No DataLogField for channel instantKmPL
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Fuel Consumption" Error: No DataLogField for channel tsGallonsUsed
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Fuel Flow cc" Error: No DataLogField for channel dutyCy1Net
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Fuel Flow lph" Error: No DataLogField for channel tsFuelFlowGph
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Gallons Used" Error:  Variable 'accumulate' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Liters Used" Error: No DataLogField for channel tsGallonsUsed
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Odometer Km" Error:  Variable 'persistentAccumulate' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Aerodynamic Drag" Error:  Variable 'aerodynamicDragHp' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Rolling Drag" Error:  Variable 'rollingDragHp' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Accel Power" Error:  Variable 'SmoothFiltered' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "ZeroTo30" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "ZeroTo60" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "ZeroTo100" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "ZeroTo50" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "ZeroTo150" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "ZeroTo200" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "60ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "330ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "660ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "1320ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "5280ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "60ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "330ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "660ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "1320ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "5280ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:44:57 PM :Warning: Unable to convert DataLogField "Odometer_KM" Error:  Variable 'persistentAccumulate' is not defined in current configuration.
+3/26/24 5:44:57 PM :Info: not loading field 'Wheel Speed (mph)', not all the dependent fields are available.
+3/26/24 5:44:57 PM :Warning: Row: 0 Unexpected record counter! Expected: 0x0, found: 0x3
+3/26/24 5:44:57 PM :Debug: DataSet Set!! size: 79
+3/26/24 5:44:57 PM :Info: $$$$$$$$$$$$$$$$$$   Time to call: 172
+3/26/24 5:44:57 PM :Debug: DataSet Set!! size: 79
+3/26/24 5:44:57 PM :Info: Playback found stopped during data log capture, restarting.
+3/26/24 5:44:57 PM :Info: $$$$$$$$$$$$$$$$$$   Time finished call: 201
+3/26/24 5:45:09 PM :Debug: PlayBackThread break.
+3/26/24 5:45:09 PM :Debug: PlayBackThread ended. System.currentTimeMillis() - lastIncrementTime = 63, timeoutPeriod=2000
+3/26/24 5:45:44 PM :Info: Data log stopped
+3/26/24 5:45:44 PM :Info: FileOutputStream Closed.
+3/26/24 5:45:44 PM :Info: Auto Zero Expression not valid, skipping
+File load time =47.201 sec.  721 rows.
+3/26/24 5:45:45 PM :Debug: Waiting to enable Buttons.
+3/26/24 5:45:46 PM :Debug: PlayBackThread ended. System.currentTimeMillis() - lastIncrementTime = 2001, timeoutPeriod=2000
+3/26/24 5:46:45 PM :Info: Auto Logging: Stopped Logging
+3/26/24 5:46:45 PM :Debug: EventTrigger Stop Data log Triggered. expression: 
+3/26/24 5:46:45 PM :Debug: Starting Log for 1 Configs.
+3/26/24 5:46:45 PM :Debug: Time to subscribe all data log channels: 0.85567
+3/26/24 5:46:45 PM :Debug: MLG header created
+3/26/24 5:46:45 PM :Info: Started Data Log to file: /home/chris/workspace/anesthetic/vrsiX19/DataLogs/2024-03-26_17.44.53.mlg
+3/26/24 5:46:45 PM :Info: Channels active on main config vrsiX19: 139
+3/26/24 5:46:45 PM :Info: Capturing DataLog
+3/26/24 5:46:45 PM :Debug: Skipping Record: nanCount=74
+3/26/24 5:46:45 PM :Debug: Skipping Record: nanCount=74
+3/26/24 5:46:45 PM :Debug: Skipping Record: nanCount=74
+3/26/24 5:46:45 PM :Info: Playback found stopped during data log capture, restarting.
+3/26/24 5:46:46 PM :Debug: Waiting to enable Buttons.
+3/26/24 5:46:46 PM :Debug: Graph Selection not changed.
+3/26/24 5:46:46 PM :Debug: Auto Detect Field mapping
+3/26/24 5:46:46 PM :Info: Started Data Loader Thread
+Begin load of 2024-03-26_17.44.53.mlg
+3/26/24 5:46:46 PM :Info: Opening Log, expected size: Field Count: 78, Records: 13
+3/26/24 5:46:46 PM :Debug: Setting Field mapping to: FieldMaps/MegaSquirt.properties
+java.lang.RuntimeException: /home/chris/TunerStudioMS/FieldMaps/MegaSquirt.properties does not exist
+	at h.g.b(Unknown Source)
+	at h.g.b(Unknown Source)
+	at j.c.a(Unknown Source)
+	at g.b.a(Unknown Source)
+	at g.b.b(Unknown Source)
+	at g.b.run(Unknown Source)
+Caused by: java.io.FileNotFoundException: FieldMaps/MegaSquirt.properties (No such file or directory)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(FileInputStream.java:195)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.io.FileInputStream.<init>(FileInputStream.java:93)
+	... 6 more
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Duty Cycle (Staging)" Error: No DataLogField for channel pulseLimit
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Fuel Temp" Error: No DataLogField for channel fuelTempRaw
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Trip Economy" Error: No DataLogField for channel avgKmPL
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Instant Economy" Error: No DataLogField for channel instantKmPL
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Fuel Consumption" Error: No DataLogField for channel tsGallonsUsed
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Fuel Flow cc" Error: No DataLogField for channel dutyCy1Net
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Fuel Flow lph" Error: No DataLogField for channel tsFuelFlowGph
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Gallons Used" Error:  Variable 'accumulate' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Liters Used" Error: No DataLogField for channel tsGallonsUsed
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Odometer Km" Error:  Variable 'persistentAccumulate' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Aerodynamic Drag" Error:  Variable 'aerodynamicDragHp' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Rolling Drag" Error:  Variable 'rollingDragHp' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Accel Power" Error:  Variable 'SmoothFiltered' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "ZeroTo30" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "ZeroTo60" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "ZeroTo100" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "ZeroTo50" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "ZeroTo150" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "ZeroTo200" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "60ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "330ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "660ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "1320ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "5280ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "60ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "330ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "660ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "1320ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "5280ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:46:46 PM :Warning: Unable to convert DataLogField "Odometer_KM" Error:  Variable 'persistentAccumulate' is not defined in current configuration.
+3/26/24 5:46:46 PM :Info: not loading field 'Wheel Speed (mph)', not all the dependent fields are available.
+3/26/24 5:46:46 PM :Warning: Row: 0 Unexpected record counter! Expected: 0x0, found: 0x3
+3/26/24 5:46:46 PM :Debug: DataSet Set!! size: 79
+3/26/24 5:46:46 PM :Info: $$$$$$$$$$$$$$$$$$   Time to call: 115
+3/26/24 5:46:46 PM :Debug: DataSet Set!! size: 79
+3/26/24 5:46:46 PM :Info: $$$$$$$$$$$$$$$$$$   Time finished call: 137
+3/26/24 5:48:34 PM :Warning: Row: 1640 Unexpected record counter! Expected: 0x6b, found: 0x6c
+3/26/24 5:49:40 PM :Debug: Reset Ex: tps < 5 = true
+3/26/24 5:49:40 PM :Debug: EventTrigger playRacecarWOT Reset. expression: tps < 5
+3/26/24 5:52:09 PM :Info: Data log stopped
+3/26/24 5:52:09 PM :Info: FileOutputStream Closed.
+3/26/24 5:52:09 PM :Info: Auto Zero Expression not valid, skipping
+File load time =323.406 sec.  4864 rows.
+3/26/24 5:52:10 PM :Debug: Waiting to enable Buttons.
+3/26/24 5:52:12 PM :Debug: PlayBackThread ended. System.currentTimeMillis() - lastIncrementTime = 2000, timeoutPeriod=2000
+3/26/24 5:52:14 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+3/26/24 5:52:15 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+3/26/24 5:52:15 PM :Info: Connection Check failed, forcing offline.
+3/26/24 5:52:16 PM :Debug: controllerOnline = 0.0
+3/26/24 5:52:16 PM :Debug: cltTempWarning: Trigger Expression: coolant > 230 = 0.0
+3/26/24 5:52:16 PM :Debug: playRacecarWOT: Trigger Expression: tps > 92 = 0.0
+3/26/24 5:52:16 PM :Debug: TriggeredPage0 Refresh:  vssRefresh > 0 : Trigger Expression:  vssRefresh > 0  = 0.0
+3/26/24 5:52:16 PM :Debug: No Remaining Queue Write instructions
+3/26/24 5:52:19 PM :Info: Going offline before all changes were permanently saved to the Controller.
+3/26/24 5:52:19 PM :Debug: Went offline
+3/26/24 5:52:19 PM :Debug: controllerOnline = 0.0
+3/26/24 5:52:19 PM :Debug: cltTempWarning: Trigger Expression: coolant > 230 = 0.0
+3/26/24 5:52:19 PM :Debug: playRacecarWOT: Trigger Expression: tps > 92 = 0.0
+3/26/24 5:52:19 PM :Debug: TriggeredPage0 Refresh:  vssRefresh > 0 : Trigger Expression:  vssRefresh > 0  = 0.0
+3/26/24 5:52:19 PM :Debug: No Remaining Queue Write instructions
+3/26/24 5:52:20 PM :Info: Going offline before all changes were permanently saved to the Controller.
+3/26/24 5:52:20 PM :Info: Went offline 2
+3/26/24 5:52:20 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+3/26/24 5:52:21 PM :Debug: Deactivate Analysis Tabs
+3/26/24 5:52:23 PM :Debug: TuneViewPanel Activated.
+3/26/24 5:52:25 PM :Debug: TuneViewPanel Deactivated.
+3/26/24 5:52:25 PM :Debug: Activate Logging Tabs
+3/26/24 5:52:25 PM :Debug: Activate Analysis Tabs
+3/26/24 5:52:26 PM :Debug: Waiting to enable Buttons.
+3/26/24 5:53:05 PM :Debug: Graph Selection not changed.
+3/26/24 5:53:05 PM :Debug: Auto Detect Field mapping
+3/26/24 5:53:05 PM :Info: Started Data Loader Thread
+Begin load of 2024-03-26_17.44.53.mlg
+3/26/24 5:53:05 PM :Info: Opening Log, expected size: Field Count: 78, Records: 4864
+3/26/24 5:53:05 PM :Debug: Setting Field mapping to: FieldMaps/MegaSquirt.properties
+java.lang.RuntimeException: /home/chris/TunerStudioMS/FieldMaps/MegaSquirt.properties does not exist
+	at h.g.b(Unknown Source)
+	at h.g.b(Unknown Source)
+	at j.c.a(Unknown Source)
+	at g.b.a(Unknown Source)
+	at g.b.b(Unknown Source)
+	at g.b.run(Unknown Source)
+Caused by: java.io.FileNotFoundException: FieldMaps/MegaSquirt.properties (No such file or directory)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(FileInputStream.java:195)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.io.FileInputStream.<init>(FileInputStream.java:93)
+	... 6 more
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Duty Cycle (Staging)" Error: No DataLogField for channel pulseLimit
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Fuel Temp" Error: No DataLogField for channel fuelTempRaw
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Trip Economy" Error: No DataLogField for channel avgKmPL
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Instant Economy" Error: No DataLogField for channel instantKmPL
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Fuel Consumption" Error: No DataLogField for channel tsGallonsUsed
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Fuel Flow cc" Error: No DataLogField for channel dutyCy1Net
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Fuel Flow lph" Error: No DataLogField for channel tsFuelFlowGph
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Gallons Used" Error:  Variable 'accumulate' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Liters Used" Error: No DataLogField for channel tsGallonsUsed
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Odometer Km" Error:  Variable 'persistentAccumulate' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Aerodynamic Drag" Error:  Variable 'aerodynamicDragHp' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Rolling Drag" Error:  Variable 'rollingDragHp' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Accel Power" Error:  Variable 'SmoothFiltered' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "ZeroTo30" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "ZeroTo60" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "ZeroTo100" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "ZeroTo50" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "ZeroTo150" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "ZeroTo200" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "60ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "330ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "660ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "1320ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "5280ft ET" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Debug: Saved user log settings.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "60ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "330ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "660ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "1320ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "5280ft Speed" Error:  Variable 'timeToExceed' is not defined in current configuration.
+3/26/24 5:53:05 PM :Warning: Unable to convert DataLogField "Odometer_KM" Error:  Variable 'persistentAccumulate' is not defined in current configuration.
+3/26/24 5:53:05 PM :Info: not loading field 'Wheel Speed (mph)', not all the dependent fields are available.
+3/26/24 5:53:05 PM :Warning: Row: 0 Unexpected record counter! Expected: 0x0, found: 0x3
+3/26/24 5:53:05 PM :Debug: DataSet Set!! size: 79
+3/26/24 5:53:05 PM :Info: $$$$$$$$$$$$$$$$$$   Time to call: 115
+3/26/24 5:53:05 PM :Debug: DataSet Set!! size: 79
+3/26/24 5:53:05 PM :Info: $$$$$$$$$$$$$$$$$$   Time finished call: 141
+3/26/24 5:53:05 PM :Warning: Row: 1640 Unexpected record counter! Expected: 0x6b, found: 0x6c
+3/26/24 5:53:05 PM :Info: Auto Zero Expression not valid, skipping
+File load time =0.207 sec.  4864 rows.
+3/26/24 5:53:07 PM :Debug: Waiting to enable Buttons.
+3/27/24 10:15:19 PM :Debug: Deactivate Analysis Tabs
+3/27/24 10:15:23 PM :Debug: Received Instruction: Read Chunk 3, Page: 3
+3/27/24 10:15:23 PM :Info: Initiating read page 3 : 0:288
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 3 >= 3
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.JTable$2.getMidPointAt(JTable.java:3227)
+	at javax.swing.JTable.adjustSizes(JTable.java:3308)
+	at javax.swing.JTable.setWidthsFromPreferredWidths(JTable.java:3243)
+	at javax.swing.JTable.doLayout(JTable.java:3131)
+	at java.awt.Container.validateTree(Container.java:1698)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validate(Container.java:1633)
+	at javax.swing.RepaintManager$3.run(RepaintManager.java:711)
+	at javax.swing.RepaintManager$3.run(RepaintManager.java:709)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.validateInvalidComponents(RepaintManager.java:708)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1731)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+3/27/24 10:19:37 PM :Debug: Bintableview paint error.
+3/27/24 10:19:37 PM :Debug: Bintableview paint error.
+3/27/24 10:19:41 PM :Debug: Bintableview paint error.
+3/27/24 10:19:41 PM :Debug: Bintableview paint error.
+3/27/24 10:19:43 PM :Debug: Bintableview paint error.
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 10 >= 10
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.plaf.basic.BasicTableHeaderUI.paint(BasicTableHeaderUI.java:648)
+	at javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+	at javax.swing.JComponent.paintComponent(JComponent.java:780)
+	at javax.swing.JComponent.paint(JComponent.java:1056)
+	at javax.swing.JComponent.paintToOffscreen(JComponent.java:5210)
+	at javax.swing.BufferStrategyPaintManager.paint(BufferStrategyPaintManager.java:290)
+	at javax.swing.RepaintManager.paint(RepaintManager.java:1272)
+	at javax.swing.JComponent._paintImmediately(JComponent.java:5158)
+	at javax.swing.JComponent.paintImmediately(JComponent.java:4969)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:831)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:814)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:814)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:789)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:738)
+	at javax.swing.RepaintManager.access$1200(RepaintManager.java:64)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1732)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+3/27/24 10:19:44 PM :Debug: Bintableview paint error.
+3/27/24 10:19:47 PM :Debug: Bintableview paint error.
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 10 >= 10
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.table.DefaultTableColumnModel.getColumnIndexAtX(DefaultTableColumnModel.java:336)
+	at javax.swing.table.JTableHeader.columnAtPoint(JTableHeader.java:348)
+	at javax.swing.plaf.basic.BasicTableHeaderUI.paint(BasicTableHeaderUI.java:631)
+	at javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+	at javax.swing.JComponent.paintComponent(JComponent.java:780)
+	at javax.swing.JComponent.paint(JComponent.java:1056)
+	at javax.swing.JComponent.paintToOffscreen(JComponent.java:5210)
+	at javax.swing.BufferStrategyPaintManager.paint(BufferStrategyPaintManager.java:290)
+	at javax.swing.RepaintManager.paint(RepaintManager.java:1272)
+	at javax.swing.JComponent._paintImmediately(JComponent.java:5158)
+	at javax.swing.JComponent.paintImmediately(JComponent.java:4969)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:831)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:814)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:814)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:789)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:738)
+	at javax.swing.RepaintManager.access$1200(RepaintManager.java:64)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1732)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 0 >= 0
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.JTable$2.getMidPointAt(JTable.java:3227)
+	at javax.swing.JTable$5.getLowerBoundAt(JTable.java:3323)
+	at javax.swing.JTable.adjustSizes(JTable.java:3345)
+	at javax.swing.JTable.adjustSizes(JTable.java:3329)
+	at javax.swing.JTable.setWidthsFromPreferredWidths(JTable.java:3243)
+	at javax.swing.JTable.doLayout(JTable.java:3131)
+	at java.awt.Container.validateTree(Container.java:1698)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validate(Container.java:1633)
+	at javax.swing.RepaintManager$3.run(RepaintManager.java:711)
+	at javax.swing.RepaintManager$3.run(RepaintManager.java:709)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.validateInvalidComponents(RepaintManager.java:708)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1731)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 0 >= 0
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.JTable$2.getMidPointAt(JTable.java:3227)
+	at javax.swing.JTable$5.getLowerBoundAt(JTable.java:3323)
+	at javax.swing.JTable.adjustSizes(JTable.java:3336)
+	at javax.swing.JTable.adjustSizes(JTable.java:3329)
+	at javax.swing.JTable.setWidthsFromPreferredWidths(JTable.java:3243)
+	at javax.swing.JTable.doLayout(JTable.java:3131)
+	at java.awt.Container.validateTree(Container.java:1698)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validateTree(Container.java:1707)
+	at java.awt.Container.validate(Container.java:1633)
+	at javax.swing.RepaintManager$3.run(RepaintManager.java:711)
+	at javax.swing.RepaintManager$3.run(RepaintManager.java:709)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.validateInvalidComponents(RepaintManager.java:708)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1731)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+3/27/24 10:19:50 PM :Debug: Bintableview paint error.
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 11 >= 10
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.plaf.basic.BasicTableHeaderUI.paint(BasicTableHeaderUI.java:648)
+	at javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+	at javax.swing.JComponent.paintComponent(JComponent.java:780)
+	at javax.swing.JComponent.paint(JComponent.java:1056)
+	at javax.swing.JComponent.paintToOffscreen(JComponent.java:5210)
+	at javax.swing.BufferStrategyPaintManager.paint(BufferStrategyPaintManager.java:290)
+	at javax.swing.RepaintManager.paint(RepaintManager.java:1272)
+	at javax.swing.JComponent._paintImmediately(JComponent.java:5158)
+	at javax.swing.JComponent.paintImmediately(JComponent.java:4969)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:831)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:814)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:814)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:789)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:738)
+	at javax.swing.RepaintManager.access$1200(RepaintManager.java:64)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1732)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+3/27/24 10:19:50 PM :Debug: Bintableview paint error.
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 3 >= 1
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.plaf.basic.BasicTableHeaderUI.paint(BasicTableHeaderUI.java:648)
+	at javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+	at javax.swing.JComponent.paintComponent(JComponent.java:780)
+	at javax.swing.JComponent.paint(JComponent.java:1056)
+	at javax.swing.JComponent.paintToOffscreen(JComponent.java:5210)
+	at javax.swing.BufferStrategyPaintManager.paint(BufferStrategyPaintManager.java:290)
+	at javax.swing.RepaintManager.paint(RepaintManager.java:1272)
+	at javax.swing.JComponent._paintImmediately(JComponent.java:5158)
+	at javax.swing.JComponent.paintImmediately(JComponent.java:4969)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:831)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:814)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:814)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:789)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:738)
+	at javax.swing.RepaintManager.access$1200(RepaintManager.java:64)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1732)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+3/27/24 10:19:58 PM :Debug: Bintableview paint error.
+3/27/24 10:19:58 PM :Debug: Bintableview paint error.
+3/27/24 10:20:01 PM :Debug: Bintableview paint error.
+3/27/24 10:20:01 PM :Debug: Bintableview paint error.
+3/27/24 10:20:04 PM :Debug: Bintableview paint error.
+3/27/24 10:20:04 PM :Debug: Bintableview paint error.
+3/27/24 10:20:20 PM :Debug: Bintableview paint error.
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 8 >= 6
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.plaf.basic.BasicTableHeaderUI.paint(BasicTableHeaderUI.java:648)
+	at javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+	at javax.swing.JComponent.paintComponent(JComponent.java:780)
+	at javax.swing.JComponent.paint(JComponent.java:1056)
+	at javax.swing.JComponent.paintToOffscreen(JComponent.java:5210)
+	at javax.swing.BufferStrategyPaintManager.paint(BufferStrategyPaintManager.java:290)
+	at javax.swing.RepaintManager.paint(RepaintManager.java:1272)
+	at javax.swing.JComponent._paintImmediately(JComponent.java:5158)
+	at javax.swing.JComponent.paintImmediately(JComponent.java:4969)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:831)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:814)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:814)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:789)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:738)
+	at javax.swing.RepaintManager.access$1200(RepaintManager.java:64)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1732)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+3/27/24 10:20:31 PM :Debug: Bintableview paint error.
+Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 12 >= 11
+	at java.util.Vector.elementAt(Vector.java:479)
+	at javax.swing.table.DefaultTableColumnModel.getColumn(DefaultTableColumnModel.java:294)
+	at javax.swing.plaf.basic.BasicTableHeaderUI.paint(BasicTableHeaderUI.java:648)
+	at javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+	at javax.swing.JComponent.paintComponent(JComponent.java:780)
+	at javax.swing.JComponent.paint(JComponent.java:1056)
+	at javax.swing.JComponent.paintToOffscreen(JComponent.java:5210)
+	at javax.swing.BufferStrategyPaintManager.paint(BufferStrategyPaintManager.java:290)
+	at javax.swing.RepaintManager.paint(RepaintManager.java:1272)
+	at javax.swing.JComponent._paintImmediately(JComponent.java:5158)
+	at javax.swing.JComponent.paintImmediately(JComponent.java:4969)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:831)
+	at javax.swing.RepaintManager$4.run(RepaintManager.java:814)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:814)
+	at javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:789)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:738)
+	at javax.swing.RepaintManager.access$1200(RepaintManager.java:64)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1732)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+3/27/24 10:20:31 PM :Debug: BinTablePanel::refresh error caught
+3/27/24 10:20:31 PM :Debug: Bintableview paint error.
+3/27/24 10:23:35 PM :Info: dirtyData.size(): 0
+3/27/24 10:23:35 PM :Info: dirtyData.size(): 0
+3/27/24 10:23:35 PM :Debug: Flush lasted: 70ms.
+3/27/24 10:23:35 PM :Debug: Burn Page anonymous: -1
+3/27/24 10:23:35 PM :Debug: Received Instruction: , Page: 2
+3/27/24 10:23:41 PM :Debug: Received Instruction: Read Chunk 3, Page: 3
+3/27/24 10:23:41 PM :Info: Initiating read page 3 : 0:288
+3/27/24 10:28:00 PM :Info: dirtyData.size(): 0
+3/27/24 10:28:00 PM :Info: dirtyData.size(): 0
+3/27/24 10:28:00 PM :Debug: Flush lasted: 71ms.
+3/27/24 10:28:00 PM :Debug: Burn Page anonymous: -1
+3/27/24 10:28:00 PM :Debug: Received Instruction: , Page: 2
+3/27/24 10:28:05 PM :Debug: Received Instruction: Read Chunk 3, Page: 3
+3/27/24 10:28:05 PM :Info: Initiating read page 3 : 0:288
+3/27/24 10:29:36 PM :Warning: Invalid numeric value: 3-, setting back to: 3
+3/27/24 10:34:31 PM :Info: dirtyData.size(): 0
+3/27/24 10:34:31 PM :Info: dirtyData.size(): 0
+3/27/24 10:34:31 PM :Debug: Flush lasted: 70ms.
+3/27/24 10:34:31 PM :Debug: Burn Page anonymous: -1
+3/27/24 10:34:31 PM :Debug: Received Instruction: , Page: 2
+3/27/24 10:34:33 PM :Info: Time to save msq: 19.61819
+3/27/24 10:34:33 PM :Info: Time to save msq: 71.679665
+3/27/24 10:34:33 PM :Info: vrsiX19 Tune Saved!
+3/27/24 10:34:33 PM :Debug: Fill Constants: 23
+3/27/24 10:34:33 PM :Debug: File does not exist, creating new:
+/home/chris/workspace/anesthetic/vrsiX19/restorePoints/vrsiX19_2024-03-27_22.34.33.msq
+3/27/24 10:34:33 PM :Info: Time to save msq: 4.451834
+3/27/24 10:34:33 PM :Info: vrsiX19 Restore point saved
+3/27/24 10:34:33 PM :Info: vrsiX19 Restore point saved to: vrsiX19_2024-03-27_22.34.33.msq
+3/27/24 10:34:39 PM :Info: Time to save msq: 12.927248
+3/27/24 10:34:39 PM :Info: Time to save msq: 69.59157
+3/27/24 10:34:39 PM :Info: vrsiX19 Tune Saved!
+3/27/24 10:34:39 PM :Debug: Fill Constants: 11
+3/27/24 10:34:39 PM :Info: Skip Restore Point for 'vrsiX19' because nothing changed since: vrsiX19_2024-03-27_22.34.33.msq
