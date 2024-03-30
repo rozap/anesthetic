@@ -27,6 +27,9 @@
 #include <SPI.h>
 #include <CircularBuffer.h>
 
+/* Radio */
+#include <RH_RF95.h>
+
 #include "boot_image.h"
 
 // If this is defined, uses data in mock_pkt.h instead of actually reading from the serial port.
