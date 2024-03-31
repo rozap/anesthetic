@@ -15,6 +15,10 @@ HardwareTimer timer(MAPLE_TIMER);
 #elif defined(BOARD_NAME)
 // ST's Arduino Core STM32, https://github.com/stm32duino/Arduino_Core_STM32
 HardwareTimer timer(TIM1);
+
+// BSOD Fix (did this ever work...). Code below requires RH_DRAM_ATTR to be defined (possibly to nil) to compile. It seems the assumption was that
+// RH_DRAM_ATTR would always be defined in this #if tree, but it wasn't. Or the Arduino preprocessor was less strict at some point. IDK.
+#define RH_DRAM_ATTR
     
 #elif defined(ARDUINO_ARCH_STM32) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4)
 // Roger Clark Arduino STM32, https://github.com/rogerclarkmelbourne/Arduino_STM32
@@ -744,7 +748,9 @@ void TC1_Handler()
  #if (STM32_CORE_VERSION >= 0x01090000)
 // This really should be callback_function_t interrupt() but some platform compilers
 // warn/error, thinking there should be a return value
-void interrupt()
+// BSOD Fix: Lol, the above workaround seems to be out of date. Our compiler correctly errors if there's an ambiguous definition like their workaround.
+//void interrupt()
+callback_function_t interrupt()
  #else
 void interrupt(HardwareTimer*)
  #endif
