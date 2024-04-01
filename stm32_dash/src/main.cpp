@@ -214,6 +214,47 @@ SpeeduinoStatus currentStatus;
 
 TFT_eSPI tft = TFT_eSPI();
 
+// Chip select is arduino pin 19 (PB1)
+// Interrupt pin is arduino pin 3 (PC14)
+RH_RF95 rf95(19, 3);
+bool radioAvailable;
+
+/*
+|Code|English             |Unit                 |
+|T_C |Coolant temperature |Tenths of a degree F |
+|P_C |Coolant pressure    |Tenths of a PSI      |
+|T_O |Oil temperature     |Tenths of a degree F |
+|P_O |Oil pressure        |PSI                  |
+|VBA |Battery voltage     |Millivolts           |
+|RPM |RPM                 |RPM                  |
+|SPD |GPS Speed           |Tenths of a MPH      |
+|TIM |GPS Lap Time        |Deciseconds          |
+|FLT |Fault               |Fault code, see below|
+|MET |Mission Elapsed Time|Seconds              |
+|PIT |Return To Pits!     |!0=Return Now 0=Race |
+
+Fault code
+Digit 0 is the least significant, 5 is the most significant.
+|Digit|Meaning
+|0    |Idiot light. 0: Light off 1: Light on    |
+*/
+
+const char *RADIO_MSG_COOLANT_PRES = "P_C";
+const char *RADIO_MSG_COOLANT_TEMP = "T_C";
+const char *RADIO_MSG_OIL_TEMP = "T_O";
+const char *RADIO_MSG_OIL_PRES = "P_O";
+const char *RADIO_MSG_FAULT = "FLT";
+const char *RADIO_MSG_BATTERY_VOLTAGE = "VBA";
+const char *RADIO_MSG_RPM = "RPM";
+const char *RADIO_MSG_MET = "MET"; // Mission elapsed time
+const char *RADIO_MSG_PIT = "PIT";
+const char *RADIO_MSG_ACK = "ACK"; // Acknowledge current issues
+const char *RADIO_MSG_NAK = "NAK"; // Un-acknowledge current issues
+const char *RADIO_MSG_GPS = "GPS";
+const char *RADIO_MSG_SPEED = "SPD";
+
+char radioMsgBuf[RH_RF95_MAX_MESSAGE_LEN];
+
 double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
 {
   if (cb.size() == 0)
@@ -713,7 +754,25 @@ void setup()
   renderNoConnection();
 
   DebugSerial.begin(115200);
+
+
+  delay(2000);
+  DebugSerial.println("initializing radio");
+  while(!radioAvailable) {
+  if (rf95.init())
+  {
+    DebugSerial.println("radio init ok");
+    radioAvailable = true;
+    rf95.setTxPower(20, false);
+  }
+  else
+  {
+    radioAvailable = false;
+    DebugSerial.println("radio init failed");
+  }
+
   delay(500);
+  }
 
   SpeeduinoSerial.setRx(PA3);
   SpeeduinoSerial.setTx(PA2);
