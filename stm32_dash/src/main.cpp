@@ -30,7 +30,12 @@
 /* Radio */
 #include <RH_RF95.h>
 
+/* Optionally display the bootsplash (disable if debugging to shorten upload times). */
+//#define BOOTSPLASH
+
+#ifdef BOOTSPLASH
 #include "boot_image.h"
+#endif
 
 // If this is defined, uses data in mock_pkt.h instead of actually reading from the serial port.
 //#define USE_MOCK_DATA
@@ -726,6 +731,7 @@ void render()
   requestFrame = false;
 }
 
+#ifdef BOOTSPLASH
 void renderBootImage()
 {
   uint32_t i = 0;
@@ -736,6 +742,7 @@ void renderBootImage()
     }
   }
 }
+#endif
 
 void setup()
 {
@@ -781,8 +788,10 @@ void setup()
 
   delay(250);
 
+  #ifdef BOOTSPLASH
   renderBootImage();
   delay(2000);
+  #endif
 }
 
 void loop(void)
