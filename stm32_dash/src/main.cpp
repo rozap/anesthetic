@@ -44,9 +44,7 @@
 // Here we allow for 1 byte message length, 4 bytes headers, user data and 2 bytes of FCS
 #define RH_RF95_MAX_MESSAGE_LEN (RH_RF95_MAX_PAYLOAD_LEN - RH_RF95_HEADER_LEN)
 
-#include <SX1278.h>
-SX1278_hw_t radio_hw_config;
-SX1278_t radio;
+#include <LoRa_STM32.h>
 
 /* Optionally display the bootsplash (disable if debugging to shorten upload times). */
 //#define BOOTSPLASH
@@ -783,43 +781,18 @@ void setup()
 
   delay(2000);
   DebugSerial.println("initializing radio");
+  // override the default CS, reset, and IRQ pins (optional)
+  // LoRa.setPins(7, 6, 1); // set CS, reset, IRQ pin
 
-  radioSPI.begin();
-
-  radio_hw_config.dio0.pin = 3; // Interrupt pin. (PC14)
-  radio_hw_config.nss.pin = 19; // Radio chip select. (PB1)
-  radio_hw_config.reset.pin = 18; // Reset pin. (PB0)
-  radio_hw_config.spi = &radioSPI;
-
-  radio.hw = &radio_hw_config;
-
-  SX1278_init(&radio, 915000000, SX1278_POWER_17DBM, SX1278_LORA_SF_7, SX1278_LORA_BW_125KHZ, SX1278_LORA_CR_4_5, SX1278_LORA_CRC_EN, 10);
-  if (false)
-  {
-    DebugSerial.println("radio init ok");
-    radioAvailable = true;
-    //rf95.setTxPower(20, false);
-  }
-  else
-  {
-    radioAvailable = false;
-    DebugSerial.println("radio init failed");
+  if (!LoRa.begin(915E6)) {         // initialize ratio at 915 MHz
+    Serial.println("LoRa init failed. Check your connections.");
+    while (true);                   // if failed, do nothing
   }
 
-  char buffer[512];
-  int m=0;
-  while(true){
-    delay(500);
-    int message_length = sprintf(buffer, "Hello %d", m);
-    int ret = SX1278_LoRaEntryTx(&radio, message_length, 2000);
-    DebugSerial.print("Entry: ");
-    DebugSerial.println(ret);
+  DebugSerial.println("LoRa Dump Registers");
+  LoRa.dumpRegisters(Serial);
 
-    ret = SX1278_LoRaTxPacket(&radio, (uint8_t*) buffer, message_length, 2000);
-    DebugSerial.print("Tx: ");
-    DebugSerial.println(ret);
-  }
-
+  while(true){}
   delay(500);
 
   SpeeduinoSerial.setRx(PA3);
