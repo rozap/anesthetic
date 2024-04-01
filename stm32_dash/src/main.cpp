@@ -28,7 +28,25 @@
 #include <CircularBuffer.h>
 
 /* Radio */
-#include <RH_RF95.h>
+// Max number of octets the LORA Rx/Tx FIFO can hold
+#define RH_RF95_FIFO_SIZE 255
+
+// This is the maximum number of bytes that can be carried by the LORA.
+// We use some for headers, keeping fewer for RadioHead messages
+#define RH_RF95_MAX_PAYLOAD_LEN RH_RF95_FIFO_SIZE
+
+// The length of the headers we add.
+// The headers are inside the LORA's payload
+#define RH_RF95_HEADER_LEN 4
+
+// This is the maximum message length that can be supported by this driver.
+// Can be pre-defined to a smaller size (to save SRAM) prior to including this header
+// Here we allow for 1 byte message length, 4 bytes headers, user data and 2 bytes of FCS
+#define RH_RF95_MAX_MESSAGE_LEN (RH_RF95_MAX_PAYLOAD_LEN - RH_RF95_HEADER_LEN)
+
+#include <SX1278.h>
+SX1278_hw_t radio_hw_config;
+SX1278_t radio;
 
 /* Optionally display the bootsplash (disable if debugging to shorten upload times). */
 //#define BOOTSPLASH
@@ -219,9 +237,9 @@ SpeeduinoStatus currentStatus;
 
 TFT_eSPI tft = TFT_eSPI();
 
-// Chip select is arduino pin 19 (PB1)
-// Interrupt pin is arduino pin 3 (PC14)
-RH_RF95 rf95(19, 3);
+// SPI port 3
+//                COPI  CIPO  SCLK  PSEL
+SPIClass radioSPI(PB_5, PB_4, PB_3); //, PA_15);
 bool radioAvailable;
 
 /*
@@ -765,12 +783,22 @@ void setup()
 
   delay(2000);
   DebugSerial.println("initializing radio");
-  while(!radioAvailable) {
-  if (rf95.init())
+
+  radioSPI.begin();
+
+  radio_hw_config.dio0.pin = 3; // Interrupt pin. (PC14)
+  radio_hw_config.nss.pin = 19; // Radio chip select. (PB1)
+  radio_hw_config.reset.pin = 18; // Reset pin. (PB0)
+  radio_hw_config.spi = &radioSPI;
+
+  radio.hw = &radio_hw_config;
+
+  SX1278_init(&radio, 915000000, SX1278_POWER_17DBM, SX1278_LORA_SF_7, SX1278_LORA_BW_125KHZ, SX1278_LORA_CR_4_5, SX1278_LORA_CRC_EN, 10);
+  if (false)
   {
     DebugSerial.println("radio init ok");
     radioAvailable = true;
-    rf95.setTxPower(20, false);
+    //rf95.setTxPower(20, false);
   }
   else
   {
@@ -778,8 +806,21 @@ void setup()
     DebugSerial.println("radio init failed");
   }
 
-  delay(500);
+  char buffer[512];
+  int m=0;
+  while(true){
+    delay(500);
+    int message_length = sprintf(buffer, "Hello %d", m);
+    int ret = SX1278_LoRaEntryTx(&radio, message_length, 2000);
+    DebugSerial.print("Entry: ");
+    DebugSerial.println(ret);
+
+    ret = SX1278_LoRaTxPacket(&radio, (uint8_t*) buffer, message_length, 2000);
+    DebugSerial.print("Tx: ");
+    DebugSerial.println(ret);
   }
+
+  delay(500);
 
   SpeeduinoSerial.setRx(PA3);
   SpeeduinoSerial.setTx(PA2);
