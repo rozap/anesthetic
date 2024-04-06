@@ -18,7 +18,7 @@ class LoRaClass : public Stream {
 public:
   LoRaClass();
 
-  int begin(long frequency, SPIClass* spi);
+  int begin(long frequency, bool useLNA, SPIClass* spi);
   void end();
 
   int beginPacket(int implicitHeader = false);

@@ -62,7 +62,7 @@ LoRaClass::LoRaClass() :
   setTimeout(0);
 }
 
-int LoRaClass::begin(long frequency, SPIClass* spi)
+int LoRaClass::begin(long frequency, bool useLNA, SPIClass* spi)
 {
   _spi = spi;
 
@@ -97,8 +97,11 @@ int LoRaClass::begin(long frequency, SPIClass* spi)
   writeRegister(REG_FIFO_TX_BASE_ADDR, 0);
   writeRegister(REG_FIFO_RX_BASE_ADDR, 0);
 
-  // set LNA boost
-  writeRegister(REG_LNA, readRegister(REG_LNA) | 0x03);
+  //BSOD: Made this optional
+  if (useLNA) {
+    // set LNA boost
+    writeRegister(REG_LNA, readRegister(REG_LNA) | 0x03);
+  }
 
   // set auto AGC
   writeRegister(REG_MODEM_CONFIG_3, 0x04);
