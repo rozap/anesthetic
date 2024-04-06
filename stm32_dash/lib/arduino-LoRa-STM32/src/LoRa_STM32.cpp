@@ -62,8 +62,10 @@ LoRaClass::LoRaClass() :
   setTimeout(0);
 }
 
-int LoRaClass::begin(long frequency)
+int LoRaClass::begin(long frequency, SPIClass* spi)
 {
+  _spi = spi;
+
   // setup pins
   pinMode(_ss, OUTPUT);
   // set SS high
@@ -78,9 +80,6 @@ int LoRaClass::begin(long frequency)
     digitalWrite(_reset, HIGH);
     delay(10);
   }
-
-  // start SPI
-  SPI.begin();
 
   // check version
   uint8_t version = readRegister(REG_VERSION);
@@ -117,9 +116,6 @@ void LoRaClass::end()
 {
   // put in sleep mode
   sleep();
-
-  // stop SPI
-  SPI.end();
 }
 
 int LoRaClass::beginPacket(int implicitHeader)
@@ -509,10 +505,10 @@ uint8_t LoRaClass::singleTransfer(uint8_t address, uint8_t value)
 
   digitalWrite(_ss, LOW);
 
-  SPI.beginTransaction(_spiSettings);
-  SPI.transfer(address);
-  response = SPI.transfer(value);
-  SPI.endTransaction();
+  _spi->beginTransaction(_spiSettings);
+  _spi->transfer(address);
+  response = _spi->transfer(value);
+  _spi->endTransaction();
 
   digitalWrite(_ss, HIGH);
 

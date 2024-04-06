@@ -18,7 +18,7 @@ class LoRaClass : public Stream {
 public:
   LoRaClass();
 
-  int begin(long frequency);
+  int begin(long frequency, SPIClass* spi);
   void end();
 
   int beginPacket(int implicitHeader = false);
@@ -78,6 +78,7 @@ private:
   static void onDio0Rise();
 
 private:
+  SPIClass* _spi;
   SPISettings _spiSettings;
   int _ss;
   int _reset;
