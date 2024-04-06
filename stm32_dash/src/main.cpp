@@ -28,16 +28,19 @@
 #include <CircularBuffer.h>
 
 /* Radio */
+
+// Some vestigial RadioHead stuff we can refactor out later.
+
+// RadioHead header compat
+#define RH_RF95_HEADER_LEN 4
+#define RH_BROADCAST_ADDRESS 0xff
+
 // Max number of octets the LORA Rx/Tx FIFO can hold
 #define RH_RF95_FIFO_SIZE 255
 
 // This is the maximum number of bytes that can be carried by the LORA.
 // We use some for headers, keeping fewer for RadioHead messages
 #define RH_RF95_MAX_PAYLOAD_LEN RH_RF95_FIFO_SIZE
-
-// The length of the headers we add.
-// The headers are inside the LORA's payload
-#define RH_RF95_HEADER_LEN 4
 
 // This is the maximum message length that can be supported by this driver.
 // Can be pre-defined to a smaller size (to save SRAM) prior to including this header
@@ -760,8 +763,37 @@ void renderBootImage()
 }
 #endif
 
+void writeDummyRadioHeadHeader()
+{
+  // Stub implementation of the header the RadioHead library uses.
+  // It conveys source and destination addresses as well as extra
+  // packet flags. We don't need these in our dash implementation,
+  // but since the base station uses RadioHead let's just make it
+  // happy. Perhaps we should consolidate libraries in the future.
+  // NB: If we ever need to _read_ incoming packets, discard the
+  // first 4 incoming bytes.
+  LoRa.write(RH_BROADCAST_ADDRESS); // Header: TO
+  LoRa.write(RH_BROADCAST_ADDRESS); // Header: FROM
+  LoRa.write(0);                    // Header: ID
+  LoRa.write(0);                    // Header: FLAGS
+}
+
+void sendRadioTestPacket()
+{
+  if (radioAvailable) {
+    LoRa.beginPacket();
+    writeDummyRadioHeadHeader();
+    LoRa.println("hello from STM32!");
+    LoRa.print("Timeouts: ");
+    LoRa.println(timeouts);
+    LoRa.endPacket();
+  }
+}
+
 void setup()
 {
+  DebugSerial.begin(115200);
+
   delay(500);
   okColors.bar = ILI9341_CYAN;
   okColors.background = BACKGROUND_COLOR;
@@ -776,25 +808,30 @@ void setup()
   requestFrame = false;
   renderNoConnection();
 
-  DebugSerial.begin(115200);
 
-
-  delay(2000);
   DebugSerial.println("initializing radio");
+  radioSPI.begin();
   // override the default CS, reset, and IRQ pins (optional)
-  // LoRa.setPins(7, 6, 1); // set CS, reset, IRQ pin
+  LoRa.setPins(PB1, PB0, PC14); // set CS, reset, IRQ pin
 
-  if (!LoRa.begin(915E6)) {         // initialize ratio at 915 MHz
-    Serial.println("LoRa init failed. Check your connections.");
-    while (true);                   // if failed, do nothing
+  // initialize radio at 915 MHz
+  radioAvailable = LoRa.begin(915E6, false /* useLNA */, &radioSPI);
+
+  if (radioAvailable) {
+    DebugSerial.println("radio init ok");
+
+    LoRa.setSignalBandwidth(125E3);
+    LoRa.setCodingRate4(5);
+    LoRa.setSpreadingFactor(7);
+    LoRa.setPreambleLength(8);
+    LoRa.enableCrc();
+    LoRa.setTxPower(20);
+    sendRadioTestPacket();
+  } else {
+    DebugSerial.println("radio init failed");
   }
 
-  DebugSerial.println("LoRa Dump Registers");
-  LoRa.dumpRegisters(Serial);
-
   while(true){}
-  delay(500);
-
   SpeeduinoSerial.setRx(PA3);
   SpeeduinoSerial.setTx(PA2);
   SpeeduinoSerial.setTimeout(500);
@@ -835,6 +872,8 @@ void loop(void)
       break;
     }
   }
+
+  sendRadioTestPacket();
 
   lastScreenState = screenState;
   requestFrame = false;
