@@ -18,7 +18,13 @@ class LoRaClass : public Stream {
 public:
   LoRaClass();
 
-  int begin(long frequency, bool useLNA, SPIClass* spi);
+  // BSOD radioHeadHeaderEnabled:
+  // Stub implementation of the header the RadioHead library uses.
+  // It conveys source and destination addresses as well as extra
+  // packet flags. We don't need these in our dash implementation,
+  // but since the base station uses RadioHead let's just make it
+  // happy. Perhaps we should consolidate libraries in the future.
+  int begin(long frequency, bool useLNA, bool radioHeadHeaderEnabled, SPIClass* spi);
   void end();
 
   int beginPacket(int implicitHeader = false);
@@ -86,6 +92,7 @@ private:
   int _frequency;
   int _packetIndex;
   int _implicitHeaderMode;
+  int _radioHeadHeaderEnabled;
   void (*_onReceive)(int);
 };
 

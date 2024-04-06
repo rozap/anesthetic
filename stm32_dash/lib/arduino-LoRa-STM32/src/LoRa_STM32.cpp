@@ -50,21 +50,28 @@
 
 #define MAX_PKT_LENGTH           255
 
+
+// RadioHead header compat
+#define RH_RF95_HEADER_LEN 4
+#define RH_BROADCAST_ADDRESS 0xff
+
 LoRaClass::LoRaClass() :
   _spiSettings(8E6, MSBFIRST, SPI_MODE0),
   _ss(LORA_DEFAULT_SS_PIN), _reset(LORA_DEFAULT_RESET_PIN), _dio0(LORA_DEFAULT_DIO0_PIN),
   _frequency(0),
   _packetIndex(0),
   _implicitHeaderMode(0),
+  _radioHeadHeaderEnabled(false),
   _onReceive(NULL)
 {
   // overide Stream timeout value
   setTimeout(0);
 }
 
-int LoRaClass::begin(long frequency, bool useLNA, SPIClass* spi)
+int LoRaClass::begin(long frequency, bool useLNA, bool radioHeadHeaderEnabled, SPIClass* spi)
 {
   _spi = spi;
+  _radioHeadHeaderEnabled = radioHeadHeaderEnabled;
 
   // setup pins
   pinMode(_ss, OUTPUT);
@@ -136,11 +143,30 @@ int LoRaClass::beginPacket(int implicitHeader)
   writeRegister(REG_FIFO_ADDR_PTR, 0);
   writeRegister(REG_PAYLOAD_LENGTH, 0);
 
+  //BSOD: RF95-style header. Also see usage of RH_RF95_HEADER_LEN in endPacket.
+  if (_radioHeadHeaderEnabled) {
+    uint8_t _txHeaderTo = RH_BROADCAST_ADDRESS;
+    uint8_t _txHeaderFrom = RH_BROADCAST_ADDRESS;
+    uint8_t _txHeaderId = 0;
+    uint8_t _txHeaderFlags = 0;
+    writeRegister(REG_FIFO, _txHeaderTo);
+    writeRegister(REG_FIFO, _txHeaderFrom);
+    writeRegister(REG_FIFO, _txHeaderId);
+    writeRegister(REG_FIFO, _txHeaderFlags);
+  }
+
   return 1;
 }
 
 int LoRaClass::endPacket()
 {
+
+  // BSOD: update length to account for RF95-style header
+  if (_radioHeadHeaderEnabled) {
+    int currentLength = readRegister(REG_PAYLOAD_LENGTH);
+    writeRegister(REG_PAYLOAD_LENGTH, currentLength + RH_RF95_HEADER_LEN);
+  }
+
   // put in TX mode
   writeRegister(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX);
 
