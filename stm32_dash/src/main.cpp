@@ -503,12 +503,12 @@ void writeStatus(int bottomPanelY)
 
 void writeSecondaries(int bottomPanelY)
 {
+  char buf[16];
   tft.setTextColor(ILI9341_WHITE, BACKGROUND_COLOR);
 
-  char o2[8];
-  dtostrf(((double)speeduinoSensors.O2) / 10.0, 5, 1, o2);
+  dtostrf(((double)speeduinoSensors.O2) / 10.0, 5, 1, buf);
   tft.print("A/F    ");
-  tft.print(o2);
+  tft.print(buf);
   tft.println(" ");
 
   tft.print("TIMING  ");
@@ -525,9 +525,12 @@ void writeSecondaries(int bottomPanelY)
   tft.print(volts);
   tft.println(" ");
 
-  tft.print("MET     ");
-  tft.print(localSensors.missionElapsedSeconds);
-  tft.println("  ");
+  snprintf(buf, 16,
+    "MET     %02u:%02u",
+    localSensors.missionElapsedSeconds/60,
+    localSensors.missionElapsedSeconds%60
+  );
+  tft.println(buf);
 }
 
 void renderGauge(const char *label, int value, int min, int max, Colors colors)
