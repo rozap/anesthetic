@@ -243,6 +243,19 @@ struct SpeeduinoStatus
 };
 SpeeduinoStatus currentStatus;
 
+/*
+ * State of sensors serviced directly by this MCU.
+ */
+struct LocalSensors
+{
+  double oilTemp;
+  int fuelPct;
+
+  // Internal state, prefer use of fields above this line instead.
+  CircularBuffer<double, WINDOW_SIZE> oilTempWindow;
+  CircularBuffer<double, WINDOW_SIZE> fuelWindow;
+} localSensors;
+
 TFT_eSPI tft = TFT_eSPI();
 
 // SPI port 2
@@ -317,14 +330,14 @@ void showGauge(int value, int min, int max, int color)
   tft.println();
 }
 
-long i = 0;
-CircularBuffer<double, WINDOW_SIZE> fuelWindow;
-int readFuel()
+// Call this once per update interval.
+// Consumers should look at localSensors.fuelPct.
+void updateFuel()
 {
   double vout = (double)((analogRead(FUEL_ANALOG_PIN) * FUEL_VIN) / 1024.0);
   double ohms = FUEL_REF_OHM * (vout / (FUEL_VIN - vout));
-  fuelWindow.push(ohms);
-  double avgOhms = avg(fuelWindow);
+  localSensors.fuelWindow.push(ohms);
+  double avgOhms = avg(localSensors.fuelWindow);
 
   double gallons = 29.0207 + (-7.0567 * log(avgOhms));
   int pct = floor((gallons / 14) * 100);
@@ -332,18 +345,20 @@ int readFuel()
   {
     pct = 0;
   }
-  return pct;
+
+  localSensors.fuelPct = pct;
 }
 
-CircularBuffer<double, WINDOW_SIZE> oilTempWindow;
-double readOilTemp()
+// Call this once per update interval.
+// Consumers should look at localSensors.oilTemp.
+void updateOilT()
 {
   double vout = (double)((analogRead(OIL_TEMP_ANALOG_PIN) * OIL_TEMP_VIN) / 1024.0);
   double ohms = OIL_TEMP_REF_OHM * (vout / (OIL_TEMP_VIN - vout));
-  oilTempWindow.push(ohms);
-  double avgOhms = avg(oilTempWindow);
+  localSensors.oilTempWindow.push(ohms);
+  double avgOhms = avg(localSensors.oilTempWindow);
 
-  return avgOhms; // TODO calibrate.
+  localSensors.oilTemp = avgOhms; // TODO calibrate.
 }
 
 
@@ -378,7 +393,7 @@ void writeStatus(int bottomPanelY)
     moveToHalfWidth();
     hasError = true;
   }
-  if (readFuel() < LIMIT_FUEL_LOWER)
+  if (localSensors.fuelPct < LIMIT_FUEL_LOWER)
   {
     tft.setTextColor(errorColors.text);
     tft.println("Low Gas!");
@@ -629,7 +644,7 @@ int popHeader()
   #endif
 }
 
-void requestData()
+void requestSpeeduinoUpdate()
 {
 
   // clearRx();
@@ -677,6 +692,14 @@ void requestData()
     DebugSerial.println("popHeader -1");
     bumpTimeout();
   }
+}
+
+// Called once per frame.
+void updateAllSensors()
+{
+  requestSpeeduinoUpdate();
+  updateFuel();
+  updateOilT();
 }
 
 void clearScreen()
@@ -730,7 +753,7 @@ void renderNoData()
 
   clearLine();
   tft.print("Fuel ");
-  tft.print(readFuel());
+  tft.print(localSensors.fuelPct);
   tft.println("%   ");
 }
 
@@ -741,7 +764,7 @@ void render()
   tft.setCursor(0, 0);
   tft.setTextColor(ILI9341_CYAN);
 
-  int fuel = readFuel();
+  int fuel = localSensors.fuelPct;
   renderGauge("FUEL    ", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
   renderGauge("RPM     ", currentStatus.RPM, 500, 7000, currentStatus.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
 
@@ -864,7 +887,7 @@ void setup()
 
 void loop(void)
 {
-  requestData();
+  updateAllSensors();
 
   if (screenState != lastScreenState || requestFrame)
   {
