@@ -272,6 +272,7 @@ TFT_eSPI tft = TFT_eSPI();
 //                COPI   CIPO   SCLK  PSEL
 SPIClass radioSPI(PB15, PB14, PB13); //, PB12);
 bool radioAvailable;
+bool radioBusy;
 
 /*
 |Code|English                 |Unit                 | Notes
@@ -892,12 +893,24 @@ void loraSendNumericValue(const char * id, uint16_t value)
 }
 
 // Send one packet containing all telemetry information, separated by newlines.
-void loraSendTelemetryPacket()
+// May skip transmission if the radio is already busy or unavailable,
+// in this case it returns 0. Else, returns 1.
+int loraSendTelemetryPacket()
 {
   if (!radioAvailable)
   {
-    return;
+    return 0;
   }
+
+  if (radioBusy) {
+    if (LoRa.isAsyncTxDone()) {
+      radioBusy = false;
+    } else {
+      return 0;
+    }
+  }
+
+  radioBusy = true;
 
   LoRa.beginPacket();
   loraSendDummyRadioHeadHeader();
@@ -942,7 +955,9 @@ void loraSendTelemetryPacket()
   //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
   //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
 
-  LoRa.endPacket();
+  LoRa.endPacket(true /* async */);
+
+  return 1;
 }
 
 void setup()
@@ -971,6 +986,7 @@ void setup()
 
   // initialize radio at 915 MHz
   radioAvailable = LoRa.begin(915E6, false /* useLNA */, &radioSPI);
+  radioBusy = false;
 
   if (radioAvailable) {
     DebugSerial.println("radio init ok");
@@ -1006,8 +1022,10 @@ void loop(void)
   updateAllSensors();
   updateTach(speeduinoSensors.RPM, 3000 /* firstLightRPM */, LIMIT_RPM_UPPER, false /* idiotLight TODO */);
   if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_UPDATE_PERIOD_MS) {
-    loraSendTelemetryPacket();
-    lastTelemetryPacketSentAtMillis = millis();
+    bool sent = loraSendTelemetryPacket();
+    if (sent) {
+      lastTelemetryPacketSentAtMillis = millis();
+    }
   }
 
   if (screenState != lastScreenState || requestFrame)

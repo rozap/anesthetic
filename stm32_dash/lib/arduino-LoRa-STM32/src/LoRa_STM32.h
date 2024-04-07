@@ -22,7 +22,12 @@ public:
   void end();
 
   int beginPacket(int implicitHeader = false);
-  int endPacket();
+  int endPacket(bool async);
+
+  // If endPacket was called with async=true, this function should
+  // be checked before the next beginPacket to see if the radio is
+  // ready. Returns 1 ONCE if the radio has completed its task.
+  int isAsyncTxDone();
 
   int parsePacket(int size = 0);
   int packetRssi();
