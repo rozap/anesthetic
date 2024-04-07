@@ -369,6 +369,10 @@ void updateFuel()
     pct = 0;
   }
 
+  #ifdef USE_MOCK_DATA
+  pct = 50;
+  #endif
+
   localSensors.fuelPct = pct;
 }
 
@@ -380,6 +384,10 @@ void updateOilT()
   double ohms = OIL_TEMP_REF_OHM * (vout / (OIL_TEMP_VIN - vout));
   localSensors.oilTempWindow.push(ohms);
   double avgOhms = avg(localSensors.oilTempWindow);
+
+  #ifdef USE_MOCK_DATA
+  avgOhms = 50;
+  #endif
 
   localSensors.oilTemp = avgOhms; // TODO calibrate.
 }
@@ -941,8 +949,7 @@ void setup()
 
   DebugSerial.println("initializing radio");
   radioSPI.begin();
-  // override the default CS, reset, and IRQ pins (optional)
-  LoRa.setPins(PB12, PB5, PC14); // set CS, reset, IRQ pin
+  LoRa.setPins(PB12 /* CS */, PB5 /* Reset */, PC14 /* IRQ */);
 
   // initialize radio at 915 MHz
   radioAvailable = LoRa.begin(915E6, false /* useLNA */, &radioSPI);
