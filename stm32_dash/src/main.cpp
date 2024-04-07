@@ -22,6 +22,18 @@
 
 */
 
+// Configuration
+
+// Extra debugging for speeduino comms.
+#define DEBUG_SPEEDUINO_COMMS
+
+// Display the bootsplash (disable if debugging to shorten upload times).
+#define BOOTSPLASH
+
+// Use data in mock_pkt.h instead of actually reading from the serial port.
+//#define USE_MOCK_DATA
+
+
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <SPI.h>
@@ -50,15 +62,10 @@
 
 #include <LoRa_STM32.h>
 
-/* Optionally display the bootsplash (disable if debugging to shorten upload times). */
-//#define BOOTSPLASH
-
 #ifdef BOOTSPLASH
 #include "boot_image.h"
 #endif
 
-// If this is defined, uses data in mock_pkt.h instead of actually reading from the serial port.
-#define USE_MOCK_DATA
 #ifdef USE_MOCK_DATA
 #include "mock_pkt.h"
 #endif
@@ -355,6 +362,10 @@ const char *RADIO_MSG_SPEEDUINO_STATUS_1 = "S_1";
 const char *RADIO_MSG_SPEEDUINO_STATUS_3 = "S_3"; // Don't ask me why there isn't a status2.
 const char *RADIO_MSG_SPEEDUINO_STATUS_4 = "S_4";
 
+// Note! These values are only for the main render() method.
+long fpsCounterStartTime;
+uint8_t frameCounter; // Accumulates # render frames, resets every 50 frames.
+
 double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
 {
   if (cb.size() == 0)
@@ -403,7 +414,7 @@ void updateFuel()
   }
 
   #ifdef USE_MOCK_DATA
-  pct = 50;
+  pct = sin(millis() / 1000.0) * 50.0 + 50.0;
   #endif
 
   localSensors.fuelPct = pct;
@@ -689,21 +700,27 @@ void requestSpeeduinoUpdate()
 
   // clearRx();
   SpeeduinoSerial.write("n"); // Send n to request real time data
+  #ifdef DEBUG_SPEEDUINO_COMMS
   DebugSerial.println("requested data");
+  #endif
 
   int nLength = popHeader();
 
   if (nLength >= RESPONSE_LEN)
   {
+    #ifdef DEBUG_SPEEDUINO_COMMS
     DebugSerial.println("Response pkt bigger than rec'v buf");
     DebugSerial.print("nLength=");
     DebugSerial.println(nLength);
+    #endif
     clearRx();
   }
   else if (nLength > 0)
   {
+    #ifdef DEBUG_SPEEDUINO_COMMS
     DebugSerial.print("nLength=");
     DebugSerial.println(nLength);
+    #endif
 
     #ifdef USE_MOCK_DATA
     uint8_t nRead = ___single_speeduino_pkt_bin[2];
@@ -711,12 +728,17 @@ void requestSpeeduinoUpdate()
     #else
     uint8_t nRead = SpeeduinoSerial.readBytes(speeduinoResponse, nLength);
     #endif
+
+    #ifdef DEBUG_SPEEDUINO_COMMS
     DebugSerial.print("nRead=");
     DebugSerial.println(nRead);
+    #endif
 
     if (nRead < nLength)
     {
+      #ifdef DEBUG_SPEEDUINO_COMMS
       DebugSerial.println("nRead < nLength");
+      #endif
       bumpTimeout();
     }
     else
@@ -729,7 +751,9 @@ void requestSpeeduinoUpdate()
   }
   else
   {
+    #ifdef DEBUG_SPEEDUINO_COMMS
     DebugSerial.println("popHeader -1");
+    #endif
     bumpTimeout();
   }
 }
@@ -800,7 +824,6 @@ void renderNoData()
 
 void render()
 {
-
   tft.setTextSize(3);
   tft.setCursor(0, 0);
   tft.setTextColor(ILI9341_CYAN);
@@ -831,6 +854,16 @@ void render()
   writeStatusMessages(bottomPanelY);
 
   requestFrame = false;
+
+  if (frameCounter >= 50) {
+    double secondsForFrames = (millis() - fpsCounterStartTime) / 1000.0;
+    fpsCounterStartTime = millis();
+    DebugSerial.print("render FPS: ");
+    DebugSerial.println(frameCounter / secondsForFrames);
+    frameCounter = 0;
+  } else {
+    frameCounter ++;
+  }
 }
 
 #ifdef BOOTSPLASH
@@ -1012,6 +1045,8 @@ void setup()
 
   missionStartTimeMillis = millis();
   lastTelemetryPacketSentAtMillis = 0;
+  fpsCounterStartTime = millis();
+  frameCounter = 0;
 }
 
 void loop(void)
