@@ -265,7 +265,7 @@ SPIClass radioSPI(PB15, PB14, PB13); //, PB12);
 bool radioAvailable;
 
 /*
-|Code|English                 |Unit                 |
+|Code|English                 |Unit                 | Notes
 |T_C |Coolant temperature     |Tenths of a degree F |
 |P_C |Coolant pressure        |Tenths of a PSI      |
 |T_O |Oil temperature         |Tenths of a degree F |
@@ -278,7 +278,7 @@ bool radioAvailable;
 |MET |Mission Elapsed Time    |Seconds              |
 |PIT |Return To Pits!         |!0=Return Now 0=Race |
 |GAS |Fuel remaining.         |Percent              |
-|S_E |Speeduino engine status |Bitfield             |
+|S_E |Speeduino engine status |Bitfield             |https://github.com/noisymime/speeduino/blob/df78f5109c86cd2a1e9314138959738d1a33f039/speeduino/globals.h#L136
 |ADV |Engine advance          |Degrees              |
 |O_2 |O2 sensor reading       |Umm.... oxygens?     |
 |IAT |Intake air temperature  |Umm....              |
@@ -287,11 +287,11 @@ bool radioAvailable;
 |V_E |Volumetric efficiency   |???                  |
 |AFT |AFR target              |Ratio                |
 |TPS |Throttle position       |???                  |
-|S_P |Speeduino engine protect|Bitfield             |
+|S_P |Speeduino engine protect|Bitfield             |https://github.com/noisymime/speeduino/blob/df78f5109c86cd2a1e9314138959738d1a33f039/speeduino/globals.h#L136
 |FAN |Fan duty cycle          |Percent... I think   |
-|S_1 |Speeduino status1       |Bitfield             |
-|S_3 |Speeduino status3       |Bitfield             |
-|S_4 |Speeduino status4       |Bitfield             |
+|S_1 |Speeduino status1       |Bitfield             |https://github.com/noisymime/speeduino/blob/df78f5109c86cd2a1e9314138959738d1a33f039/speeduino/globals.h#L146
+|S_3 |Speeduino status3       |Bitfield             |https://github.com/noisymime/speeduino/blob/df78f5109c86cd2a1e9314138959738d1a33f039/speeduino/globals.h#L182
+|S_4 |Speeduino status4       |Bitfield             |https://github.com/noisymime/speeduino/blob/df78f5109c86cd2a1e9314138959738d1a33f039/speeduino/globals.h#L191
 
 Fault code
 Digit 0 is the least significant, 5 is the most significant.
