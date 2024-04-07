@@ -262,6 +262,10 @@ struct LocalSensors
 CircularBuffer<double, WINDOW_SIZE> oilTempWindow;
 CircularBuffer<double, WINDOW_SIZE> fuelWindow;
 
+// Telemetry is sent at most this often.
+#define TELEMETRY_UPDATE_PERIOD_MS 1000
+long lastTelemetryPacketSentAtMillis;
+
 TFT_eSPI tft = TFT_eSPI();
 
 // SPI port 2
@@ -994,13 +998,17 @@ void setup()
   tachBootAnimation();
 
   missionStartTimeMillis = millis();
+  lastTelemetryPacketSentAtMillis = 0;
 }
 
 void loop(void)
 {
   updateAllSensors();
-  loraSendTelemetryPacket();
   updateTach(speeduinoSensors.RPM, 3000 /* firstLightRPM */, LIMIT_RPM_UPPER, false /* idiotLight TODO */);
+  if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_UPDATE_PERIOD_MS) {
+    loraSendTelemetryPacket();
+    lastTelemetryPacketSentAtMillis = millis();
+  }
 
   if (screenState != lastScreenState || requestFrame)
   {
