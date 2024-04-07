@@ -25,7 +25,7 @@ void loop() {
     uint8_t len = sizeof(buf);
     if (rf95.recv(buf, &len)) {
       buf[len] = 0;
-      Serial.print((char*)buf);
+      Serial.println((char*)buf);
       Serial.print("RSI:");
       Serial.println(rf95.lastRssi(), DEC);
       digitalWrite(LED_BUILTIN, HIGH);
