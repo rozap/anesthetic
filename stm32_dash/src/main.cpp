@@ -233,14 +233,15 @@ struct SpeeduinoStatus
   uint8_t nitrous_status;
   uint8_t TS_SD_Status;
   uint8_t fanDuty;
+
 };
 SpeeduinoStatus currentStatus;
 
 TFT_eSPI tft = TFT_eSPI();
 
-// SPI port 3
-//                COPI  CIPO  SCLK  PSEL
-SPIClass radioSPI(PB_5, PB_4, PB_3); //, PA_15);
+// SPI port 2
+//                COPI   CIPO   SCLK  PSEL
+SPIClass radioSPI(PB15, PB14, PB13); //, PB12);
 bool radioAvailable;
 
 /*
@@ -808,11 +809,10 @@ void setup()
   requestFrame = false;
   renderNoConnection();
 
-
   DebugSerial.println("initializing radio");
   radioSPI.begin();
   // override the default CS, reset, and IRQ pins (optional)
-  LoRa.setPins(PB1, PB0, PC14); // set CS, reset, IRQ pin
+  LoRa.setPins(PB12, PB5, PC14); // set CS, reset, IRQ pin
 
   // initialize radio at 915 MHz
   radioAvailable = LoRa.begin(915E6, false /* useLNA */, &radioSPI);
@@ -831,7 +831,6 @@ void setup()
     DebugSerial.println("radio init failed");
   }
 
-  while(true){}
   SpeeduinoSerial.setRx(PA3);
   SpeeduinoSerial.setTx(PA2);
   SpeeduinoSerial.setTimeout(500);
