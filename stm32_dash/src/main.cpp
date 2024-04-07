@@ -9,7 +9,7 @@
       * press reset each time to program
     * pin3 has to be OFF to run program
     * need delay on powerup or else it doesn't work at all
-   * println is over Serial1. The following works:
+    * println is over Serial1. The following works:
       void setup() {
         while (!Serial1);
         Serial1.begin(115200);
@@ -71,10 +71,16 @@ HardwareSerial SpeeduinoSerial = Serial2;
 #define WIDTH 320
 #define HEIGHT 240
 
-#define FUEL_VIN 3.3
-#define RESISTANCE_PIN PB0
-#define FUEL_REF_OHM 47
+// Averaging window size for analog readings (oil temp and fuel level).
 #define WINDOW_SIZE 16
+
+#define FUEL_VIN 3.3
+#define FUEL_ANALOG_PIN PB0
+#define FUEL_REF_OHM 47
+
+#define OIL_TEMP_VIN 3.3
+#define OIL_TEMP_ANALOG_PIN PB1
+#define OIL_TEMP_REF_OHM 47
 
 #define BAR_HEIGHT 8
 #define WUT ILI9341_CYAN
@@ -315,7 +321,7 @@ long i = 0;
 CircularBuffer<double, WINDOW_SIZE> fuelWindow;
 int readFuel()
 {
-  double vout = (double)((analogRead(RESISTANCE_PIN) * FUEL_VIN) / 1024.0);
+  double vout = (double)((analogRead(FUEL_ANALOG_PIN) * FUEL_VIN) / 1024.0);
   double ohms = FUEL_REF_OHM * (vout / (FUEL_VIN - vout));
   fuelWindow.push(ohms);
   double avgOhms = avg(fuelWindow);
@@ -328,6 +334,18 @@ int readFuel()
   }
   return pct;
 }
+
+CircularBuffer<double, WINDOW_SIZE> oilTempWindow;
+double readOilTemp()
+{
+  double vout = (double)((analogRead(OIL_TEMP_ANALOG_PIN) * OIL_TEMP_VIN) / 1024.0);
+  double ohms = OIL_TEMP_REF_OHM * (vout / (OIL_TEMP_VIN - vout));
+  oilTempWindow.push(ohms);
+  double avgOhms = avg(oilTempWindow);
+
+  return avgOhms; // TODO calibrate.
+}
+
 
 void moveToHalfWidth()
 {
@@ -871,8 +889,6 @@ void loop(void)
       break;
     }
   }
-
-  sendRadioTestPacket();
 
   lastScreenState = screenState;
   requestFrame = false;

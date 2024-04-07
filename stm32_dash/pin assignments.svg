@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.7338677"
-     inkscape:cx="326.82635"
-     inkscape:cy="479.90619"
+     inkscape:cx="395.22762"
+     inkscape:cy="454.30143"
      inkscape:window-width="2560"
      inkscape:window-height="1379"
      inkscape:window-x="0"
@@ -15717,6 +15717,39 @@ ODOK+oy+AAAAFHRFWHRUaHVtYjo6U2l6ZQA4NTczMDNCQj/8kSYAAAAASUVORK5CYII=
          y="150.24554">LORA IRQ</tspan></text>
     <text
        xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.82222px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       x="113.76128"
+       y="130.66559"
+       id="text751-9-2-0"><tspan
+         sodipodi:role="line"
+         id="tspan749-1-7-9"
+         style="font-size:2.82222px;fill:#ff0000;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         x="113.76128"
+         y="130.66559">ECU</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.11667px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       x="113.63136"
+       y="106.10957"
+       id="text751-9-2-0-3-0-78"><tspan
+         sodipodi:role="line"
+         id="tspan749-1-7-9-6-6-4"
+         style="font-size:2.11667px;fill:#ff0000;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         x="113.63136"
+         y="106.10957">FUEL</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.11667px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       x="113.6957"
+       y="102.2674"
+       id="text751-9-2-0-3-0-78-5"><tspan
+         sodipodi:role="line"
+         id="tspan749-1-7-9-6-6-4-0"
+         style="font-size:2.11667px;fill:#ff0000;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+         x="113.6957"
+         y="102.2674">OIL T</tspan></text>
+    <text
+       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.11667px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
        x="95.43734"
        y="90.552307"
@@ -15836,17 +15869,6 @@ ODOK+oy+AAAAFHRFWHRUaHVtYjo6U2l6ZQA4NTczMDNCQj/8kSYAAAAASUVORK5CYII=
          style="font-size:4.23333px;fill:#ff0000;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
          x="112.06231"
          y="110.91934">TFT</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:2.82222px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
-       x="113.76128"
-       y="130.66559"
-       id="text751-9-2-0"><tspan
-         sodipodi:role="line"
-         id="tspan749-1-7-9"
-         style="font-size:2.82222px;fill:#ff0000;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
-         x="113.76128"
-         y="130.66559">ECU</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.82222px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:#f3ffff;stroke-width:1.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
