@@ -255,10 +255,11 @@ struct LocalSensors
   int fuelPct;
   uint16_t missionElapsedSeconds;
 
-  // Internal state, prefer use of fields above this line instead.
-  CircularBuffer<double, WINDOW_SIZE> oilTempWindow;
-  CircularBuffer<double, WINDOW_SIZE> fuelWindow;
 } localSensors;
+
+// Internal data for sensor sliding avg.
+CircularBuffer<double, WINDOW_SIZE> oilTempWindow;
+CircularBuffer<double, WINDOW_SIZE> fuelWindow;
 
 TFT_eSPI tft = TFT_eSPI();
 
@@ -368,8 +369,8 @@ void updateFuel()
 {
   double vout = (double)((analogRead(FUEL_ANALOG_PIN) * FUEL_VIN) / 1024.0);
   double ohms = FUEL_REF_OHM * (vout / (FUEL_VIN - vout));
-  localSensors.fuelWindow.push(ohms);
-  double avgOhms = avg(localSensors.fuelWindow);
+  fuelWindow.push(ohms);
+  double avgOhms = avg(fuelWindow);
 
   double gallons = 29.0207 + (-7.0567 * log(avgOhms));
   int pct = floor((gallons / 14) * 100);
@@ -391,8 +392,8 @@ void updateOilT()
 {
   double vout = (double)((analogRead(OIL_TEMP_ANALOG_PIN) * OIL_TEMP_VIN) / 1024.0);
   double ohms = OIL_TEMP_REF_OHM * (vout / (OIL_TEMP_VIN - vout));
-  localSensors.oilTempWindow.push(ohms);
-  double avgOhms = avg(localSensors.oilTempWindow);
+  oilTempWindow.push(ohms);
+  double avgOhms = avg(oilTempWindow);
 
   #ifdef USE_MOCK_DATA
   avgOhms = 50;
