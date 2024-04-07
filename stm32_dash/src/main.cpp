@@ -26,6 +26,7 @@
 #include <TFT_eSPI.h>
 #include <SPI.h>
 #include <CircularBuffer.h>
+#include "tach.h"
 
 /* Radio */
 
@@ -943,6 +944,8 @@ void loraSendTelemetryPacket()
 void setup()
 {
   DebugSerial.begin(115200);
+  tachDisplayInit();
+  clearTachLights();
 
   delay(500);
   okColors.bar = ILI9341_CYAN;
@@ -988,6 +991,8 @@ void setup()
   delay(2000);
   #endif
 
+  tachBootAnimation();
+
   missionStartTimeMillis = millis();
 }
 
@@ -995,6 +1000,7 @@ void loop(void)
 {
   updateAllSensors();
   loraSendTelemetryPacket();
+  updateTach(speeduinoSensors.RPM, 3000 /* firstLightRPM */, LIMIT_RPM_UPPER, false /* idiotLight TODO */);
 
   if (screenState != lastScreenState || requestFrame)
   {
