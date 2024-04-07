@@ -68,6 +68,8 @@ HardwareSerial DebugSerial = Serial1;
 // Serial2: RX: A3, TX: A2. Connected to Speeduino.
 HardwareSerial SpeeduinoSerial = Serial2;
 
+long missionStartTimeMillis;
+
 #define WIDTH 320
 #define HEIGHT 240
 
@@ -251,6 +253,7 @@ struct LocalSensors
 {
   double oilTemp;
   int fuelPct;
+  uint16_t missionElapsedSeconds;
 
   // Internal state, prefer use of fields above this line instead.
   CircularBuffer<double, WINDOW_SIZE> oilTempWindow;
@@ -516,7 +519,7 @@ void writeSecondaries(int bottomPanelY)
   tft.println(" ");
 
   tft.print("MET     ");
-  tft.print(speeduinoSensors.secl);
+  tft.print(localSensors.missionElapsedSeconds);
   tft.println("  ");
 }
 
@@ -737,6 +740,7 @@ void updateAllSensors()
   requestSpeeduinoUpdate();
   updateFuel();
   updateOilT();
+  localSensors.missionElapsedSeconds = (millis() - missionStartTimeMillis) / 1000;
 }
 
 void clearScreen()
@@ -909,7 +913,7 @@ void loraSendTelemetryPacket()
   loraSendNumericValue(RADIO_MSG_BATTERY_VOLTAGE, speeduinoSensors.battery10 * 100.0);
   loraSendNumericValue(RADIO_MSG_RPM, speeduinoSensors.RPM);
   loraSendNumericValue(RADIO_MSG_FAULT, checkEngineLight);
-  loraSendNumericValue(RADIO_MSG_MET, speeduinoSensors.secl);
+  loraSendNumericValue(RADIO_MSG_MET, localSensors.missionElapsedSeconds);
 
   loraSendNumericValue(RADIO_MSG_FUEL_PCT, localSensors.fuelPct);
   loraSendNumericValue(RADIO_MSG_SPEEDUINO_ENGINE_STATUS, speeduinoSensors.engine);
@@ -982,6 +986,8 @@ void setup()
   renderBootImage();
   delay(2000);
   #endif
+
+  missionStartTimeMillis = millis();
 }
 
 void loop(void)
