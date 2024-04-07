@@ -284,11 +284,14 @@ bool radioAvailable;
 |IAT |Intake air temperature  |Umm....              |
 |SLS |Sync loss counter       |Count                |
 |MAP |Manifold absolute press |Umm.... psi?         |
-|V_E |VE... whatever that is  |???                  |
+|V_E |Volumetric efficiency   |???                  |
 |AFT |AFR target              |Ratio                |
 |TPS |Throttle position       |???                  |
 |S_P |Speeduino engine protect|Bitfield             |
 |FAN |Fan duty cycle          |Percent... I think   |
+|S_1 |Speeduino status1       |Bitfield             |
+|S_3 |Speeduino status3       |Bitfield             |
+|S_4 |Speeduino status4       |Bitfield             |
 
 Fault code
 Digit 0 is the least significant, 5 is the most significant.
@@ -321,6 +324,9 @@ const char *RADIO_MSG_AFR_TARGET = "AFT";
 const char *RADIO_MSG_TPS = "TPS";
 const char *RADIO_MSG_SPEEDUINO_PROTECT_STATUS = "S_P";
 const char *RADIO_MSG_FAN_DUTY = "FAN";
+const char *RADIO_MSG_SPEEDUINO_STATUS_1 = "S_1";
+const char *RADIO_MSG_SPEEDUINO_STATUS_3 = "S_3"; // Don't ask me why there isn't a status2.
+const char *RADIO_MSG_SPEEDUINO_STATUS_4 = "S_4";
 
 double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
 {
@@ -918,11 +924,11 @@ void loraSendTelemetryPacket()
   loraSendNumericValue(RADIO_MSG_TPS, speeduinoSensors.TPS);
   loraSendNumericValue(RADIO_MSG_SPEEDUINO_PROTECT_STATUS, speeduinoSensors.engineProtectStatus);
   loraSendNumericValue(RADIO_MSG_FAN_DUTY, speeduinoSensors.fanDuty);
+  loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_1, speeduinoSensors.status1);
+  loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_3, speeduinoSensors.status3);
+  loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_4, speeduinoSensors.status4);
 
   // Space in packet available for future use.
-  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
-  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
-  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
   //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
   //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
 
