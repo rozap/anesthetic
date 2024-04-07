@@ -58,7 +58,7 @@
 #endif
 
 // If this is defined, uses data in mock_pkt.h instead of actually reading from the serial port.
-//#define USE_MOCK_DATA
+#define USE_MOCK_DATA
 #ifdef USE_MOCK_DATA
 #include "mock_pkt.h"
 #endif
@@ -104,6 +104,23 @@ uint8_t lastScreenState = SCREEN_STATE_NO_CONNECTION;
 #define LIMIT_OIL_LOWER 10
 #define LIMIT_FUEL_LOWER 10
 #define LIMIT_RPM_UPPER 5500
+
+struct StatusMessages
+{
+  bool fanOff;
+  bool fanOn;
+  bool engHot;
+  bool lowGas;
+  bool lowOilPressure;
+  bool overRev;
+  bool allOk;
+  bool engOff;
+  bool running;
+  bool cranking;
+  bool warmup;
+  bool ase;
+  bool operator==(const StatusMessages&) const = default; // Auto == operator.
+} statusMessages, lastRenderedStatusMessages;
 
 struct Colors
 {
@@ -408,6 +425,27 @@ void updateOilT()
   localSensors.oilTemp = avgOhms; // TODO calibrate.
 }
 
+void updateStatusMessages()
+{
+  statusMessages.fanOn = isNthBitSet(speeduinoSensors.status4, BIT_STATUS4_FAN);
+  statusMessages.fanOff = !statusMessages.fanOn;
+  statusMessages.engHot = speeduinoSensors.coolant > LIMIT_COOLANT_UPPER;
+  statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
+  statusMessages.lowOilPressure = speeduinoSensors.oilPressure < LIMIT_OIL_LOWER;
+  statusMessages.overRev = speeduinoSensors.RPM > LIMIT_RPM_UPPER;
+  statusMessages.running = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_RUN);
+  statusMessages.cranking = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_CRANK);
+  statusMessages.warmup = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_WARMUP);
+  statusMessages.ase = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_ASE);
+  statusMessages.engOff = !statusMessages.running && !statusMessages.cranking;
+
+  statusMessages.allOk = !(
+    statusMessages.engHot ||
+    statusMessages.lowGas ||
+    statusMessages.lowOilPressure ||
+    statusMessages.overRev
+  );
+}
 
 void moveToHalfWidth()
 {
@@ -415,90 +453,42 @@ void moveToHalfWidth()
   clearLine();
 }
 
-void writeStatus(int bottomPanelY)
+void writeSingleStatusMessage(bool enabled, const char* msg)
 {
+  if (enabled) {
+    moveToHalfWidth();
+    tft.println(msg);
+  }
+}
+
+void writeStatusMessages(int bottomPanelY)
+{
+  if (statusMessages == lastRenderedStatusMessages) {
+    return;
+  }
+
+  lastRenderedStatusMessages = statusMessages;
+
   tft.setCursor(WIDTH / 2 + 8, bottomPanelY);
-  // tft.fillRect(WIDTH / 2 + 1, bottomPanelY - 4, WIDTH, HEIGHT, BACKGROUND_COLOR);
-
-  moveToHalfWidth();
-  if (isNthBitSet(speeduinoSensors.status4, BIT_STATUS4_FAN))
-  {
-    tft.println("Fan On");
-  }
-  else
-  {
-    tft.println("Fan Off");
-  }
-  moveToHalfWidth();
-
-  bool hasError = false;
-
-  if (speeduinoSensors.coolant > LIMIT_COOLANT_UPPER)
-  {
-    tft.setTextColor(errorColors.text);
-    tft.println("Eng Hot!");
-    moveToHalfWidth();
-    hasError = true;
-  }
-  if (localSensors.fuelPct < LIMIT_FUEL_LOWER)
-  {
-    tft.setTextColor(errorColors.text);
-    tft.println("Low Gas!");
-    moveToHalfWidth();
-    hasError = true;
-  }
-  if (speeduinoSensors.oilPressure < LIMIT_OIL_LOWER)
-  {
-    tft.setTextColor(errorColors.text);
-    tft.println("Low Oil Prs!");
-    moveToHalfWidth();
-    hasError = true;
-  }
-  if (speeduinoSensors.RPM > LIMIT_RPM_UPPER)
-  {
-    tft.setTextColor(errorColors.text);
-    tft.println("Over rev!");
-    moveToHalfWidth();
-    hasError = true;
-  }
-
-  if (!hasError)
-  {
-    tft.setTextColor(okColors.text);
-    tft.println("All OK");
-  }
+  tft.fillRect(WIDTH / 2 + 1, bottomPanelY - 4, WIDTH, HEIGHT, BACKGROUND_COLOR);
 
   tft.setTextColor(okColors.text);
-  bool isRunning = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_RUN);
-  bool isCranking = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_CRANK);
-  if (!isRunning && !isCranking)
-  {
-    moveToHalfWidth();
-    tft.setTextColor(errorColors.text);
-    tft.println("Eng Off");
-    tft.setTextColor(okColors.text);
-  }
+  writeSingleStatusMessage(statusMessages.fanOn, "Fan On");
+  writeSingleStatusMessage(statusMessages.fanOff, "Fan Off");
 
-  if (isRunning)
-  {
-    moveToHalfWidth();
-    tft.println("Running");
-  }
-  if (isCranking)
-  {
-    moveToHalfWidth();
-    tft.println("Cranking");
-  }
-  if (isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_WARMUP))
-  {
-    moveToHalfWidth();
-    tft.println("Warmup");
-  }
-  if (isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_ASE))
-  {
-    moveToHalfWidth();
-    tft.println("ASE");
-  }
+  tft.setTextColor(errorColors.text);
+  writeSingleStatusMessage(statusMessages.engHot, "Eng Hot!");
+  writeSingleStatusMessage(statusMessages.lowGas, "Low Gas!");
+  writeSingleStatusMessage(statusMessages.lowOilPressure, "Low Oil Prs!");
+  writeSingleStatusMessage(statusMessages.overRev, "Over rev!");
+  writeSingleStatusMessage(statusMessages.engOff, "Eng Off");
+
+  tft.setTextColor(okColors.text);
+  writeSingleStatusMessage(statusMessages.allOk, "All OK");
+  writeSingleStatusMessage(statusMessages.running, "Running");
+  writeSingleStatusMessage(statusMessages.cranking, "Cranking");
+  writeSingleStatusMessage(statusMessages.warmup, "Warmup");
+  writeSingleStatusMessage(statusMessages.ase, "ASE");
 }
 
 void writeSecondaries(int bottomPanelY)
@@ -838,7 +828,7 @@ void render()
   bottomPanelY = bottomPanelY + 6;
   tft.setCursor(0, bottomPanelY);
   writeSecondaries(bottomPanelY);
-  writeStatus(bottomPanelY);
+  writeStatusMessages(bottomPanelY);
 
   requestFrame = false;
 }
@@ -965,6 +955,10 @@ int loraSendTelemetryPacket()
 
 void setup()
 {
+
+  memset(&statusMessages, 0, sizeof(StatusMessages));
+  memset(&lastRenderedStatusMessages, 0, sizeof(StatusMessages));
+
   DebugSerial.begin(115200);
   tachDisplayInit();
   clearTachLights();
@@ -1030,6 +1024,7 @@ void loop(void)
       lastTelemetryPacketSentAtMillis = millis();
     }
   }
+  updateStatusMessages();
 
   if (screenState != lastScreenState || requestFrame)
   {
