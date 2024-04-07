@@ -128,6 +128,7 @@ bool isNthBitSet(unsigned char c, int n)
 
   return ((c & mask[n]) != 0);
 }
+
 // Define bit positions within engine variable
 #define BIT_ENGINE_RUN 0    // Engine running
 #define BIT_ENGINE_CRANK 1  // Engine cranking
@@ -241,7 +242,7 @@ struct SpeeduinoStatus
   uint8_t fanDuty;
 
 };
-SpeeduinoStatus currentStatus;
+SpeeduinoStatus speeduinoSensors;
 
 /*
  * State of sensors serviced directly by this MCU.
@@ -264,18 +265,30 @@ SPIClass radioSPI(PB15, PB14, PB13); //, PB12);
 bool radioAvailable;
 
 /*
-|Code|English             |Unit                 |
-|T_C |Coolant temperature |Tenths of a degree F |
-|P_C |Coolant pressure    |Tenths of a PSI      |
-|T_O |Oil temperature     |Tenths of a degree F |
-|P_O |Oil pressure        |PSI                  |
-|VBA |Battery voltage     |Millivolts           |
-|RPM |RPM                 |RPM                  |
-|SPD |GPS Speed           |Tenths of a MPH      |
-|TIM |GPS Lap Time        |Deciseconds          |
-|FLT |Fault               |Fault code, see below|
-|MET |Mission Elapsed Time|Seconds              |
-|PIT |Return To Pits!     |!0=Return Now 0=Race |
+|Code|English                 |Unit                 |
+|T_C |Coolant temperature     |Tenths of a degree F |
+|P_C |Coolant pressure        |Tenths of a PSI      |
+|T_O |Oil temperature         |Tenths of a degree F |
+|P_O |Oil pressure            |PSI                  |
+|VBA |Battery voltage         |Millivolts           |
+|RPM |RPM                     |RPM                  |
+|SPD |GPS Speed               |Tenths of a MPH      |
+|TIM |GPS Lap Time            |Deciseconds          |
+|FLT |Fault                   |Fault code, see below|
+|MET |Mission Elapsed Time    |Seconds              |
+|PIT |Return To Pits!         |!0=Return Now 0=Race |
+|GAS |Fuel remaining.         |Percent              |
+|S_E |Speeduino engine status |Bitfield             |
+|ADV |Engine advance          |Degrees              |
+|O_2 |O2 sensor reading       |Umm.... oxygens?     |
+|IAT |Intake air temperature  |Umm....              |
+|SLS |Sync loss counter       |Count                |
+|MAP |Manifold absolute press |Umm.... psi?         |
+|V_E |VE... whatever that is  |???                  |
+|AFT |AFR target              |Ratio                |
+|TPS |Throttle position       |???                  |
+|S_P |Speeduino engine protect|Bitfield             |
+|FAN |Fan duty cycle          |Percent... I think   |
 
 Fault code
 Digit 0 is the least significant, 5 is the most significant.
@@ -296,8 +309,18 @@ const char *RADIO_MSG_ACK = "ACK"; // Acknowledge current issues
 const char *RADIO_MSG_NAK = "NAK"; // Un-acknowledge current issues
 const char *RADIO_MSG_GPS = "GPS";
 const char *RADIO_MSG_SPEED = "SPD";
-
-char radioMsgBuf[RH_RF95_MAX_MESSAGE_LEN];
+const char *RADIO_MSG_FUEL_PCT = "GAS";
+const char *RADIO_MSG_SPEEDUINO_ENGINE_STATUS = "S_E";
+const char *RADIO_MSG_ADVANCE = "ADV";
+const char *RADIO_MSG_O2 = "O_2";
+const char *RADIO_MSG_IAT = "IAT";
+const char *RADIO_MSG_SYNC_LOSS_COUNTER = "SLS";
+const char *RADIO_MSG_MAP = "MAP";
+const char *RADIO_MSG_VE = "V_E";
+const char *RADIO_MSG_AFR_TARGET = "AFT";
+const char *RADIO_MSG_TPS = "TPS";
+const char *RADIO_MSG_SPEEDUINO_PROTECT_STATUS = "S_P";
+const char *RADIO_MSG_FAN_DUTY = "FAN";
 
 double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
 {
@@ -374,7 +397,7 @@ void writeStatus(int bottomPanelY)
   // tft.fillRect(WIDTH / 2 + 1, bottomPanelY - 4, WIDTH, HEIGHT, BACKGROUND_COLOR);
 
   moveToHalfWidth();
-  if (isNthBitSet(currentStatus.status4, BIT_STATUS4_FAN))
+  if (isNthBitSet(speeduinoSensors.status4, BIT_STATUS4_FAN))
   {
     tft.println("Fan On");
   }
@@ -386,7 +409,7 @@ void writeStatus(int bottomPanelY)
 
   bool hasError = false;
 
-  if (currentStatus.coolant > LIMIT_COOLANT_UPPER)
+  if (speeduinoSensors.coolant > LIMIT_COOLANT_UPPER)
   {
     tft.setTextColor(errorColors.text);
     tft.println("Eng Hot!");
@@ -400,14 +423,14 @@ void writeStatus(int bottomPanelY)
     moveToHalfWidth();
     hasError = true;
   }
-  if (currentStatus.oilPressure < LIMIT_OIL_LOWER)
+  if (speeduinoSensors.oilPressure < LIMIT_OIL_LOWER)
   {
     tft.setTextColor(errorColors.text);
     tft.println("Low Oil Prs!");
     moveToHalfWidth();
     hasError = true;
   }
-  if (currentStatus.RPM > LIMIT_RPM_UPPER)
+  if (speeduinoSensors.RPM > LIMIT_RPM_UPPER)
   {
     tft.setTextColor(errorColors.text);
     tft.println("Over rev!");
@@ -422,8 +445,8 @@ void writeStatus(int bottomPanelY)
   }
 
   tft.setTextColor(okColors.text);
-  bool isRunning = isNthBitSet(currentStatus.engine, BIT_ENGINE_RUN);
-  bool isCranking = isNthBitSet(currentStatus.engine, BIT_ENGINE_CRANK);
+  bool isRunning = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_RUN);
+  bool isCranking = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_CRANK);
   if (!isRunning && !isCranking)
   {
     moveToHalfWidth();
@@ -442,12 +465,12 @@ void writeStatus(int bottomPanelY)
     moveToHalfWidth();
     tft.println("Cranking");
   }
-  if (isNthBitSet(currentStatus.engine, BIT_ENGINE_WARMUP))
+  if (isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_WARMUP))
   {
     moveToHalfWidth();
     tft.println("Warmup");
   }
-  if (isNthBitSet(currentStatus.engine, BIT_ENGINE_ASE))
+  if (isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_ASE))
   {
     moveToHalfWidth();
     tft.println("ASE");
@@ -459,27 +482,27 @@ void writeSecondaries(int bottomPanelY)
   tft.setTextColor(ILI9341_WHITE, BACKGROUND_COLOR);
 
   char o2[8];
-  dtostrf(((double)currentStatus.O2) / 10.0, 5, 1, o2);
+  dtostrf(((double)speeduinoSensors.O2) / 10.0, 5, 1, o2);
   tft.print("A/F    ");
   tft.print(o2);
   tft.println(" ");
 
   tft.print("TIMING  ");
-  tft.print(currentStatus.advance);
+  tft.print(speeduinoSensors.advance);
   tft.println("  ");
 
   tft.print("IAT     ");
-  tft.print(currentStatus.IAT);
+  tft.print(speeduinoSensors.IAT);
   tft.println("  ");
 
   tft.print("VOLTS  ");
   char volts[8];
-  dtostrf(((double)currentStatus.battery10) / 10.0, 5, 1, volts);
+  dtostrf(((double)speeduinoSensors.battery10) / 10.0, 5, 1, volts);
   tft.print(volts);
   tft.println(" ");
 
   tft.print("MET     ");
-  tft.print(currentStatus.secl);
+  tft.print(speeduinoSensors.secl);
   tft.println("  ");
 }
 
@@ -502,104 +525,104 @@ uint8_t speeduinoResponse[RESPONSE_LEN];
 void processResponse()
 {
 
-  currentStatus.secl = speeduinoResponse[0];
-  currentStatus.status1 = speeduinoResponse[1];
-  currentStatus.engine = speeduinoResponse[2];
-  currentStatus.syncLossCounter = speeduinoResponse[3];
-  currentStatus.MAP = ((speeduinoResponse[5] << 8) | (speeduinoResponse[4]));
-  currentStatus.IAT = speeduinoResponse[6];
-  currentStatus.coolant = speeduinoResponse[7] - 40;
-  currentStatus.batCorrection = speeduinoResponse[8];
-  currentStatus.battery10 = speeduinoResponse[9];
-  currentStatus.O2 = speeduinoResponse[10];
-  currentStatus.egoCorrection = speeduinoResponse[11];
-  currentStatus.iatCorrection = speeduinoResponse[12];
-  currentStatus.wueCorrection = speeduinoResponse[13];
+  speeduinoSensors.secl = speeduinoResponse[0];
+  speeduinoSensors.status1 = speeduinoResponse[1];
+  speeduinoSensors.engine = speeduinoResponse[2];
+  speeduinoSensors.syncLossCounter = speeduinoResponse[3];
+  speeduinoSensors.MAP = ((speeduinoResponse[5] << 8) | (speeduinoResponse[4]));
+  speeduinoSensors.IAT = speeduinoResponse[6];
+  speeduinoSensors.coolant = speeduinoResponse[7] - 40;
+  speeduinoSensors.batCorrection = speeduinoResponse[8];
+  speeduinoSensors.battery10 = speeduinoResponse[9];
+  speeduinoSensors.O2 = speeduinoResponse[10];
+  speeduinoSensors.egoCorrection = speeduinoResponse[11];
+  speeduinoSensors.iatCorrection = speeduinoResponse[12];
+  speeduinoSensors.wueCorrection = speeduinoResponse[13];
 
-  currentStatus.RPM = ((speeduinoResponse[15] << 8) | (speeduinoResponse[14]));
+  speeduinoSensors.RPM = ((speeduinoResponse[15] << 8) | (speeduinoResponse[14]));
 
-  currentStatus.TAEamount = speeduinoResponse[16];
-  currentStatus.corrections = speeduinoResponse[17];
-  currentStatus.ve = speeduinoResponse[18];
-  currentStatus.afrTarget = speeduinoResponse[19];
+  speeduinoSensors.TAEamount = speeduinoResponse[16];
+  speeduinoSensors.corrections = speeduinoResponse[17];
+  speeduinoSensors.ve = speeduinoResponse[18];
+  speeduinoSensors.afrTarget = speeduinoResponse[19];
 
-  currentStatus.PW1 = ((speeduinoResponse[21] << 8) | (speeduinoResponse[20]));
+  speeduinoSensors.PW1 = ((speeduinoResponse[21] << 8) | (speeduinoResponse[20]));
 
-  currentStatus.tpsDOT = speeduinoResponse[22];
-  currentStatus.advance = speeduinoResponse[23];
-  currentStatus.TPS = speeduinoResponse[24];
+  speeduinoSensors.tpsDOT = speeduinoResponse[22];
+  speeduinoSensors.advance = speeduinoResponse[23];
+  speeduinoSensors.TPS = speeduinoResponse[24];
 
-  currentStatus.loopsPerSecond = ((speeduinoResponse[26] << 8) | (speeduinoResponse[25]));
-  currentStatus.freeRAM = ((speeduinoResponse[28] << 8) | (speeduinoResponse[27]));
+  speeduinoSensors.loopsPerSecond = ((speeduinoResponse[26] << 8) | (speeduinoResponse[25]));
+  speeduinoSensors.freeRAM = ((speeduinoResponse[28] << 8) | (speeduinoResponse[27]));
 
-  currentStatus.boostTarget = speeduinoResponse[29];
-  currentStatus.boostDuty = speeduinoResponse[30];
-  currentStatus.spark = speeduinoResponse[31];
+  speeduinoSensors.boostTarget = speeduinoResponse[29];
+  speeduinoSensors.boostDuty = speeduinoResponse[30];
+  speeduinoSensors.spark = speeduinoResponse[31];
 
-  currentStatus.rpmDOT = ((speeduinoResponse[33] << 8) | (speeduinoResponse[32]));
-  currentStatus.ethanolPct = speeduinoResponse[34];
+  speeduinoSensors.rpmDOT = ((speeduinoResponse[33] << 8) | (speeduinoResponse[32]));
+  speeduinoSensors.ethanolPct = speeduinoResponse[34];
 
-  currentStatus.flexCorrection = speeduinoResponse[35];
-  currentStatus.flexIgnCorrection = speeduinoResponse[36];
-  currentStatus.idleLoad = speeduinoResponse[37];
-  currentStatus.testOutputs = speeduinoResponse[38];
-  currentStatus.O2_2 = speeduinoResponse[39];
-  currentStatus.baro = speeduinoResponse[40];
-  currentStatus.CANin_1 = ((speeduinoResponse[42] << 8) | (speeduinoResponse[41]));
-  currentStatus.CANin_2 = ((speeduinoResponse[44] << 8) | (speeduinoResponse[43]));
-  currentStatus.CANin_3 = ((speeduinoResponse[46] << 8) | (speeduinoResponse[45]));
-  currentStatus.CANin_4 = ((speeduinoResponse[48] << 8) | (speeduinoResponse[47]));
-  currentStatus.CANin_5 = ((speeduinoResponse[50] << 8) | (speeduinoResponse[49]));
-  currentStatus.CANin_6 = ((speeduinoResponse[52] << 8) | (speeduinoResponse[51]));
-  currentStatus.CANin_7 = ((speeduinoResponse[54] << 8) | (speeduinoResponse[53]));
-  currentStatus.CANin_8 = ((speeduinoResponse[56] << 8) | (speeduinoResponse[55]));
-  currentStatus.CANin_9 = ((speeduinoResponse[58] << 8) | (speeduinoResponse[57]));
-  currentStatus.CANin_10 = ((speeduinoResponse[60] << 8) | (speeduinoResponse[59]));
-  currentStatus.CANin_11 = ((speeduinoResponse[62] << 8) | (speeduinoResponse[61]));
-  currentStatus.CANin_12 = ((speeduinoResponse[64] << 8) | (speeduinoResponse[63]));
-  currentStatus.CANin_13 = ((speeduinoResponse[66] << 8) | (speeduinoResponse[65]));
-  currentStatus.CANin_14 = ((speeduinoResponse[68] << 8) | (speeduinoResponse[67]));
-  currentStatus.CANin_15 = ((speeduinoResponse[70] << 8) | (speeduinoResponse[69]));
-  currentStatus.CANin_16 = ((speeduinoResponse[72] << 8) | (speeduinoResponse[71]));
-  currentStatus.tpsADC = speeduinoResponse[73];
-  currentStatus.getNextError = speeduinoResponse[74];
-  currentStatus.launchCorrection = speeduinoResponse[75];
-  currentStatus.PW2 = ((speeduinoResponse[77] << 8) | (speeduinoResponse[76]));
-  currentStatus.PW3 = ((speeduinoResponse[79] << 8) | (speeduinoResponse[78]));
-  currentStatus.PW4 = ((speeduinoResponse[81] << 8) | (speeduinoResponse[80]));
-  currentStatus.status3 = speeduinoResponse[82];
-  currentStatus.engineProtectStatus = speeduinoResponse[83];
-  currentStatus.fuelLoad = ((speeduinoResponse[85] << 8) | (speeduinoResponse[84]));
-  currentStatus.ignLoad = ((speeduinoResponse[87] << 8) | (speeduinoResponse[86]));
-  currentStatus.injAngle = ((speeduinoResponse[89] << 8) | (speeduinoResponse[88]));
-  currentStatus.idleDuty = speeduinoResponse[90];
-  currentStatus.CLIdleTarget = speeduinoResponse[91];
-  currentStatus.mapDOT = speeduinoResponse[92];
-  currentStatus.vvt1Angle = speeduinoResponse[93];
-  currentStatus.vvt1TargetAngle = speeduinoResponse[94];
-  currentStatus.vvt1Duty = speeduinoResponse[95];
-  currentStatus.flexBoostCorrection = ((speeduinoResponse[97] << 8) | (speeduinoResponse[96]));
-  currentStatus.baroCorrection = speeduinoResponse[98];
-  currentStatus.ASEValue = speeduinoResponse[99];
-  currentStatus.vss = ((speeduinoResponse[101] << 8) | (speeduinoResponse[100]));
-  currentStatus.gear = speeduinoResponse[102];
-  currentStatus.fuelPressure = speeduinoResponse[103];
-  currentStatus.oilPressure = speeduinoResponse[104];
-  currentStatus.wmiPW = speeduinoResponse[105];
-  currentStatus.status4 = speeduinoResponse[106];
-  // currentStatus.vvt2Angle = speeduinoResponse[107];
-  // currentStatus.vvt2TargetAngle = speeduinoResponse[108];
-  // currentStatus.vvt2Duty = speeduinoResponse[109];
-  // currentStatus.outputsStatus = speeduinoResponse[110];
-  // currentStatus.fuelTemp = speeduinoResponse[111];
-  // currentStatus.fuelTempCorrection = speeduinoResponse[112];
-  // currentStatus.VE1 = speeduinoResponse[113];
-  // currentStatus.VE2 = speeduinoResponse[114];
-  // currentStatus.advance1 = speeduinoResponse[115];
-  // currentStatus.advance2 = speeduinoResponse[116];
-  // currentStatus.nitrous_status = speeduinoResponse[117];
-  // currentStatus.TS_SD_Status = speeduinoResponse[118];
-  // currentStatus.fanDuty = speeduinoResponse[121];
+  speeduinoSensors.flexCorrection = speeduinoResponse[35];
+  speeduinoSensors.flexIgnCorrection = speeduinoResponse[36];
+  speeduinoSensors.idleLoad = speeduinoResponse[37];
+  speeduinoSensors.testOutputs = speeduinoResponse[38];
+  speeduinoSensors.O2_2 = speeduinoResponse[39];
+  speeduinoSensors.baro = speeduinoResponse[40];
+  speeduinoSensors.CANin_1 = ((speeduinoResponse[42] << 8) | (speeduinoResponse[41]));
+  speeduinoSensors.CANin_2 = ((speeduinoResponse[44] << 8) | (speeduinoResponse[43]));
+  speeduinoSensors.CANin_3 = ((speeduinoResponse[46] << 8) | (speeduinoResponse[45]));
+  speeduinoSensors.CANin_4 = ((speeduinoResponse[48] << 8) | (speeduinoResponse[47]));
+  speeduinoSensors.CANin_5 = ((speeduinoResponse[50] << 8) | (speeduinoResponse[49]));
+  speeduinoSensors.CANin_6 = ((speeduinoResponse[52] << 8) | (speeduinoResponse[51]));
+  speeduinoSensors.CANin_7 = ((speeduinoResponse[54] << 8) | (speeduinoResponse[53]));
+  speeduinoSensors.CANin_8 = ((speeduinoResponse[56] << 8) | (speeduinoResponse[55]));
+  speeduinoSensors.CANin_9 = ((speeduinoResponse[58] << 8) | (speeduinoResponse[57]));
+  speeduinoSensors.CANin_10 = ((speeduinoResponse[60] << 8) | (speeduinoResponse[59]));
+  speeduinoSensors.CANin_11 = ((speeduinoResponse[62] << 8) | (speeduinoResponse[61]));
+  speeduinoSensors.CANin_12 = ((speeduinoResponse[64] << 8) | (speeduinoResponse[63]));
+  speeduinoSensors.CANin_13 = ((speeduinoResponse[66] << 8) | (speeduinoResponse[65]));
+  speeduinoSensors.CANin_14 = ((speeduinoResponse[68] << 8) | (speeduinoResponse[67]));
+  speeduinoSensors.CANin_15 = ((speeduinoResponse[70] << 8) | (speeduinoResponse[69]));
+  speeduinoSensors.CANin_16 = ((speeduinoResponse[72] << 8) | (speeduinoResponse[71]));
+  speeduinoSensors.tpsADC = speeduinoResponse[73];
+  speeduinoSensors.getNextError = speeduinoResponse[74];
+  speeduinoSensors.launchCorrection = speeduinoResponse[75];
+  speeduinoSensors.PW2 = ((speeduinoResponse[77] << 8) | (speeduinoResponse[76]));
+  speeduinoSensors.PW3 = ((speeduinoResponse[79] << 8) | (speeduinoResponse[78]));
+  speeduinoSensors.PW4 = ((speeduinoResponse[81] << 8) | (speeduinoResponse[80]));
+  speeduinoSensors.status3 = speeduinoResponse[82];
+  speeduinoSensors.engineProtectStatus = speeduinoResponse[83];
+  speeduinoSensors.fuelLoad = ((speeduinoResponse[85] << 8) | (speeduinoResponse[84]));
+  speeduinoSensors.ignLoad = ((speeduinoResponse[87] << 8) | (speeduinoResponse[86]));
+  speeduinoSensors.injAngle = ((speeduinoResponse[89] << 8) | (speeduinoResponse[88]));
+  speeduinoSensors.idleDuty = speeduinoResponse[90];
+  speeduinoSensors.CLIdleTarget = speeduinoResponse[91];
+  speeduinoSensors.mapDOT = speeduinoResponse[92];
+  speeduinoSensors.vvt1Angle = speeduinoResponse[93];
+  speeduinoSensors.vvt1TargetAngle = speeduinoResponse[94];
+  speeduinoSensors.vvt1Duty = speeduinoResponse[95];
+  speeduinoSensors.flexBoostCorrection = ((speeduinoResponse[97] << 8) | (speeduinoResponse[96]));
+  speeduinoSensors.baroCorrection = speeduinoResponse[98];
+  speeduinoSensors.ASEValue = speeduinoResponse[99];
+  speeduinoSensors.vss = ((speeduinoResponse[101] << 8) | (speeduinoResponse[100]));
+  speeduinoSensors.gear = speeduinoResponse[102];
+  speeduinoSensors.fuelPressure = speeduinoResponse[103];
+  speeduinoSensors.oilPressure = speeduinoResponse[104];
+  speeduinoSensors.wmiPW = speeduinoResponse[105];
+  speeduinoSensors.status4 = speeduinoResponse[106];
+  // speeduinoSensors.vvt2Angle = speeduinoResponse[107];
+  // speeduinoSensors.vvt2TargetAngle = speeduinoResponse[108];
+  // speeduinoSensors.vvt2Duty = speeduinoResponse[109];
+  // speeduinoSensors.outputsStatus = speeduinoResponse[110];
+  // speeduinoSensors.fuelTemp = speeduinoResponse[111];
+  // speeduinoSensors.fuelTempCorrection = speeduinoResponse[112];
+  // speeduinoSensors.VE1 = speeduinoResponse[113];
+  // speeduinoSensors.VE2 = speeduinoResponse[114];
+  // speeduinoSensors.advance1 = speeduinoResponse[115];
+  // speeduinoSensors.advance2 = speeduinoResponse[116];
+  // speeduinoSensors.nitrous_status = speeduinoResponse[117];
+  // speeduinoSensors.TS_SD_Status = speeduinoResponse[118];
+  // speeduinoSensors.fanDuty = speeduinoResponse[121];
 }
 
 /**
@@ -766,14 +789,14 @@ void render()
 
   int fuel = localSensors.fuelPct;
   renderGauge("FUEL    ", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
-  renderGauge("RPM     ", currentStatus.RPM, 500, 7000, currentStatus.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
+  renderGauge("RPM     ", speeduinoSensors.RPM, 500, 7000, speeduinoSensors.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
 
-  int coolantF = (int)(((float)currentStatus.coolant) * 1.8 + 32);
+  int coolantF = (int)(((float)speeduinoSensors.coolant) * 1.8 + 32);
   renderGauge("COOLANT ", coolantF, 50, 250, coolantF > LIMIT_COOLANT_UPPER ? errorColors : okColors);
-  renderGauge("OIL     ", currentStatus.oilPressure, 0, 60, currentStatus.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
+  renderGauge("OIL     ", speeduinoSensors.oilPressure, 0, 60, speeduinoSensors.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
   // renderGauge("VOLTS", )
   // tft.setTextColor(ILI9341_WHITE, BACKGROUND_COLOR);
-  // float volts = currentStatus.battery10;
+  // float volts = speeduinoSensors.battery10;
   // tft.println(volts);
   // showGauge((int)(volts * 100), 100, 150, BAR_COLOR);
   // renderGauge("BAT", volts, 10, 15, volts < 13 ? errorColors : okColors);
@@ -805,7 +828,7 @@ void renderBootImage()
 }
 #endif
 
-void writeDummyRadioHeadHeader()
+void loraSendDummyRadioHeadHeader()
 {
   // Stub implementation of the header the RadioHead library uses.
   // It conveys source and destination addresses as well as extra
@@ -820,16 +843,82 @@ void writeDummyRadioHeadHeader()
   LoRa.write(0);                    // Header: FLAGS
 }
 
-void sendRadioTestPacket()
+// Sends a single numeric value (sensor reading) over LoRa.
+// I.e. "RPM:01000"
+// Needs to happen after a beginPacket and after loraSendDummyRadioHeadHeader.
+void loraSendNumericValue(const char * id, uint16_t value)
 {
-  if (radioAvailable) {
-    LoRa.beginPacket();
-    writeDummyRadioHeadHeader();
-    LoRa.println("hello from STM32!");
-    LoRa.print("Timeouts: ");
-    LoRa.println(timeouts);
-    LoRa.endPacket();
+  char radioMsgBuf[12];
+  int bytesWritten = snprintf(
+    radioMsgBuf,
+    RH_RF95_MAX_MESSAGE_LEN,
+    "%s:%05u",
+    id,
+    value
+  );
+
+  if (bytesWritten < 0 || bytesWritten >= 12)
+  {
+    // Unlikely to happen unless someone sends us a long or corrupted id.
+    DebugSerial.print("ERROR: Telemetry out of radio packet space. Check ID: ");
+    DebugSerial.println(id);
+  } else {
+    LoRa.println(radioMsgBuf);
   }
+}
+
+// Send one packet containing all telemetry information, separated by newlines.
+void loraSendTelemetryPacket()
+{
+  if (!radioAvailable)
+  {
+    return;
+  }
+
+  LoRa.beginPacket();
+  loraSendDummyRadioHeadHeader();
+
+  uint16_t checkEngineLight = 0; // TODO
+  uint16_t coolantPressure = 0; // TODO
+
+  // Each value takes 10 bytes:
+  //   3 chars for ID
+  //   2 chars for : and \n
+  //   5 chars for value
+  // That leaves us with ~25 (RH_RF95_MAX_MESSAGE_LEN/10) max # sensors in one packet.
+  // Of course, we can send multiple packets if needed.
+  // TODO: GPS throws this off, update this math once re-added.
+  loraSendNumericValue(RADIO_MSG_OIL_PRES, speeduinoSensors.oilPressure);
+  loraSendNumericValue(RADIO_MSG_COOLANT_PRES, coolantPressure * 10.0);
+  loraSendNumericValue(RADIO_MSG_COOLANT_TEMP, speeduinoSensors.coolant * 10.0);
+  loraSendNumericValue(RADIO_MSG_OIL_TEMP, localSensors.oilTemp * 10.0);
+  loraSendNumericValue(RADIO_MSG_BATTERY_VOLTAGE, speeduinoSensors.battery10 * 100.0);
+  loraSendNumericValue(RADIO_MSG_RPM, speeduinoSensors.RPM);
+  loraSendNumericValue(RADIO_MSG_FAULT, checkEngineLight);
+  loraSendNumericValue(RADIO_MSG_MET, speeduinoSensors.secl);
+
+  loraSendNumericValue(RADIO_MSG_FUEL_PCT, localSensors.fuelPct);
+  loraSendNumericValue(RADIO_MSG_SPEEDUINO_ENGINE_STATUS, speeduinoSensors.engine);
+  loraSendNumericValue(RADIO_MSG_ADVANCE, speeduinoSensors.advance);
+  loraSendNumericValue(RADIO_MSG_O2, speeduinoSensors.O2);
+  loraSendNumericValue(RADIO_MSG_IAT, speeduinoSensors.IAT);
+  loraSendNumericValue(RADIO_MSG_SYNC_LOSS_COUNTER, speeduinoSensors.syncLossCounter);
+
+  loraSendNumericValue(RADIO_MSG_MAP, speeduinoSensors.MAP);
+  loraSendNumericValue(RADIO_MSG_VE, speeduinoSensors.ve);
+  loraSendNumericValue(RADIO_MSG_AFR_TARGET, speeduinoSensors.afrTarget);
+  loraSendNumericValue(RADIO_MSG_TPS, speeduinoSensors.TPS);
+  loraSendNumericValue(RADIO_MSG_SPEEDUINO_PROTECT_STATUS, speeduinoSensors.engineProtectStatus);
+  loraSendNumericValue(RADIO_MSG_FAN_DUTY, speeduinoSensors.fanDuty);
+
+  // Space in packet available for future use.
+  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
+  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
+  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
+  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
+  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
+
+  LoRa.endPacket();
 }
 
 void setup()
@@ -867,7 +956,6 @@ void setup()
     LoRa.setPreambleLength(8);
     LoRa.enableCrc();
     LoRa.setTxPower(20);
-    sendRadioTestPacket();
   } else {
     DebugSerial.println("radio init failed");
   }
@@ -876,8 +964,6 @@ void setup()
   SpeeduinoSerial.setTx(PA2);
   SpeeduinoSerial.setTimeout(500);
   SpeeduinoSerial.begin(115200); // speeduino runs at 115200
-
-  delay(250);
 
   #ifdef BOOTSPLASH
   renderBootImage();
@@ -888,6 +974,7 @@ void setup()
 void loop(void)
 {
   updateAllSensors();
+  loraSendTelemetryPacket();
 
   if (screenState != lastScreenState || requestFrame)
   {
