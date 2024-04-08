@@ -43,7 +43,6 @@ void tachConfig(uint8_t configByte) {
 
 
 void tachLights(uint16_t lights) {
-  tachDisplayInit(); // In case someone unplugged the wire. Cheap to re-init anyway.
   TachI2C.beginTransmission(SAA_ADDR);
   TachI2C.write(SAA_ADDR_DIGIT_1);
   TachI2C.write((lights >> 8) & 0xff);
@@ -54,6 +53,7 @@ void tachLights(uint16_t lights) {
 // Public
 
 void tachDisplayInit() {
+  TachI2C.begin();
   tachConfig(SAA_BRIGHTNESS);
 }
 
