@@ -25,13 +25,13 @@
 // Configuration
 
 // Extra debugging for speeduino comms.
-#define DEBUG_SPEEDUINO_COMMS
+//#define DEBUG_SPEEDUINO_COMMS
 
 // Display the bootsplash (disable if debugging to shorten upload times).
-#define BOOTSPLASH
+//#define BOOTSPLASH
 
 // Use data in mock_pkt.h instead of actually reading from the serial port.
-//#define USE_MOCK_DATA
+#define USE_MOCK_DATA
 
 
 #include <Arduino.h>
@@ -197,7 +197,7 @@ struct SpeeduinoStatus
   uint8_t syncLossCounter;
   uint16_t MAP;
   uint8_t IAT;
-  uint8_t coolant;
+  uint8_t coolant; // degC
   uint8_t batCorrection;
   uint8_t battery10;
   uint8_t O2;
@@ -465,9 +465,10 @@ void updateSecondaryInfo()
 
 void updateStatusMessages()
 {
+  double coolantF = ((double)speeduinoSensors.coolant) * 1.8 + 32;
   statusMessages.fanOn = isNthBitSet(speeduinoSensors.status4, BIT_STATUS4_FAN);
   statusMessages.fanOff = !statusMessages.fanOn;
-  statusMessages.engHot = speeduinoSensors.coolant > LIMIT_COOLANT_UPPER;
+  statusMessages.engHot = coolantF > LIMIT_COOLANT_UPPER;
   statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
   statusMessages.lowOilPressure = speeduinoSensors.oilPressure < LIMIT_OIL_LOWER;
   statusMessages.overRev = speeduinoSensors.RPM > LIMIT_RPM_UPPER;
@@ -1017,9 +1018,10 @@ int loraSendTelemetryPacket()
   // That leaves us with ~25 (RH_RF95_MAX_MESSAGE_LEN/10) max # sensors in one packet.
   // Of course, we can send multiple packets if needed.
   // TODO: GPS throws this off, update this math once re-added.
+  double coolantF = ((double)speeduinoSensors.coolant) * 1.8 + 32;
   loraSendNumericValue(RADIO_MSG_OIL_PRES, speeduinoSensors.oilPressure);
   loraSendNumericValue(RADIO_MSG_COOLANT_PRES, coolantPressure * 10.0);
-  loraSendNumericValue(RADIO_MSG_COOLANT_TEMP, speeduinoSensors.coolant * 10.0);
+  loraSendNumericValue(RADIO_MSG_COOLANT_TEMP, coolantF * 10.0);
   loraSendNumericValue(RADIO_MSG_OIL_TEMP, localSensors.oilTemp * 10.0);
   loraSendNumericValue(RADIO_MSG_BATTERY_VOLTAGE, speeduinoSensors.battery10 * 100.0);
   loraSendNumericValue(RADIO_MSG_RPM, speeduinoSensors.RPM);
