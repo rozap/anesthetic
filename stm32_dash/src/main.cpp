@@ -1117,7 +1117,7 @@ void setup()
 void loop(void)
 {
   updateAllSensors();
-  updateTach(speeduinoSensors.RPM, 3000 /* firstLightRPM */, LIMIT_RPM_UPPER, false /* idiotLight TODO */);
+  updateTach(speeduinoSensors.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, false /* idiotLight TODO */);
   if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_UPDATE_PERIOD_MS) {
     bool sent = loraSendTelemetryPacket();
     if (sent) {
