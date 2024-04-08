@@ -13,6 +13,7 @@ void setup() {
   while (!Serial) ; // Wait for serial port to be available
   if (rf95.init()) {
     rf95.setTxPower(20, false);
+    rf95.setSignalBandwidth(250E3);
     Serial.println("init ok");
   } else {
     Serial.println("init failed");

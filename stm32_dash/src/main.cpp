@@ -1307,7 +1307,7 @@ void setup()
   if (radioAvailable) {
     DebugSerial.println("radio init ok");
 
-    LoRa.setSignalBandwidth(125E3);
+    LoRa.setSignalBandwidth(250E3);
     LoRa.setCodingRate4(5);
     LoRa.setSpreadingFactor(7);
     LoRa.setPreambleLength(8);
