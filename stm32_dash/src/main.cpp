@@ -33,6 +33,19 @@
 // Use data in mock_pkt.h instead of actually reading from the serial port.
 //#define USE_MOCK_DATA
 
+#define LIMIT_COOLANT_UPPER 215
+#define LIMIT_OIL_LOWER 10
+#define LIMIT_FUEL_LOWER 10
+#define LIMIT_RPM_UPPER 5500
+#define LIMIT_VOLTAGE_LOWER 12.0
+
+// Averaging window size for analog readings (oil temp and fuel level).
+#define WINDOW_SIZE 16
+
+// Height of gauges.
+#define BAR_HEIGHT 8
+
+// End config
 
 #include <Arduino.h>
 #include <TFT_eSPI.h>
@@ -81,9 +94,6 @@ long missionStartTimeMillis;
 #define WIDTH 320
 #define HEIGHT 240
 
-// Averaging window size for analog readings (oil temp and fuel level).
-#define WINDOW_SIZE 16
-
 #define FUEL_VIN 3.3
 #define FUEL_ANALOG_PIN PB0
 #define FUEL_REF_OHM 47
@@ -91,9 +101,6 @@ long missionStartTimeMillis;
 #define OIL_TEMP_VIN 3.3
 #define OIL_TEMP_ANALOG_PIN PB1
 #define OIL_TEMP_REF_OHM 47
-
-#define BAR_HEIGHT 8
-#define WUT ILI9341_CYAN
 
 // 16 bit TFT, 5 bits red, 6 green, 5 blue
 #define BACKGROUND_COLOR ILI9341_BLACK
@@ -106,12 +113,6 @@ bool requestFrame = false;
 #define SCREEN_STATE_NORMAL 0
 uint8_t screenState = SCREEN_STATE_NO_CONNECTION;
 uint8_t lastScreenState = SCREEN_STATE_NO_CONNECTION;
-
-#define LIMIT_COOLANT_UPPER 215
-#define LIMIT_OIL_LOWER 10
-#define LIMIT_FUEL_LOWER 10
-#define LIMIT_RPM_UPPER 5500
-#define LIMIT_VOLTAGE_LOWER 12.0
 
 // Render structs used to only re-render what we need (fps 4 -> ~30).
 
