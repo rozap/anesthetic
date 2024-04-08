@@ -586,30 +586,8 @@ void renderNoConnection()
   tft.println("No Connection");
 }
 
-void renderWarning()
-{
-  clearScreen();
-  int padding = 10;
-
-  tft.fillRect(padding, padding, WIDTH - padding, HEIGHT - padding, ILI9341_RED);
-
-  tft.setCursor(padding * 2, padding * 2);
-  tft.setTextColor(ILI9341_LIGHTGREY);
-  tft.setTextSize(3);
-  tft.println(
-      "WARNING");
-  tft.setTextSize(2);
-  tft.setCursor(tft.getCursorX() + (padding * 2), tft.getCursorY());
-
-  tft.println("DANGER TO MANIFOLD!");
-}
-
 void renderNoData()
 {
-  //
-  // renderWarning();
-  // return;
-
   tft.setTextColor(ILI9341_LIGHTGREY);
   tft.setTextSize(4);
   tft.setCursor(0, 0);
