@@ -111,6 +111,7 @@ uint8_t lastScreenState = SCREEN_STATE_NO_CONNECTION;
 #define LIMIT_OIL_LOWER 10
 #define LIMIT_FUEL_LOWER 10
 #define LIMIT_RPM_UPPER 5500
+#define LIMIT_VOLTAGE_LOWER 12.0
 
 // Render structs used to only re-render what we need (fps 4 -> ~30).
 
@@ -128,6 +129,7 @@ struct StatusMessages
   bool cranking;
   bool warmup;
   bool ase;
+  bool lowVolt;
 
   bool operator==(const StatusMessages&) const = default; // Auto == operator.
 } statusMessages, lastRenderedStatusMessages;
@@ -469,6 +471,7 @@ void updateSecondaryInfo()
 void updateStatusMessages()
 {
   double coolantF = ((double)speeduinoSensors.coolant) * 1.8 + 32;
+  double voltage = ((double)speeduinoSensors.battery10) / 10.0;
   statusMessages.fanOn = isNthBitSet(speeduinoSensors.status4, BIT_STATUS4_FAN);
   statusMessages.fanOff = !statusMessages.fanOn;
   statusMessages.engHot = coolantF > LIMIT_COOLANT_UPPER;
@@ -480,12 +483,14 @@ void updateStatusMessages()
   statusMessages.warmup = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_WARMUP);
   statusMessages.ase = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_ASE);
   statusMessages.engOff = !statusMessages.running && !statusMessages.cranking;
+  statusMessages.lowVolt = voltage < LIMIT_VOLTAGE_LOWER;
 
   statusMessages.allOk = !(
     statusMessages.engHot ||
     statusMessages.lowGas ||
     statusMessages.lowOilPressure ||
-    statusMessages.overRev
+    statusMessages.overRev ||
+    statusMessages.lowVolt
   );
 }
 
@@ -523,6 +528,7 @@ void renderStatusMessages(int bottomPanelY)
   writeSingleStatusMessage(statusMessages.lowGas, "Low Gas!");
   writeSingleStatusMessage(statusMessages.lowOilPressure, "Low Oil Prs!");
   writeSingleStatusMessage(statusMessages.overRev, "Over rev!");
+  writeSingleStatusMessage(statusMessages.lowVolt, "Low volt!");
   writeSingleStatusMessage(statusMessages.engOff, "Eng Off");
 
   tft.setTextColor(okColors.text);
@@ -567,8 +573,14 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
   }
 
   if (lastRenderedSecondaryInfo.volts != secondaryInfo.volts) {
+    if (statusMessages.lowVolt) {
+      tft.setTextColor(errorColors.text, BACKGROUND_COLOR);
+    }
     tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 3);
     tft.printf("%5.1f", secondaryInfo.volts);
+    if (statusMessages.lowVolt) {
+      tft.setTextColor(okColors.text, BACKGROUND_COLOR);
+    }
   }
 
   if (lastRenderedSecondaryInfo.missionElapsedSeconds != secondaryInfo.missionElapsedSeconds) {
