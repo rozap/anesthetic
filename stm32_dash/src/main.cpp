@@ -448,7 +448,7 @@ void updateOilT()
   double avgOhms = avg(oilTempWindow);
 
   #ifdef USE_MOCK_DATA
-  avgOhms = 50;
+  avgOhms = sin(millis() / 700.0) * 100.0 + 150.0;
   #endif
 
   localSensors.oilTemp = avgOhms; // TODO calibrate.
@@ -713,6 +713,14 @@ void processResponse()
   // speeduinoSensors.nitrous_status = speeduinoResponse[117];
   // speeduinoSensors.TS_SD_Status = speeduinoResponse[118];
   // speeduinoSensors.fanDuty = speeduinoResponse[121];
+
+
+  #ifdef USE_MOCK_DATA
+  speeduinoSensors.RPM = sin(millis() / 1500.0) * 3000.0 + 3000.0;
+  speeduinoSensors.coolant = sin(millis() / 6000.0) * 70.0 + 70.0;
+  speeduinoSensors.oilPressure = sin(millis() / 3000.0) * 30.0 + 30.0;
+  speeduinoSensors.battery10 = sin(millis() / 1500.0) * 40.0 + 124.0;
+  #endif
 }
 
 /**
