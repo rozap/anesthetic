@@ -420,78 +420,39 @@ void drawPlainGauge(int value, int min, int max, int color)
   tft.println();
 }
 
-// Call this once per update interval.
-// Consumers should look at localSensors.fuelPct.
-void updateFuel()
+// NOTE: numFmt should return a fixed-length string. This allows us to not worry about clearing
+// old values from the screen - this cuts frame times by like a third.
+void drawLabeledGauge(
+  bool firstRender,
+  const char *label,
+  const char* numberFormat,
+  int value,
+  int min,
+  int max,
+  Colors colors)
 {
-  double vout = (double)((analogRead(FUEL_ANALOG_PIN) * FUEL_VIN) / 1024.0);
-  double ohms = FUEL_REF_OHM * (vout / (FUEL_VIN - vout));
-  fuelWindow.push(ohms);
-  double avgOhms = avg(fuelWindow);
+  int numberXPos = charWidthSize2 * strlen(label);
 
-  double gallons = 29.0207 + (-7.0567 * log(avgOhms));
-  int pct = floor((gallons / 14) * 100);
-  if (pct < 0)
-  {
-    pct = 0;
+  tft.setTextSize(2);
+  tft.setTextColor(colors.text, colors.background);
+
+  if (firstRender) {
+    tft.print(label);
   }
 
-  #ifdef USE_MOCK_DATA
-  pct = sin(millis() / 1000.0) * 50.0 + 50.0;
-  #endif
-
-  localSensors.fuelPct = pct;
-}
-
-// Call this once per update interval.
-// Consumers should look at localSensors.oilTemp.
-void updateOilT()
-{
-  double vout = (double)((analogRead(OIL_TEMP_ANALOG_PIN) * OIL_TEMP_VIN) / 1024.0);
-  double ohms = OIL_TEMP_REF_OHM * (vout / (OIL_TEMP_VIN - vout));
-  oilTempWindow.push(ohms);
-  double avgOhms = avg(oilTempWindow);
-
-  #ifdef USE_MOCK_DATA
-  avgOhms = sin(millis() / 700.0) * 100.0 + 150.0;
-  #endif
-
-  localSensors.oilTemp = avgOhms; // TODO calibrate.
-}
-
-void updateSecondaryInfo()
-{
-  secondaryInfo.airFuel = ((double)speeduinoSensors.O2) / 10.0;
-  secondaryInfo.advance = speeduinoSensors.advance;
-  secondaryInfo.iat = speeduinoSensors.IAT;
-  secondaryInfo.volts = ((double)speeduinoSensors.battery10) / 10.0;
-  secondaryInfo.missionElapsedSeconds = localSensors.missionElapsedSeconds;
-}
-
-void updateStatusMessages()
-{
-  double coolantF = ((double)speeduinoSensors.coolant) * 1.8 + 32;
-  double voltage = ((double)speeduinoSensors.battery10) / 10.0;
-  statusMessages.fanOn = isNthBitSet(speeduinoSensors.status4, BIT_STATUS4_FAN);
-  statusMessages.fanOff = !statusMessages.fanOn;
-  statusMessages.engHot = coolantF > LIMIT_COOLANT_UPPER;
-  statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
-  statusMessages.lowOilPressure = speeduinoSensors.oilPressure < LIMIT_OIL_LOWER;
-  statusMessages.overRev = speeduinoSensors.RPM > LIMIT_RPM_UPPER;
-  statusMessages.running = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_RUN);
-  statusMessages.cranking = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_CRANK);
-  statusMessages.warmup = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_WARMUP);
-  statusMessages.ase = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_ASE);
-  statusMessages.engOff = !statusMessages.running && !statusMessages.cranking;
-  statusMessages.lowVolt = voltage < LIMIT_VOLTAGE_LOWER;
-
-  statusMessages.allOk = !(
-    statusMessages.engHot ||
-    statusMessages.lowGas ||
-    statusMessages.lowOilPressure ||
-    statusMessages.overRev ||
-    statusMessages.lowVolt
+  tft.setCursor(numberXPos, tft.getCursorY());
+  tft.printf(
+    numberFormat,
+    value
   );
+  tft.println();
+
+  drawPlainGauge(value, min, max, colors.bar);
+}
+
+void clearScreen()
+{
+  tft.fillScreen(ILI9341_BLACK);
 }
 
 void moveToHalfWidth()
@@ -595,34 +556,142 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
   lastRenderedSecondaryInfo = secondaryInfo;
 }
 
-// NOTE: numFmt should return a fixed-length string. This allows us to not worry about clearing
-// old values from the screen - this cuts frame times by like a third.
-void drawLabeledGauge(
-  bool firstRender,
-  const char *label,
-  const char* numberFormat,
-  int value,
-  int min,
-  int max,
-  Colors colors)
+void renderNoConnection()
 {
-  int numberXPos = charWidthSize2 * strlen(label);
+  tft.fillScreen(ILI9341_BLACK);
+  tft.setTextSize(3);
+  tft.setCursor(0, 0);
+  tft.println("No Connection");
+}
+
+void renderWarning()
+{
+  clearScreen();
+  int padding = 10;
+
+  tft.fillRect(padding, padding, WIDTH - padding, HEIGHT - padding, ILI9341_RED);
+
+  tft.setCursor(padding * 2, padding * 2);
+  tft.setTextColor(ILI9341_LIGHTGREY);
+  tft.setTextSize(3);
+  tft.println(
+      "WARNING");
+  tft.setTextSize(2);
+  tft.setCursor(tft.getCursorX() + (padding * 2), tft.getCursorY());
+
+  tft.println("DANGER TO MANIFOLD!");
+}
+
+void renderNoData()
+{
+  //
+  // renderWarning();
+  // return;
+
+  tft.setTextColor(ILI9341_LIGHTGREY);
+  tft.setTextSize(4);
+  tft.setCursor(0, 0);
+  clearLine();
+  tft.println("No Data");
 
   tft.setTextSize(2);
-  tft.setTextColor(colors.text, colors.background);
+  clearLine();
+  tft.print("Timeouts ");
+  tft.print(timeouts);
+  tft.println("  ");
 
+  clearLine();
+  tft.print("Fuel ");
+  tft.print(localSensors.fuelPct);
+  tft.println("%   ");
+}
+
+void render(bool firstRender)
+{
+  tft.setTextSize(3);
+  tft.setCursor(0, 0);
+  tft.setTextColor(ILI9341_CYAN);
+
+  int fuel = localSensors.fuelPct;
+  drawLabeledGauge(firstRender, "FUEL    ", "%3d", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "RPM    ", "%4d", speeduinoSensors.RPM, 500, 7000, speeduinoSensors.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
+
+  int coolantF = (int)(((float)speeduinoSensors.coolant) * 1.8 + 32);
+  drawLabeledGauge(firstRender, "COOLANT ", "%3d", coolantF, 50, 250, coolantF > LIMIT_COOLANT_UPPER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "OIL     ", "%3d", speeduinoSensors.oilPressure, 0, 60, speeduinoSensors.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
+
+  int bottomPanelY = tft.getCursorY();
   if (firstRender) {
-    tft.print(label);
+    tft.drawLine(WIDTH / 2, bottomPanelY, WIDTH / 2, HEIGHT, ILI9341_WHITE);
+    tft.drawLine(0, bottomPanelY, WIDTH, bottomPanelY, ILI9341_WHITE);
   }
 
-  tft.setCursor(numberXPos, tft.getCursorY());
-  tft.printf(
-    numberFormat,
-    value
-  );
-  tft.println();
+  tft.setTextSize(2);
 
-  drawPlainGauge(value, min, max, colors.bar);
+  bottomPanelY = bottomPanelY + 6;
+  tft.setCursor(0, bottomPanelY);
+  renderSecondaries(firstRender, bottomPanelY);
+  renderStatusMessages(bottomPanelY);
+
+  requestFrame = false;
+
+  if (frameCounter >= 50) {
+    double secondsForFrames = (millis() - fpsCounterStartTime) / 1000.0;
+    fpsCounterStartTime = millis();
+    DebugSerial.print("render FPS: ");
+    DebugSerial.println(frameCounter / secondsForFrames);
+    frameCounter = 0;
+  } else {
+    frameCounter ++;
+  }
+}
+
+#ifdef BOOTSPLASH
+void renderBootImage()
+{
+  uint32_t i = 0;
+  for (uint16_t y = 0; y < boot_image_height; y++) {
+    for (uint16_t x = 0; x < boot_image_width; x++) {
+      tft.drawPixel(x, y, boot_image_data[i]);
+      i++;
+    }
+  }
+}
+#endif
+
+void updateSecondaryInfoForRender()
+{
+  secondaryInfo.airFuel = ((double)speeduinoSensors.O2) / 10.0;
+  secondaryInfo.advance = speeduinoSensors.advance;
+  secondaryInfo.iat = speeduinoSensors.IAT;
+  secondaryInfo.volts = ((double)speeduinoSensors.battery10) / 10.0;
+  secondaryInfo.missionElapsedSeconds = localSensors.missionElapsedSeconds;
+}
+
+void updateStatusMessagesForRender()
+{
+  double coolantF = ((double)speeduinoSensors.coolant) * 1.8 + 32;
+  double voltage = ((double)speeduinoSensors.battery10) / 10.0;
+  statusMessages.fanOn = isNthBitSet(speeduinoSensors.status4, BIT_STATUS4_FAN);
+  statusMessages.fanOff = !statusMessages.fanOn;
+  statusMessages.engHot = coolantF > LIMIT_COOLANT_UPPER;
+  statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
+  statusMessages.lowOilPressure = speeduinoSensors.oilPressure < LIMIT_OIL_LOWER;
+  statusMessages.overRev = speeduinoSensors.RPM > LIMIT_RPM_UPPER;
+  statusMessages.running = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_RUN);
+  statusMessages.cranking = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_CRANK);
+  statusMessages.warmup = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_WARMUP);
+  statusMessages.ase = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_ASE);
+  statusMessages.engOff = !statusMessages.running && !statusMessages.cranking;
+  statusMessages.lowVolt = voltage < LIMIT_VOLTAGE_LOWER;
+
+  statusMessages.allOk = !(
+    statusMessages.engHot ||
+    statusMessages.lowGas ||
+    statusMessages.lowOilPressure ||
+    statusMessages.overRev ||
+    statusMessages.lowVolt
+  );
 }
 
 #define RESPONSE_LEN 128
@@ -853,6 +922,45 @@ void requestSpeeduinoUpdate()
   }
 }
 
+// Call this once per update interval.
+// Consumers should look at localSensors.fuelPct.
+void updateFuel()
+{
+  double vout = (double)((analogRead(FUEL_ANALOG_PIN) * FUEL_VIN) / 1024.0);
+  double ohms = FUEL_REF_OHM * (vout / (FUEL_VIN - vout));
+  fuelWindow.push(ohms);
+  double avgOhms = avg(fuelWindow);
+
+  double gallons = 29.0207 + (-7.0567 * log(avgOhms));
+  int pct = floor((gallons / 14) * 100);
+  if (pct < 0)
+  {
+    pct = 0;
+  }
+
+  #ifdef USE_MOCK_DATA
+  pct = sin(millis() / 1000.0) * 50.0 + 50.0;
+  #endif
+
+  localSensors.fuelPct = pct;
+}
+
+// Call this once per update interval.
+// Consumers should look at localSensors.oilTemp.
+void updateOilT()
+{
+  double vout = (double)((analogRead(OIL_TEMP_ANALOG_PIN) * OIL_TEMP_VIN) / 1024.0);
+  double ohms = OIL_TEMP_REF_OHM * (vout / (OIL_TEMP_VIN - vout));
+  oilTempWindow.push(ohms);
+  double avgOhms = avg(oilTempWindow);
+
+  #ifdef USE_MOCK_DATA
+  avgOhms = sin(millis() / 700.0) * 100.0 + 150.0;
+  #endif
+
+  localSensors.oilTemp = avgOhms; // TODO calibrate.
+}
+
 // Called once per frame.
 void updateAllSensors()
 {
@@ -861,114 +969,6 @@ void updateAllSensors()
   updateOilT();
   localSensors.missionElapsedSeconds = (millis() - missionStartTimeMillis) / 1000;
 }
-
-void clearScreen()
-{
-  tft.fillScreen(ILI9341_BLACK);
-}
-
-void renderNoConnection()
-{
-  tft.fillScreen(ILI9341_BLACK);
-  tft.setTextSize(3);
-  tft.setCursor(0, 0);
-  tft.println("No Connection");
-}
-
-void renderWarning()
-{
-  clearScreen();
-  int padding = 10;
-
-  tft.fillRect(padding, padding, WIDTH - padding, HEIGHT - padding, ILI9341_RED);
-
-  tft.setCursor(padding * 2, padding * 2);
-  tft.setTextColor(ILI9341_LIGHTGREY);
-  tft.setTextSize(3);
-  tft.println(
-      "WARNING");
-  tft.setTextSize(2);
-  tft.setCursor(tft.getCursorX() + (padding * 2), tft.getCursorY());
-
-  tft.println("DANGER TO MANIFOLD!");
-}
-
-void renderNoData()
-{
-  //
-  // renderWarning();
-  // return;
-
-  tft.setTextColor(ILI9341_LIGHTGREY);
-  tft.setTextSize(4);
-  tft.setCursor(0, 0);
-  clearLine();
-  tft.println("No Data");
-  
-  tft.setTextSize(2);
-  clearLine();
-  tft.print("Timeouts ");
-  tft.print(timeouts);
-  tft.println("  ");
-
-  clearLine();
-  tft.print("Fuel ");
-  tft.print(localSensors.fuelPct);
-  tft.println("%   ");
-}
-
-void render(bool firstRender)
-{
-  tft.setTextSize(3);
-  tft.setCursor(0, 0);
-  tft.setTextColor(ILI9341_CYAN);
-
-  int fuel = localSensors.fuelPct;
-  drawLabeledGauge(firstRender, "FUEL    ", "%3d", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
-  drawLabeledGauge(firstRender, "RPM    ", "%4d", speeduinoSensors.RPM, 500, 7000, speeduinoSensors.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
-
-  int coolantF = (int)(((float)speeduinoSensors.coolant) * 1.8 + 32);
-  drawLabeledGauge(firstRender, "COOLANT ", "%3d", coolantF, 50, 250, coolantF > LIMIT_COOLANT_UPPER ? errorColors : okColors);
-  drawLabeledGauge(firstRender, "OIL     ", "%3d", speeduinoSensors.oilPressure, 0, 60, speeduinoSensors.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
-
-  int bottomPanelY = tft.getCursorY();
-  if (firstRender) {
-    tft.drawLine(WIDTH / 2, bottomPanelY, WIDTH / 2, HEIGHT, ILI9341_WHITE);
-    tft.drawLine(0, bottomPanelY, WIDTH, bottomPanelY, ILI9341_WHITE);
-  }
-
-  tft.setTextSize(2);
-
-  bottomPanelY = bottomPanelY + 6;
-  tft.setCursor(0, bottomPanelY);
-  renderSecondaries(firstRender, bottomPanelY);
-  renderStatusMessages(bottomPanelY);
-
-  requestFrame = false;
-
-  if (frameCounter >= 50) {
-    double secondsForFrames = (millis() - fpsCounterStartTime) / 1000.0;
-    fpsCounterStartTime = millis();
-    DebugSerial.print("render FPS: ");
-    DebugSerial.println(frameCounter / secondsForFrames);
-    frameCounter = 0;
-  } else {
-    frameCounter ++;
-  }
-}
-
-#ifdef BOOTSPLASH
-void renderBootImage()
-{
-  uint32_t i = 0;
-  for (uint16_t y = 0; y < boot_image_height; y++) {
-    for (uint16_t x = 0; x < boot_image_width; x++) {
-      tft.drawPixel(x, y, boot_image_data[i]);
-      i++;
-    }
-  }
-}
-#endif
 
 void loraSendDummyRadioHeadHeader()
 {
@@ -1159,8 +1159,8 @@ void loop(void)
       lastTelemetryPacketSentAtMillis = millis();
     }
   }
-  updateSecondaryInfo();
-  updateStatusMessages();
+  updateSecondaryInfoForRender();
+  updateStatusMessagesForRender();
 
   if (screenState != lastScreenState || requestFrame)
   {
