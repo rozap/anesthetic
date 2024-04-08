@@ -548,24 +548,24 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
   if (lastRenderedSecondaryInfo.airFuel != secondaryInfo.airFuel) {
     tft.setCursor(numberXPos, numberYPos);
     tft.printf(
-      "% 2.2f",
+      "%5.1f",
       secondaryInfo.airFuel
     );
   }
 
   if (lastRenderedSecondaryInfo.advance != secondaryInfo.advance) {
-    tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2);
-    tft.printf("% 3d", secondaryInfo.advance);
+    tft.setCursor(numberXPos + charWidthSize2 * 2, numberYPos + fontHeightSize2);
+    tft.printf("%3d", secondaryInfo.advance);
   }
 
   if (lastRenderedSecondaryInfo.iat != secondaryInfo.iat) {
     tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2 * 2);
-    tft.printf("% 4d", secondaryInfo.iat);
+    tft.printf("%4d", secondaryInfo.iat);
   }
 
   if (lastRenderedSecondaryInfo.volts != secondaryInfo.volts) {
     tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 3);
-    tft.printf("% 2.1f", secondaryInfo.volts);
+    tft.printf("%5.1f", secondaryInfo.volts);
   }
 
   if (lastRenderedSecondaryInfo.missionElapsedSeconds != secondaryInfo.missionElapsedSeconds) {
@@ -900,12 +900,12 @@ void render(bool firstRender)
   tft.setTextColor(ILI9341_CYAN);
 
   int fuel = localSensors.fuelPct;
-  drawLabeledGauge(firstRender, "FUEL   ", "% 3d", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
-  drawLabeledGauge(firstRender, "RPM  ", "% d", speeduinoSensors.RPM, 500, 7000, speeduinoSensors.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "FUEL    ", "%3d", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "RPM    ", "%4d", speeduinoSensors.RPM, 500, 7000, speeduinoSensors.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
 
   int coolantF = (int)(((float)speeduinoSensors.coolant) * 1.8 + 32);
-  drawLabeledGauge(firstRender, "COOLANT", "% 3d", coolantF, 50, 250, coolantF > LIMIT_COOLANT_UPPER ? errorColors : okColors);
-  drawLabeledGauge(firstRender, "OIL    ", "% 2d", speeduinoSensors.oilPressure, 0, 60, speeduinoSensors.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "COOLANT ", "%3d", coolantF, 50, 250, coolantF > LIMIT_COOLANT_UPPER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "OIL     ", "%3d", speeduinoSensors.oilPressure, 0, 60, speeduinoSensors.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
 
   int bottomPanelY = tft.getCursorY();
   if (firstRender) {
