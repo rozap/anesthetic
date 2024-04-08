@@ -1151,14 +1151,18 @@ void setup()
 void loop(void)
 {
   updateAllSensors();
-  bool idiotLight = !statusMessages.allOk;
-  updateTach(speeduinoSensors.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight);
-  if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_UPDATE_PERIOD_MS) {
-    bool sent = loraSendTelemetryPacket();
-    if (sent) {
-      lastTelemetryPacketSentAtMillis = millis();
+
+  if (screenState == SCREEN_STATE_NORMAL) {
+    bool idiotLight = !statusMessages.allOk;
+    updateTach(speeduinoSensors.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight);
+    if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_UPDATE_PERIOD_MS) {
+      bool sent = loraSendTelemetryPacket();
+      if (sent) {
+        lastTelemetryPacketSentAtMillis = millis();
+      }
     }
   }
+
   updateSecondaryInfoForRender();
   updateStatusMessagesForRender();
 
@@ -1172,9 +1176,11 @@ void loop(void)
     switch (screenState)
     {
     case SCREEN_STATE_NO_DATA:
+      clearTachLights();
       renderNoData();
       break;
     case SCREEN_STATE_NO_CONNECTION:
+      clearTachLights();
       renderNoConnection();
       break;
     case SCREEN_STATE_NORMAL:
