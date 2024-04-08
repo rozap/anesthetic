@@ -102,6 +102,7 @@ void tachBootAnimation() {
   tachLights(TACH_LIGHT_G3 | TACH_LIGHT_Y3); delay(d);
   tachLights(TACH_LIGHT_G2 | TACH_LIGHT_R1); delay(d);
   tachLights(TACH_LIGHT_G1 | TACH_LIGHT_R2); delay(d);
+  tachLights(TACH_LIGHT_IDIOT); delay(d);
 
   delay(500);
   tachLights(0);
