@@ -756,7 +756,7 @@ void updateStatusMessagesForRender()
 
   statusMessages.allOk = !(
     statusMessages.engHot ||
-    statusMessages.lowGas ||
+    //statusMessages.lowGas ||
     statusMessages.lowOilPressure ||
     statusMessages.overRev ||
     statusMessages.lowVolt
