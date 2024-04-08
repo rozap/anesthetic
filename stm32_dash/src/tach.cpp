@@ -31,6 +31,8 @@
 //            SDA  SCL
 TwoWire TachI2C(PB3, PB10);
 
+uint16_t lastDisplayedLights;
+
 // Private
 
 void tachConfig(uint8_t configByte) {
@@ -55,6 +57,7 @@ void tachLights(uint16_t lights) {
 void tachDisplayInit() {
   TachI2C.begin();
   tachConfig(SAA_BRIGHTNESS);
+  lastDisplayedLights = 0;
 }
 
 void clearTachLights() {
@@ -84,7 +87,11 @@ void updateTach(uint16_t rpm, uint16_t firstLightRpm, uint16_t redlineRpm, bool 
       case 1: lights |= TACH_LIGHT_G1;
     }
   }
-  tachLights(lights);
+
+  if (lights != lastDisplayedLights) {
+    tachLights(lights);
+    lastDisplayedLights = lights;
+  }
 }
 
 void tachBootAnimation() {
