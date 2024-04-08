@@ -189,6 +189,9 @@ bool isNthBitSet(unsigned char c, int n)
 #define BIT_STATUS4_COMMS_COMPAT 6
 #define BIT_STATUS4_ALLOW_LEGACY_COMMS 7
 
+// Bad struct docs here: https://wiki.speeduino.com/en/Secondary_Serial_IO_interface
+// Bad but different docs here: https://speeduino.github.io/speeduino-doxygen/structstatuses.html
+// Do not be fooled - do NOT use these: https://wiki.speeduino.com/en/reference/Interface_Protocol
 struct SpeeduinoStatus
 {
   uint8_t secl;
@@ -211,7 +214,7 @@ struct SpeeduinoStatus
   uint8_t afrTarget;
   uint16_t PW1;
   uint8_t tpsDOT;
-  uint8_t advance;
+  int8_t advance;
   uint8_t TPS;
   uint16_t loopsPerSecond;
   uint16_t freeRAM;
@@ -640,7 +643,13 @@ void processResponse()
   speeduinoSensors.PW1 = ((speeduinoResponse[21] << 8) | (speeduinoResponse[20]));
 
   speeduinoSensors.tpsDOT = speeduinoResponse[22];
-  speeduinoSensors.advance = speeduinoResponse[23];
+
+  // Kludge to force interpretation as two's complement signed int8. We should figure out a better way to
+  // do this; there's multiple signed fields in here...
+  uint8_t temp = speeduinoResponse[23];
+  int8_t tempSigned;
+  memcpy(&tempSigned, &temp, sizeof(int8_t));
+  speeduinoSensors.advance = tempSigned;
   speeduinoSensors.TPS = speeduinoResponse[24];
 
   speeduinoSensors.loopsPerSecond = ((speeduinoResponse[26] << 8) | (speeduinoResponse[25]));
