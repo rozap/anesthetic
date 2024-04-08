@@ -717,10 +717,13 @@ void processResponse()
 
 
   #ifdef USE_MOCK_DATA
-  speeduinoSensors.RPM = sin(millis() / 1500.0) * 3000.0 + 3000.0;
+  speeduinoSensors.RPM = cos(millis() / 1500.0) * 3000.0 + 3000.0;
   speeduinoSensors.coolant = sin(millis() / 6000.0) * 70.0 + 70.0;
   speeduinoSensors.oilPressure = sin(millis() / 3000.0) * 30.0 + 30.0;
   speeduinoSensors.battery10 = sin(millis() / 1500.0) * 40.0 + 124.0;
+  speeduinoSensors.O2 = sin(millis() / 2200.0) * 100.0 + 100.0;
+  speeduinoSensors.advance = sin(millis() / 2000.0) * 15.0;
+  speeduinoSensors.IAT = sin(millis() / 3200.0) * 80.0 + 80.0;
   #endif
 }
 
