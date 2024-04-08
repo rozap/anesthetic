@@ -28,10 +28,10 @@
 //#define DEBUG_SPEEDUINO_COMMS
 
 // Display the bootsplash (disable if debugging to shorten upload times).
-//#define BOOTSPLASH
+#define BOOTSPLASH
 
 // Use data in mock_pkt.h instead of actually reading from the serial port.
-#define USE_MOCK_DATA
+//#define USE_MOCK_DATA
 
 
 #include <Arduino.h>
