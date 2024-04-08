@@ -507,11 +507,11 @@ void renderStatusMessages(int bottomPanelY)
   writeSingleStatusMessage(statusMessages.fanOff, "Fan Off");
 
   tft.setTextColor(errorColors.text);
-  writeSingleStatusMessage(statusMessages.engHot, "Eng Hot!");
-  writeSingleStatusMessage(statusMessages.lowGas, "Low Gas!");
-  writeSingleStatusMessage(statusMessages.lowOilPressure, "Low Oil Prs!");
-  writeSingleStatusMessage(statusMessages.overRev, "Over rev!");
-  writeSingleStatusMessage(statusMessages.lowVolt, "Low volt!");
+  writeSingleStatusMessage(statusMessages.engHot, "OVER TEMP!");
+  writeSingleStatusMessage(statusMessages.lowGas, "FUEL QTY!");
+  writeSingleStatusMessage(statusMessages.lowOilPressure, "OIL PRES!");
+  writeSingleStatusMessage(statusMessages.overRev, "ENG RPM!");
+  writeSingleStatusMessage(statusMessages.lowVolt, "LOW VOLT!");
   writeSingleStatusMessage(statusMessages.engOff, "Eng Off");
 
   tft.setTextColor(okColors.text);
