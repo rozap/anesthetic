@@ -1054,10 +1054,10 @@ void setup()
   memset(&lastRenderedSecondaryInfo, 0, sizeof(SecondaryInfo));
 
   DebugSerial.begin(115200);
+
   tachDisplayInit();
   clearTachLights();
 
-  delay(500);
   okColors.bar = ILI9341_CYAN;
   okColors.background = BACKGROUND_COLOR;
   okColors.text = ILI9341_WHITE;
@@ -1070,11 +1070,16 @@ void setup()
   tft.setRotation(1);
   requestFrame = false;
 
+
+  #ifdef BOOTSPLASH
+  renderBootImage();
+  #else
+  renderNoConnection();
+  #endif
+
   tft.setTextSize(2);
   fontHeightSize2 = tft.fontHeight();
   charWidthSize2 = tft.textWidth(" ");
-
-  renderNoConnection();
 
   DebugSerial.println("initializing radio");
   radioSPI.begin();
@@ -1101,11 +1106,6 @@ void setup()
   SpeeduinoSerial.setTx(PA2);
   SpeeduinoSerial.setTimeout(500);
   SpeeduinoSerial.begin(115200); // speeduino runs at 115200
-
-  #ifdef BOOTSPLASH
-  renderBootImage();
-  delay(2000);
-  #endif
 
   tachBootAnimation();
 
