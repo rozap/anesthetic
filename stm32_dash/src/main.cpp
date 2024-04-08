@@ -928,8 +928,8 @@ void render(bool firstRender)
 void renderBootImage()
 {
   uint32_t i = 0;
-  for (int y = 0; y < boot_image_height; y++) {
-    for (int x = 0; x < boot_image_width; x++) {
+  for (uint16_t y = 0; y < boot_image_height; y++) {
+    for (uint16_t x = 0; x < boot_image_width; x++) {
       tft.drawPixel(x, y, boot_image_data[i]);
       i++;
     }
@@ -1046,7 +1046,6 @@ int loraSendTelemetryPacket()
 
 void setup()
 {
-
   memset(&statusMessages, 0, sizeof(StatusMessages));
   memset(&lastRenderedStatusMessages, 0, sizeof(StatusMessages));
 
