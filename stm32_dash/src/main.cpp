@@ -27,6 +27,9 @@
 // Extra debugging for speeduino comms.
 //#define DEBUG_SPEEDUINO_COMMS
 
+// Extra debugging for LoRa comms.
+//#define DEBUG_LORA_COMMS
+
 // Display the bootsplash (disable if debugging to shorten upload times).
 #define BOOTSPLASH
 
@@ -39,18 +42,28 @@
 #define LIMIT_RPM_UPPER 5500
 #define LIMIT_VOLTAGE_LOWER 12.0
 
+// Telemetry is sent at most this often. It will usually be less often, as the radio will
+// often be busy/unable to send at the exact moment. This is essentially the radio polling
+// rate.
+#define TELEMETRY_MIN_SEND_PERIOD_MS 200
+
 // Averaging window size for analog readings (oil temp and fuel level).
 #define WINDOW_SIZE 16
 
 // Height of gauges.
 #define BAR_HEIGHT 8
 
+#define GPS_FRAME_SIZE 30 // should hold 3s of GPS data
+#define GPS_MAX_SAMPLE_RATE_MILLIS 100
+
 // End config
 
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <SPI.h>
-#include <CircularBuffer.h>
+#include <CircularBuffer.hpp>
+#include <SoftwareSerial.h>
+#include <TinyGPSPlus.h>
 #include "tach.h"
 
 /* Radio */
@@ -88,6 +101,8 @@ HardwareSerial DebugSerial = Serial1;
 
 // Serial2: RX: A3, TX: A2. Connected to Speeduino.
 HardwareSerial SpeeduinoSerial = Serial2;
+
+SoftwareSerial gpsSerial(PB7 /* RX */, PB6 /* TX */);
 
 long missionStartTimeMillis;
 
@@ -306,9 +321,9 @@ struct LocalSensors
 CircularBuffer<double, WINDOW_SIZE> oilTempWindow;
 CircularBuffer<double, WINDOW_SIZE> fuelWindow;
 
-// Telemetry is sent at most this often.
-#define TELEMETRY_UPDATE_PERIOD_MS 1000
 long lastTelemetryPacketSentAtMillis;
+// Used to select which content we send over the radio (not everything fits at once).
+uint8_t packetCounter;
 
 TFT_eSPI tft = TFT_eSPI();
 
@@ -317,6 +332,7 @@ TFT_eSPI tft = TFT_eSPI();
 SPIClass radioSPI(PB15, PB14, PB13); //, PB12);
 bool radioAvailable;
 bool radioBusy;
+uint8_t radioPktSpaceLeft;
 
 /*
 |Code|English                 |Unit                 | Notes
@@ -389,6 +405,58 @@ uint8_t frameCounter; // Accumulates # render frames, resets every 50 frames.
 // Helpful constants for graphics code.
 uint16_t fontHeightSize2;
 uint16_t charWidthSize2;
+
+// these are temp buffers used to serialize the circular windows of gps and
+// speed
+#define GPS_BUF_SIZE GPS_FRAME_SIZE * 48
+#define SPEED_BUF_SIZE GPS_FRAME_SIZE * 16
+
+TinyGPSPlus gps;
+struct GPSSample
+{
+  unsigned long timeOffset;
+  double lat;
+  double lng;
+};
+CircularBuffer<GPSSample, GPS_FRAME_SIZE> gpsWindow;
+
+void pushGPSDatum()
+{
+  // Serial.print("Pushgpsdatum debug");
+  // Serial.print(" loc_valid=");
+  // Serial.print(gps.location.isValid());
+  // Serial.print(" date_valid=");
+  // Serial.print(gps.date.isValid());
+  // Serial.print(" time_valid=");
+  // Serial.print(gps.time.isValid());
+  // Serial.println();
+
+  if (gps.location.isValid())
+  {
+
+    gpsWindow.push({
+      timeOffset : millis(),
+      lat : gps.location.lat(),
+      lng : gps.location.lng()
+    });
+  }
+}
+
+struct Speed
+{
+  unsigned long timeOffset;
+  double value;
+};
+long lastSpeedFlush;
+CircularBuffer<Speed, GPS_FRAME_SIZE> speedWindow;
+
+void pushSpeed()
+{
+  if (gps.speed.isValid())
+  {
+    speedWindow.push({timeOffset : millis(), value : gps.speed.mph()});
+  }
+}
 
 double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
 {
@@ -962,12 +1030,89 @@ void updateOilT()
   localSensors.oilTemp = avgOhms; // TODO calibrate.
 }
 
+char gpsBuf[GPS_BUF_SIZE];
+char speedBuf[SPEED_BUF_SIZE];
+char gpsWorkBuf[32];
+void loraFillPacketWithGpsSamples()
+{
+  if (speedWindow.isEmpty() && gpsWindow.isEmpty())
+  {
+    return;
+  }
+
+  strcpy(speedBuf, RADIO_MSG_SPEED);
+  strcat(speedBuf, ":");
+  strcpy(gpsBuf, RADIO_MSG_GPS);
+  strcat(gpsBuf, ":");
+
+  unsigned long now = millis();
+
+  while (!speedWindow.isEmpty() || !gpsWindow.isEmpty())
+  {
+    size_t usedSpaceSoFar = strlen(speedBuf) + strlen(gpsBuf) + 2 /* \n after each msg */;
+    size_t availableSpace = radioPktSpaceLeft - usedSpaceSoFar;
+    if (!speedWindow.isEmpty())
+    {
+      Speed sample = speedWindow.pop();
+      snprintf(gpsWorkBuf,
+               sizeof(gpsWorkBuf),
+               "%04u:%03u|",
+               (unsigned int)(now - sample.timeOffset),
+               (unsigned int)(sample.value));
+      if (strlen(gpsWorkBuf) > availableSpace)
+      {
+        break;
+      }
+      strcat(speedBuf, gpsWorkBuf);
+      availableSpace -= strlen(gpsWorkBuf);
+    }
+
+    if (!gpsWindow.isEmpty())
+    {
+      GPSSample sample = gpsWindow.pop();
+      snprintf(gpsWorkBuf,
+               sizeof(gpsWorkBuf),
+               "%04u:%011.4f,%011.4f|",
+               (unsigned int)(now - sample.timeOffset),
+               sample.lat,
+               sample.lng);
+      if (strlen(gpsWorkBuf) > availableSpace)
+      {
+        break;
+      }
+      strcat(gpsBuf, gpsWorkBuf);
+    }
+  }
+
+  #ifdef DEBUG_LORA_COMMS
+  DebugSerial.println(speedBuf);
+  DebugSerial.println(gpsBuf);
+  #endif
+
+  LoRa.println(speedBuf);
+  LoRa.println(gpsBuf);
+
+  radioPktSpaceLeft -= strlen(speedBuf);
+  radioPktSpaceLeft -= strlen(gpsBuf);
+  radioPktSpaceLeft -= 2; // Newlines.
+}
+
+void updateGps()
+{
+  if (gpsSerial.available()) {
+    DebugSerial.print("GPS serial saw something: ");
+    char ch = gpsSerial.read();
+    DebugSerial.println(ch);
+  }
+}
+
 // Called once per frame.
 void updateAllSensors()
 {
   requestSpeeduinoUpdate();
   updateFuel();
   updateOilT();
+  updateGps();
   localSensors.missionElapsedSeconds = (millis() - missionStartTimeMillis) / 1000;
 }
 
@@ -1006,13 +1151,29 @@ void loraSendNumericValue(const char * id, uint16_t value)
     DebugSerial.print("ERROR: Telemetry out of radio packet space. Check ID: ");
     DebugSerial.println(id);
   } else {
+    if (strlen(radioMsgBuf) > radioPktSpaceLeft) {
+      DebugSerial.println("LoRa: ERROR! No space available in packet.");
+      return;
+    }
+
+    #ifdef DEBUG_LORA_COMMS
+    DebugSerial.println(radioMsgBuf);
+    #endif
+
     LoRa.println(radioMsgBuf);
+    radioPktSpaceLeft -= strlen(radioMsgBuf);
   }
 }
 
 // Send one packet containing all telemetry information, separated by newlines.
 // May skip transmission if the radio is already busy or unavailable,
 // in this case it returns 0. Else, returns 1.
+// The telemetry we want to send is bigger than one packet (mostly due to GPS).
+// We send some engine telemetry and then fill the remaining space with GPS samples.
+// GPS samples come in at 10/sec which gives us 0.640KB/s data rate baseline, which
+// our radio barely achieves with current settings. To help us along, we omit
+// less-time-critical engine telemetry on every other packet to allow extra room for
+// GPS samples.
 int loraSendTelemetryPacket()
 {
   if (!radioAvailable)
@@ -1023,12 +1184,17 @@ int loraSendTelemetryPacket()
   if (radioBusy) {
     if (LoRa.isAsyncTxDone()) {
       radioBusy = false;
+      #ifdef DEBUG_LORA_COMMS
+      DebugSerial.print("Radio busy for ms: ");
+      DebugSerial.println(millis() - lastTelemetryPacketSentAtMillis);
+      #endif
     } else {
       return 0;
     }
   }
 
   radioBusy = true;
+  radioPktSpaceLeft = RH_RF95_MAX_MESSAGE_LEN;
 
   LoRa.beginPacket();
   loraSendDummyRadioHeadHeader();
@@ -1041,41 +1207,56 @@ int loraSendTelemetryPacket()
   //   2 chars for : and \n
   //   5 chars for value
   // That leaves us with ~25 (RH_RF95_MAX_MESSAGE_LEN/10) max # sensors in one packet.
-  // Of course, we can send multiple packets if needed.
-  // TODO: GPS throws this off, update this math once re-added.
+  // Of course, we can send multiple packets if needed. The code will error if we try to
+  // put too many datums in a packet. Any remaining space is filled with GPS samples.
+
+  // Critical values are always sent.
   double coolantF = ((double)speeduinoSensors.coolant) * 1.8 + 32;
   loraSendNumericValue(RADIO_MSG_OIL_PRES, speeduinoSensors.oilPressure);
   loraSendNumericValue(RADIO_MSG_COOLANT_PRES, coolantPressure * 10.0);
   loraSendNumericValue(RADIO_MSG_COOLANT_TEMP, coolantF * 10.0);
   loraSendNumericValue(RADIO_MSG_OIL_TEMP, localSensors.oilTemp * 10.0);
-  loraSendNumericValue(RADIO_MSG_BATTERY_VOLTAGE, speeduinoSensors.battery10 * 100.0);
   loraSendNumericValue(RADIO_MSG_RPM, speeduinoSensors.RPM);
   loraSendNumericValue(RADIO_MSG_FAULT, checkEngineLight);
   loraSendNumericValue(RADIO_MSG_MET, localSensors.missionElapsedSeconds);
-
-  loraSendNumericValue(RADIO_MSG_FUEL_PCT, localSensors.fuelPct);
   loraSendNumericValue(RADIO_MSG_SPEEDUINO_ENGINE_STATUS, speeduinoSensors.engine);
-  loraSendNumericValue(RADIO_MSG_ADVANCE, speeduinoSensors.advance);
-  loraSendNumericValue(RADIO_MSG_O2, speeduinoSensors.O2);
-  loraSendNumericValue(RADIO_MSG_IAT, speeduinoSensors.IAT);
-  loraSendNumericValue(RADIO_MSG_SYNC_LOSS_COUNTER, speeduinoSensors.syncLossCounter);
-
-  loraSendNumericValue(RADIO_MSG_MAP, speeduinoSensors.MAP);
-  loraSendNumericValue(RADIO_MSG_VE, speeduinoSensors.ve);
-  loraSendNumericValue(RADIO_MSG_AFR_TARGET, speeduinoSensors.afrTarget);
-  loraSendNumericValue(RADIO_MSG_TPS, speeduinoSensors.TPS);
   loraSendNumericValue(RADIO_MSG_SPEEDUINO_PROTECT_STATUS, speeduinoSensors.engineProtectStatus);
-  loraSendNumericValue(RADIO_MSG_FAN_DUTY, speeduinoSensors.fanDuty);
-  loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_1, speeduinoSensors.status1);
-  loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_3, speeduinoSensors.status3);
-  loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_4, speeduinoSensors.status4);
 
-  // Space in packet available for future use.
-  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
-  //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
+  if ((packetCounter % 2) == 0) {
+    // Send less latency-sensitive values only on every other packet.
+
+    loraSendNumericValue(RADIO_MSG_BATTERY_VOLTAGE, speeduinoSensors.battery10 * 100.0);
+    loraSendNumericValue(RADIO_MSG_FUEL_PCT, localSensors.fuelPct);
+    loraSendNumericValue(RADIO_MSG_ADVANCE, speeduinoSensors.advance);
+    loraSendNumericValue(RADIO_MSG_O2, speeduinoSensors.O2);
+    loraSendNumericValue(RADIO_MSG_IAT, speeduinoSensors.IAT);
+    loraSendNumericValue(RADIO_MSG_SYNC_LOSS_COUNTER, speeduinoSensors.syncLossCounter);
+
+    loraSendNumericValue(RADIO_MSG_MAP, speeduinoSensors.MAP);
+    loraSendNumericValue(RADIO_MSG_VE, speeduinoSensors.ve);
+    loraSendNumericValue(RADIO_MSG_AFR_TARGET, speeduinoSensors.afrTarget);
+    loraSendNumericValue(RADIO_MSG_TPS, speeduinoSensors.TPS);
+    loraSendNumericValue(RADIO_MSG_FAN_DUTY, speeduinoSensors.fanDuty);
+    loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_1, speeduinoSensors.status1);
+    loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_3, speeduinoSensors.status3);
+    loraSendNumericValue(RADIO_MSG_SPEEDUINO_STATUS_4, speeduinoSensors.status4);
+
+    // Space in packet available for future use.
+    //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
+    //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
+  }
+
+  DebugSerial.print("LoRa: Pkt space left for GPS: ");
+  DebugSerial.println(radioPktSpaceLeft);
+
+  loraFillPacketWithGpsSamples();
+
+  DebugSerial.print("LoRa: Pkt space left after GPS: ");
+  DebugSerial.println(radioPktSpaceLeft);
 
   LoRa.endPacket(true /* async */);
 
+  packetCounter++;
   return 1;
 }
 
@@ -1141,12 +1322,29 @@ void setup()
   SpeeduinoSerial.setTimeout(500);
   SpeeduinoSerial.begin(115200); // speeduino runs at 115200
 
+  gpsSerial.begin(9600);
+
   tachBootAnimation();
 
   missionStartTimeMillis = millis();
   lastTelemetryPacketSentAtMillis = 0;
   fpsCounterStartTime = millis();
   frameCounter = 0;
+  packetCounter = 0;
+
+  #ifdef USE_MOCK_DATA
+  for (int i=0; i<30; i++) {
+    gpsWindow.push({
+      timeOffset: millis(),
+      lat: 1234.567,
+      lng: 5432.1234
+    });
+    speedWindow.push({
+      timeOffset : millis(),
+      value : 88
+    });
+  }
+  #endif
 }
 
 void loop(void)
@@ -1156,7 +1354,7 @@ void loop(void)
   if (screenState == SCREEN_STATE_NORMAL) {
     bool idiotLight = !statusMessages.allOk;
     updateTach(speeduinoSensors.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight);
-    if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_UPDATE_PERIOD_MS) {
+    if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_MIN_SEND_PERIOD_MS) {
       bool sent = loraSendTelemetryPacket();
       if (sent) {
         lastTelemetryPacketSentAtMillis = millis();
