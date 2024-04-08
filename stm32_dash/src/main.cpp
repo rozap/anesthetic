@@ -454,8 +454,8 @@ void drawLabeledGauge(
   tft.println();
 
   int y = tft.getCursorY();
-  int zoneMarkerHeight = 2;
-  drawPlainGauge(value, min, max, y, BAR_HEIGHT - zoneMarkerHeight, bad ? colorsBad.bar : colorsGood.bar);
+  int zoneMarkerHeight = 1;
+  drawPlainGauge(value, min, max, y, BAR_HEIGHT - zoneMarkerHeight - 1, bad ? colorsBad.bar : colorsGood.bar);
   if (firstRender) {
     int pxPosWarnLow = map(warnLow, min, max, 0, tft.width());
     int pxPosWarnHigh = map(warnHigh, min, max, 0, tft.width());
