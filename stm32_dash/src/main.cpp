@@ -112,6 +112,8 @@ uint8_t lastScreenState = SCREEN_STATE_NO_CONNECTION;
 #define LIMIT_FUEL_LOWER 10
 #define LIMIT_RPM_UPPER 5500
 
+// Render structs used to only re-render what we need (fps 4 -> ~30).
+
 struct StatusMessages
 {
   bool fanOff;
@@ -126,8 +128,20 @@ struct StatusMessages
   bool cranking;
   bool warmup;
   bool ase;
+
   bool operator==(const StatusMessages&) const = default; // Auto == operator.
 } statusMessages, lastRenderedStatusMessages;
+
+struct SecondaryInfo
+{
+  double airFuel;
+  int advance;
+  int iat;
+  double volts;
+  int missionElapsedSeconds;
+
+  bool operator==(const SecondaryInfo&) const = default; // Auto == operator.
+} secondaryInfo, lastRenderedSecondaryInfo;
 
 struct Colors
 {
@@ -366,6 +380,10 @@ const char *RADIO_MSG_SPEEDUINO_STATUS_4 = "S_4";
 long fpsCounterStartTime;
 uint8_t frameCounter; // Accumulates # render frames, resets every 50 frames.
 
+// Helpful constants for graphics code.
+uint16_t fontHeightSize2;
+uint16_t charWidthSize2;
+
 double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
 {
   if (cb.size() == 0)
@@ -383,11 +401,11 @@ void clearLine()
   tft.fillRect(tft.getCursorX(), tft.getCursorY(), tft.width(), tft.getCursorY() + tft.textsize, BACKGROUND_COLOR);
 }
 
-void showGauge(int value, int min, int max, int color)
+void drawPlainGauge(int value, int min, int max, int color)
 {
   int width = map(value, min, max, 0, tft.width());
 
-  tft.fillRect(0, tft.getCursorY(), tft.width(), BAR_HEIGHT, BACKGROUND_COLOR);
+  tft.fillRect(width, tft.getCursorY(), tft.width() - width, BAR_HEIGHT, BACKGROUND_COLOR);
 
   // WIDTH / (max - min)
   tft.fillRect(
@@ -436,6 +454,15 @@ void updateOilT()
   localSensors.oilTemp = avgOhms; // TODO calibrate.
 }
 
+void updateSecondaryInfo()
+{
+  secondaryInfo.airFuel = ((double)speeduinoSensors.O2) / 10.0;
+  secondaryInfo.advance = speeduinoSensors.advance;
+  secondaryInfo.iat = speeduinoSensors.IAT;
+  secondaryInfo.volts = ((double)speeduinoSensors.battery10) / 10.0;
+  secondaryInfo.missionElapsedSeconds = localSensors.missionElapsedSeconds;
+}
+
 void updateStatusMessages()
 {
   statusMessages.fanOn = isNthBitSet(speeduinoSensors.status4, BIT_STATUS4_FAN);
@@ -472,7 +499,7 @@ void writeSingleStatusMessage(bool enabled, const char* msg)
   }
 }
 
-void writeStatusMessages(int bottomPanelY)
+void renderStatusMessages(int bottomPanelY)
 {
   if (statusMessages == lastRenderedStatusMessages) {
     return;
@@ -502,50 +529,85 @@ void writeStatusMessages(int bottomPanelY)
   writeSingleStatusMessage(statusMessages.ase, "ASE");
 }
 
-void writeSecondaries(int bottomPanelY)
+void renderSecondaries(bool firstRender, int bottomPanelY)
 {
-  char buf[16];
   tft.setTextColor(ILI9341_WHITE, BACKGROUND_COLOR);
 
-  dtostrf(((double)speeduinoSensors.O2) / 10.0, 5, 1, buf);
-  tft.print("A/F    ");
-  tft.print(buf);
-  tft.println(" ");
+  uint16_t numberXPos = 96;
+  uint16_t numberYPos = 134;
 
-  tft.print("TIMING  ");
-  tft.print(speeduinoSensors.advance);
-  tft.println("  ");
+  if (firstRender) {
+    tft.println("A/F");
+    tft.println("TIMING");
+    tft.println("IAT");
+    tft.println("VOLTS");
+    tft.println("STINT");
+  }
 
-  tft.print("IAT     ");
-  tft.print(speeduinoSensors.IAT);
-  tft.println("  ");
+  if (lastRenderedSecondaryInfo.airFuel != secondaryInfo.airFuel) {
+    tft.setCursor(numberXPos, numberYPos);
+    tft.printf(
+      "% 2.2f",
+      secondaryInfo.airFuel
+    );
+  }
 
-  tft.print("VOLTS  ");
-  char volts[8];
-  dtostrf(((double)speeduinoSensors.battery10) / 10.0, 5, 1, volts);
-  tft.print(volts);
-  tft.println(" ");
+  if (lastRenderedSecondaryInfo.advance != secondaryInfo.advance) {
+    tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2);
+    tft.printf("% 3d", secondaryInfo.advance);
+  }
 
-  snprintf(buf, 16,
-    "MET     %02u:%02u",
-    localSensors.missionElapsedSeconds/60,
-    localSensors.missionElapsedSeconds%60
-  );
-  tft.println(buf);
+  if (lastRenderedSecondaryInfo.iat != secondaryInfo.iat) {
+    tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2 * 2);
+    tft.printf("% 4d", secondaryInfo.iat);
+  }
+
+  if (lastRenderedSecondaryInfo.volts != secondaryInfo.volts) {
+    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 3);
+    tft.printf("% 2.1f", secondaryInfo.volts);
+  }
+
+  if (lastRenderedSecondaryInfo.missionElapsedSeconds != secondaryInfo.missionElapsedSeconds) {
+    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 4);
+    tft.printf(
+      "%02u:%02u",
+      secondaryInfo.missionElapsedSeconds/60,
+      secondaryInfo.missionElapsedSeconds%60
+    );
+  }
+
+  lastRenderedSecondaryInfo = secondaryInfo;
 }
 
-void renderGauge(const char *label, int value, int min, int max, Colors colors)
+// NOTE: numFmt should return a fixed-length string. This allows us to not worry about clearing
+// old values from the screen - this cuts frame times by like a third.
+void drawLabeledGauge(
+  bool firstRender,
+  const char *label,
+  const char* numberFormat,
+  int value,
+  int min,
+  int max,
+  Colors colors)
 {
+  int numberXPos = charWidthSize2 * strlen(label);
+
   tft.setTextSize(2);
   tft.setTextColor(colors.text, colors.background);
-  tft.print(label);
-  tft.print(" ");
-  tft.print(value);
-  tft.println("            ");
-  showGauge(value, min, max, colors.bar);
-}
 
-static uint32_t oldtime = millis(); // for the timeout
+  if (firstRender) {
+    tft.print(label);
+  }
+
+  tft.setCursor(numberXPos, tft.getCursorY());
+  tft.printf(
+    numberFormat,
+    value
+  );
+  tft.println();
+
+  drawPlainGauge(value, min, max, colors.bar);
+}
 
 #define RESPONSE_LEN 128
 uint8_t speeduinoResponse[RESPONSE_LEN];
@@ -822,36 +884,32 @@ void renderNoData()
   tft.println("%   ");
 }
 
-void render()
+void render(bool firstRender)
 {
   tft.setTextSize(3);
   tft.setCursor(0, 0);
   tft.setTextColor(ILI9341_CYAN);
 
   int fuel = localSensors.fuelPct;
-  renderGauge("FUEL    ", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
-  renderGauge("RPM     ", speeduinoSensors.RPM, 500, 7000, speeduinoSensors.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "FUEL   ", "% 3d", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "RPM  ", "% d", speeduinoSensors.RPM, 500, 7000, speeduinoSensors.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
 
   int coolantF = (int)(((float)speeduinoSensors.coolant) * 1.8 + 32);
-  renderGauge("COOLANT ", coolantF, 50, 250, coolantF > LIMIT_COOLANT_UPPER ? errorColors : okColors);
-  renderGauge("OIL     ", speeduinoSensors.oilPressure, 0, 60, speeduinoSensors.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
-  // renderGauge("VOLTS", )
-  // tft.setTextColor(ILI9341_WHITE, BACKGROUND_COLOR);
-  // float volts = speeduinoSensors.battery10;
-  // tft.println(volts);
-  // showGauge((int)(volts * 100), 100, 150, BAR_COLOR);
-  // renderGauge("BAT", volts, 10, 15, volts < 13 ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "COOLANT", "% 3d", coolantF, 50, 250, coolantF > LIMIT_COOLANT_UPPER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "OIL    ", "% 2d", speeduinoSensors.oilPressure, 0, 60, speeduinoSensors.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
 
   int bottomPanelY = tft.getCursorY();
-  tft.drawLine(WIDTH / 2, bottomPanelY, WIDTH / 2, HEIGHT, ILI9341_WHITE);
-  tft.drawLine(0, bottomPanelY, WIDTH, bottomPanelY, ILI9341_WHITE);
+  if (firstRender) {
+    tft.drawLine(WIDTH / 2, bottomPanelY, WIDTH / 2, HEIGHT, ILI9341_WHITE);
+    tft.drawLine(0, bottomPanelY, WIDTH, bottomPanelY, ILI9341_WHITE);
+  }
 
   tft.setTextSize(2);
 
   bottomPanelY = bottomPanelY + 6;
   tft.setCursor(0, bottomPanelY);
-  writeSecondaries(bottomPanelY);
-  writeStatusMessages(bottomPanelY);
+  renderSecondaries(firstRender, bottomPanelY);
+  renderStatusMessages(bottomPanelY);
 
   requestFrame = false;
 
@@ -992,6 +1050,9 @@ void setup()
   memset(&statusMessages, 0, sizeof(StatusMessages));
   memset(&lastRenderedStatusMessages, 0, sizeof(StatusMessages));
 
+  memset(&secondaryInfo, 0, sizeof(SecondaryInfo));
+  memset(&lastRenderedSecondaryInfo, 0, sizeof(SecondaryInfo));
+
   DebugSerial.begin(115200);
   tachDisplayInit();
   clearTachLights();
@@ -1008,6 +1069,11 @@ void setup()
   tft.begin();
   tft.setRotation(1);
   requestFrame = false;
+
+  tft.setTextSize(2);
+  fontHeightSize2 = tft.fontHeight();
+  charWidthSize2 = tft.textWidth(" ");
+
   renderNoConnection();
 
   DebugSerial.println("initializing radio");
@@ -1059,6 +1125,7 @@ void loop(void)
       lastTelemetryPacketSentAtMillis = millis();
     }
   }
+  updateSecondaryInfo();
   updateStatusMessages();
 
   if (screenState != lastScreenState || requestFrame)
@@ -1077,10 +1144,10 @@ void loop(void)
       renderNoConnection();
       break;
     case SCREEN_STATE_NORMAL:
-      render();
+      render(screenState != lastScreenState);
       break;
     default:
-      render();
+      render(screenState != lastScreenState);
       break;
     }
   }
