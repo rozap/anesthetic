@@ -406,18 +406,16 @@ void clearLine()
   tft.fillRect(tft.getCursorX(), tft.getCursorY(), tft.width(), tft.getCursorY() + tft.textsize, BACKGROUND_COLOR);
 }
 
-void drawPlainGauge(int value, int min, int max, int color)
+void drawPlainGauge(int value, int min, int max, int y, int height, int color)
 {
   int width = map(value, min, max, 0, tft.width());
 
-  tft.fillRect(width, tft.getCursorY(), tft.width() - width, BAR_HEIGHT, BACKGROUND_COLOR);
+  tft.fillRect(width, y, tft.width() - width, height, BACKGROUND_COLOR);
 
-  // WIDTH / (max - min)
   tft.fillRect(
-      0, tft.getCursorY(),
-      width, BAR_HEIGHT,
+      0, y,
+      width, height,
       color);
-  tft.println();
 }
 
 // NOTE: numFmt should return a fixed-length string. This allows us to not worry about clearing
@@ -429,12 +427,20 @@ void drawLabeledGauge(
   int value,
   int min,
   int max,
-  Colors colors)
+  int warnLow,
+  int warnHigh,
+  Colors colorsGood,
+  Colors colorsBad)
 {
   int numberXPos = charWidthSize2 * strlen(label);
 
+  bool bad = value < warnLow || value > warnHigh;
   tft.setTextSize(2);
-  tft.setTextColor(colors.text, colors.background);
+  if (bad) {
+    tft.setTextColor(colorsBad.text, colorsBad.background);
+  } else {
+    tft.setTextColor(colorsGood.text, colorsGood.background);
+  }
 
   if (firstRender) {
     tft.print(label);
@@ -447,7 +453,23 @@ void drawLabeledGauge(
   );
   tft.println();
 
-  drawPlainGauge(value, min, max, colors.bar);
+  int y = tft.getCursorY();
+  int zoneMarkerHeight = 2;
+  drawPlainGauge(value, min, max, y, BAR_HEIGHT - zoneMarkerHeight, bad ? colorsBad.bar : colorsGood.bar);
+  if (firstRender) {
+    int pxPosWarnLow = map(warnLow, min, max, 0, tft.width());
+    int pxPosWarnHigh = map(warnHigh, min, max, 0, tft.width());
+    tft.fillRect(
+        0, y + BAR_HEIGHT - zoneMarkerHeight,
+        tft.width(), zoneMarkerHeight,
+        colorsBad.bar);
+    tft.fillRect(
+        pxPosWarnLow, y + BAR_HEIGHT - zoneMarkerHeight,
+        pxPosWarnHigh - pxPosWarnLow, zoneMarkerHeight,
+        colorsGood.bar);
+  }
+
+  tft.println();
 }
 
 void clearScreen()
@@ -613,12 +635,12 @@ void render(bool firstRender)
   tft.setTextColor(ILI9341_CYAN);
 
   int fuel = localSensors.fuelPct;
-  drawLabeledGauge(firstRender, "FUEL    ", "%3d", fuel, 0, 100, fuel < LIMIT_FUEL_LOWER ? errorColors : okColors);
-  drawLabeledGauge(firstRender, "RPM    ", "%4d", speeduinoSensors.RPM, 500, 7000, speeduinoSensors.RPM > LIMIT_RPM_UPPER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "FUEL    ", "%3d", fuel, 0, 100, LIMIT_FUEL_LOWER, 100, okColors, errorColors);
+  drawLabeledGauge(firstRender, "RPM    ", "%4d", speeduinoSensors.RPM, 500, 7000, 0, LIMIT_RPM_UPPER, okColors, errorColors);
 
   int coolantF = (int)(((float)speeduinoSensors.coolant) * 1.8 + 32);
-  drawLabeledGauge(firstRender, "COOLANT ", "%3d", coolantF, 50, 250, coolantF > LIMIT_COOLANT_UPPER ? errorColors : okColors);
-  drawLabeledGauge(firstRender, "OIL     ", "%3d", speeduinoSensors.oilPressure, 0, 60, speeduinoSensors.oilPressure < LIMIT_OIL_LOWER ? errorColors : okColors);
+  drawLabeledGauge(firstRender, "COOLANT ", "%3d", coolantF, 50, 250, 0, LIMIT_COOLANT_UPPER, okColors, errorColors);
+  drawLabeledGauge(firstRender, "OIL     ", "%3d", speeduinoSensors.oilPressure, 0, 60, LIMIT_OIL_LOWER, 999, okColors, errorColors);
 
   int bottomPanelY = tft.getCursorY();
   if (firstRender) {
