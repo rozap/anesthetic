@@ -431,7 +431,7 @@ void pushGPSDatum()
   // Serial.print(gps.time.isValid());
   // Serial.println();
 
-  if (gps.location.isValid())
+  if (gps.location.isUpdated())
   {
 
     gpsWindow.push({
@@ -450,9 +450,9 @@ struct Speed
 long lastSpeedFlush;
 CircularBuffer<Speed, GPS_FRAME_SIZE> speedWindow;
 
-void pushSpeed()
+void pushSpeedDatum()
 {
-  if (gps.speed.isValid())
+  if (gps.speed.isUpdated())
   {
     speedWindow.push({timeOffset : millis(), value : gps.speed.mph()});
   }
@@ -1099,10 +1099,13 @@ void loraFillPacketWithGpsSamples()
 
 void updateGps()
 {
-  if (gpsSerial.available()) {
-    DebugSerial.print("GPS serial saw something: ");
-    char ch = gpsSerial.read();
-    DebugSerial.println(ch);
+  while (gpsSerial.available())
+  {
+    if (gps.encode(gpsSerial.read()))
+    {
+      pushGPSDatum();
+      pushSpeedDatum();
+    }
   }
 }
 
