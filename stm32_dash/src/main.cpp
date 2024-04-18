@@ -1063,6 +1063,7 @@ void loraFillPacketWithGpsSamples()
       {
         break;
       }
+
       strcat(speedBuf, gpsWorkBuf);
       availableSpace -= strlen(gpsWorkBuf);
     }

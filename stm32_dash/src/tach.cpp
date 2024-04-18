@@ -17,15 +17,15 @@
 #define SAA_BRIGHTNESS (SAA_SEG_03MA)
 #define SAA_SEGMENT_MODE (SAA_STATIC | SAA_DIGIT_1_3_UNBLANK)
 
-#define TACH_LIGHT_IDIOT (1 << 15)
-#define TACH_LIGHT_G1 (1 << 14)
-#define TACH_LIGHT_G2 (1 << 13)
-#define TACH_LIGHT_G3 (1 << 12)
-#define TACH_LIGHT_Y1 (1 << 11)
+#define TACH_LIGHT_IDIOT (1 << 8)
+#define TACH_LIGHT_G1 (1 << 13)
+#define TACH_LIGHT_G2 (1 << 12)
+#define TACH_LIGHT_G3 (1 << 9)
+#define TACH_LIGHT_Y1 (1 << 15)
 #define TACH_LIGHT_Y2 (1 << 10)
-#define TACH_LIGHT_Y3 (1 << 9)
-#define TACH_LIGHT_R1 (1 << 8)
-#define TACH_LIGHT_R2 (1 << 0)
+#define TACH_LIGHT_Y3 (1 << 11)
+#define TACH_LIGHT_R1 (1 << 0)
+#define TACH_LIGHT_R2 (1 << 14)
 
 // I2C 2
 //            SDA  SCL
