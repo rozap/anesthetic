@@ -30,6 +30,12 @@
 // Extra debugging for LoRa comms.
 //#define DEBUG_LORA_COMMS
 
+// Extra debugging for oil temp analog reading (useful for calibration).
+//#define DEBUG_OIL_TEMPERATURE_ANALOG_READING
+
+// Extra debugging for fuel level analog reading (useful for calibration).
+//#define DEBUG_FUEL_LEVEL_ANALOG_READING
+
 // Display the bootsplash (disable if debugging to shorten upload times).
 #define BOOTSPLASH
 
@@ -109,13 +115,30 @@ long missionStartTimeMillis;
 #define WIDTH 320
 #define HEIGHT 240
 
-#define FUEL_VIN 3.3
-#define FUEL_ANALOG_PIN PB0
-#define FUEL_REF_OHM 47
+#define ADC_FULL_SCALE_V 3.3
 
-#define OIL_TEMP_VIN 3.3
+/*
+ * VIN ---- /\/\/\----+-----/\/\/\---- GND
+ * 5.0V     REF_OHM   |     SENSOR
+ *                   ADC
+ * ADC reads from 0-3.3V!
+ */
+#define FUEL_VIN 5.0
+#define FUEL_ANALOG_PIN PB0
+// Chosen so output falls within ADC range. Actual resistor hand-measured
+// with EEVBlog 121GW multimeter.
+#define FUEL_REF_OHM 145
+
+/*
+ * VIN ---- /\/\/\----+-----/\/\/\---- GND
+ * 5.0V     REF_OHM   |     SENSOR
+ *                   ADC
+ * ADC reads from 0-3.3V!
+ * NTC 10k. Temperature goes up, resistance goes down.
+ */
+#define OIL_TEMP_VIN 5.0
 #define OIL_TEMP_ANALOG_PIN PB1
-#define OIL_TEMP_REF_OHM 47
+#define OIL_TEMP_REF_OHM 47640 // Measured.
 
 // 16 bit TFT, 5 bits red, 6 green, 5 blue
 #define BACKGROUND_COLOR ILI9341_BLACK
@@ -463,7 +486,7 @@ double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
   if (cb.size() == 0)
     return 0;
   double total = 0;
-  for (int i = 0; i <= cb.size(); i++)
+  for (int i = 0; i < cb.size(); i++)
   {
     total += cb[i];
   }
@@ -995,39 +1018,90 @@ void requestSpeeduinoUpdate()
 // Consumers should look at localSensors.fuelPct.
 void updateFuel()
 {
-  double vout = (double)((analogRead(FUEL_ANALOG_PIN) * FUEL_VIN) / 1024.0);
-  double ohms = FUEL_REF_OHM * (vout / (FUEL_VIN - vout));
+  int ain = analogRead(FUEL_ANALOG_PIN);
+  double adcVolts = ain * ADC_FULL_SCALE_V / 4096.0;
+  double ohms = FUEL_REF_OHM * (adcVolts / (FUEL_VIN - adcVolts));
+  #ifdef DEBUG_FUEL_LEVEL_ANALOG_READING
+  DebugSerial.print("FUEL LEVEL DEBUG: raw reading: ");
+  DebugSerial.println(ain);
+  DebugSerial.print("FUEL LEVEL DEBUG: voltage seen: ");
+  DebugSerial.println(adcVolts);
+  DebugSerial.print("FUEL LEVEL DEBUG: calculated ohms: ");
+  DebugSerial.println(ohms);
+  #endif
+
   fuelWindow.push(ohms);
   double avgOhms = avg(fuelWindow);
+  /*
+    Logarithmic fit of experimental values:
+    Ohms	Pct
+    35	100
+    51	75
+    87	50
+    127	25
+    247	0
+  */
 
-  double gallons = 29.0207 + (-7.0567 * log(avgOhms));
-  int pct = floor((gallons / 14) * 100);
+  double pct = 279.153 + (-51.364 * log(avgOhms));
+
+  #ifdef DEBUG_FUEL_LEVEL_ANALOG_READING
+  DebugSerial.print("FUEL LEVEL DEBUG: calculated avg ohms: ");
+  DebugSerial.println(avgOhms);
+  DebugSerial.print("FUEL LEVEL DEBUG: calculated avg percentage: ");
+  DebugSerial.println(pct);
+  #endif
+
   if (pct < 0)
   {
     pct = 0;
+  }
+
+  if (pct > 100)
+  {
+    pct = 100;
   }
 
   #ifdef USE_MOCK_DATA
   pct = sin(millis() / 1000.0) * 50.0 + 50.0;
   #endif
 
-  localSensors.fuelPct = pct;
+  localSensors.fuelPct = (int)pct;
 }
 
 // Call this once per update interval.
 // Consumers should look at localSensors.oilTemp.
 void updateOilT()
 {
-  double vout = (double)((analogRead(OIL_TEMP_ANALOG_PIN) * OIL_TEMP_VIN) / 1024.0);
-  double ohms = OIL_TEMP_REF_OHM * (vout / (OIL_TEMP_VIN - vout));
-  oilTempWindow.push(ohms);
-  double avgOhms = avg(oilTempWindow);
+  int ain = analogRead(OIL_TEMP_ANALOG_PIN);
+  double adcVolts = ain * ADC_FULL_SCALE_V / 4096.0;
+  double ohms = OIL_TEMP_REF_OHM * (adcVolts / (OIL_TEMP_VIN - adcVolts));
+  // Manual amazon calibration LOL
+  double tempF = -43.609*log(ohms) + 551.864;
 
-  #ifdef USE_MOCK_DATA
-  avgOhms = sin(millis() / 700.0) * 100.0 + 150.0;
+  #ifdef DEBUG_OIL_TEMPERATURE_ANALOG_READING
+  DebugSerial.print("OIL TEMPERATURE DEBUG: raw reading: ");
+  DebugSerial.println(ain);
+  DebugSerial.print("OIL TEMPERATURE DEBUG: voltage seen: ");
+  DebugSerial.println(adcVolts);
+  DebugSerial.print("OIL TEMPERATURE DEBUG: calculated ohms: ");
+  DebugSerial.println(ohms);
+  DebugSerial.print("OIL TEMPERATURE DEBUG: calculated tempF: ");
+  DebugSerial.println(tempF);
   #endif
 
-  localSensors.oilTemp = avgOhms; // TODO calibrate.
+  oilTempWindow.push(tempF);
+  double avgTempF = avg(oilTempWindow);
+
+  #ifdef USE_MOCK_DATA
+  avgTempF = sin(millis() / 700.0) * 100.0 + 150.0;
+  #endif
+
+  #ifdef DEBUG_OIL_TEMPERATURE_ANALOG_READING
+  DebugSerial.print("OIL TEMPERATURE DEBUG: calculated avg tempF: ");
+  DebugSerial.println(avgTempF);
+  #endif
+
+  localSensors.oilTemp = avgTempF;
 }
 
 char gpsBuf[GPS_BUF_SIZE];
