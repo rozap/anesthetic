@@ -1274,6 +1274,12 @@ void setup()
 
   DebugSerial.begin(115200);
 
+  analogReadResolution(12);
+
+  // Power supply can take a bit to start. Mostly a concern for the LED driver, which runs
+  // directly on 5V (everything else is on a derived 3V3 supply). We've had issues with the
+  // driver coming up consistently, so we just wait a bit.
+  delay(250);
   tachDisplayInit();
   clearTachLights();
 
