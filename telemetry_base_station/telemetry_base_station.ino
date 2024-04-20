@@ -13,6 +13,7 @@ void setup() {
   while (!Serial) ; // Wait for serial port to be available
   if (rf95.init()) {
     rf95.setTxPower(20, false);
+    rf95.setSignalBandwidth(250E3);
     Serial.println("init ok");
   } else {
     Serial.println("init failed");
@@ -25,7 +26,7 @@ void loop() {
     uint8_t len = sizeof(buf);
     if (rf95.recv(buf, &len)) {
       buf[len] = 0;
-      Serial.print((char*)buf);
+      Serial.println((char*)buf);
       Serial.print("RSI:");
       Serial.println(rf95.lastRssi(), DEC);
       digitalWrite(LED_BUILTIN, HIGH);
