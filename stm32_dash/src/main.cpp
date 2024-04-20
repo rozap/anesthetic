@@ -528,14 +528,16 @@ void drawLabeledGauge(
 
   bool bad = value < warnLow || value > warnHigh;
   tft.setTextSize(2);
+
+  if (firstRender) {
+    tft.setTextColor(colorsGood.text, colorsGood.background);
+    tft.print(label);
+  }
+
   if (bad) {
     tft.setTextColor(colorsBad.text, colorsBad.background);
   } else {
     tft.setTextColor(colorsGood.text, colorsGood.background);
-  }
-
-  if (firstRender) {
-    tft.print(label);
   }
 
   tft.setCursor(numberXPos, tft.getCursorY());
