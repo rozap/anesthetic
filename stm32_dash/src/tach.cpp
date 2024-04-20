@@ -64,9 +64,15 @@ void clearTachLights() {
   tachLights(0);
 }
 
-void updateTach(uint16_t rpm, uint16_t firstLightRpm, uint16_t redlineRpm, bool idiotLight) {
+void updateTach(uint16_t rpm, uint16_t firstLightRpm, uint16_t redlineRpm, bool idiotLight, bool engineRunning) {
   uint16_t lights = 0;
-  if (idiotLight && ((millis() % 100) > 50)) { lights |= TACH_LIGHT_IDIOT; }
+  if (idiotLight) {
+    if (!engineRunning) {
+      lights |= TACH_LIGHT_IDIOT;
+    } else if (((millis() % 100) > 50)) {
+      lights |= TACH_LIGHT_IDIOT;
+    }
+  }
 
   if (rpm >= redlineRpm) {
     // Blink red lights! Hope the engine survived.

@@ -1437,7 +1437,7 @@ void loop(void)
 
   if (screenState == SCREEN_STATE_NORMAL) {
     bool idiotLight = !statusMessages.allOk;
-    updateTach(speeduinoSensors.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight);
+    updateTach(speeduinoSensors.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight, statusMessages.running);
     if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_MIN_SEND_PERIOD_MS) {
       bool sent = loraSendTelemetryPacket();
       if (sent) {
