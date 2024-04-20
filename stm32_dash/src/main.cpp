@@ -176,7 +176,7 @@ struct StatusMessages
 struct SecondaryInfo
 {
   double airFuel;
-  int advance;
+  int oilTemp;
   int iat;
   double volts;
   int missionElapsedSeconds;
@@ -623,7 +623,7 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
 
   if (firstRender) {
     tft.println("A/F");
-    tft.println("TIMING");
+    tft.println("OIL T");
     tft.println("IAT");
     tft.println("VOLTS");
     tft.println("STINT");
@@ -637,9 +637,9 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
     );
   }
 
-  if (lastRenderedSecondaryInfo.advance != secondaryInfo.advance) {
+  if (lastRenderedSecondaryInfo.oilTemp != secondaryInfo.oilTemp) {
     tft.setCursor(numberXPos + charWidthSize2 * 2, numberYPos + fontHeightSize2);
-    tft.printf("%3d", secondaryInfo.advance);
+    tft.printf("%3d", secondaryInfo.oilTemp);
   }
 
   if (lastRenderedSecondaryInfo.iat != secondaryInfo.iat) {
@@ -754,7 +754,7 @@ void renderBootImage()
 void updateSecondaryInfoForRender()
 {
   secondaryInfo.airFuel = ((double)speeduinoSensors.O2) / 10.0;
-  secondaryInfo.advance = speeduinoSensors.advance;
+  secondaryInfo.oilTemp = localSensors.oilTemp;
   secondaryInfo.iat = speeduinoSensors.IAT;
   secondaryInfo.volts = ((double)speeduinoSensors.battery10) / 10.0;
   secondaryInfo.missionElapsedSeconds = localSensors.missionElapsedSeconds;
