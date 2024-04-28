@@ -36,6 +36,9 @@
 // Extra debugging for fuel level analog reading (useful for calibration).
 //#define DEBUG_FUEL_LEVEL_ANALOG_READING
 
+// Extra debugging for GPS.
+#define DEBUG_GPS
+
 // Display the bootsplash (disable if debugging to shorten upload times).
 #define BOOTSPLASH
 
@@ -456,7 +459,9 @@ void pushGPSDatum()
 
   if (gps.location.isUpdated())
   {
-
+    #ifdef DEBUG_GPS
+    DebugSerial.println("Got GPS data");
+    #endif
     gpsWindow.push({
       timeOffset : millis(),
       lat : gps.location.lat(),
@@ -1176,6 +1181,12 @@ void loraFillPacketWithGpsSamples()
 
 void updateGps()
 {
+  #ifdef DEBUG_GPS
+  if (gpsSerial.available())
+  {
+    DebugSerial.println("GPS bytes available.");
+  }
+  #endif
   while (gpsSerial.available())
   {
     if (gps.encode(gpsSerial.read()))
