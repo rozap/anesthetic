@@ -946,13 +946,17 @@ int popHeader()
   SpeeduinoSerial.setTimeout(500);
   if (SpeeduinoSerial.find('n'))
   {
+    #ifdef DEBUG_SPEEDUINO_COMMS
     DebugSerial.println("Found N");
+    #endif
 
     if (SpeeduinoSerial.find(0x32))
     {
       while (!SpeeduinoSerial.available())
         ;
+      #ifdef DEBUG_SPEEDUINO_COMMS
       DebugSerial.println("Return packetlen");
+      #endif
       return SpeeduinoSerial.read();
     }
   }
@@ -1340,13 +1344,17 @@ int loraSendTelemetryPacket()
     //loraSendNumericValue(RADIO_MSG_, speeduinoSensors.);
   }
 
+  #ifdef DEBUG_LORA_COMMS
   DebugSerial.print("LoRa: Pkt space left for GPS: ");
   DebugSerial.println(radioPktSpaceLeft);
+  #endif
 
   loraFillPacketWithGpsSamples();
 
+  #ifdef DEBUG_LORA_COMMS
   DebugSerial.print("LoRa: Pkt space left after GPS: ");
   DebugSerial.println(radioPktSpaceLeft);
+  #endif
 
   LoRa.endPacket(true /* async */);
 
