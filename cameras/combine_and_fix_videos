@@ -68,6 +68,8 @@ Dir.mktmpdir('race_videos') do |tmpdir|
     end.compact
     
     FileUtils.mkdir_p(out_dir)
+    temp_out_audio_path = File.join(out_dir, "temp_audio.aac")
+    temp_out_video_path = File.join(out_dir, "temp_video.h264")
     source_files_with_date = fixed_source_files.group_by {|fn| /(20\d\d-\d\d-\d\d)/.match(fn)[1]}
     source_files_with_date.each do |date, files|
       out_path = File.join(out_dir, "#{cam_name}-#{date}.mp4")
@@ -80,6 +82,28 @@ Dir.mktmpdir('race_videos') do |tmpdir|
         stdout = `ffmpeg -v error -safe 0 -f concat -i "#{source_list_file.path}" -c copy "#{out_path}"`
         if $?.success?
           puts "Successfully created #{out_path}."
+          puts "Fixing audio samplerate and video frame rate."
+          puts "Video..."
+          stdout = `ffmpeg -y -i "#{out_path}" -an -c copy -f h264 "#{temp_out_video_path}"`
+          if $?.success?
+            puts "Video done."
+            puts "Audio..."
+            stdout = `ffmpeg -y -i "#{out_path}" -vn -c copy -map 0:a:0 "#{temp_out_audio_path}"`
+            if $?.success?
+              puts "Audio done."
+              puts "Remuxing..."
+              stdout = `ffmpeg -y -r 30 -i "#{temp_out_video_path}" -i "#{temp_out_audio_path}" -c:v copy -c:a aac -ar 16000 -af asetrate=16000 "#{out_path}"`
+              File.unlink(temp_out_audio_path)
+              File.unlink(temp_out_video_path)
+            else
+              STDERR.puts stdout
+              failed << out_path
+            end
+          else
+            STDERR.puts stdout
+            failed << out_path
+          end
+
         else
           STDERR.puts stdout
           STDERR.puts "Failed to create #{out_path}"
@@ -89,6 +113,7 @@ Dir.mktmpdir('race_videos') do |tmpdir|
     end
   end
 end
+
 unless failed.empty?
   STDERR.puts "Failed to create some videos."
   exit 3
