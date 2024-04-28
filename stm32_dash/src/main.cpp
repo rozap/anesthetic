@@ -115,6 +115,8 @@ SoftwareSerial gpsSerial(PB7 /* RX */, PB6 /* TX */);
 
 long missionStartTimeMillis;
 
+bool everHadEcuData;
+
 #define WIDTH 320
 #define HEIGHT 240
 
@@ -1009,6 +1011,7 @@ void requestSpeeduinoUpdate()
       screenState = SCREEN_STATE_NORMAL;
       resetTimeout();
       processResponse();
+      everHadEcuData = true;
       requestFrame = true;
     }
   }
@@ -1359,6 +1362,8 @@ void setup()
   memset(&secondaryInfo, 0, sizeof(SecondaryInfo));
   memset(&lastRenderedSecondaryInfo, 0, sizeof(SecondaryInfo));
 
+  everHadEcuData = false;
+
   DebugSerial.begin(115200);
 
   analogReadResolution(12);
@@ -1430,6 +1435,7 @@ void setup()
   packetCounter = 0;
 
   #ifdef USE_MOCK_DATA
+  everHadEcuData = true;
   for (int i=0; i<30; i++) {
     gpsWindow.push({
       timeOffset: millis(),
@@ -1451,6 +1457,10 @@ void loop(void)
   if (screenState == SCREEN_STATE_NORMAL) {
     bool idiotLight = !statusMessages.allOk;
     updateTach(speeduinoSensors.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight, statusMessages.running);
+  }
+
+  if (everHadEcuData)
+  {
     if ((millis() - lastTelemetryPacketSentAtMillis) >= TELEMETRY_MIN_SEND_PERIOD_MS) {
       bool sent = loraSendTelemetryPacket();
       if (sent) {
