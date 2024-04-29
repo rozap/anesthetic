@@ -4,6 +4,9 @@ require 'tmpdir'
 require 'tempfile'
 require 'parallel'
 
+#Truncated files can introduce multiple seconds of A/V sync loss.
+ignore_truncated_files = true
+
 if ARGV.length != 2
   STDERR.puts "Combines race video files by day. Fixes file issues due to accidental unsafe shutdowns. Needs ffmpeg and anthwlock/untrunc (github)."
   STDERR.puts "usage: combine_and_fix_videos [source_path] [output_path]"
@@ -51,7 +54,7 @@ Dir.mktmpdir('race_videos') do |tmpdir|
       puts "Checking/fixing #{idx}/#{source_files.length}"
       if file_is_ok(source_file)
         source_file
-      else
+      elsif !ignore_truncated_files
         # untrunc the file.
         puts "#{source_file} truncated, fixing"
         bn = File.basename(source_file)
@@ -64,6 +67,9 @@ Dir.mktmpdir('race_videos') do |tmpdir|
           puts "Unable to fix #{source_file}. Skipping."
           nil
         end
+      else
+        puts "Skipping truncated file, as per config. #{source_file}"
+        nil
       end
     end.compact
     
