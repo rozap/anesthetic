@@ -4,17 +4,18 @@ require 'tmpdir'
 require 'tempfile'
 require 'parallel'
 
-#Truncated files can introduce multiple seconds of A/V sync loss.
-ignore_truncated_files = true
+#Truncated files can introduce multiple seconds of A/V sync loss. We mitigate this by looking for start_time=0 to split sessions, but just in case, we have this.
+ignore_truncated_files = false
 
 if ARGV.length != 2
-  STDERR.puts "Combines race video files by day. Fixes file issues due to accidental unsafe shutdowns. Needs ffmpeg and anthwlock/untrunc (github)."
+  STDERR.puts "Combines race video files by day. Fixes file issues due to accidental unsafe shutdowns. Needs ffmpeg, jq, and anthwlock/untrunc (github)."
   STDERR.puts "usage: combine_and_fix_videos [source_path] [output_path]"
   exit 1
 end
 
 if `which untrunc`.empty?
   STDERR.puts "You need to have `untrunc` on the PATH. https://github.com/anthwlock/untrunc"
+  STDERR.puts "Apply the patch here: https://github.com/anthwlock/untrunc/issues/121"
   exit 2
 end
 
@@ -22,6 +23,18 @@ if `which ffmpeg`.empty?
   STDERR.puts "You need to have `ffmpeg` on the PATH."
   exit 2
 end
+
+if `which ffprobe`.empty?
+  STDERR.puts "You need to have `ffprobe` on the PATH."
+  exit 2
+end
+
+
+if `which jq`.empty?
+  STDERR.puts "You need to have `jq` on the PATH."
+  exit 2
+end
+
 
 source_dir = ARGV[0].strip
 out_dir = ARGV[1].strip
@@ -31,8 +44,19 @@ source_files = Dir.glob("#{source_dir}/*-seg-*.mp4").sort
 def file_is_ok(file)
   # Yes I know quotes in filenames breaks this. Sorry, I'm not operating as a professional software dev while I'm
   # working on race cars. sosumi.aiff
-  `ffprobe -v fatal "#{file}"`
-  $?.success?
+  num_streams = `ffprobe -loglevel fatal -show_streams -of json "#{file}" | jq '.streams | length'`
+  $?.success? && num_streams.to_i == 2
+end
+
+# PTS = Presentation Time Stamp = basically the timestamp of the first frame, since the car started recording.
+def file_start_pts(file)
+  start_pts = `ffprobe -loglevel fatal -show_streams -of json "#{file}" | jq '.streams[] | select(.codec_type == "video").start_pts'`
+  if $?.success?
+    start_pts.to_i
+  else
+    STDERR.puts("Failed to get start_pts of file, assuming infinity. #{file}")
+    Float::INFINITY
+  end
 end
 
 failed = []
@@ -60,7 +84,7 @@ Dir.mktmpdir('race_videos') do |tmpdir|
         bn = File.basename(source_file)
         fixed_path = "#{tmpdir}/#{bn}_fixed.mp4"
         `untrunc -n -dst "#{fixed_path}" "#{sample_file}" "#{source_file}"`
-        if $?.success?
+        if $?.success? && file_is_ok(fixed_path)
           puts "Fixed."
           fixed_path
         else
@@ -77,43 +101,52 @@ Dir.mktmpdir('race_videos') do |tmpdir|
     temp_out_audio_path = File.join(out_dir, "temp_audio.aac")
     temp_out_video_path = File.join(out_dir, "temp_video.h264")
     source_files_with_date = fixed_source_files.group_by {|fn| /(20\d\d-\d\d-\d\d)/.match(fn)[1]}
+
     source_files_with_date.each do |date, files|
-      out_path = File.join(out_dir, "#{cam_name}-#{date}.mp4")
-      Tempfile.create do |source_list_file|
-        files.each do |source_file|
-          source_list_file.puts "file '#{source_file}'"
-        end
-        source_list_file.close
-        puts "Processing #{date}"
-        stdout = `ffmpeg -v error -safe 0 -f concat -i "#{source_list_file.path}" -c copy "#{out_path}"`
-        if $?.success?
-          puts "Successfully created #{out_path}."
-          puts "Fixing audio samplerate and video frame rate."
-          puts "Video..."
-          stdout = `ffmpeg -y -i "#{out_path}" -an -c copy -f h264 "#{temp_out_video_path}"`
+      puts "Splitting by session (takes a while)..."
+      by_session = files.chunk_while do |element_before, element_after|
+        start_pts_1 = file_start_pts(element_before)
+        start_pts_2 = file_start_pts(element_after)
+        start_pts_1 < start_pts_2
+      end
+      by_session.each_with_index do |session_files, session_index|
+        out_path = File.join(out_dir, "#{cam_name}-#{date}-session-#{session_index + 1}.mp4")
+        Tempfile.create do |source_list_file|
+          session_files.each do |source_file|
+            source_list_file.puts "file '#{source_file}'"
+          end
+          source_list_file.close
+          puts "Processing #{date}, Session #{session_index + 1}"
+          stdout = `ffmpeg -v fatal -safe 0 -f concat -i "#{source_list_file.path}" -c copy "#{out_path}"`
           if $?.success?
-            puts "Video done."
-            puts "Audio..."
-            stdout = `ffmpeg -y -i "#{out_path}" -vn -c copy -map 0:a:0 "#{temp_out_audio_path}"`
+            puts "Successfully created #{out_path}."
+            puts "Fixing audio samplerate and video frame rate."
+            puts "Video..."
+            stdout = `ffmpeg -v fatal -y -i "#{out_path}" -an -c copy -f h264 "#{temp_out_video_path}"`
             if $?.success?
-              puts "Audio done."
-              puts "Remuxing..."
-              stdout = `ffmpeg -y -r 30 -i "#{temp_out_video_path}" -i "#{temp_out_audio_path}" -c:v copy -c:a aac -ar 16000 -af asetrate=16000 "#{out_path}"`
-              File.unlink(temp_out_audio_path)
-              File.unlink(temp_out_video_path)
+              puts "Video done."
+              puts "Audio..."
+              stdout = `ffmpeg -v fatal -y -i "#{out_path}" -vn -c copy -map 0:a:0 "#{temp_out_audio_path}"`
+              if $?.success?
+                puts "Audio done."
+                puts "Remuxing..."
+                stdout = `ffmpeg -v fatal -y -r 30 -i "#{temp_out_video_path}" -i "#{temp_out_audio_path}" -c:v copy -c:a aac -ar 16000 -af asetrate=16000 "#{out_path}"`
+                File.unlink(temp_out_audio_path)
+                File.unlink(temp_out_video_path)
+              else
+                STDERR.puts stdout
+                failed << out_path
+              end
             else
               STDERR.puts stdout
               failed << out_path
             end
+
           else
             STDERR.puts stdout
+            STDERR.puts "Failed to create #{out_path}"
             failed << out_path
           end
-
-        else
-          STDERR.puts stdout
-          STDERR.puts "Failed to create #{out_path}"
-          failed << out_path
         end
       end
     end

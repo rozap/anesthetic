@@ -1,0 +1,15 @@
+#! /usr/bin/env bash
+
+set -e
+set -o xtrace
+shopt -s nullglob
+
+mkdir -p originals
+IFS=$(echo -en "\n\b")
+for i in *.mp4 ; do
+  echo $i
+  mv "$i" originals/
+  ffmpeg -i "originals/$i" -c:v libx264 -crf 30 -c:a aac -af "firequalizer=gain='if(lt(f,2000), 0, -INF)'" "$i"
+  touch -r "originals/$i" "$i"
+done
+echo originals in originals/

@@ -1,0 +1,15 @@
+1. Move RACE_VIDEOS folder from onboard SSD to your computer.
+2. Run combine_and_fix_videos script to process videos into usable MP4s (this does not reencode, and produces enormous files).
+3a. To produce picture-in-picture, FOR EACH SESSION, do:
+
+ffmpeg -i FRONT_CAM_VIDEO.mp4 -i REAR_CAM_VIDEO.mp4 -filter_complex "[1]scale=400:227[pip]; [0][pip] overlay=main_w-overlay_w-190:main_h-overlay_h-10" -af "firequalizer=gain='if(lt(f,2000), 0, -INF)'" -c:a aac -c:v libx264 -crf 29 FINAL_VIDEO.mp4
+3b. To produce unmodified (but sensibly compressed and with non-horribly-screechy audio) videos per camera, use the reencode_x264 script. This will reencode ANY mp4 file found in $CWD and move the originals to an `originals/` subfolder.
+
+Shameless hack: 
+
+(1..8).map {|i| "nice ffmpeg -i rear_right*session-#{i}.mp4 -i rear_left*session-#{i}.mp4 -filter_complex \"[1]scale=400:227[pip]; [0][pip] overlay=main_w-overlay_w-190:main_h-overlay_h-10\" -af \"firequalizer=gain='if(l
+t(f,2000), 0, -INF)'\" -c:a aac -c:v libx264 -crf 29 race_day_1_session_#{i}.mp4" }.each { |i| puts i }
+
+Remember to use the ORIGINALS for 3b, else you'd be doing a double-encode, losing quality.
+
+TODO: There may be a delay between main and PIP feeds due to different camera startups etc... figure this out if needed later.
