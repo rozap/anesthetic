@@ -1049,12 +1049,12 @@ void updateFuel()
   /*
     Logarithmic fit of experimental values:
     Ohms      Pct
-    33.7      100
+    36      100
     85.3      50
     239.2     0
   */
 
-  double pct = 278.403 + (-50.979 * log(avgOhms));
+  double pct = 287.120 + (-52.665 * log(avgOhms));
 
   #ifdef DEBUG_FUEL_LEVEL_ANALOG_READING
   DebugSerial.print("FUEL LEVEL DEBUG: calculated avg ohms: ");
