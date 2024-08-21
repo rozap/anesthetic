@@ -48,7 +48,9 @@
 #define LIMIT_COOLANT_UPPER 215
 #define LIMIT_OIL_LOWER 10
 #define LIMIT_FUEL_LOWER 10
-#define LIMIT_RPM_UPPER 5500
+#define LIMIT_FUEL_PRESSURE_LOWER 15
+
+#define LIMIT_RPM_UPPER 5800
 #define LIMIT_VOLTAGE_LOWER 12.0
 
 // Telemetry is sent at most this often. It will usually be less often, as the radio will
@@ -166,6 +168,7 @@ struct StatusMessages
   bool engHot;
   bool lowGas;
   bool lowOilPressure;
+  bool lowFuelPressure;
   bool overRev;
   bool allOk;
   bool engOff;
@@ -182,6 +185,7 @@ struct SecondaryInfo
 {
   double airFuel;
   int oilTemp;
+  int fuelPressure;
   int iat;
   double volts;
   int missionElapsedSeconds;
@@ -401,6 +405,7 @@ const char *RADIO_MSG_COOLANT_PRES = "P_C";
 const char *RADIO_MSG_COOLANT_TEMP = "T_C";
 const char *RADIO_MSG_OIL_TEMP = "T_O";
 const char *RADIO_MSG_OIL_PRES = "P_O";
+const char *RADIO_MSG_FUEL_PRES = "P_F";
 const char *RADIO_MSG_FAULT = "FLT";
 const char *RADIO_MSG_BATTERY_VOLTAGE = "VBA";
 const char *RADIO_MSG_RPM = "RPM";
@@ -611,6 +616,8 @@ void renderStatusMessages(int bottomPanelY)
   writeSingleStatusMessage(statusMessages.engHot, "OVER TEMP!");
   writeSingleStatusMessage(statusMessages.lowGas, "FUEL QTY!");
   writeSingleStatusMessage(statusMessages.lowOilPressure, "OIL PRES!");
+  writeSingleStatusMessage(statusMessages.lowFuelPressure, "OIL PRES!");
+
   writeSingleStatusMessage(statusMessages.overRev, "ENG RPM!");
   writeSingleStatusMessage(statusMessages.lowVolt, "LOW VOLT!");
   writeSingleStatusMessage(statusMessages.engOff, "Eng Off");
@@ -623,6 +630,8 @@ void renderStatusMessages(int bottomPanelY)
   writeSingleStatusMessage(statusMessages.ase, "ASE");
 }
 
+
+
 void renderSecondaries(bool firstRender, int bottomPanelY)
 {
   tft.setTextColor(ILI9341_WHITE, BACKGROUND_COLOR);
@@ -630,12 +639,16 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
   uint16_t numberXPos = 96;
   uint16_t numberYPos = 134;
 
+  
+
   if (firstRender) {
     tft.println("A/F");
+    tft.println("FL PRS");
     tft.println("OIL T");
     tft.println("IAT");
     tft.println("VOLTS");
     tft.println("STINT");
+
   }
 
   if (lastRenderedSecondaryInfo.airFuel != secondaryInfo.airFuel) {
@@ -646,13 +659,25 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
     );
   }
 
+  if (lastRenderedSecondaryInfo.fuelPressure != secondaryInfo.fuelPressure) {
+    if (statusMessages.lowFuelPressure) {
+      tft.setTextColor(errorColors.text, BACKGROUND_COLOR);
+    }
+    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 2);
+    tft.printf("%2d", secondaryInfo.fuelPressure);
+
+    if (statusMessages.lowFuelPressure) {
+      tft.setTextColor(okColors.text, BACKGROUND_COLOR);
+    }
+  }
+
   if (lastRenderedSecondaryInfo.oilTemp != secondaryInfo.oilTemp) {
     tft.setCursor(numberXPos + charWidthSize2 * 2, numberYPos + fontHeightSize2);
     tft.printf("%3d", secondaryInfo.oilTemp);
   }
 
   if (lastRenderedSecondaryInfo.iat != secondaryInfo.iat) {
-    tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2 * 2);
+    tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2 * 3);
     tft.printf("%4d", secondaryInfo.iat);
   }
 
@@ -660,7 +685,7 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
     if (statusMessages.lowVolt) {
       tft.setTextColor(errorColors.text, BACKGROUND_COLOR);
     }
-    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 3);
+    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 4);
     tft.printf("%5.1f", secondaryInfo.volts);
     if (statusMessages.lowVolt) {
       tft.setTextColor(okColors.text, BACKGROUND_COLOR);
@@ -668,13 +693,14 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
   }
 
   if (lastRenderedSecondaryInfo.missionElapsedSeconds != secondaryInfo.missionElapsedSeconds) {
-    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 4);
+    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 5);
     tft.printf(
       "%02u:%02u",
       secondaryInfo.missionElapsedSeconds/60,
       secondaryInfo.missionElapsedSeconds%60
     );
   }
+
 
   lastRenderedSecondaryInfo = secondaryInfo;
 }
@@ -763,6 +789,7 @@ void renderBootImage()
 void updateSecondaryInfoForRender()
 {
   secondaryInfo.airFuel = ((double)speeduinoSensors.O2) / 10.0;
+  secondaryInfo.fuelPressure = speeduinoSensors.fuelPressure;
   secondaryInfo.oilTemp = localSensors.oilTemp;
   secondaryInfo.iat = speeduinoSensors.IAT;
   secondaryInfo.volts = ((double)speeduinoSensors.battery10) / 10.0;
@@ -778,6 +805,8 @@ void updateStatusMessagesForRender()
   statusMessages.engHot = coolantF > LIMIT_COOLANT_UPPER;
   statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
   statusMessages.lowOilPressure = speeduinoSensors.oilPressure < LIMIT_OIL_LOWER;
+  statusMessages.lowFuelPressure = speeduinoSensors.oilPressure < LIMIT_FUEL_PRESSURE_LOWER;
+
   statusMessages.overRev = speeduinoSensors.RPM > LIMIT_RPM_UPPER;
   statusMessages.running = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_RUN);
   statusMessages.cranking = isNthBitSet(speeduinoSensors.engine, BIT_ENGINE_CRANK);
@@ -1309,6 +1338,8 @@ int loraSendTelemetryPacket()
   // Critical values are always sent.
   double coolantF = ((double)speeduinoSensors.coolant) * 1.8 + 32;
   loraSendNumericValue(RADIO_MSG_OIL_PRES, speeduinoSensors.oilPressure);
+  loraSendNumericValue(RADIO_MSG_FUEL_PRES, speeduinoSensors.fuelPressure);
+
   loraSendNumericValue(RADIO_MSG_COOLANT_PRES, coolantPressure * 10.0);
   loraSendNumericValue(RADIO_MSG_COOLANT_TEMP, coolantF * 10.0);
   loraSendNumericValue(RADIO_MSG_OIL_TEMP, localSensors.oilTemp * 10.0);
