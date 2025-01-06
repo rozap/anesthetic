@@ -4,6 +4,8 @@
 #include "OneButton.h"
 #include "Ticker.h"
 
+#define DEBUG false
+
 #define USE_TIMER_1 true
 #define USE_TIMER_2 false
 #define USE_TIMER_3 false
@@ -39,6 +41,7 @@ bool running = false;
 #define MIN_RPM 500
 #define MAX_RPM 6500
 #define TIME_DELTA 2000
+#define RPM_DELTA 500
 #define DUTY_DELTA 10
 #define MAX_DUTY 100
 
@@ -74,7 +77,7 @@ void setup()
   pinMode(CYL_2_PIN, OUTPUT);
   pinMode(CYL_3_PIN, OUTPUT);
   pinMode(FUEL_RELAY_PIN, OUTPUT);
-
+  digitalWrite(FUEL_RELAY_PIN, LOW);
   digitalWrite(CYL_1_PIN, HIGH);
 }
 
@@ -95,10 +98,9 @@ bool isSetTimeMode()
 void HandleUp(void *b)
 {
   render = true;
-  Serial.println("on up");
   if (isSetRPMMode())
   {
-    rpm += 500;
+    rpm += RPM_DELTA;
     if (rpm > MAX_RPM)
     {
       rpm = MIN_RPM;
@@ -107,7 +109,7 @@ void HandleUp(void *b)
   }
   if (isSetTimeMode())
   {
-    runTime += 500;
+    runTime += TIME_DELTA;
     return;
   }
   else
@@ -122,12 +124,11 @@ void HandleUp(void *b)
 
 void HandleDown(void *b)
 {
-  Serial.println("on down");
   render = true;
 
   if (isSetRPMMode())
   {
-    rpm -= TIME_DELTA;
+    rpm -= RPM_DELTA;
     if (rpm < MIN_RPM)
     {
       rpm = MAX_RPM;
@@ -174,7 +175,10 @@ void fire(uint8_t which, Ticker *ticker)
   char buffer[16];
   if (status.state[which])
   {
-    snprintf(buffer, sizeof(buffer), "Off: %d for %d", which, status.offTime);
+    if (DEBUG)
+    {
+      snprintf(buffer, sizeof(buffer), "Off: %d for %d", which, status.offTime);
+    }
 
     // turn injector off
     digitalWrite(InjectorPins[which], LOW);
@@ -183,13 +187,19 @@ void fire(uint8_t which, Ticker *ticker)
   }
   else
   {
-    snprintf(buffer, sizeof(buffer), "On: %d for %d", which, status.onTime);
+    if (DEBUG)
+    {
+      snprintf(buffer, sizeof(buffer), "On: %d for %d", which, status.onTime);
+    }
 
     digitalWrite(InjectorPins[which], HIGH);
     status.state[which] = true;
     ticker->interval(status.onTime);
   }
-  Serial.println(buffer);
+  if (DEBUG)
+  {
+    Serial.println(buffer);
+  }
 }
 
 void fire1() { fire(0, &ticker1); };
@@ -255,7 +265,6 @@ void startRunning()
 
 void HandleRun(void *b)
 {
-  Serial.println("on run");
   if (running)
   {
     stopRunning();
@@ -279,15 +288,6 @@ void loop()
   downButton.tick();
   runButton.tick();
 
-  if (now - lastRender > 500)
-  {
-    lastRender = now;
-    render = true;
-  }
-  else
-  {
-    render = false;
-  }
 
   if (running)
   {
@@ -314,6 +314,7 @@ void loop()
       lcd.print(status.onTime);
       lcd.print(" CYC:");
       lcd.print((unsigned int)computeCycleTime());
+      render = false;
     }
   }
   else
