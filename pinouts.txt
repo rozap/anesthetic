@@ -1,0 +1,5 @@
+pinouts
+LS12 fuel pump relay
+LS11 fan relay
+AV3 oil pressure signal
+AV4 fuel pressure signal
