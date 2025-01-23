@@ -4,3 +4,5 @@ camera ups-backups
 *.sw?
 pitwall/target
 pitwall/target/
+dash-rs/loader/stm32loader
+dash-rs/target
