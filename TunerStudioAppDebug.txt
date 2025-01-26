@@ -13189,3 +13189,2508 @@ java.net.SocketException: Network is unreachable
 1/13/25, 2:59:11 AM :Debug: HttpService Search Failed
 [Duplicate entry] received 18 times: Debug: HttpService Search Failed
 1/13/25, 2:59:11 AM :Debug: HttpService Search Failed
+Starting on zen
+TunerStudio 3.2.05 started on Sat Jan 25 10:18:04 PST 2025
+JRE 21.0.5, Linux 6.8.0-51-generic, amd64
+java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+TunerStudioMS.jar
+java.lang.reflect.InaccessibleObjectException: Unable to make field private static java.nio.charset.Charset java.nio.charset.Charset.defaultCharset accessible: module java.base does not "opens java.nio.charset" to unnamed module @35fb3008
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(AccessibleObject.java:391)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:367)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:315)
+	at java.base/java.lang.reflect.Field.checkCanSetAccessible(Field.java:183)
+	at java.base/java.lang.reflect.Field.setAccessible(Field.java:177)
+	at TunerStudio.main(Unknown Source)
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:GTK+, ClassName:'com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+1/25/25, 10:18:05 AM :Debug: no update:defaultFont
+1/25/25, 10:18:05 AM :Info: Initializing File Dialogs.
+1/25/25, 10:18:05 AM :Info: Updating ai & t
+1/25/25, 10:18:05 AM :Info: Loading Language Content.
+1/25/25, 10:18:05 AM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+1/25/25, 10:18:05 AM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+1/25/25, 10:18:05 AM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+1/25/25, 10:18:05 AM :Info: Initializing Plugin Services.
+1/25/25, 10:18:05 AM :Info: Loading Plugins.
+1/25/25, 10:18:05 AM :Info: Initializing Help.
+1/25/25, 10:18:05 AM :Info: Initializing Edition Features.
+1/25/25, 10:18:05 AM :Info: Initializing App Events.
+1/25/25, 10:18:05 AM :Debug: App Name:TunerStudio, appEdition:MS Ultra
+1/25/25, 10:18:05 AM :Info: Initializing Log Viewer Components.
+1/25/25, 10:18:05 AM :Info: Initializing User Interface
+1/25/25, 10:18:05 AM :Warning: Unable to set Main cluster for title:
+1/25/25, 10:18:07 AM :Info: Loading Font list.
+1/25/25, 10:18:07 AM :Debug: Time to retreive font name list: 19 ms.
+1/25/25, 10:18:07 AM :Info: 
+1/25/25, 10:18:07 AM :Info: Initializing UI Components.
+1/25/25, 10:18:07 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:18:07 AM :Info: Ready
+1/25/25, 10:18:08 AM :Info: Opening Project ...
+1/25/25, 10:18:08 AM :Debug: Opening project: /home/chris/workspace/anesthetic/fome_vrsix19
+1/25/25, 10:18:08 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:18:08 AM :Debug: EventTrigger Data log Reset. expression: 
+1/25/25, 10:18:08 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:18:08 AM :Debug: EventTrigger Stop Data log Reset. expression: 
+1/25/25, 10:18:08 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:18:08 AM :Debug: Reading translation file as plain text
+1/25/25, 10:18:08 AM :Info: Supported iniSpecVersion=3.77
+1/25/25, 10:18:08 AM :Debug: Filtered ConfigurationOptionGroup in 15ms.
+1/25/25, 10:18:08 AM :Info: Supported iniSpecVersion=3.77
+1/25/25, 10:18:08 AM :Info: Read file canPcVariables.ini: 0.185639ms
+1/25/25, 10:18:08 AM :Info: Filtered ini: 0.040973ms
+1/25/25, 10:18:08 AM :Info: No iniVersion defined
+1/25/25, 10:18:08 AM :Info: Loading Trigger Wheels
+1/25/25, 10:18:08 AM :Info: Loaded All known ini sections
+1/25/25, 10:18:08 AM :Info: Parsed and validated ini "canPcVariables.ini" in : 8ms.
+1/25/25, 10:18:08 AM :Info: Read file mainController.ini: 13.922243ms
+1/25/25, 10:18:08 AM :Info: Filtered ini: 4.487384ms
+1/25/25, 10:18:08 AM :Info: No iniVersion defined
+1/25/25, 10:18:08 AM :Debug: ini signature: rusEFI (FOME) .2024.10.22.proteus_f7.3998132989
+1/25/25, 10:18:08 AM :Info: Set Write Blocks on = true
+1/25/25, 10:18:08 AM :Info: Loading Trigger Wheels
+1/25/25, 10:18:08 AM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+1/25/25, 10:18:08 AM :Info: Loaded All known ini sections
+1/25/25, 10:18:08 AM :Info: Parsed and validated ini "mainController.ini" in : 206ms.
+1/25/25, 10:18:08 AM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+1/25/25, 10:18:08 AM :Info: Time to load primary config: 262.66293ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+1/25/25, 10:18:08 AM :Debug: set baud to 115200
+1/25/25, 10:18:08 AM :Info: Setting connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:18:08 AM :Debug: Adding Configuration: fome_vrsix19
+1/25/25, 10:18:09 AM :Debug: Fill Constants: 84
+MS Ultramain: No check, last update check=Sat Jan 25 09:15:10 PST 2025
+1/25/25, 10:18:09 AM :Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+1/25/25, 10:18:09 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:18:09 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:18:09 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:18:09 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:18:09 AM :Debug: Skip Burn, last write page: -2
+1/25/25, 10:18:09 AM :Info: !!! Loaded config in 782
+1/25/25, 10:18:09 AM :Info: !!! Activated Project 937
+1/25/25, 10:18:09 AM :Info: Opening Gauge Cluster..
+1/25/25, 10:18:09 AM :Info: Time to load uncached dash: 106.20085ms, file: dashboard.dash
+1/25/25, 10:18:09 AM :Debug: High Speed Paint: true
+1/25/25, 10:18:09 AM :Info: 
+1/25/25, 10:18:09 AM :Info: Com Thread created: COMM Thread96367.68089801223
+1/25/25, 10:18:09 AM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+1/25/25, 10:18:09 AM :Info: Comm Manager for fome_vrsix19 Started, thread ID: COMM Thread96367.68089801223
+1/25/25, 10:18:09 AM :Debug: !!! Opened Dash 1301
+1/25/25, 10:18:09 AM :Info: Connecting to controller on: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:18:09 AM :Info: fome_vrsix19 Ready
+1/25/25, 10:18:09 AM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 10:18:09 AM :Debug: Tuning View Files loaded in 48.694935ms.
+1/25/25, 10:18:10 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:18:10 AM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 10:18:10 AM :Debug: Deactivating Event Trigger: cltTempWarning
+1/25/25, 10:18:10 AM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 10:18:10 AM :Info: EventTrigger: fome_vrsix19.cltTempWarning loaded and activated.
+MS Ultraad: No check, last update check=Sat Jan 25 09:15:14 PST 2025
+Unable to read from update server, connection to server unavailable
+java.net.SocketException: Network is unreachable
+	at java.base/sun.nio.ch.DatagramChannelImpl.send0(Native Method)
+	at java.base/sun.nio.ch.DatagramChannelImpl.sendFromNativeBuffer(DatagramChannelImpl.java:1005)
+	at java.base/sun.nio.ch.DatagramChannelImpl.send(DatagramChannelImpl.java:966)
+	at java.base/sun.nio.ch.DatagramChannelImpl.send(DatagramChannelImpl.java:889)
+	at java.base/sun.nio.ch.DatagramChannelImpl.blockingSend(DatagramChannelImpl.java:952)
+	at java.base/sun.nio.ch.DatagramSocketAdaptor.send(DatagramSocketAdaptor.java:193)
+	at java.base/java.net.DatagramSocket.send(DatagramSocket.java:662)
+	at ay.f.e(Unknown Source)
+	at ay.f.a(Unknown Source)
+	at ay.g.run(Unknown Source)
+1/25/25, 10:18:31 AM :Debug: HttpService Search Failed
+[Duplicate entry] received 30 times: Debug: HttpService Search Failed
+1/25/25, 10:19:18 AM :Info: IncUpdate: No updates available.
+1/25/25, 10:19:29 AM :Info: IniUpdate: No updates available.
+1/25/25, 10:19:59 AM :Debug: ############################################# Save Project Backup ##########################################
+1/25/25, 10:19:59 AM :Debug: TuneLog Editor set text
+1/25/25, 10:19:59 AM :Debug: Fill Constants: 50
+1/25/25, 10:19:59 AM :Info: Skip Restore Point for 'fome_vrsix19' because nothing changed since: fome_vrsix19_2025-01-05_22.46.45.msq
+1/25/25, 10:19:59 AM :Info: Time to save msq: 94.58255
+1/25/25, 10:19:59 AM :Debug: goOffline Starting, Time:0
+1/25/25, 10:19:59 AM :Info: Deactivated Turbo Baud, goOffline
+1/25/25, 10:19:59 AM :Debug: goOffline about to stopProcessing, Time:0
+1/25/25, 10:19:59 AM :Debug: goOffline closed port, Time:0
+1/25/25, 10:20:00 AM :Info: fome_vrsix19 ComThread stopped COMM Thread96367.68089801223
+1/25/25, 10:20:00 AM :Debug: goOffline comm thread stopped, Time:151
+1/25/25, 10:20:00 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:20:00 AM :Debug: removing Configuration: fome_vrsix19
+1/25/25, 10:20:00 AM :Debug: ############################################# Save Project Backup ##########################################
+Saved user properties successfully
+Starting on zen
+TunerStudio 3.2.05 started on Sat Jan 25 10:20:01 PST 2025
+JRE 21.0.5, Linux 6.8.0-51-generic, amd64
+java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+TunerStudioMS.jar
+java.lang.reflect.InaccessibleObjectException: Unable to make field private static java.nio.charset.Charset java.nio.charset.Charset.defaultCharset accessible: module java.base does not "opens java.nio.charset" to unnamed module @6df97b55
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(AccessibleObject.java:391)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:367)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:315)
+	at java.base/java.lang.reflect.Field.checkCanSetAccessible(Field.java:183)
+	at java.base/java.lang.reflect.Field.setAccessible(Field.java:177)
+	at TunerStudio.main(Unknown Source)
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:GTK+, ClassName:'com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+1/25/25, 10:20:01 AM :Debug: no update:defaultFont
+1/25/25, 10:20:02 AM :Info: Initializing File Dialogs.
+1/25/25, 10:20:02 AM :Info: Updating ai & t
+1/25/25, 10:20:02 AM :Info: Loading Language Content.
+1/25/25, 10:20:04 AM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+1/25/25, 10:20:04 AM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+1/25/25, 10:20:04 AM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+1/25/25, 10:20:04 AM :Info: Initializing Plugin Services.
+1/25/25, 10:20:04 AM :Info: Loading Plugins.
+1/25/25, 10:20:04 AM :Info: Initializing Help.
+1/25/25, 10:20:04 AM :Info: Initializing Edition Features.
+1/25/25, 10:20:04 AM :Info: Initializing App Events.
+1/25/25, 10:20:04 AM :Debug: App Name:TunerStudio, appEdition:MS Ultra
+1/25/25, 10:20:04 AM :Info: Initializing Log Viewer Components.
+1/25/25, 10:20:04 AM :Info: Initializing User Interface
+1/25/25, 10:20:04 AM :Warning: Unable to set Main cluster for title:
+1/25/25, 10:20:06 AM :Info: Loading Font list.
+1/25/25, 10:20:06 AM :Debug: Time to retreive font name list: 14 ms.
+1/25/25, 10:20:06 AM :Info: 
+1/25/25, 10:20:06 AM :Info: Initializing UI Components.
+1/25/25, 10:20:06 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:20:06 AM :Info: Ready
+1/25/25, 10:20:07 AM :Info: IniUpdate: No updates available.
+1/25/25, 10:20:07 AM :Info: IncUpdate: No updates available.
+MS Ultramain: No check, last update check=Sat Jan 25 09:15:10 PST 2025
+1/25/25, 10:20:09 AM :Info: Opening Project ...
+1/25/25, 10:20:09 AM :Debug: Opening project: /home/chris/workspace/anesthetic/fome_vrsix19
+1/25/25, 10:20:09 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:20:09 AM :Debug: EventTrigger Data log Reset. expression: 
+1/25/25, 10:20:09 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:20:09 AM :Debug: EventTrigger Stop Data log Reset. expression: 
+1/25/25, 10:20:09 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:20:09 AM :Debug: Reading translation file as plain text
+1/25/25, 10:20:09 AM :Info: Supported iniSpecVersion=3.77
+1/25/25, 10:20:09 AM :Debug: Filtered ConfigurationOptionGroup in 28ms.
+1/25/25, 10:20:09 AM :Info: Supported iniSpecVersion=3.77
+1/25/25, 10:20:09 AM :Info: Read file canPcVariables.ini: 0.272635ms
+1/25/25, 10:20:09 AM :Info: Filtered ini: 0.040147ms
+1/25/25, 10:20:09 AM :Info: No iniVersion defined
+1/25/25, 10:20:09 AM :Info: Loading Trigger Wheels
+1/25/25, 10:20:09 AM :Info: Loaded All known ini sections
+1/25/25, 10:20:09 AM :Info: Parsed and validated ini "canPcVariables.ini" in : 19ms.
+1/25/25, 10:20:09 AM :Info: Read file mainController.ini: 6.688985ms
+1/25/25, 10:20:09 AM :Info: Filtered ini: 4.291293ms
+1/25/25, 10:20:09 AM :Info: No iniVersion defined
+1/25/25, 10:20:09 AM :Debug: ini signature: rusEFI (FOME) .2024.10.22.proteus_f7.3998132989
+1/25/25, 10:20:09 AM :Info: Set Write Blocks on = true
+1/25/25, 10:20:09 AM :Info: Loading Trigger Wheels
+1/25/25, 10:20:09 AM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+1/25/25, 10:20:09 AM :Info: Loaded All known ini sections
+1/25/25, 10:20:09 AM :Info: Parsed and validated ini "mainController.ini" in : 151ms.
+1/25/25, 10:20:09 AM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+1/25/25, 10:20:09 AM :Info: Time to load primary config: 231.59724ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+1/25/25, 10:20:09 AM :Debug: set baud to 115200
+1/25/25, 10:20:09 AM :Info: Setting connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:20:09 AM :Debug: Adding Configuration: fome_vrsix19
+1/25/25, 10:20:09 AM :Debug: Fill Constants: 66
+1/25/25, 10:20:10 AM :Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+1/25/25, 10:20:10 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:20:10 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:20:10 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:20:10 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:20:10 AM :Debug: Skip Burn, last write page: -2
+1/25/25, 10:20:10 AM :Info: !!! Loaded config in 712
+1/25/25, 10:20:10 AM :Info: !!! Activated Project 946
+1/25/25, 10:20:10 AM :Info: Opening Gauge Cluster..
+1/25/25, 10:20:10 AM :Info: Time to load uncached dash: 109.258446ms, file: dashboard.dash
+1/25/25, 10:20:10 AM :Debug: High Speed Paint: true
+1/25/25, 10:20:10 AM :Info: 
+1/25/25, 10:20:10 AM :Info: Com Thread created: COMM Thread37234.95495133562
+1/25/25, 10:20:10 AM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+1/25/25, 10:20:10 AM :Info: Comm Manager for fome_vrsix19 Started, thread ID: COMM Thread37234.95495133562
+1/25/25, 10:20:10 AM :Info: Connecting to controller on: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:20:10 AM :Debug: !!! Opened Dash 1299
+1/25/25, 10:20:10 AM :Info: fome_vrsix19 Ready
+1/25/25, 10:20:10 AM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 10:20:10 AM :Debug: Tuning View Files loaded in 134.78802ms.
+MS Ultraad: No check, last update check=Sat Jan 25 09:15:14 PST 2025
+1/25/25, 10:20:11 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:20:11 AM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 10:20:11 AM :Debug: Deactivating Event Trigger: cltTempWarning
+1/25/25, 10:20:11 AM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 10:20:11 AM :Info: EventTrigger: fome_vrsix19.cltTempWarning loaded and activated.
+1/25/25, 10:21:14 AM :Debug: goOffline Starting, Time:0
+1/25/25, 10:21:14 AM :Info: Deactivated Turbo Baud, goOffline
+1/25/25, 10:21:14 AM :Debug: goOffline about to stopProcessing, Time:0
+1/25/25, 10:21:14 AM :Debug: goOffline Starting, Time:0
+1/25/25, 10:21:14 AM :Info: Deactivated Turbo Baud, goOffline
+1/25/25, 10:21:14 AM :Debug: goOffline about to stopProcessing, Time:1
+1/25/25, 10:21:14 AM :Debug: goOffline closed port, Time:1
+[Duplicate entry] received 2 times: Debug: goOffline closed port, Time:1
+1/25/25, 10:21:14 AM :Debug: set baud to 115200
+[Duplicate entry] received 2 times: Debug: set baud to 115200
+1/25/25, 10:21:14 AM :Info: fome_vrsix19 ComThread stopped COMM Thread37234.95495133562
+1/25/25, 10:21:14 AM :Debug: goOffline comm thread stopped, Time:403
+1/25/25, 10:21:14 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:21:15 AM :Debug: goOffline comm thread stopped, Time:502
+1/25/25, 10:21:15 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:21:37 AM :Debug: set baud to 115200
+1/25/25, 10:21:37 AM :Info: Com Thread created: COMM Thread3809.575989797176
+1/25/25, 10:21:37 AM :Info: Comm Manager for fome_vrsix19 Started, thread ID: COMM Thread3809.575989797176
+1/25/25, 10:21:37 AM :Info: Connecting to controller on: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:21:37 AM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 10:22:14 AM :Debug: ############################################# Save Project Backup ##########################################
+1/25/25, 10:22:14 AM :Debug: TuneLog Editor set text
+1/25/25, 10:22:14 AM :Debug: Fill Constants: 78
+1/25/25, 10:22:14 AM :Info: Skip Restore Point for 'fome_vrsix19' because nothing changed since: fome_vrsix19_2025-01-05_22.46.45.msq
+1/25/25, 10:22:14 AM :Info: Time to save msq: 72.201164
+1/25/25, 10:22:14 AM :Debug: goOffline Starting, Time:0
+1/25/25, 10:22:14 AM :Info: Deactivated Turbo Baud, goOffline
+1/25/25, 10:22:14 AM :Debug: goOffline about to stopProcessing, Time:0
+1/25/25, 10:22:14 AM :Debug: goOffline closed port, Time:0
+1/25/25, 10:22:14 AM :Info: fome_vrsix19 ComThread stopped COMM Thread3809.575989797176
+1/25/25, 10:22:14 AM :Debug: goOffline comm thread stopped, Time:50
+1/25/25, 10:22:14 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:22:14 AM :Debug: removing Configuration: fome_vrsix19
+1/25/25, 10:22:14 AM :Debug: ############################################# Save Project Backup ##########################################
+Saved user properties successfully
+Starting on zen
+TunerStudio 3.2.05 started on Sat Jan 25 10:24:02 PST 2025
+JRE 21.0.5, Linux 6.8.0-51-generic, amd64
+java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+TunerStudioMS.jar
+java.lang.reflect.InaccessibleObjectException: Unable to make field private static java.nio.charset.Charset java.nio.charset.Charset.defaultCharset accessible: module java.base does not "opens java.nio.charset" to unnamed module @35fb3008
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(AccessibleObject.java:391)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:367)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:315)
+	at java.base/java.lang.reflect.Field.checkCanSetAccessible(Field.java:183)
+	at java.base/java.lang.reflect.Field.setAccessible(Field.java:177)
+	at TunerStudio.main(Unknown Source)
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:GTK+, ClassName:'com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+1/25/25, 10:24:02 AM :Debug: no update:defaultFont
+1/25/25, 10:24:02 AM :Info: Initializing File Dialogs.
+1/25/25, 10:24:03 AM :Info: Updating ai & t
+1/25/25, 10:24:03 AM :Info: Loading Language Content.
+1/25/25, 10:24:05 AM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+1/25/25, 10:24:05 AM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+1/25/25, 10:24:05 AM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+1/25/25, 10:24:05 AM :Info: Initializing Plugin Services.
+1/25/25, 10:24:05 AM :Info: Loading Plugins.
+1/25/25, 10:24:05 AM :Info: Initializing Help.
+1/25/25, 10:24:05 AM :Info: Initializing Edition Features.
+1/25/25, 10:24:05 AM :Info: Initializing App Events.
+1/25/25, 10:24:05 AM :Debug: App Name:TunerStudio, appEdition:MS Ultra
+1/25/25, 10:24:05 AM :Info: Initializing Log Viewer Components.
+1/25/25, 10:24:05 AM :Info: Initializing User Interface
+1/25/25, 10:24:05 AM :Warning: Unable to set Main cluster for title:
+1/25/25, 10:24:07 AM :Info: Loading Font list.
+1/25/25, 10:24:07 AM :Debug: Time to retreive font name list: 14 ms.
+1/25/25, 10:24:07 AM :Info: 
+1/25/25, 10:24:07 AM :Info: Initializing UI Components.
+1/25/25, 10:24:07 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:24:07 AM :Info: Ready
+1/25/25, 10:24:07 AM :Info: Opening Project ...
+1/25/25, 10:24:07 AM :Debug: Opening project: /home/chris/workspace/anesthetic/fome_vrsix19
+1/25/25, 10:24:07 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:24:07 AM :Debug: EventTrigger Data log Reset. expression: 
+1/25/25, 10:24:07 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:24:07 AM :Debug: EventTrigger Stop Data log Reset. expression: 
+1/25/25, 10:24:07 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:24:07 AM :Debug: Reading translation file as plain text
+1/25/25, 10:24:07 AM :Info: Supported iniSpecVersion=3.77
+1/25/25, 10:24:07 AM :Debug: Filtered ConfigurationOptionGroup in 14ms.
+1/25/25, 10:24:07 AM :Info: Supported iniSpecVersion=3.77
+1/25/25, 10:24:07 AM :Info: Read file canPcVariables.ini: 0.232669ms
+1/25/25, 10:24:07 AM :Info: Filtered ini: 0.029022ms
+1/25/25, 10:24:07 AM :Info: No iniVersion defined
+1/25/25, 10:24:07 AM :Info: Loading Trigger Wheels
+1/25/25, 10:24:07 AM :Info: Loaded All known ini sections
+1/25/25, 10:24:07 AM :Info: Parsed and validated ini "canPcVariables.ini" in : 8ms.
+1/25/25, 10:24:07 AM :Info: Read file mainController.ini: 9.827792ms
+1/25/25, 10:24:07 AM :Info: Filtered ini: 4.129363ms
+1/25/25, 10:24:07 AM :Info: No iniVersion defined
+1/25/25, 10:24:07 AM :Debug: ini signature: rusEFI (FOME) .2024.10.22.proteus_f7.3998132989
+1/25/25, 10:24:07 AM :Info: Set Write Blocks on = true
+1/25/25, 10:24:07 AM :Info: Loading Trigger Wheels
+1/25/25, 10:24:07 AM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+1/25/25, 10:24:07 AM :Info: Loaded All known ini sections
+1/25/25, 10:24:07 AM :Info: Parsed and validated ini "mainController.ini" in : 137ms.
+1/25/25, 10:24:07 AM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+1/25/25, 10:24:07 AM :Info: Time to load primary config: 191.87314ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+1/25/25, 10:24:07 AM :Debug: set baud to 115200
+1/25/25, 10:24:07 AM :Info: Setting connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:24:07 AM :Debug: Adding Configuration: fome_vrsix19
+1/25/25, 10:24:07 AM :Info: IncUpdate: No updates available.
+1/25/25, 10:24:07 AM :Info: IniUpdate: No updates available.
+1/25/25, 10:24:07 AM :Debug: Fill Constants: 87
+1/25/25, 10:24:07 AM :Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+1/25/25, 10:24:07 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:24:07 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:24:07 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:24:08 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:24:08 AM :Debug: Skip Burn, last write page: -2
+1/25/25, 10:24:08 AM :Info: !!! Loaded config in 648
+1/25/25, 10:24:08 AM :Info: !!! Activated Project 805
+1/25/25, 10:24:08 AM :Info: Opening Gauge Cluster..
+1/25/25, 10:24:08 AM :Info: Time to load uncached dash: 99.231544ms, file: dashboard.dash
+1/25/25, 10:24:08 AM :Debug: High Speed Paint: true
+1/25/25, 10:24:08 AM :Info: 
+1/25/25, 10:24:08 AM :Info: Com Thread created: COMM Thread63627.96505186975
+1/25/25, 10:24:08 AM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+1/25/25, 10:24:08 AM :Info: Comm Manager for fome_vrsix19 Started, thread ID: COMM Thread63627.96505186975
+1/25/25, 10:24:08 AM :Debug: !!! Opened Dash 1125
+1/25/25, 10:24:08 AM :Info: Connecting to controller on: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:24:08 AM :Info: fome_vrsix19 Ready
+1/25/25, 10:24:08 AM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+MS Ultramain: No check, last update check=Sat Jan 25 09:15:10 PST 2025
+1/25/25, 10:24:08 AM :Debug: Tuning View Files loaded in 103.69331ms.
+1/25/25, 10:24:09 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:24:09 AM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 10:24:09 AM :Debug: Deactivating Event Trigger: cltTempWarning
+1/25/25, 10:24:09 AM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 10:24:09 AM :Info: EventTrigger: fome_vrsix19.cltTempWarning loaded and activated.
+MS Ultraad: No check, last update check=Sat Jan 25 09:15:14 PST 2025
+1/25/25, 10:24:30 AM :Debug: goOffline Starting, Time:0
+1/25/25, 10:24:30 AM :Info: Deactivated Turbo Baud, goOffline
+1/25/25, 10:24:30 AM :Debug: goOffline about to stopProcessing, Time:1
+1/25/25, 10:24:30 AM :Debug: goOffline closed port, Time:2
+1/25/25, 10:24:30 AM :Info: fome_vrsix19 ComThread stopped COMM Thread63627.96505186975
+1/25/25, 10:24:30 AM :Debug: goOffline comm thread stopped, Time:354
+1/25/25, 10:24:30 AM :Debug: No Remaining Queue Write instructions
+Starting on zen
+TunerStudio 3.2.05 started on Sat Jan 25 10:26:33 PST 2025
+JRE 21.0.5, Linux 6.8.0-51-generic, amd64
+java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+TunerStudioMS.jar
+java.lang.reflect.InaccessibleObjectException: Unable to make field private static java.nio.charset.Charset java.nio.charset.Charset.defaultCharset accessible: module java.base does not "opens java.nio.charset" to unnamed module @7225790e
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(AccessibleObject.java:391)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:367)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:315)
+	at java.base/java.lang.reflect.Field.checkCanSetAccessible(Field.java:183)
+	at java.base/java.lang.reflect.Field.setAccessible(Field.java:177)
+	at TunerStudio.main(Unknown Source)
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:GTK+, ClassName:'com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+1/25/25, 10:26:33 AM :Debug: no update:defaultFont
+1/25/25, 10:26:34 AM :Info: Initializing File Dialogs.
+1/25/25, 10:26:34 AM :Info: Updating ai & t
+1/25/25, 10:26:34 AM :Info: Loading Language Content.
+1/25/25, 10:26:36 AM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+1/25/25, 10:26:36 AM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+1/25/25, 10:26:36 AM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+1/25/25, 10:26:36 AM :Info: Initializing Plugin Services.
+1/25/25, 10:26:36 AM :Info: Loading Plugins.
+1/25/25, 10:26:36 AM :Info: Initializing Help.
+1/25/25, 10:26:36 AM :Info: Initializing Edition Features.
+1/25/25, 10:26:36 AM :Info: Initializing App Events.
+1/25/25, 10:26:36 AM :Debug: App Name:TunerStudio, appEdition:MS Ultra
+1/25/25, 10:26:36 AM :Info: Initializing Log Viewer Components.
+1/25/25, 10:26:36 AM :Info: Initializing User Interface
+1/25/25, 10:26:36 AM :Warning: Unable to set Main cluster for title:
+1/25/25, 10:26:38 AM :Info: Loading Font list.
+1/25/25, 10:26:38 AM :Debug: Time to retreive font name list: 21 ms.
+1/25/25, 10:26:38 AM :Info: 
+1/25/25, 10:26:38 AM :Info: Initializing UI Components.
+1/25/25, 10:26:38 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:26:38 AM :Info: Ready
+1/25/25, 10:26:39 AM :Info: IniUpdate: No updates available.
+1/25/25, 10:26:39 AM :Info: IncUpdate: No updates available.
+MS Ultramain: No check, last update check=Sat Jan 25 09:15:10 PST 2025
+1/25/25, 10:26:40 AM :Info: Opening Project ...
+1/25/25, 10:26:40 AM :Debug: Opening project: /home/chris/workspace/anesthetic/fome_vrsix19
+1/25/25, 10:26:40 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:26:40 AM :Debug: EventTrigger Data log Reset. expression: 
+1/25/25, 10:26:40 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:26:40 AM :Debug: EventTrigger Stop Data log Reset. expression: 
+1/25/25, 10:26:40 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:26:40 AM :Debug: Reading translation file as plain text
+1/25/25, 10:26:40 AM :Info: Supported iniSpecVersion=3.77
+1/25/25, 10:26:40 AM :Debug: Filtered ConfigurationOptionGroup in 24ms.
+1/25/25, 10:26:40 AM :Info: Supported iniSpecVersion=3.77
+1/25/25, 10:26:40 AM :Info: Read file canPcVariables.ini: 0.599056ms
+1/25/25, 10:26:40 AM :Info: Filtered ini: 0.028954ms
+1/25/25, 10:26:40 AM :Info: No iniVersion defined
+1/25/25, 10:26:40 AM :Info: Loading Trigger Wheels
+1/25/25, 10:26:40 AM :Info: Loaded All known ini sections
+1/25/25, 10:26:40 AM :Info: Parsed and validated ini "canPcVariables.ini" in : 8ms.
+1/25/25, 10:26:40 AM :Info: Read file mainController.ini: 7.038712ms
+1/25/25, 10:26:40 AM :Info: Filtered ini: 3.981602ms
+1/25/25, 10:26:40 AM :Info: No iniVersion defined
+1/25/25, 10:26:40 AM :Debug: ini signature: rusEFI (FOME) .2024.10.22.proteus_f7.3998132989
+1/25/25, 10:26:40 AM :Info: Set Write Blocks on = true
+1/25/25, 10:26:40 AM :Info: Loading Trigger Wheels
+1/25/25, 10:26:40 AM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+1/25/25, 10:26:40 AM :Info: Loaded All known ini sections
+1/25/25, 10:26:40 AM :Info: Parsed and validated ini "mainController.ini" in : 201ms.
+1/25/25, 10:26:40 AM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+1/25/25, 10:26:40 AM :Info: Time to load primary config: 290.16522ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+1/25/25, 10:26:40 AM :Debug: set baud to 115200
+1/25/25, 10:26:40 AM :Info: Setting connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:26:40 AM :Debug: Adding Configuration: fome_vrsix19
+1/25/25, 10:26:40 AM :Debug: Fill Constants: 69
+1/25/25, 10:26:40 AM :Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+1/25/25, 10:26:40 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:26:40 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:26:40 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:26:41 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:26:41 AM :Debug: Skip Burn, last write page: -2
+1/25/25, 10:26:41 AM :Info: !!! Loaded config in 781
+1/25/25, 10:26:41 AM :Info: !!! Activated Project 1034
+1/25/25, 10:26:41 AM :Info: Opening Gauge Cluster..
+1/25/25, 10:26:41 AM :Info: Time to load uncached dash: 124.17678ms, file: dashboard.dash
+1/25/25, 10:26:41 AM :Debug: High Speed Paint: true
+1/25/25, 10:26:41 AM :Info: 
+1/25/25, 10:26:41 AM :Info: Com Thread created: COMM Thread69310.4771043809
+1/25/25, 10:26:41 AM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+1/25/25, 10:26:41 AM :Info: Comm Manager for fome_vrsix19 Started, thread ID: COMM Thread69310.4771043809
+1/25/25, 10:26:41 AM :Debug: !!! Opened Dash 1442
+1/25/25, 10:26:41 AM :Info: Connecting to controller on: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:26:41 AM :Info: fome_vrsix19 Ready
+1/25/25, 10:26:41 AM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 10:26:41 AM :Debug: Tuning View Files loaded in 92.3137ms.
+1/25/25, 10:26:42 AM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 10:26:42 AM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 10:26:42 AM :Debug: Deactivating Event Trigger: cltTempWarning
+1/25/25, 10:26:42 AM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 10:26:42 AM :Info: EventTrigger: fome_vrsix19.cltTempWarning loaded and activated.
+MS Ultraad: No check, last update check=Sat Jan 25 09:15:14 PST 2025
+1/25/25, 10:26:46 AM :Info: Comm Read Thread Change! Old Thread:null, new Thread:COMM Thread69310.4771043809
+1/25/25, 10:26:46 AM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 10:26:46 AM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 10:26:46 AM :Info: CRC Mismatch, will need to refresh page from controller 
+1/25/25, 10:26:46 AM :Info:    CRC from controller page 1:x36 xC9 xEB xEA                                                       6...
+1/25/25, 10:26:46 AM :Info:    Local Data CRC for page 1: x24 x2B xAD x6F                                                       $+.o
+1/25/25, 10:26:46 AM :Info: Activating page: 1
+1/25/25, 10:26:47 AM :Debug: Read page time: 1283ms.
+1/25/25, 10:26:47 AM :Info: Checksum page 1 data read: x36 xC9 xEB xEA                                                       6...
+1/25/25, 10:26:47 AM :Debug: isBlank Time: 0 ms.
+1/25/25, 10:26:47 AM :Debug: Read All Data
+1/25/25, 10:26:47 AM :Debug: DiffTime: 22 ms.
+1/25/25, 10:26:47 AM :Info: Getting ECU name for signature: 'rusEFI (FOME) .2024.10.22.proteus_f7.3998132989'
+1/25/25, 10:26:47 AM :Info: Looks like rusEFI
+1/25/25, 10:26:47 AM :Info: Difference Report disabling shared table Models
+1/25/25, 10:27:01 AM :Info: Time to save msq: 197.75848
+java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1605)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1628)
+	at G.cu.a(Unknown Source)
+	at G.cu.run(Unknown Source)
+1/25/25, 10:27:01 AM :Info: dirtyData.size(): 4
+1/25/25, 10:27:01 AM :Debug: page: 1 offset: 260, len: 55
+1/25/25, 10:27:01 AM :Info: dirtyData.size(): 0
+1/25/25, 10:27:01 AM :Debug: Flush lasted: 16ms.
+1/25/25, 10:27:01 AM :Debug: Burn Page anonymous: 1
+1/25/25, 10:27:01 AM :Info: Queueing burn to page:1
+1/25/25, 10:27:01 AM :Info: Sending, 5 bytes.
+1/25/25, 10:27:01 AM :Info: Loaded Restore point /home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+	Sending, 5 bytes.
+1/25/25, 10:27:01 AM :Info: dirtyData.size(): 0
+1/25/25, 10:27:01 AM :Debug: Burn time:2ms.
+1/25/25, 10:27:01 AM :Debug: burned page 1
+1/25/25, 10:27:01 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:27:01 AM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 10:27:01 AM :Info: dirtyData.size(): 0
+1/25/25, 10:27:01 AM :Debug: Flush lasted: 71ms.
+1/25/25, 10:27:01 AM :Debug: Burn Page anonymous: -1
+1/25/25, 10:27:01 AM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 10:27:02 AM :Info: Time to save msq: 39.19859
+1/25/25, 10:27:03 AM :Info: Difference Report enabling shared table Models
+1/25/25, 10:27:03 AM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 10:27:03 AM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 10:27:03 AM :Info: CrC matched skipped controller read on page:1
+1/25/25, 10:27:03 AM :Debug: Read All Data
+1/25/25, 10:27:03 AM :Debug: isBlank Time: 0 ms.
+1/25/25, 10:27:03 AM :Debug: DiffTime: 8 ms.
+1/25/25, 10:30:06 AM :Info: Initiating read page 1 : 376:1138
+1/25/25, 10:30:06 AM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 10:30:06 AM :Info: CrC matched skipped controller read on page:0
+1/25/25, 10:31:24 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:31:24 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:31:24 AM :Debug: Burn Page anonymous: -1
+1/25/25, 10:31:24 AM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 10:31:24 AM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 10:31:29 AM :Info: Initiating read page 1 : 18616:576
+1/25/25, 10:31:29 AM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 10:31:29 AM :Info: CrC matched skipped controller read on page:0
+1/25/25, 10:31:43 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:31:43 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:31:43 AM :Debug: Burn Page anonymous: -1
+1/25/25, 10:31:43 AM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 10:31:43 AM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 10:32:29 AM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:32:29 AM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:32:29 AM :Info: Connection Check failed, forcing offline.
+1/25/25, 10:32:30 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:32:30 AM :Debug: Went offline
+1/25/25, 10:32:30 AM :Debug: Deactivated fast paint Main Dashboard
+1/25/25, 10:32:30 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:32:30 AM :Info: Went offline 2
+1/25/25, 10:32:31 AM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 10:32:32 AM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 10:32:32 AM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 10:35:51 AM :Info: Initiating read page 1 : 376:1138
+1/25/25, 10:35:51 AM :Info: Activating page: 1
+1/25/25, 10:35:51 AM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 10:35:51 AM :Info: CrC matched skipped controller read on page:0
+1/25/25, 10:36:24 AM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 10:36:24 AM :Debug: Flush lasted: 70ms.
+1/25/25, 10:36:24 AM :Debug: Burn Page anonymous: 1
+1/25/25, 10:36:24 AM :Info: Queueing burn to page:1
+1/25/25, 10:36:24 AM :Debug: Burn time:1ms.
+1/25/25, 10:36:24 AM :Debug: burned page 1
+1/25/25, 10:36:24 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:36:24 AM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 10:36:25 AM :Info: Logger Processor stopped.
+[Duplicate entry] received 4 times: Info: Logger Processor stopped.
+1/25/25, 10:36:25 AM :Debug: High Speed Paint: true
+1/25/25, 10:36:25 AM :Debug: Deactivated fast paint IgnitionLoggerCluster
+1/25/25, 10:36:25 AM :Info: Time to save msq: 122.802734
+1/25/25, 10:36:34 AM :Info: Logger Processor stopped.
+Registration file not found. 
+[Duplicate entry] received 2 times: Info: Logger Processor stopped.
+1/25/25, 10:36:41 AM :Error: Unable to read Logger data. Timeout of 2000 ms. exceeded. time:2001
+1/25/25, 10:36:41 AM :Info: Error: Unable to read Logger data. Timeout of 2000 ms. exceeded. time:2001
+1/25/25, 10:36:42 AM :Debug: Time:602.217s. Instruction: RawWrite
+1/25/25, 10:36:42 AM :Info: Timeout on raw write, retrying:1
+1/25/25, 10:36:45 AM :Debug: Time:605.218s. Instruction: RawWrite
+1/25/25, 10:36:45 AM :Info: Timeout on raw write, retrying:2
+1/25/25, 10:36:48 AM :Debug: Time:608.219s. Instruction: RawWrite
+1/25/25, 10:36:50 AM :Error: Unable to read Logger data. Timeout of 2000 ms. exceeded. time:2001
+1/25/25, 10:36:50 AM :Info: Error: Unable to read Logger data. Timeout of 2000 ms. exceeded. time:2001
+1/25/25, 10:36:51 AM :Info: Logger Processor stopped.
+1/25/25, 10:36:51 AM :Debug: Time:611.242s. Instruction: RawWrite
+1/25/25, 10:36:51 AM :Info: Timeout on raw write, retrying:1
+1/25/25, 10:36:54 AM :Debug: Time:614.243s. Instruction: RawWrite
+1/25/25, 10:36:54 AM :Info: Timeout on raw write, retrying:2
+1/25/25, 10:36:57 AM :Debug: Time:617.302s. Instruction: RawWrite
+1/25/25, 10:37:00 AM :Debug: Time:620.303s. Instruction: RawWrite
+1/25/25, 10:37:00 AM :Info: Timeout on raw write, retrying:1
+1/25/25, 10:37:03 AM :Debug: Time:623.304s. Instruction: RawWrite
+1/25/25, 10:37:03 AM :Info: Timeout on raw write, retrying:2
+1/25/25, 10:37:06 AM :Debug: Time:626.305s. Instruction: RawWrite
+1/25/25, 10:37:51 AM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:37:52 AM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:37:52 AM :Info: Connection Check failed, forcing offline.
+1/25/25, 10:37:53 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:37:53 AM :Debug: Went offline
+1/25/25, 10:37:53 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:37:53 AM :Info: Went offline 2
+1/25/25, 10:37:54 AM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 10:42:43 AM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 10:42:43 AM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 10:42:43 AM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 10:42:43 AM :Info: CrC matched skipped controller read on page:1
+1/25/25, 10:42:43 AM :Debug: Read All Data
+1/25/25, 10:42:43 AM :Debug: isBlank Time: 0 ms.
+1/25/25, 10:42:43 AM :Debug: DiffTime: 10 ms.
+1/25/25, 10:44:25 AM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:44:25 AM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 10:44:25 AM :Info: Connection Check failed, forcing offline.
+1/25/25, 10:44:27 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:44:27 AM :Debug: Went offline
+1/25/25, 10:44:27 AM :Debug: No Remaining Queue Write instructions
+1/25/25, 10:44:27 AM :Info: Went offline 2
+1/25/25, 10:44:27 AM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 11:40:13 AM :Debug: ############################################# Save Project Backup ##########################################
+Starting on zen
+TunerStudio 3.2.05 started on Sat Jan 25 12:51:00 PST 2025
+JRE 21.0.5, Linux 6.8.0-51-generic, amd64
+java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+TunerStudioMS.jar
+java.lang.reflect.InaccessibleObjectException: Unable to make field private static java.nio.charset.Charset java.nio.charset.Charset.defaultCharset accessible: module java.base does not "opens java.nio.charset" to unnamed module @7225790e
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(AccessibleObject.java:391)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:367)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:315)
+	at java.base/java.lang.reflect.Field.checkCanSetAccessible(Field.java:183)
+	at java.base/java.lang.reflect.Field.setAccessible(Field.java:177)
+	at TunerStudio.main(Unknown Source)
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:GTK+, ClassName:'com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+1/25/25, 12:51:00 PM :Debug: no update:defaultFont
+1/25/25, 12:51:00 PM :Info: Initializing File Dialogs.
+1/25/25, 12:51:00 PM :Info: Updating ai & t
+1/25/25, 12:51:00 PM :Info: Loading Language Content.
+1/25/25, 12:51:03 PM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+1/25/25, 12:51:03 PM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+1/25/25, 12:51:03 PM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+1/25/25, 12:51:03 PM :Info: Initializing Plugin Services.
+1/25/25, 12:51:03 PM :Info: Loading Plugins.
+1/25/25, 12:51:03 PM :Info: Initializing Help.
+1/25/25, 12:51:03 PM :Info: Initializing Edition Features.
+1/25/25, 12:51:03 PM :Info: Initializing App Events.
+1/25/25, 12:51:03 PM :Debug: App Name:TunerStudio, appEdition:MS Ultra
+1/25/25, 12:51:03 PM :Info: Initializing Log Viewer Components.
+1/25/25, 12:51:03 PM :Info: Initializing User Interface
+1/25/25, 12:51:03 PM :Warning: Unable to set Main cluster for title:
+1/25/25, 12:51:05 PM :Info: Loading Font list.
+1/25/25, 12:51:05 PM :Debug: Time to retreive font name list: 17 ms.
+1/25/25, 12:51:05 PM :Info: 
+1/25/25, 12:51:05 PM :Info: Initializing UI Components.
+1/25/25, 12:51:05 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 12:51:05 PM :Info: Ready
+1/25/25, 12:51:05 PM :Info: IniUpdate: No updates available.
+1/25/25, 12:51:05 PM :Info: IncUpdate: No updates available.
+MS Ultramain: No check, last update check=Sat Jan 25 09:15:10 PST 2025
+1/25/25, 12:51:09 PM :Info: Opening Project ...
+1/25/25, 12:51:09 PM :Debug: Opening project: /home/chris/workspace/anesthetic/fome_vrsix19
+1/25/25, 12:51:09 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 12:51:09 PM :Debug: EventTrigger Data log Reset. expression: 
+1/25/25, 12:51:09 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 12:51:09 PM :Debug: EventTrigger Stop Data log Reset. expression: 
+1/25/25, 12:51:09 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 12:51:09 PM :Debug: Reading translation file as plain text
+1/25/25, 12:51:09 PM :Info: Supported iniSpecVersion=3.77
+1/25/25, 12:51:09 PM :Debug: Filtered ConfigurationOptionGroup in 20ms.
+1/25/25, 12:51:09 PM :Info: Supported iniSpecVersion=3.77
+1/25/25, 12:51:09 PM :Info: Read file canPcVariables.ini: 0.722578ms
+1/25/25, 12:51:09 PM :Info: Filtered ini: 0.032101ms
+1/25/25, 12:51:09 PM :Info: No iniVersion defined
+1/25/25, 12:51:09 PM :Info: Loading Trigger Wheels
+1/25/25, 12:51:09 PM :Info: Loaded All known ini sections
+1/25/25, 12:51:09 PM :Info: Parsed and validated ini "canPcVariables.ini" in : 9ms.
+1/25/25, 12:51:09 PM :Info: Read file mainController.ini: 5.585563ms
+1/25/25, 12:51:09 PM :Info: Filtered ini: 4.113117ms
+1/25/25, 12:51:09 PM :Info: No iniVersion defined
+1/25/25, 12:51:09 PM :Debug: ini signature: rusEFI (FOME) .2024.10.22.proteus_f7.3998132989
+1/25/25, 12:51:09 PM :Info: Set Write Blocks on = true
+MS Ultraad: No check, last update check=Sat Jan 25 09:15:14 PST 2025
+1/25/25, 12:51:09 PM :Info: Loading Trigger Wheels
+1/25/25, 12:51:09 PM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+1/25/25, 12:51:09 PM :Info: Loaded All known ini sections
+1/25/25, 12:51:09 PM :Info: Parsed and validated ini "mainController.ini" in : 160ms.
+1/25/25, 12:51:09 PM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+1/25/25, 12:51:09 PM :Info: Time to load primary config: 248.79372ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+1/25/25, 12:51:09 PM :Debug: set baud to 115200
+1/25/25, 12:51:09 PM :Info: Setting connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 12:51:09 PM :Debug: Adding Configuration: fome_vrsix19
+1/25/25, 12:51:09 PM :Debug: Fill Constants: 77
+1/25/25, 12:51:09 PM :Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 8 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+1/25/25, 12:51:09 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:51:10 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:51:10 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:51:10 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:51:10 PM :Debug: Skip Burn, last write page: -2
+1/25/25, 12:51:10 PM :Info: !!! Loaded config in 755
+1/25/25, 12:51:10 PM :Info: !!! Activated Project 1075
+1/25/25, 12:51:10 PM :Info: Opening Gauge Cluster..
+1/25/25, 12:51:10 PM :Info: Time to load uncached dash: 157.75093ms, file: dashboard.dash
+1/25/25, 12:51:10 PM :Debug: High Speed Paint: true
+1/25/25, 12:51:10 PM :Info: 
+1/25/25, 12:51:10 PM :Info: Com Thread created: COMM Thread25793.884739573437
+1/25/25, 12:51:10 PM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+1/25/25, 12:51:10 PM :Info: Comm Manager for fome_vrsix19 Started, thread ID: COMM Thread25793.884739573437
+1/25/25, 12:51:10 PM :Debug: !!! Opened Dash 1507
+1/25/25, 12:51:10 PM :Info: Connecting to controller on: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 12:51:10 PM :Info: fome_vrsix19 Ready
+1/25/25, 12:51:10 PM :Info: Comm Read Thread Change! Old Thread:null, new Thread:COMM Thread25793.884739573437
+1/25/25, 12:51:10 PM :Debug: Tuning View Files loaded in 119.02015ms.
+1/25/25, 12:51:11 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 12:51:11 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 12:51:11 PM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 12:51:11 PM :Debug: Deactivating Event Trigger: cltTempWarning
+1/25/25, 12:51:11 PM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 12:51:11 PM :Info: EventTrigger: fome_vrsix19.cltTempWarning loaded and activated.
+1/25/25, 12:51:11 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 12:51:11 PM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 12:51:11 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 12:51:11 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 12:51:11 PM :Debug: Read All Data
+1/25/25, 12:51:11 PM :Debug: DiffTime: 26 ms.
+1/25/25, 12:51:55 PM :Info: Initiating read page 1 : 376:1138
+1/25/25, 12:51:55 PM :Info: Activating page: 1
+1/25/25, 12:51:55 PM :Debug: CRC matches for page 1:x24 x2B xAD x6F                                                       $+.o
+1/25/25, 12:51:55 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:51:59 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:51:59 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:51:59 PM :Debug: Burn Page anonymous: 1
+1/25/25, 12:51:59 PM :Info: Queueing burn to page:1
+1/25/25, 12:51:59 PM :Debug: Burn time:1ms.
+1/25/25, 12:51:59 PM :Debug: burned page 1
+1/25/25, 12:51:59 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 12:51:59 PM :Debug: CRC matches for page 1:x7A xE0 x43 xD8                                                       z.C.
+1/25/25, 12:52:01 PM :Info: Time to save msq: 137.66885
+1/25/25, 12:52:04 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:52:04 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:52:04 PM :Debug: Burn Page anonymous: -1
+1/25/25, 12:52:04 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 12:52:04 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 12:52:42 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 12:52:42 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 12:52:42 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 12:52:44 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 12:52:44 PM :Debug: Went offline
+1/25/25, 12:52:44 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 12:52:44 PM :Info: Went offline 2
+1/25/25, 12:52:44 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 12:52:46 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 12:52:46 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 12:52:46 PM :Debug: CRC matches for page 1:x7A xE0 x43 xD8                                                       z.C.
+1/25/25, 12:52:46 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 12:52:46 PM :Debug: Read All Data
+1/25/25, 12:52:46 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 12:52:46 PM :Debug: DiffTime: 8 ms.
+1/25/25, 12:54:48 PM :Info: Initiating read page 1 : 376:1138
+1/25/25, 12:54:48 PM :Info: Activating page: 1
+1/25/25, 12:54:48 PM :Debug: CRC matches for page 1:x7A xE0 x43 xD8                                                       z.C.
+1/25/25, 12:54:48 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:55:48 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:55:48 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:55:48 PM :Debug: Burn Page anonymous: 1
+1/25/25, 12:55:48 PM :Info: Queueing burn to page:1
+1/25/25, 12:55:48 PM :Debug: Burn time:2ms.
+1/25/25, 12:55:48 PM :Debug: burned page 1
+1/25/25, 12:55:48 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 12:55:48 PM :Debug: CRC matches for page 1:x7A xE0 x43 xD8                                                       z.C.
+1/25/25, 12:55:49 PM :Info: Time to save msq: 93.44665
+1/25/25, 12:55:52 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:55:52 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:55:52 PM :Debug: Burn Page anonymous: -1
+1/25/25, 12:55:52 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 12:55:52 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 12:55:58 PM :Info: Initiating read page 1 : 92:2721
+1/25/25, 12:55:58 PM :Debug: CRC matches for page 1:x7A xE0 x43 xD8                                                       z.C.
+1/25/25, 12:55:58 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:56:23 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:56:23 PM :Debug: Flush lasted: 71ms.
+1/25/25, 12:56:23 PM :Debug: Burn Page anonymous: -1
+1/25/25, 12:56:23 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 12:56:24 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 12:56:52 PM :Info: Initiating read page 1 : 92:1279
+1/25/25, 12:56:52 PM :Debug: CRC matches for page 1:x7A xE0 x43 xD8                                                       z.C.
+1/25/25, 12:56:52 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:57:00 PM :Info: Initiating read page 1 : 92:1396
+1/25/25, 12:57:01 PM :Debug: CRC matches for page 1:x7A xE0 x43 xD8                                                       z.C.
+1/25/25, 12:57:01 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:57:28 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:57:28 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:57:28 PM :Debug: Burn Page anonymous: 1
+1/25/25, 12:57:28 PM :Info: Queueing burn to page:1
+1/25/25, 12:57:28 PM :Debug: Burn time:2ms.
+1/25/25, 12:57:28 PM :Debug: burned page 1
+1/25/25, 12:57:28 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 12:57:28 PM :Debug: CRC matches for page 1:x30 x8F x98 x96                                                       0...
+1/25/25, 12:57:29 PM :Info: Time to save msq: 18.922672
+1/25/25, 12:57:30 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:57:30 PM :Debug: Flush lasted: 71ms.
+1/25/25, 12:57:30 PM :Debug: Burn Page anonymous: -1
+1/25/25, 12:57:30 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 12:57:30 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 12:57:32 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:57:32 PM :Debug: Flush lasted: 71ms.
+1/25/25, 12:57:32 PM :Debug: Burn Page anonymous: -1
+1/25/25, 12:57:32 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 12:57:32 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 12:57:50 PM :Info: Initiating read page 1 : 92:3094
+1/25/25, 12:57:50 PM :Debug: CRC matches for page 1:x30 x8F x98 x96                                                       0...
+1/25/25, 12:57:50 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:57:53 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:57:53 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:57:53 PM :Debug: Burn Page anonymous: -1
+1/25/25, 12:57:53 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 12:57:53 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 12:57:55 PM :Info: Initiating read page 1 : 92:1279
+1/25/25, 12:57:55 PM :Debug: CRC matches for page 1:x30 x8F x98 x96                                                       0...
+1/25/25, 12:57:55 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:58:04 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:58:04 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:58:04 PM :Debug: Burn Page anonymous: -1
+1/25/25, 12:58:04 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 12:58:04 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 12:58:11 PM :Debug: TuneViewPanel Activated.
+1/25/25, 12:58:13 PM :Debug: TuneViewPanel Deactivated.
+1/25/25, 12:58:29 PM :Info: Initiating read page 1 : 92:2721
+1/25/25, 12:58:29 PM :Debug: CRC matches for page 1:x30 x8F x98 x96                                                       0...
+1/25/25, 12:58:29 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:58:30 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:58:30 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:58:30 PM :Debug: Burn Page anonymous: -1
+1/25/25, 12:58:30 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 12:58:30 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 12:58:34 PM :Info: Initiating read page 1 : 376:1138
+1/25/25, 12:58:34 PM :Debug: CRC matches for page 1:x30 x8F x98 x96                                                       0...
+1/25/25, 12:58:34 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 12:59:15 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 12:59:15 PM :Debug: Flush lasted: 70ms.
+1/25/25, 12:59:15 PM :Debug: Burn Page anonymous: 1
+1/25/25, 12:59:15 PM :Info: Queueing burn to page:1
+1/25/25, 12:59:15 PM :Debug: Burn time:5ms.
+1/25/25, 12:59:15 PM :Debug: burned page 1
+1/25/25, 12:59:15 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 12:59:15 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 12:59:17 PM :Info: Time to save msq: 87.49265
+1/25/25, 1:00:47 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:00:47 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:00:47 PM :Debug: Burn Page anonymous: -1
+1/25/25, 1:00:47 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 1:00:47 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 1:01:10 PM :Debug: FullScreen
+1/25/25, 1:02:04 PM :Info: Initiating read page 1 : 456:1020
+1/25/25, 1:02:04 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:02:04 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:02:21 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:02:21 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:02:21 PM :Debug: Burn Page anonymous: -1
+1/25/25, 1:02:21 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 1:02:21 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 1:02:28 PM :Info: Initiating read page 1 : 1180:12
+1/25/25, 1:02:28 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:02:28 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:02:37 PM :Info: Getting ECU name for signature: 'rusEFI (FOME) .2024.10.22.proteus_f7.3998132989'
+1/25/25, 1:02:37 PM :Info: Looks like rusEFI
+1/25/25, 1:02:49 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:02:49 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:02:49 PM :Debug: Burn Page anonymous: -1
+1/25/25, 1:02:49 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 1:02:49 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 1:03:01 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:03:02 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:03:02 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 1:03:03 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:03:03 PM :Debug: Went offline
+1/25/25, 1:03:03 PM :Debug: Deactivated fast paint Main Dashboard
+1/25/25, 1:03:03 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:03:03 PM :Info: Went offline 2
+1/25/25, 1:03:04 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 1:03:04 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 1:03:04 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:03:04 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 1:03:04 PM :Debug: Read All Data
+1/25/25, 1:03:04 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 1:03:04 PM :Debug: DiffTime: 12 ms.
+1/25/25, 1:03:04 PM :Info: Getting ECU name for signature: 'rusEFI (FOME) .2024.10.22.proteus_f7.3998132989'
+1/25/25, 1:03:04 PM :Info: Looks like rusEFI
+1/25/25, 1:03:29 PM :Info: Initiating read page 1 : 456:1020
+1/25/25, 1:03:29 PM :Info: Activating page: 1
+1/25/25, 1:03:29 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:03:29 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:03:32 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:03:32 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:03:32 PM :Debug: Burn Page anonymous: -1
+1/25/25, 1:03:32 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 1:03:32 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 1:03:35 PM :Info: Initiating read page 1 : 1180:12
+1/25/25, 1:03:35 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:03:35 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:05:18 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:05:18 PM :Debug: Flush lasted: 71ms.
+1/25/25, 1:05:18 PM :Debug: Burn Page anonymous: -1
+1/25/25, 1:05:19 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 1:05:19 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 1:05:22 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:05:22 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:05:22 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 1:05:22 PM :Debug: ############################################# Save Project Backup ##########################################
+1/25/25, 1:05:22 PM :Debug: TuneLog Editor set text
+1/25/25, 1:05:22 PM :Debug: Fill Constants: 70
+1/25/25, 1:05:22 PM :Debug: File does not exist, creating new:
+/home/chris/workspace/anesthetic/fome_vrsix19/restorePoints/fome_vrsix19_2025-01-25_13.05.22.msq
+1/25/25, 1:05:22 PM :Info: Time to save msq: 15.344629
+1/25/25, 1:05:22 PM :Info: fome_vrsix19 Restore point saved
+1/25/25, 1:05:22 PM :Info: fome_vrsix19 Restore point saved to: fome_vrsix19_2025-01-25_13.05.22.msq
+1/25/25, 1:05:22 PM :Info: Time to save msq: 13.929409
+1/25/25, 1:05:22 PM :Debug: goOffline Starting, Time:0
+1/25/25, 1:05:22 PM :Info: Deactivated Turbo Baud, goOffline
+1/25/25, 1:05:22 PM :Debug: Burn Page anonymous: -1
+1/25/25, 1:05:22 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 1:05:23 PM :Debug: goOffline about to stopProcessing, Time:250
+1/25/25, 1:05:23 PM :Debug: goOffline Notified offline, Time:261
+1/25/25, 1:05:23 PM :Debug: goOffline closed port, Time:261
+1/25/25, 1:05:23 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:05:23 PM :Debug: Went offline
+1/25/25, 1:05:24 PM :Info: fome_vrsix19 ComThread stopped COMM Thread25793.884739573437
+1/25/25, 1:05:24 PM :Debug: goOffline comm thread stopped, Time:1364
+1/25/25, 1:05:24 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:05:24 PM :Debug: removing Configuration: fome_vrsix19
+1/25/25, 1:05:24 PM :Debug: ############################################# Save Project Backup ##########################################
+Saved user properties successfully
+Starting on zen
+TunerStudio 3.2.05 started on Sat Jan 25 13:05:25 PST 2025
+JRE 21.0.5, Linux 6.8.0-51-generic, amd64
+java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+TunerStudioMS.jar
+java.lang.reflect.InaccessibleObjectException: Unable to make field private static java.nio.charset.Charset java.nio.charset.Charset.defaultCharset accessible: module java.base does not "opens java.nio.charset" to unnamed module @6df97b55
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(AccessibleObject.java:391)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:367)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:315)
+	at java.base/java.lang.reflect.Field.checkCanSetAccessible(Field.java:183)
+	at java.base/java.lang.reflect.Field.setAccessible(Field.java:177)
+	at TunerStudio.main(Unknown Source)
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:GTK+, ClassName:'com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+1/25/25, 1:05:25 PM :Debug: no update:defaultFont
+1/25/25, 1:05:26 PM :Info: Initializing File Dialogs.
+1/25/25, 1:05:26 PM :Info: Updating ai & t
+1/25/25, 1:05:26 PM :Info: Loading Language Content.
+1/25/25, 1:05:28 PM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+1/25/25, 1:05:28 PM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+1/25/25, 1:05:28 PM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+1/25/25, 1:05:28 PM :Info: Initializing Plugin Services.
+1/25/25, 1:05:28 PM :Info: Loading Plugins.
+1/25/25, 1:05:28 PM :Info: Initializing Help.
+1/25/25, 1:05:28 PM :Info: Initializing Edition Features.
+1/25/25, 1:05:28 PM :Info: Initializing App Events.
+1/25/25, 1:05:28 PM :Debug: App Name:TunerStudio, appEdition:MS Ultra
+1/25/25, 1:05:28 PM :Info: Initializing Log Viewer Components.
+1/25/25, 1:05:28 PM :Info: Initializing User Interface
+1/25/25, 1:05:28 PM :Warning: Unable to set Main cluster for title:
+1/25/25, 1:05:30 PM :Info: Loading Font list.
+1/25/25, 1:05:30 PM :Debug: Time to retreive font name list: 74 ms.
+1/25/25, 1:05:30 PM :Info: 
+1/25/25, 1:05:30 PM :Info: Initializing UI Components.
+1/25/25, 1:05:30 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 1:05:30 PM :Info: Ready
+1/25/25, 1:05:31 PM :Info: IniUpdate: No updates available.
+1/25/25, 1:05:31 PM :Info: IncUpdate: No updates available.
+1/25/25, 1:05:31 PM :Info: Opening Project ...
+1/25/25, 1:05:31 PM :Debug: Opening project: /home/chris/workspace/anesthetic/fome_vrsix19
+1/25/25, 1:05:31 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 1:05:31 PM :Debug: EventTrigger Data log Reset. expression: 
+1/25/25, 1:05:31 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 1:05:31 PM :Debug: EventTrigger Stop Data log Reset. expression: 
+1/25/25, 1:05:31 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 1:05:31 PM :Debug: Reading translation file as plain text
+1/25/25, 1:05:31 PM :Info: Supported iniSpecVersion=3.77
+1/25/25, 1:05:31 PM :Debug: Filtered ConfigurationOptionGroup in 21ms.
+1/25/25, 1:05:31 PM :Info: Supported iniSpecVersion=3.77
+1/25/25, 1:05:31 PM :Info: Read file canPcVariables.ini: 0.183111ms
+1/25/25, 1:05:31 PM :Info: Filtered ini: 0.029396ms
+1/25/25, 1:05:31 PM :Info: No iniVersion defined
+1/25/25, 1:05:31 PM :Info: Loading Trigger Wheels
+1/25/25, 1:05:31 PM :Info: Loaded All known ini sections
+1/25/25, 1:05:31 PM :Info: Parsed and validated ini "canPcVariables.ini" in : 9ms.
+1/25/25, 1:05:31 PM :Info: Read file mainController.ini: 13.422905ms
+1/25/25, 1:05:31 PM :Info: Filtered ini: 3.63332ms
+1/25/25, 1:05:31 PM :Info: No iniVersion defined
+1/25/25, 1:05:31 PM :Debug: ini signature: rusEFI (FOME) .2024.10.22.proteus_f7.3998132989
+1/25/25, 1:05:31 PM :Info: Set Write Blocks on = true
+1/25/25, 1:05:31 PM :Info: Loading Trigger Wheels
+1/25/25, 1:05:31 PM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+1/25/25, 1:05:31 PM :Info: Loaded All known ini sections
+1/25/25, 1:05:31 PM :Info: Parsed and validated ini "mainController.ini" in : 213ms.
+1/25/25, 1:05:31 PM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+1/25/25, 1:05:31 PM :Info: Time to load primary config: 279.69345ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+1/25/25, 1:05:31 PM :Debug: set baud to 115200
+1/25/25, 1:05:31 PM :Info: Setting connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:05:31 PM :Debug: Adding Configuration: fome_vrsix19
+1/25/25, 1:05:31 PM :Debug: Fill Constants: 79
+MS Ultramain: No check, last update check=Sat Jan 25 09:15:10 PST 2025
+1/25/25, 1:05:32 PM :Info: Tune opened, 9 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 9 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+1/25/25, 1:05:32 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:05:32 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:05:32 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:05:32 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:05:32 PM :Debug: Skip Burn, last write page: -2
+1/25/25, 1:05:32 PM :Info: !!! Loaded config in 731
+1/25/25, 1:05:32 PM :Info: !!! Activated Project 902
+1/25/25, 1:05:32 PM :Info: Opening Gauge Cluster..
+1/25/25, 1:05:32 PM :Info: Time to load uncached dash: 93.374054ms, file: dashboard.dash
+1/25/25, 1:05:32 PM :Debug: High Speed Paint: true
+1/25/25, 1:05:32 PM :Info: 
+1/25/25, 1:05:32 PM :Info: Com Thread created: COMM Thread88299.29102517881
+1/25/25, 1:05:32 PM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+1/25/25, 1:05:32 PM :Debug: !!! Opened Dash 1286
+1/25/25, 1:05:32 PM :Info: Comm Manager for fome_vrsix19 Started, thread ID: COMM Thread88299.29102517881
+1/25/25, 1:05:32 PM :Info: fome_vrsix19 Ready
+1/25/25, 1:05:32 PM :Info: Connecting to controller on: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:05:32 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 1:05:32 PM :Debug: Tuning View Files loaded in 78.68743ms.
+1/25/25, 1:05:33 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 1:05:33 PM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 1:05:33 PM :Debug: Deactivating Event Trigger: cltTempWarning
+1/25/25, 1:05:33 PM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 1:05:33 PM :Info: EventTrigger: fome_vrsix19.cltTempWarning loaded and activated.
+MS Ultraad: No check, last update check=Sat Jan 25 09:15:14 PST 2025
+1/25/25, 1:05:35 PM :Info: Comm Read Thread Change! Old Thread:null, new Thread:COMM Thread88299.29102517881
+1/25/25, 1:05:35 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 1:05:35 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 1:05:35 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:05:35 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 1:05:35 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 1:05:35 PM :Debug: Read All Data
+1/25/25, 1:05:35 PM :Debug: DiffTime: 15 ms.
+1/25/25, 1:05:35 PM :Info: Getting ECU name for signature: 'rusEFI (FOME) .2024.10.22.proteus_f7.3998132989'
+1/25/25, 1:05:35 PM :Info: Looks like rusEFI
+1/25/25, 1:06:10 PM :Info: Initiating read page 1 : 1180:12
+1/25/25, 1:06:10 PM :Info: Activating page: 1
+1/25/25, 1:06:10 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:06:10 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:09:17 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:09:17 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:09:17 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 1:09:18 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:09:18 PM :Debug: Went offline
+1/25/25, 1:09:19 PM :Debug: Deactivated fast paint Main Dashboard
+1/25/25, 1:09:19 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:09:19 PM :Info: Went offline 2
+1/25/25, 1:09:19 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 1:09:28 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 1:09:28 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 1:09:33 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:09:33 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:09:33 PM :Debug: Skip Burn, last write page: -2
+1/25/25, 1:09:40 PM :Info: Initiating read page 1 : 1180:12
+1/25/25, 1:09:40 PM :Info: Activating page: 1
+1/25/25, 1:09:40 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:09:40 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:10:44 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:10:44 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:10:44 PM :Debug: Burn Page anonymous: -1
+1/25/25, 1:10:44 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 1:10:45 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 1:10:55 PM :Info: Initiating read page 1 : 1180:12
+1/25/25, 1:10:55 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:10:55 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:12:16 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:12:16 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:12:16 PM :Debug: Burn Page anonymous: 1
+1/25/25, 1:12:16 PM :Info: Queueing burn to page:1
+1/25/25, 1:12:16 PM :Debug: Burn time:2ms.
+1/25/25, 1:12:16 PM :Debug: burned page 1
+1/25/25, 1:12:16 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:12:16 PM :Debug: CRC matches for page 1:x06 x36 x73 xE7                                                       .6s.
+1/25/25, 1:12:18 PM :Info: Time to save msq: 140.21875
+1/25/25, 1:12:37 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:12:37 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:12:37 PM :Debug: Burn Page anonymous: 1
+1/25/25, 1:12:37 PM :Info: Queueing burn to page:1
+1/25/25, 1:12:37 PM :Debug: Burn time:2ms.
+1/25/25, 1:12:37 PM :Debug: burned page 1
+1/25/25, 1:12:37 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:12:37 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:12:39 PM :Info: Time to save msq: 35.551712
+1/25/25, 1:12:43 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:12:43 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:12:43 PM :Debug: Burn Page anonymous: -1
+1/25/25, 1:12:43 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 1:12:43 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 1:26:11 PM :Info: Initiating read page 1 : 92:3094
+1/25/25, 1:26:11 PM :Debug: CRC matches for page 1:x00 x0E xD8 x49                                                       ...I
+1/25/25, 1:26:11 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:26:28 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:26:28 PM :Debug: Flush lasted: 71ms.
+1/25/25, 1:26:28 PM :Debug: Burn Page anonymous: 1
+1/25/25, 1:26:28 PM :Info: Queueing burn to page:1
+1/25/25, 1:26:28 PM :Debug: Burn time:2ms.
+1/25/25, 1:26:28 PM :Debug: burned page 1
+1/25/25, 1:26:28 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:26:29 PM :Info: Time to save msq: 25.033394
+1/25/25, 1:26:30 PM :Debug: CRC matches for page 1:xB1 x3D xF7 xED                                                       .=..
+1/25/25, 1:36:11 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:36:11 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:36:11 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 1:36:12 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:36:12 PM :Debug: Went offline
+1/25/25, 1:36:12 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:36:12 PM :Info: Went offline 2
+1/25/25, 1:36:13 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 1:36:56 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 1:36:56 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 1:36:56 PM :Debug: CRC matches for page 1:xB1 x3D xF7 xED                                                       .=..
+1/25/25, 1:36:56 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 1:36:56 PM :Debug: Read All Data
+1/25/25, 1:36:56 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 1:36:56 PM :Debug: DiffTime: 18 ms.
+1/25/25, 1:37:00 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:37:01 PM :Debug: Flush lasted: 71ms.
+1/25/25, 1:37:01 PM :Debug: Skip Burn, last write page: -2
+1/25/25, 1:38:38 PM :Info: Initiating read page 1 : 92:3094
+1/25/25, 1:38:38 PM :Info: Activating page: 1
+1/25/25, 1:38:38 PM :Debug: CRC matches for page 1:xB1 x3D xF7 xED                                                       .=..
+1/25/25, 1:38:38 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 1:39:26 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 1:39:26 PM :Debug: Flush lasted: 70ms.
+1/25/25, 1:39:26 PM :Debug: Burn Page anonymous: 1
+1/25/25, 1:39:26 PM :Info: Queueing burn to page:1
+1/25/25, 1:39:26 PM :Debug: Burn time:2ms.
+1/25/25, 1:39:26 PM :Debug: burned page 1
+1/25/25, 1:39:26 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:39:27 PM :Info: Time to save msq: 18.021591
+1/25/25, 1:39:28 PM :Debug: CRC matches for page 1:xB1 x3D xF7 xED                                                       .=..
+1/25/25, 1:44:29 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:44:29 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 1:44:29 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 1:44:30 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:44:30 PM :Debug: Went offline
+1/25/25, 1:44:31 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 1:44:31 PM :Info: Went offline 2
+1/25/25, 1:44:31 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 3:01:23 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 3:01:23 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 3:01:23 PM :Debug: CRC matches for page 1:xB1 x3D xF7 xED                                                       .=..
+1/25/25, 3:01:23 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 3:01:23 PM :Debug: Read All Data
+1/25/25, 3:01:23 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 3:01:23 PM :Debug: DiffTime: 5 ms.
+1/25/25, 3:01:37 PM :Info: Activating page: 1
+1/25/25, 3:04:39 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:04:39 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:04:39 PM :Debug: Burn Page anonymous: 1
+1/25/25, 3:04:39 PM :Info: Queueing burn to page:1
+1/25/25, 3:04:39 PM :Debug: Burn time:2ms.
+1/25/25, 3:04:39 PM :Debug: burned page 1
+1/25/25, 3:04:39 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:04:39 PM :Debug: CRC matches for page 1:xFB x0E x48 x6B                                                       ..Hk
+1/25/25, 3:04:41 PM :Info: Time to save msq: 15.783391
+1/25/25, 3:06:38 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:06:38 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:06:38 PM :Debug: Burn Page anonymous: 1
+1/25/25, 3:06:38 PM :Info: Queueing burn to page:1
+1/25/25, 3:06:38 PM :Debug: Burn time:2ms.
+1/25/25, 3:06:38 PM :Debug: burned page 1
+1/25/25, 3:06:38 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:06:38 PM :Debug: CRC matches for page 1:x94 x1F x52 xF7                                                       ..R.
+1/25/25, 3:06:40 PM :Info: Time to save msq: 13.186756
+1/25/25, 3:07:03 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 3:07:03 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 3:07:03 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 3:07:04 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:07:04 PM :Debug: Went offline
+1/25/25, 3:07:05 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:07:05 PM :Info: Went offline 2
+1/25/25, 3:07:05 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 3:09:20 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 3:09:20 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 3:09:20 PM :Debug: CRC matches for page 1:x94 x1F x52 xF7                                                       ..R.
+1/25/25, 3:09:20 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 3:09:20 PM :Debug: Read All Data
+1/25/25, 3:09:20 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 3:09:20 PM :Debug: DiffTime: 6 ms.
+1/25/25, 3:09:23 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:09:23 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:09:23 PM :Debug: Skip Burn, last write page: -2
+1/25/25, 3:10:16 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 3:10:16 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 3:10:16 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 3:10:18 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:10:18 PM :Debug: Went offline
+1/25/25, 3:10:18 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:10:18 PM :Info: Went offline 2
+1/25/25, 3:10:18 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 3:10:52 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 3:10:52 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 3:10:52 PM :Debug: CRC matches for page 1:x94 x1F x52 xF7                                                       ..R.
+1/25/25, 3:10:52 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 3:10:52 PM :Debug: Read All Data
+1/25/25, 3:10:52 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 3:10:52 PM :Debug: DiffTime: 5 ms.
+1/25/25, 3:11:14 PM :Debug: FullScreen
+1/25/25, 3:11:16 PM :Debug: End FullScreen
+1/25/25, 3:11:59 PM :Info: Initiating read page 1 : 376:1138
+1/25/25, 3:11:59 PM :Info: Activating page: 1
+1/25/25, 3:11:59 PM :Debug: CRC matches for page 1:x94 x1F x52 xF7                                                       ..R.
+1/25/25, 3:11:59 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:12:08 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:12:08 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:12:08 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:12:08 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:12:08 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:12:12 PM :Debug: High Speed Paint: true
+[Duplicate entry] received 4 times: Debug: High Speed Paint: true
+1/25/25, 3:12:13 PM :Info: Logger Processor stopped.
+[Duplicate entry] received 4 times: Info: Logger Processor stopped.
+1/25/25, 3:12:13 PM :Debug: High Speed Paint: true
+1/25/25, 3:12:13 PM :Debug: Deactivated fast paint IgnitionLoggerCluster
+1/25/25, 3:12:22 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 3:12:22 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 3:12:22 PM :Debug: Time:7610.936s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 3:12:22 PM :Debug: Time:7610.937s. 
+
+1/25/25, 3:12:22 PM :Debug: Time:7610.937s.   .    .    .    .    .    .    .  
+1/25/25, 3:12:23 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 3:12:23 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 3:12:23 PM :Debug: Time:7611.502s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 3:12:23 PM :Debug: Time:7611.503s. 
+
+1/25/25, 3:12:23 PM :Debug: Time:7611.503s.   .    .    .    .    .    .    .  
+1/25/25, 3:12:23 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 3:12:23 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 3:12:23 PM :Debug: Time:7612.168s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 3:12:23 PM :Debug: Time:7612.168s. 
+
+1/25/25, 3:12:23 PM :Debug: Time:7612.168s.   .    .    .    .    .    .    .  
+1/25/25, 3:12:24 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 3:12:24 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 3:12:24 PM :Debug: Time:7612.874s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 3:12:24 PM :Debug: Time:7612.874s. 
+
+1/25/25, 3:12:24 PM :Debug: Time:7612.874s.   .    .    .    .    .    .    .  
+1/25/25, 3:12:34 PM :Warning: Controller Reported a Out of Range
+1/25/25, 3:12:34 PM :Debug: call failed protocol validation, running stats: 1 failed validation, 10180 successful.
+1/25/25, 3:12:34 PM :Error: Unable to read Logger data. Controller Instruction failed!
+
+Error: 
+Response packet failed validation: Controller Reported a Out of Range
+
+1/25/25, 3:12:34 PM :Info: Error: Unable to read Logger data. Controller Instruction failed!
+
+Error: 
+Response packet failed validation: Controller Reported a Out of Range
+1/25/25, 3:12:34 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 3:12:34 PM :Debug: Time:7623.053s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 3:12:34 PM :Debug: Time:7623.053s. 
+
+1/25/25, 3:12:34 PM :Debug: Time:7623.054s.   .    .    .    .    .    .    .  
+1/25/25, 3:12:37 PM :Info: Logger Processor stopped.
+1/25/25, 3:13:32 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:13:32 PM :Debug: Flush lasted: 71ms.
+1/25/25, 3:13:32 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:13:32 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:13:32 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:13:33 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:13:33 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:13:33 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:13:33 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:13:33 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:13:38 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 3:13:38 PM :Debug: CRC matches for page 1:x94 x1F x52 xF7                                                       ..R.
+1/25/25, 3:13:38 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:14:53 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:14:53 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:14:53 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:14:53 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:14:53 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:14:55 PM :Info: Initiating read page 1 : 1358:1685
+1/25/25, 3:14:55 PM :Debug: CRC matches for page 1:x94 x1F x52 xF7                                                       ..R.
+1/25/25, 3:14:55 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:15:14 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:15:14 PM :Debug: Flush lasted: 71ms.
+1/25/25, 3:15:14 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:15:14 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:15:14 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:15:16 PM :Info: Initiating read page 1 : 18:1490
+1/25/25, 3:15:16 PM :Debug: CRC matches for page 1:x94 x1F x52 xF7                                                       ..R.
+1/25/25, 3:15:16 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:16:03 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:16:03 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:16:03 PM :Debug: Burn Page anonymous: 1
+1/25/25, 3:16:03 PM :Info: Queueing burn to page:1
+1/25/25, 3:16:03 PM :Debug: Burn time:1ms.
+1/25/25, 3:16:03 PM :Debug: burned page 1
+1/25/25, 3:16:03 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:16:03 PM :Debug: CRC matches for page 1:xCD xB2 x46 xB3                                                       ..F.
+1/25/25, 3:16:05 PM :Info: Time to save msq: 65.37286
+1/25/25, 3:16:09 PM :Info: Initiating read page 1 : 1358:1685
+1/25/25, 3:16:09 PM :Debug: CRC matches for page 1:xCD xB2 x46 xB3                                                       ..F.
+1/25/25, 3:16:09 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:16:18 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:16:18 PM :Debug: Flush lasted: 71ms.
+1/25/25, 3:16:18 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:16:18 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:16:18 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:16:21 PM :Info: Initiating read page 1 : 1358:1685
+1/25/25, 3:16:21 PM :Debug: CRC matches for page 1:xCD xB2 x46 xB3                                                       ..F.
+1/25/25, 3:16:21 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:17:51 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:17:51 PM :Debug: Flush lasted: 71ms.
+1/25/25, 3:17:51 PM :Debug: Burn Page anonymous: 1
+1/25/25, 3:17:51 PM :Info: Queueing burn to page:1
+1/25/25, 3:17:51 PM :Debug: Burn time:2ms.
+1/25/25, 3:17:51 PM :Debug: burned page 1
+1/25/25, 3:17:51 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:17:51 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:17:52 PM :Info: Time to save msq: 10.142404
+1/25/25, 3:18:28 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:18:28 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:18:28 PM :Debug: Burn Page anonymous: 1
+1/25/25, 3:18:28 PM :Info: Queueing burn to page:1
+1/25/25, 3:18:28 PM :Debug: Burn time:2ms.
+1/25/25, 3:18:28 PM :Debug: burned page 1
+1/25/25, 3:18:28 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:18:28 PM :Debug: CRC matches for page 1:xC3 x3F x7B xA3                                                       .?{.
+1/25/25, 3:18:29 PM :Info: Time to save msq: 10.585447
+1/25/25, 3:18:30 PM :Info: Getting ECU name for signature: 'rusEFI (FOME) .2024.10.22.proteus_f7.3998132989'
+1/25/25, 3:18:30 PM :Info: Looks like rusEFI
+1/25/25, 3:18:51 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:18:51 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:18:51 PM :Debug: Burn Page anonymous: 1
+1/25/25, 3:18:51 PM :Info: Queueing burn to page:1
+1/25/25, 3:18:51 PM :Debug: Burn time:2ms.
+1/25/25, 3:18:51 PM :Debug: burned page 1
+1/25/25, 3:18:51 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:18:51 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:18:52 PM :Info: Time to save msq: 9.355793
+1/25/25, 3:19:00 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:19:00 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:19:00 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:19:00 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:19:00 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:19:01 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:19:01 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:19:01 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:19:01 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:19:01 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:19:13 PM :Info: Initiating read page 1 : 1358:1685
+1/25/25, 3:19:13 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:19:13 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:19:19 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:19:19 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:19:19 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:19:19 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:19:19 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:19:34 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 3:19:34 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 3:19:34 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 3:19:35 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:19:35 PM :Debug: Went offline
+1/25/25, 3:19:35 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:19:35 PM :Info: Went offline 2
+1/25/25, 3:19:36 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 3:19:40 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 3:19:40 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 3:19:40 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:19:40 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 3:19:40 PM :Debug: Read All Data
+1/25/25, 3:19:40 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 3:19:40 PM :Debug: DiffTime: 6 ms.
+1/25/25, 3:19:45 PM :Debug: FullScreen
+1/25/25, 3:19:46 PM :Debug: End FullScreen
+1/25/25, 3:20:06 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 3:20:06 PM :Info: Activating page: 1
+1/25/25, 3:20:06 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:20:06 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:20:41 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:20:41 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:20:41 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:20:41 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:20:41 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:21:31 PM :Info: Initiating read page 1 : 1080:30
+1/25/25, 3:21:31 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:21:31 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:21:37 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:21:37 PM :Debug: Flush lasted: 71ms.
+1/25/25, 3:21:37 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:21:37 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:21:37 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:22:03 PM :Debug: TuneViewPanel Activated.
+1/25/25, 3:22:08 PM :Debug: TuneViewPanel Deactivated.
+1/25/25, 3:22:08 PM :Debug: Activate Logging Tabs
+Registration file not found. 
+java.lang.RuntimeException: /home/chris/TunerStudioMS/FieldMaps/MegaSquirt.properties does not exist
+	at h.g.b(Unknown Source)
+	at h.g.a(Unknown Source)
+	at ar.c.a(Unknown Source)
+	at ar.g.a(Unknown Source)
+	at ar.g.<init>(Unknown Source)
+	at ao.aQ.<init>(Unknown Source)
+	at bh.b.<init>(Unknown Source)
+	at aP.bZ.<init>(Unknown Source)
+	at aP.de.run(Unknown Source)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:308)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:714)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:742)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: java.io.FileNotFoundException: FieldMaps/MegaSquirt.properties (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:106)
+	... 22 more
+1/25/25, 3:22:08 PM :Warning: No Color Match Found for: -6597453
+1/25/25, 3:22:08 PM :Warning: No Color Match Found for: -1381668
+1/25/25, 3:22:08 PM :Warning: No Color Match Found for: -16711813
+1/25/25, 3:22:08 PM :Debug: Time to notify update: 0
+1/25/25, 3:22:08 PM :Debug: Activate Analysis Tabs
+1/25/25, 3:22:09 PM :Debug: Waiting to enable Buttons.
+1/25/25, 3:22:10 PM :Debug: Deactivate Analysis Tabs
+1/25/25, 3:23:42 PM :Debug: TuneViewPanel Activated.
+1/25/25, 3:23:48 PM :Debug: TuneViewPanel Deactivated.
+1/25/25, 3:23:48 PM :Debug: Activate Logging Tabs
+1/25/25, 3:23:48 PM :Debug: Activate Analysis Tabs
+1/25/25, 3:23:48 PM :Debug: Waiting to enable Buttons.
+1/25/25, 3:23:50 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 3:23:50 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:23:50 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:24:00 PM :Debug: Deactivate Analysis Tabs
+1/25/25, 3:25:39 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:25:39 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:25:39 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:25:39 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:25:39 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:26:36 PM :Debug: TuneViewPanel Activated.
+1/25/25, 3:26:37 PM :Debug: TuneViewPanel Deactivated.
+1/25/25, 3:26:37 PM :Debug: Activate Logging Tabs
+1/25/25, 3:26:37 PM :Debug: Activate Analysis Tabs
+1/25/25, 3:26:37 PM :Debug: Waiting to enable Buttons.
+1/25/25, 3:26:39 PM :Debug: Deactivate Analysis Tabs
+1/25/25, 3:27:30 PM :Info: Initiating read page 1 : 1358:1685
+1/25/25, 3:27:30 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:27:30 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:27:37 PM :Info: Initiating read page 1 : 18:1490
+1/25/25, 3:27:37 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:27:37 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:28:39 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:28:39 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:28:39 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:28:39 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:28:39 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:29:17 PM :Info: Initiating read page 1 : 92:1279
+1/25/25, 3:29:17 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:29:17 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:42:31 PM :Info: Initiating read page 1 : 12:1280
+1/25/25, 3:42:31 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:42:31 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:42:41 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:42:41 PM :Debug: Flush lasted: 70ms.
+1/25/25, 3:42:41 PM :Debug: Burn Page anonymous: -1
+1/25/25, 3:42:41 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 3:42:41 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 3:42:45 PM :Info: Initiating read page 1 : 18:1490
+1/25/25, 3:42:45 PM :Debug: CRC matches for page 1:x53 x1C x94 x69                                                       S..i
+1/25/25, 3:42:45 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 3:43:42 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 3:43:42 PM :Debug: Flush lasted: 71ms.
+1/25/25, 3:43:42 PM :Debug: Burn Page anonymous: 1
+1/25/25, 3:43:42 PM :Info: Queueing burn to page:1
+1/25/25, 3:43:42 PM :Debug: Burn time:2ms.
+1/25/25, 3:43:42 PM :Debug: burned page 1
+1/25/25, 3:43:42 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:43:42 PM :Debug: CRC matches for page 1:xCD xB2 x46 xB3                                                       ..F.
+1/25/25, 3:43:43 PM :Info: Time to save msq: 8.365654
+1/25/25, 3:47:24 PM :Info: Re-establishing connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 3:47:24 PM :Warning: Failed to re-establish connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 3:47:24 PM :Info: Connection Check failed, forcing offline.
+1/25/25, 3:47:26 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:47:26 PM :Debug: Went offline
+1/25/25, 3:47:26 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 3:47:26 PM :Info: Went offline 2
+1/25/25, 3:47:26 PM :Debug: Port not valid: Unable to open port: /dev/ttyACM0
+Please check your Communications Settings. 
+1/25/25, 3:54:03 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 3:54:03 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 3:54:03 PM :Debug: CRC matches for page 1:xCD xB2 x46 xB3                                                       ..F.
+1/25/25, 3:54:03 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 3:54:03 PM :Debug: Read All Data
+1/25/25, 3:54:03 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 3:54:03 PM :Debug: DiffTime: 6 ms.
+1/25/25, 4:07:18 PM :Info: Initiating read page 1 : 376:1138
+1/25/25, 4:07:18 PM :Info: Activating page: 1
+1/25/25, 4:07:18 PM :Debug: CRC matches for page 1:xCD xB2 x46 xB3                                                       ..F.
+1/25/25, 4:07:18 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:07:22 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:07:22 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:07:22 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:07:22 PM :Info: Queueing burn to page:1
+1/25/25, 4:07:22 PM :Debug: Burn time:5ms.
+1/25/25, 4:07:22 PM :Debug: burned page 1
+1/25/25, 4:07:22 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:07:22 PM :Debug: CRC matches for page 1:x64 x04 x7C xD5                                                       d.|.
+1/25/25, 4:07:23 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:07:23 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:07:23 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:07:23 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:07:24 PM :Info: Time to save msq: 16.363297
+1/25/25, 4:07:24 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:07:29 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:07:29 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:07:29 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:07:29 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:07:29 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:08:18 PM :Info: Initiating read page 1 : 4:808
+1/25/25, 4:08:18 PM :Debug: CRC matches for page 1:x64 x04 x7C xD5                                                       d.|.
+1/25/25, 4:08:18 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:08:38 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:08:38 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:08:38 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:08:38 PM :Info: Queueing burn to page:1
+1/25/25, 4:08:38 PM :Debug: Burn time:1ms.
+1/25/25, 4:08:38 PM :Debug: burned page 1
+1/25/25, 4:08:38 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:08:39 PM :Debug: CRC matches for page 1:x2E x4A x86 x4B                                                       .J.K
+1/25/25, 4:08:40 PM :Info: Time to save msq: 6.295844
+1/25/25, 4:09:16 PM :Info: Initiating read page 1 : 92:2721
+1/25/25, 4:09:16 PM :Debug: CRC matches for page 1:x2E x4A x86 x4B                                                       .J.K
+1/25/25, 4:09:16 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:09:21 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:09:21 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:09:21 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:09:21 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:09:21 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:10:25 PM :Info: Initiating read page 1 : 512:73
+1/25/25, 4:10:25 PM :Debug: CRC matches for page 1:x2E x4A x86 x4B                                                       .J.K
+1/25/25, 4:10:25 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:10:33 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:10:33 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:10:33 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:10:33 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:10:33 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:10:38 PM :Info: Initiating read page 1 : 18:1490
+1/25/25, 4:10:38 PM :Debug: CRC matches for page 1:x2E x4A x86 x4B                                                       .J.K
+1/25/25, 4:10:38 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:10:41 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:10:42 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:10:42 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:10:42 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:10:42 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:10:46 PM :Info: Initiating read page 1 : 512:73
+1/25/25, 4:10:46 PM :Debug: CRC matches for page 1:x2E x4A x86 x4B                                                       .J.K
+1/25/25, 4:10:46 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:10:55 PM :Info: Initiating read page 1 : 20:2234
+1/25/25, 4:10:55 PM :Debug: CRC matches for page 1:x2E x4A x86 x4B                                                       .J.K
+1/25/25, 4:10:55 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:11:04 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:11:04 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:11:04 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:11:04 PM :Info: Queueing burn to page:1
+1/25/25, 4:11:04 PM :Debug: Burn time:2ms.
+1/25/25, 4:11:04 PM :Debug: burned page 1
+1/25/25, 4:11:04 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:11:04 PM :Debug: CRC matches for page 1:x1C x8F xBA x8C                                                       ....
+1/25/25, 4:11:06 PM :Info: Time to save msq: 76.06139
+1/25/25, 4:11:07 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:11:07 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:11:07 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:11:07 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:11:07 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:11:18 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:11:18 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:11:18 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:11:18 PM :Info: Queueing burn to page:1
+1/25/25, 4:11:18 PM :Debug: Burn time:2ms.
+1/25/25, 4:11:18 PM :Debug: burned page 1
+1/25/25, 4:11:18 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:11:18 PM :Debug: CRC matches for page 1:x81 xE1 x46 xBB                                                       ..F.
+1/25/25, 4:11:19 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:11:19 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:11:19 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:11:19 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:11:20 PM :Info: Time to save msq: 6.066716
+1/25/25, 4:11:20 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:11:24 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:11:24 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:11:24 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:11:24 PM :Info: Queueing burn to page:1
+1/25/25, 4:11:24 PM :Debug: Burn time:2ms.
+1/25/25, 4:11:24 PM :Debug: burned page 1
+1/25/25, 4:11:24 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:11:24 PM :Debug: CRC matches for page 1:xCB xAF xBC x25                                                       ...%
+1/25/25, 4:11:25 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:11:25 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:11:25 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:11:25 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:11:26 PM :Info: Time to save msq: 6.384787
+1/25/25, 4:11:26 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:11:27 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:11:27 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:11:27 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:11:27 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:11:27 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:11:30 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:11:30 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:11:30 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:11:30 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:11:30 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:11:34 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 4:11:34 PM :Debug: CRC matches for page 1:xCB xAF xBC x25                                                       ...%
+1/25/25, 4:11:34 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:12:42 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:12:42 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:12:42 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:12:42 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:12:42 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:12:59 PM :Info: Initiating read page 1 : 20:2234
+1/25/25, 4:12:59 PM :Debug: CRC matches for page 1:xCB xAF xBC x25                                                       ...%
+1/25/25, 4:12:59 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:13:57 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:13:57 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:13:57 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:13:57 PM :Info: Queueing burn to page:1
+1/25/25, 4:13:57 PM :Debug: Burn time:1ms.
+1/25/25, 4:13:57 PM :Debug: burned page 1
+1/25/25, 4:13:57 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:13:57 PM :Debug: CRC matches for page 1:xCB xAF xBC x25                                                       ...%
+1/25/25, 4:13:59 PM :Info: Time to save msq: 13.890648
+1/25/25, 4:14:27 PM :Info: Initiating read page 1 : 20:2234
+1/25/25, 4:14:27 PM :Debug: CRC matches for page 1:xCB xAF xBC x25                                                       ...%
+1/25/25, 4:14:27 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:14:33 PM :Info: Initiating read page 1 : 512:73
+1/25/25, 4:14:33 PM :Debug: CRC matches for page 1:xCB xAF xBC x25                                                       ...%
+1/25/25, 4:14:33 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:15:38 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:15:38 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:15:38 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:15:38 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:15:38 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:15:40 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:15:40 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:15:40 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:15:40 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:15:40 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:15:43 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:15:43 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:15:43 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:15:43 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:15:43 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:16:07 PM :Info: Initiating read page 1 : 512:73
+1/25/25, 4:16:07 PM :Debug: CRC matches for page 1:xCB xAF xBC x25                                                       ...%
+1/25/25, 4:16:07 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:17:17 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:17:18 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:17:18 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:17:18 PM :Info: Queueing burn to page:1
+1/25/25, 4:17:18 PM :Debug: Burn time:2ms.
+1/25/25, 4:17:18 PM :Debug: burned page 1
+1/25/25, 4:17:18 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:17:18 PM :Debug: CRC matches for page 1:x56 xC1 x40 x12                                                       V.@.
+1/25/25, 4:17:19 PM :Info: Time to save msq: 6.202707
+1/25/25, 4:17:19 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:17:19 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:17:19 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:17:19 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:17:20 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:17:23 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 4:17:23 PM :Debug: CRC matches for page 1:x56 xC1 x40 x12                                                       V.@.
+1/25/25, 4:17:23 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:18:52 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:18:52 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:18:52 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:18:52 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:18:52 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:25:13 PM :Info: Initiating read page 1 : 4:808
+1/25/25, 4:25:14 PM :Debug: CRC matches for page 1:x56 xC1 x40 x12                                                       V.@.
+1/25/25, 4:25:14 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:26:30 PM :Debug: Activate Logging Tabs
+1/25/25, 4:26:30 PM :Debug: Activate Analysis Tabs
+1/25/25, 4:26:31 PM :Debug: Waiting to enable Buttons.
+1/25/25, 4:26:33 PM :Debug: Deactivate Analysis Tabs
+1/25/25, 4:26:33 PM :Debug: TuneViewPanel Activated.
+1/25/25, 4:26:40 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:26:40 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:26:40 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:26:40 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:26:40 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:26:42 PM :Debug: TuneViewPanel Deactivated.
+1/25/25, 4:28:24 PM :Info: Initiating read page 1 : 4:808
+1/25/25, 4:28:24 PM :Debug: CRC matches for page 1:x56 xC1 x40 x12                                                       V.@.
+1/25/25, 4:28:24 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:32:00 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:32:00 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:32:00 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:32:00 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:32:00 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:32:13 PM :Info: Initiating read page 1 : 4:808
+1/25/25, 4:32:13 PM :Debug: CRC matches for page 1:x56 xC1 x40 x12                                                       V.@.
+1/25/25, 4:32:13 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:32:17 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:32:17 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:32:17 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:32:17 PM :Info: Queueing burn to page:1
+1/25/25, 4:32:17 PM :Debug: Burn time:2ms.
+1/25/25, 4:32:17 PM :Debug: burned page 1
+1/25/25, 4:32:17 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:32:17 PM :Debug: CRC matches for page 1:x1C x8F xBA x8C                                                       ....
+1/25/25, 4:32:19 PM :Info: Time to save msq: 9.200954
+1/25/25, 4:33:02 PM :Info: Time to save msq: 16.44045
+1/25/25, 4:33:02 PM :Info: closeApp Called
+1/25/25, 4:33:02 PM :Debug: TuneLog Editor set text
+1/25/25, 4:33:02 PM :Debug: Fill Constants: 63
+1/25/25, 4:33:02 PM :Debug: File does not exist, creating new:
+/home/chris/workspace/anesthetic/fome_vrsix19/restorePoints/fome_vrsix19_2025-01-25_16.33.02.msq
+1/25/25, 4:33:02 PM :Info: Time to save msq: 7.115003
+1/25/25, 4:33:02 PM :Info: fome_vrsix19 Restore point saved
+1/25/25, 4:33:02 PM :Info: fome_vrsix19 Restore point saved to: fome_vrsix19_2025-01-25_16.33.02.msq
+1/25/25, 4:33:02 PM :Info: Time to save msq: 6.833673
+1/25/25, 4:33:02 PM :Debug: goOffline Starting, Time:0
+1/25/25, 4:33:02 PM :Info: Deactivated Turbo Baud, goOffline
+1/25/25, 4:33:02 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:33:02 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:33:02 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:33:03 PM :Debug: goOffline about to stopProcessing, Time:252
+1/25/25, 4:33:03 PM :Debug: goOffline Notified offline, Time:260
+1/25/25, 4:33:03 PM :Debug: goOffline closed port, Time:260
+1/25/25, 4:33:03 PM :Info: fome_vrsix19 ComThread stopped COMM Thread88299.29102517881
+1/25/25, 4:33:03 PM :Debug: goOffline comm thread stopped, Time:411
+1/25/25, 4:33:03 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:33:05 PM :Info: Time to load non-cached dashboard: 166.60936 ms. file:dashboard.dash
+1/25/25, 4:33:05 PM :Debug: Time to save dashboard: 179.50168ms. file: /home/chris/workspace/anesthetic/fome_vrsix19/dashboard/dashboard.dash
+1/25/25, 4:33:05 PM :Debug: removing Configuration: fome_vrsix19
+1/25/25, 4:33:05 PM :Debug: Graph Selection not changed.
+1/25/25, 4:33:05 PM :Debug: DataSet Set!! size: 0
+[Duplicate entry] received 2 times: Debug: DataSet Set!! size: 0
+1/25/25, 4:33:05 PM :Debug: Saved user log settings.
+1/25/25, 4:33:05 PM :Info: Time to load non-cached dashboard: 5.204084 ms. file:IgnitionLoggerCluster.dash
+1/25/25, 4:33:05 PM :Debug: Time to save dashboard: 5.675607ms. file: /home/chris/workspace/anesthetic/fome_vrsix19//dashboard/IgnitionLoggerCluster.dash
+1/25/25, 4:33:05 PM :Info: Time to load non-cached dashboard: 20.255148 ms. file:veAnalyze_veTableTbl.dash
+1/25/25, 4:33:05 PM :Debug: Time to save dashboard: 20.740997ms. file: /home/chris/workspace/anesthetic/fome_vrsix19//dashboard/veAnalyze_veTableTbl.dash
+1/25/25, 4:33:05 PM :Info: Time to load non-cached dashboard: 4.946686 ms. file:veAnalyze_veTableTbl_histogram.dash
+1/25/25, 4:33:05 PM :Debug: Time to save dashboard: 5.493855ms. file: /home/chris/workspace/anesthetic/fome_vrsix19//dashboard/veAnalyze_veTableTbl_histogram.dash
+1/25/25, 4:33:05 PM :Info: Time to load non-cached dashboard: 19.98023 ms. file:wueAnalyze_wueAnalyzer_warmup_curve.dash
+1/25/25, 4:33:05 PM :Debug: Time to save dashboard: 20.510504ms. file: /home/chris/workspace/anesthetic/fome_vrsix19//dashboard/wueAnalyze_wueAnalyzer_warmup_curve.dash
+1/25/25, 4:33:05 PM :Info: Time to load non-cached dashboard: 4.609319 ms. file:wueAnalyze_wueAnalyzer_warmup_curve_histogram.dash
+1/25/25, 4:33:05 PM :Debug: Time to save dashboard: 5.114933ms. file: /home/chris/workspace/anesthetic/fome_vrsix19//dashboard/wueAnalyze_wueAnalyzer_warmup_curve_histogram.dash
+1/25/25, 4:33:05 PM :Debug: ############################################# Save Project Backup ##########################################
+1/25/25, 4:33:05 PM :Info: Finalizing Sensors
+Saved user properties successfully
+1/25/25, 4:33:05 PM :Debug: Saved user log settings.
+Starting on zen
+TunerStudio 3.2.05 started on Sat Jan 25 16:34:46 PST 2025
+JRE 21.0.5, Linux 6.8.0-51-generic, amd64
+java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+TunerStudioMS.jar
+java.lang.reflect.InaccessibleObjectException: Unable to make field private static java.nio.charset.Charset java.nio.charset.Charset.defaultCharset accessible: module java.base does not "opens java.nio.charset" to unnamed module @34b7bfc0
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(AccessibleObject.java:391)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:367)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(AccessibleObject.java:315)
+	at java.base/java.lang.reflect.Field.checkCanSetAccessible(Field.java:183)
+	at java.base/java.lang.reflect.Field.setAccessible(Field.java:177)
+	at TunerStudio.main(Unknown Source)
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:GTK+, ClassName:'com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+1/25/25, 4:34:46 PM :Debug: no update:defaultFont
+1/25/25, 4:34:46 PM :Info: Initializing File Dialogs.
+1/25/25, 4:34:47 PM :Info: Updating ai & t
+1/25/25, 4:34:47 PM :Info: Loading Language Content.
+1/25/25, 4:34:49 PM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+1/25/25, 4:34:49 PM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+1/25/25, 4:34:49 PM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+1/25/25, 4:34:49 PM :Info: Initializing Plugin Services.
+1/25/25, 4:34:49 PM :Info: Loading Plugins.
+1/25/25, 4:34:49 PM :Info: Initializing Help.
+1/25/25, 4:34:49 PM :Info: Initializing Edition Features.
+1/25/25, 4:34:49 PM :Info: Initializing App Events.
+1/25/25, 4:34:49 PM :Debug: App Name:TunerStudio, appEdition:MS Ultra
+1/25/25, 4:34:49 PM :Info: Initializing Log Viewer Components.
+1/25/25, 4:34:49 PM :Info: Initializing User Interface
+1/25/25, 4:34:49 PM :Warning: Unable to set Main cluster for title:
+1/25/25, 4:34:51 PM :Info: Loading Font list.
+1/25/25, 4:34:51 PM :Debug: Time to retreive font name list: 20 ms.
+1/25/25, 4:34:51 PM :Info: 
+1/25/25, 4:34:51 PM :Info: Initializing UI Components.
+1/25/25, 4:34:51 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 4:34:51 PM :Info: Ready
+1/25/25, 4:34:51 PM :Info: IncUpdate: No updates available.
+1/25/25, 4:34:51 PM :Info: IniUpdate: No updates available.
+MS Ultramain: No check, last update check=Sat Jan 25 09:15:10 PST 2025
+1/25/25, 4:34:53 PM :Info: Opening Project ...
+1/25/25, 4:34:53 PM :Debug: Opening project: /home/chris/workspace/anesthetic/fome_vrsix19
+1/25/25, 4:34:53 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 4:34:53 PM :Debug: EventTrigger Data log Reset. expression: 
+1/25/25, 4:34:53 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 4:34:53 PM :Debug: EventTrigger Stop Data log Reset. expression: 
+1/25/25, 4:34:53 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 4:34:53 PM :Debug: Reading translation file as plain text
+1/25/25, 4:34:53 PM :Info: Supported iniSpecVersion=3.77
+1/25/25, 4:34:53 PM :Debug: Filtered ConfigurationOptionGroup in 25ms.
+1/25/25, 4:34:53 PM :Info: Supported iniSpecVersion=3.77
+1/25/25, 4:34:53 PM :Info: Read file canPcVariables.ini: 0.22161ms
+1/25/25, 4:34:53 PM :Info: Filtered ini: 0.073792ms
+1/25/25, 4:34:53 PM :Info: No iniVersion defined
+1/25/25, 4:34:53 PM :Info: Loading Trigger Wheels
+1/25/25, 4:34:53 PM :Info: Loaded All known ini sections
+1/25/25, 4:34:53 PM :Info: Parsed and validated ini "canPcVariables.ini" in : 10ms.
+1/25/25, 4:34:53 PM :Info: Read file mainController.ini: 5.505601ms
+1/25/25, 4:34:53 PM :Info: Filtered ini: 3.708084ms
+1/25/25, 4:34:53 PM :Info: No iniVersion defined
+1/25/25, 4:34:53 PM :Debug: ini signature: rusEFI (FOME) .2024.10.22.proteus_f7.3998132989
+1/25/25, 4:34:53 PM :Info: Set Write Blocks on = true
+1/25/25, 4:34:53 PM :Info: Loading Trigger Wheels
+1/25/25, 4:34:53 PM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+1/25/25, 4:34:53 PM :Info: Loaded All known ini sections
+1/25/25, 4:34:53 PM :Info: Parsed and validated ini "mainController.ini" in : 188ms.
+1/25/25, 4:34:53 PM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+1/25/25, 4:34:53 PM :Info: Time to load primary config: 253.79369ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+1/25/25, 4:34:53 PM :Debug: set baud to 115200
+1/25/25, 4:34:53 PM :Info: Setting connection to: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 4:34:53 PM :Debug: Adding Configuration: fome_vrsix19
+1/25/25, 4:34:54 PM :Debug: Fill Constants: 67
+1/25/25, 4:34:54 PM :Info: Tune opened, 9 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 9 bytes updated. File:/home/chris/workspace/anesthetic/fome_vrsix19/CurrentTune.msq
+1/25/25, 4:34:54 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:34:54 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:34:54 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:34:54 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:34:54 PM :Debug: Skip Burn, last write page: -2
+1/25/25, 4:34:54 PM :Info: !!! Loaded config in 729
+1/25/25, 4:34:54 PM :Info: !!! Activated Project 933
+1/25/25, 4:34:54 PM :Info: Opening Gauge Cluster..
+1/25/25, 4:34:54 PM :Info: Time to load uncached dash: 145.53932ms, file: dashboard.dash
+1/25/25, 4:34:54 PM :Debug: High Speed Paint: true
+1/25/25, 4:34:55 PM :Info: 
+1/25/25, 4:34:55 PM :Info: Com Thread created: COMM Thread7624.454973759332
+1/25/25, 4:34:55 PM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+1/25/25, 4:34:55 PM :Info: Comm Manager for fome_vrsix19 Started, thread ID: COMM Thread7624.454973759332
+1/25/25, 4:34:55 PM :Debug: !!! Opened Dash 1381
+1/25/25, 4:34:55 PM :Info: Connecting to controller on: RS232: Port:/dev/ttyACM0, Baud:115200
+1/25/25, 4:34:55 PM :Info: fome_vrsix19 Ready
+1/25/25, 4:34:55 PM :Info: Comm Read Thread Change! Old Thread:null, new Thread:COMM Thread7624.454973759332
+1/25/25, 4:34:55 PM :Debug: Tuning View Files loaded in 73.71926ms.
+1/25/25, 4:34:55 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x28 x46 x4F x4D x45 x29 x20 x2E x32       rusEFI.(FOME)..2
+x30 x32 x34 x2E x31 x30 x2E x32 x32 x2E x70 x72 x6F x74 x65 x75       024.10.22.proteu
+x73 x5F x66 x37 x2E x33 x39 x39 x38 x31 x33 x32 x39 x38 x39 x00       s_f7.3998132989.
+1/25/25, 4:34:55 PM :Info: Communicating with sig:rusEFI (FOME) .2024.10.22.proteus_f7.3998132989, FOME proteus_f7 20240916@e3a628
+1/25/25, 4:34:55 PM :Debug: CRC matches for page 1:x1C x8F xBA x8C                                                       ....
+1/25/25, 4:34:55 PM :Info: CrC matched skipped controller read on page:1
+1/25/25, 4:34:55 PM :Debug: isBlank Time: 0 ms.
+1/25/25, 4:34:55 PM :Debug: Read All Data
+1/25/25, 4:34:55 PM :Debug: EventTrigger cltTempWarning Reset. expression: coolant < 200
+1/25/25, 4:34:55 PM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 4:34:55 PM :Debug: Deactivating Event Trigger: cltTempWarning
+1/25/25, 4:34:55 PM :Debug: Activating Event Trigger: cltTempWarning
+1/25/25, 4:34:55 PM :Info: EventTrigger: fome_vrsix19.cltTempWarning loaded and activated.
+1/25/25, 4:34:55 PM :Debug: DiffTime: 18 ms.
+MS Ultraad: No check, last update check=Sat Jan 25 09:15:14 PST 2025
+1/25/25, 4:38:42 PM :Info: Initiating read page 1 : 92:1396
+1/25/25, 4:38:42 PM :Info: Activating page: 1
+1/25/25, 4:38:42 PM :Debug: CRC matches for page 1:x1C x8F xBA x8C                                                       ....
+1/25/25, 4:38:42 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:40:03 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:40:03 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:40:03 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:40:03 PM :Info: Queueing burn to page:1
+1/25/25, 4:40:03 PM :Debug: Burn time:2ms.
+1/25/25, 4:40:03 PM :Debug: burned page 1
+1/25/25, 4:40:03 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:40:03 PM :Debug: CRC matches for page 1:xAC x7C x5B x79                                                       .|[y
+1/25/25, 4:40:04 PM :Info: Time to save msq: 129.7936
+1/25/25, 4:40:15 PM :Info: Initiating read page 1 : 1515:765
+1/25/25, 4:40:15 PM :Debug: CRC matches for page 1:xAC x7C x5B x79                                                       .|[y
+1/25/25, 4:40:15 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:40:27 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:40:27 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:40:27 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:40:27 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:40:27 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:40:32 PM :Info: Initiating read page 1 : 92:1396
+1/25/25, 4:40:32 PM :Debug: CRC matches for page 1:xAC x7C x5B x79                                                       .|[y
+1/25/25, 4:40:32 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:40:46 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:40:46 PM :Debug: Flush lasted: 62ms.
+1/25/25, 4:40:46 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:40:46 PM :Info: Queueing burn to page:1
+1/25/25, 4:40:46 PM :Debug: Burn time:3ms.
+1/25/25, 4:40:46 PM :Debug: burned page 1
+1/25/25, 4:40:46 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:40:46 PM :Debug: CRC matches for page 1:x0A xFE x11 x62                                                       ...b
+1/25/25, 4:40:48 PM :Info: Time to save msq: 23.217596
+1/25/25, 4:43:11 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:43:11 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:43:11 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:43:11 PM :Info: Queueing burn to page:1
+1/25/25, 4:43:11 PM :Debug: Burn time:2ms.
+1/25/25, 4:43:11 PM :Debug: burned page 1
+1/25/25, 4:43:11 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:43:11 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 4:43:13 PM :Info: Time to save msq: 23.492607
+1/25/25, 4:44:05 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:44:05 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:44:05 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:44:05 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:44:05 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:44:07 PM :Info: Initiating read page 1 : 18:1490
+1/25/25, 4:44:07 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 4:44:07 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:44:16 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:44:16 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:44:16 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:44:16 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:44:16 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:44:26 PM :Info: Initiating read page 1 : 512:73
+1/25/25, 4:44:26 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 4:44:26 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:44:37 PM :Info: Initiating read page 1 : 20:2234
+1/25/25, 4:44:37 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 4:44:37 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:44:49 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:44:49 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:44:49 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:44:49 PM :Info: Queueing burn to page:1
+1/25/25, 4:44:49 PM :Debug: Burn time:2ms.
+1/25/25, 4:44:49 PM :Debug: burned page 1
+1/25/25, 4:44:49 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:44:49 PM :Debug: CRC matches for page 1:x88 x51 x92 xCC                                                       .Q..
+1/25/25, 4:44:51 PM :Info: Time to save msq: 24.428982
+1/25/25, 4:45:35 PM :Info: Initiating read page 1 : 598:2417
+1/25/25, 4:45:35 PM :Debug: CRC matches for page 1:x88 x51 x92 xCC                                                       .Q..
+1/25/25, 4:45:35 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:45:41 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:45:41 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:45:41 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:45:41 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:45:41 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:45:43 PM :Info: Initiating read page 1 : 92:2721
+1/25/25, 4:45:43 PM :Debug: CRC matches for page 1:x88 x51 x92 xCC                                                       .Q..
+1/25/25, 4:45:43 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:45:50 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:45:50 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:45:50 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:45:50 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:45:50 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:45:59 PM :Info: Initiating read page 1 : 376:1138
+1/25/25, 4:45:59 PM :Debug: CRC matches for page 1:x88 x51 x92 xCC                                                       .Q..
+1/25/25, 4:45:59 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:46:06 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:46:06 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:46:06 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:46:06 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:46:06 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:46:15 PM :Info: Time to save msq: 13.076606
+1/25/25, 4:46:15 PM :Info: Time to save msq: 71.44261
+1/25/25, 4:46:15 PM :Info: fome_vrsix19 Tune Saved!
+1/25/25, 4:46:15 PM :Debug: Fill Constants: 87
+1/25/25, 4:46:15 PM :Debug: File does not exist, creating new:
+/home/chris/workspace/anesthetic/fome_vrsix19/restorePoints/fome_vrsix19_2025-01-25_16.46.15.msq
+1/25/25, 4:46:15 PM :Info: Time to save msq: 11.176484
+1/25/25, 4:46:15 PM :Info: fome_vrsix19 Restore point saved
+1/25/25, 4:46:15 PM :Info: fome_vrsix19 Restore point saved to: fome_vrsix19_2025-01-25_16.46.15.msq
+1/25/25, 4:46:54 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 4:46:54 PM :Debug: CRC matches for page 1:x88 x51 x92 xCC                                                       .Q..
+1/25/25, 4:46:54 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:46:59 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:47:00 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:47:00 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:47:00 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:47:00 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:47:51 PM :Info: Initiating read page 1 : 20:2234
+1/25/25, 4:47:51 PM :Debug: CRC matches for page 1:x88 x51 x92 xCC                                                       .Q..
+1/25/25, 4:47:51 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:47:53 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:47:53 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:47:53 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:47:53 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:47:53 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:47:55 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:47:55 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:47:55 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:47:55 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:47:55 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:47:56 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:47:56 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:47:56 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:47:56 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:47:56 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:57:50 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 4:57:50 PM :Debug: CRC matches for page 1:x88 x51 x92 xCC                                                       .Q..
+1/25/25, 4:57:50 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:58:07 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:58:07 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:58:07 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:58:07 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:58:07 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:58:11 PM :Info: Initiating read page 1 : 20:2234
+1/25/25, 4:58:11 PM :Debug: CRC matches for page 1:x88 x51 x92 xCC                                                       .Q..
+1/25/25, 4:58:11 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:58:17 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:58:17 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:58:17 PM :Debug: Burn Page anonymous: 1
+1/25/25, 4:58:17 PM :Info: Queueing burn to page:1
+1/25/25, 4:58:17 PM :Debug: Burn time:2ms.
+1/25/25, 4:58:17 PM :Debug: burned page 1
+1/25/25, 4:58:17 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 4:58:17 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 4:58:19 PM :Info: Time to save msq: 19.344572
+1/25/25, 4:59:03 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:59:03 PM :Debug: Flush lasted: 71ms.
+1/25/25, 4:59:03 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:59:03 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:59:03 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:59:10 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 4:59:10 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 4:59:10 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:59:15 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:59:15 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:59:15 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:59:15 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:59:15 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:59:24 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 4:59:24 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 4:59:24 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:59:37 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:59:37 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:59:37 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:59:37 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:59:37 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:59:37 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:59:37 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:59:37 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:59:37 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:59:37 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 4:59:40 PM :Info: Initiating read page 1 : 20:2234
+1/25/25, 4:59:40 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 4:59:40 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 4:59:53 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 4:59:53 PM :Debug: Flush lasted: 70ms.
+1/25/25, 4:59:53 PM :Debug: Burn Page anonymous: -1
+1/25/25, 4:59:53 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 4:59:53 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:00:00 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 5:00:00 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 5:00:00 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:01:48 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:01:48 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:01:48 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:01:48 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:01:48 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:02:33 PM :Info: Initiating read page 1 : 342:1067
+1/25/25, 5:02:33 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 5:02:33 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:02:51 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:02:51 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:02:51 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:02:51 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:02:51 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:02:56 PM :Info: Initiating read page 1 : 2260:12
+1/25/25, 5:02:56 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 5:02:56 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:03:02 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:03:02 PM :Debug: Flush lasted: 71ms.
+1/25/25, 5:03:02 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:03:02 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:03:02 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:03:10 PM :Info: Initiating read page 1 : 20:2234
+1/25/25, 5:03:10 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 5:03:10 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:03:55 PM :Info: Initiating read page 1 : 92:2892
+1/25/25, 5:03:55 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 5:03:55 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:04:15 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:04:15 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:04:15 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:04:15 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:04:15 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:04:56 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:04:56 PM :Debug: Flush lasted: 71ms.
+1/25/25, 5:04:56 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:04:56 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:04:56 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:05:04 PM :Debug: Activate Logging Tabs
+Registration file not found. 
+java.lang.RuntimeException: /home/chris/TunerStudioMS/FieldMaps/MegaSquirt.properties does not exist
+	at h.g.b(Unknown Source)
+	at h.g.a(Unknown Source)
+	at ar.c.a(Unknown Source)
+	at ar.g.a(Unknown Source)
+	at ar.g.<init>(Unknown Source)
+	at ao.aQ.<init>(Unknown Source)
+	at bh.b.<init>(Unknown Source)
+	at aP.bZ.<init>(Unknown Source)
+	at aP.de.run(Unknown Source)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:308)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:714)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:742)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+Caused by: java.io.FileNotFoundException: FieldMaps/MegaSquirt.properties (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:106)
+	... 22 more
+1/25/25, 5:05:04 PM :Debug: Time to notify update: 0
+1/25/25, 5:05:04 PM :Debug: Activate Analysis Tabs
+1/25/25, 5:05:05 PM :Debug: Waiting to enable Buttons.
+1/25/25, 5:05:13 PM :Debug: Deactivate Analysis Tabs
+1/25/25, 5:05:13 PM :Info: Logger Processor stopped.
+[Duplicate entry] received 4 times: Info: Logger Processor stopped.
+1/25/25, 5:05:13 PM :Info: Time to load uncached dash: 24.212605ms, file: IgnitionLoggerCluster.dash
+1/25/25, 5:05:13 PM :Debug: High Speed Paint: true
+1/25/25, 5:05:27 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 5:05:27 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 5:05:27 PM :Debug: Time:1834.008s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 5:05:27 PM :Debug: Time:1834.008s. 
+
+1/25/25, 5:05:27 PM :Debug: Time:1834.008s.   .    .    .    .    .    .    .  
+1/25/25, 5:05:28 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 5:05:28 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 5:05:28 PM :Debug: Time:1834.735s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 5:05:28 PM :Debug: Time:1834.736s. 
+
+1/25/25, 5:05:28 PM :Debug: Time:1834.736s.   .    .    .    .    .    .    .  
+1/25/25, 5:05:29 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 5:05:29 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 5:05:29 PM :Debug: Time:1835.384s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 5:05:29 PM :Debug: Time:1835.384s. 
+
+1/25/25, 5:05:29 PM :Debug: Time:1835.384s.   .    .    .    .    .    .    .  
+1/25/25, 5:05:39 PM :Warning: Controller Reported a Out of Range
+1/25/25, 5:05:39 PM :Debug: call failed protocol validation, running stats: 1 failed validation, 183341 successful.
+1/25/25, 5:05:39 PM :Error: Unable to read Logger data. Controller Instruction failed!
+
+Error: 
+Response packet failed validation: Controller Reported a Out of Range
+1/25/25, 5:05:39 PM :Info: Error: Unable to read Logger data. Controller Instruction failed!
+
+Error: 
+Response packet failed validation: Controller Reported a Out of Range
+
+1/25/25, 5:05:39 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 5:05:39 PM :Debug: Time:1845.584s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 5:05:39 PM :Debug: Time:1845.584s. 
+
+1/25/25, 5:05:39 PM :Debug: Time:1845.584s.   .    .    .    .    .    .    .  
+1/25/25, 5:05:41 PM :Info: Logger Processor stopped.
+[Duplicate entry] received 2 times: Info: Logger Processor stopped.
+1/25/25, 5:05:47 PM :Debug: Deactivated fast paint IgnitionLoggerCluster
+1/25/25, 5:06:17 PM :Info: Logger Processor stopped.
+[Duplicate entry] received 2 times: Info: Logger Processor stopped.
+1/25/25, 5:06:34 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 5:06:34 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 5:06:34 PM :Debug: Time:1900.203s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 5:06:34 PM :Debug: Time:1900.203s. 
+
+1/25/25, 5:06:34 PM :Debug: Time:1900.204s.   .    .    .    .    .    .    .  
+1/25/25, 5:06:38 PM :Info: Logger Processor stopped.
+1/25/25, 5:06:44 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 5:06:44 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 5:06:44 PM :Debug: Time:1910.429s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 5:06:44 PM :Debug: Time:1910.429s. 
+
+1/25/25, 5:06:44 PM :Debug: Time:1910.43s.   .    .    .    .    .    .    .  
+1/25/25, 5:06:45 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 5:06:45 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 5:06:45 PM :Debug: Time:1911.324s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 5:06:45 PM :Debug: Time:1911.325s. 
+
+1/25/25, 5:06:45 PM :Debug: Time:1911.325s.   .    .    .    .    .    .    .  
+1/25/25, 5:06:45 PM :Warning: OverRun condition! No bytes expected from controller, found 7
+
+1/25/25, 5:06:45 PM :Debug: Purged 7 orphaned bytes:
+1/25/25, 5:06:45 PM :Debug: Time:1911.679s. 0x0 0x1 0x0 0xD2 0x2 0xEF 0x8D 
+1/25/25, 5:06:45 PM :Debug: Time:1911.68s. 
+
+1/25/25, 5:06:45 PM :Debug: Time:1911.68s.   .    .    .    .    .    .    .  
+1/25/25, 5:06:49 PM :Info: Logger Processor stopped.
+1/25/25, 5:08:07 PM :Info: Initiating read page 1 : 260:924
+1/25/25, 5:08:07 PM :Debug: CRC matches for page 1:xBA x94 xAE x0B                                                       ....
+1/25/25, 5:08:07 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:08:17 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:08:18 PM :Debug: Flush lasted: 71ms.
+1/25/25, 5:08:18 PM :Debug: Burn Page anonymous: 1
+1/25/25, 5:08:18 PM :Info: Queueing burn to page:1
+1/25/25, 5:08:18 PM :Debug: Burn time:2ms.
+1/25/25, 5:08:18 PM :Debug: burned page 1
+1/25/25, 5:08:18 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 5:08:18 PM :Debug: CRC matches for page 1:x1E x48 x8C x17                                                       .H..
+1/25/25, 5:08:19 PM :Info: Time to save msq: 80.08145
+1/25/25, 5:08:41 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:08:41 PM :Debug: Flush lasted: 71ms.
+1/25/25, 5:08:41 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:08:41 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:08:41 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:10:17 PM :Debug: Deactivated fast paint Main Dashboard
+1/25/25, 5:12:15 PM :Info: Initiating read page 1 : 1808:20
+1/25/25, 5:12:15 PM :Debug: CRC matches for page 1:x1E x48 x8C x17                                                       .H..
+1/25/25, 5:12:15 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:17:38 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:17:38 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:17:38 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:17:38 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:17:38 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:20:51 PM :Info: Initiating read page 1 : 92:2164
+1/25/25, 5:20:51 PM :Debug: CRC matches for page 1:x1E x48 x8C x17                                                       .H..
+1/25/25, 5:20:51 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:20:55 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:20:56 PM :Debug: Flush lasted: 71ms.
+1/25/25, 5:20:56 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:20:56 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:20:56 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:21:35 PM :Info: Initiating read page 1 : 16492:64
+1/25/25, 5:21:35 PM :Debug: CRC matches for page 1:x1E x48 x8C x17                                                       .H..
+1/25/25, 5:21:35 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:22:24 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:22:24 PM :Debug: Flush lasted: 71ms.
+1/25/25, 5:22:24 PM :Debug: Burn Page anonymous: 1
+1/25/25, 5:22:24 PM :Info: Queueing burn to page:1
+1/25/25, 5:22:24 PM :Debug: Burn time:1ms.
+1/25/25, 5:22:24 PM :Debug: burned page 1
+1/25/25, 5:22:24 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 5:22:24 PM :Debug: CRC matches for page 1:x3F xEE xA5 x76                                                       ?..v
+1/25/25, 5:22:25 PM :Info: Time to save msq: 22.951609
+1/25/25, 5:23:17 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:23:17 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:23:17 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:23:17 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:23:17 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:23:27 PM :Info: Initiating read page 1 : 16236:128
+1/25/25, 5:23:28 PM :Debug: CRC matches for page 1:x3F xEE xA5 x76                                                       ?..v
+1/25/25, 5:23:28 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:23:39 PM :Debug: page: 1 offset: 16300, len: 27
+[Duplicate entry] received 8 times: Debug: page: 1 offset: 16300, len: 27
+1/25/25, 5:23:52 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:23:52 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:23:52 PM :Debug: Burn Page anonymous: 1
+1/25/25, 5:23:52 PM :Info: Queueing burn to page:1
+1/25/25, 5:23:53 PM :Debug: Burn time:2ms.
+1/25/25, 5:23:53 PM :Debug: burned page 1
+1/25/25, 5:23:53 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 5:23:53 PM :Debug: CRC matches for page 1:xC2 x39 x7B x21                                                       .9{!
+1/25/25, 5:23:54 PM :Info: Time to save msq: 12.394163
+1/25/25, 5:23:57 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:23:58 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:23:58 PM :Debug: Burn Page anonymous: 1
+1/25/25, 5:23:58 PM :Info: Queueing burn to page:1
+1/25/25, 5:23:58 PM :Debug: Burn time:2ms.
+1/25/25, 5:23:58 PM :Debug: burned page 1
+1/25/25, 5:23:58 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 5:23:58 PM :Debug: CRC matches for page 1:x8A xED x15 x3C                                                       ...<
+1/25/25, 5:23:59 PM :Info: Time to save msq: 10.255353
+1/25/25, 5:24:17 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:24:17 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:24:17 PM :Debug: Burn Page anonymous: -1
+1/25/25, 5:24:17 PM :Info: skip burn to page:1, lastWritePage = -2
+1/25/25, 5:24:17 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+1/25/25, 5:24:29 PM :Info: Initiating read page 1 : 19192:576
+1/25/25, 5:24:29 PM :Debug: CRC matches for page 1:x8A xED x15 x3C                                                       ...<
+1/25/25, 5:24:29 PM :Info: CrC matched skipped controller read on page:0
+1/25/25, 5:24:43 PM :Debug: page: 1 offset: 19192, len: 511
+[Duplicate entry] received 3 times: Debug: page: 1 offset: 19192, len: 511
+1/25/25, 5:24:47 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+1/25/25, 5:24:48 PM :Debug: Flush lasted: 70ms.
+1/25/25, 5:24:48 PM :Debug: Burn Page anonymous: 1
+1/25/25, 5:24:48 PM :Info: Queueing burn to page:1
+1/25/25, 5:24:48 PM :Debug: Burn time:2ms.
+1/25/25, 5:24:48 PM :Debug: burned page 1
+1/25/25, 5:24:48 PM :Debug: No Remaining Queue Write instructions
+1/25/25, 5:24:48 PM :Debug: CRC matches for page 1:x46 x58 xE7 xE2                                                       FX..
+1/25/25, 5:24:49 PM :Info: Time to save msq: 9.070118
