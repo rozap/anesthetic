@@ -1,42 +1,77 @@
-#include <Arduino.h>
+// https://www.stm32duino.com/viewtopic.php?t=619
+#include <SPI.h>
+#include <TinyGPSPlus.h>
+#include <mcp2515.h>
+#include <SoftwareSerial.h>
 
-// put function declarations here:
-int myFunction(int, int);
+#define gpsSerial Serial2
+#define Debug Serial1
+// SoftwareSerial gpsSerial(PB7 /* RX */, PB6 /* TX */);
+
+struct can_frame lngCan;
+struct can_frame latCan;
+struct can_frame speedCan;
+// struct can_frame timeCan;
+
+MCP2515 mcp2515(PA4);
+TinyGPSPlus gps;
 
 void setup()
 {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
+  Debug.begin(9600);
+  gpsSerial.begin(9600);
+
+  SPI.setMOSI(PA7);
+  SPI.setMISO(PA6);
+  SPI.setSCLK(PA5);
+  SPI.begin();
 
   mcp2515.reset();
   mcp2515.setBitrate(CAN_125KBPS);
   mcp2515.setNormalMode();
+}
 
-  Serial.println("------- CAN Read ----------");
-  Serial.println("ID  DLC   DATA");
+double lat;
+double lng;
+double speed;
+
+void fillPackets()
+{
+  latCan.can_id = 0x0F6;
+  latCan.can_dlc = 8;
+  lat = gps.location.lat();
+  memcpy(latCan.data, &lat, sizeof(double));
+
+  lngCan.can_id = 0x0F7;
+  lngCan.can_dlc = 8;
+  lng = gps.location.lng();
+  memcpy(lngCan.data, &lng, sizeof(double));
+
+  speedCan.can_id = 0x0F8;
+  speedCan.can_dlc = 8;
+  speed = gps.speed.mph();
+  memcpy(speedCan.data, &speed, sizeof(double));
+}
+
+void sendPackets()
+{
+  mcp2515.sendMessage(&latCan);
+  mcp2515.sendMessage(&lngCan);
+  mcp2515.sendMessage(&speedCan);
 }
 
 void loop()
 {
-  if (mcp2515.readMessage(&canMsg) == MCP2515::ERROR_OK)
+  while (gpsSerial.available())
   {
-    Serial.print(canMsg.can_id, HEX); // print ID
-    Serial.print(" ");
-    Serial.print(canMsg.can_dlc, HEX); // print DLC
-    Serial.print(" ");
+    if (gps.encode(gpsSerial.read()))
+    {
 
-    for (int i = 0; i < canMsg.can_dlc; i++)
-    { // print the data
-      Serial.print(canMsg.data[i], HEX);
-      Serial.print(" ");
+      if (gps.location.isUpdated())
+      {
+        fillPackets();
+        sendPackets();
+      }
     }
-
-    Serial.println();
   }
-}
-
-// put function definitions here:
-int myFunction(int x, int y)
-{
-  return x + y;
 }
