@@ -1,7 +1,7 @@
 #Project Attributes.
 #TunerStudio by EFI Analytics, Inc
-#Last Saved on: Sun Jan 05 14:35:38 PST 2025
-#Sun Jan 05 14:35:38 PST 2025
+#Last Saved on: Sun Jan 26 09:47:02 PST 2025
+#Sun Jan 26 09:47:02 PST 2025
 ASEAfterstart\ Enrichment(ASE)_X=667
 ASEAfterstart\ Enrichment(ASE)_Y=71
 ASEAfterstart\ Enrichment(ASE)_height=968
@@ -18,7 +18,7 @@ CommSettingzenCommDriver.RS232\ Serial\ InterfaceBaud\ Rate=115200
 CommSettingzenCommDriver.RS232\ Serial\ InterfaceBluetooth\ Port=false
 CommSettingzenCommDriver.RS232\ Serial\ InterfaceCom\ Port=/dev/ttyACM0
 CommSettingzenCommDriver.controllerInterfaceId=RS232 Serial Interface
-Triggers.ActiveTriggers=cltTempWarning|playRacecarWOT|TriggeredPage0 Refresh\:  vssRefresh > 0 |
+Triggers.ActiveTriggers=cltTempWarning|TriggeredPage0 Refresh\:  vssRefresh > 0 |
 Triggers.culex0r_tune.ActiveTriggers=TriggeredPage0 Refresh\:  vssRefresh > 0 |
 VeAnalyzeConsole.veTable1Tbl_selectedDash=Standard
 VeAnalyzePanel_veTable1Tbl_baseWeight=3.0
@@ -110,7 +110,7 @@ lambdaTable1TblLambda\ Table_X=616
 lambdaTable1TblLambda\ Table_Y=338
 lambdaTable1TblLambda\ Table_height=435
 lambdaTable1TblLambda\ Table_width=680
-lastDisplayedTuneFile=
+lastDisplayedTuneFile=veTableDialog_2025-01-05_14.38.48.msqpart
 logFileDir=/home/chris/workspace/anesthetic/vrsiX19/DataLogs
 logTuningPanel_selectionTable1=veTable1Tbl
 logTuningPanel_selectionTable2=sparkTbl
@@ -173,7 +173,7 @@ triggerSettingsTrigger\ Settings_X=712
 triggerSettingsTrigger\ Settings_Y=286
 triggerSettingsTrigger\ Settings_height=539
 triggerSettingsTrigger\ Settings_width=487
-tuneFileDir=/home/chris/workspace/anesthetic/vrsiX19
+tuneFileDir=/home/chris/Desktop
 useCommonDashboardDir=false
 useCommonTuneViewDir=false
 userDash0.DashName=Acceleration Performance
