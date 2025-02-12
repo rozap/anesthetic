@@ -1,12 +1,13 @@
 // https://www.stm32duino.com/viewtopic.php?t=619
+
+
+
 #include <SPI.h>
 #include <TinyGPSPlus.h>
 #include <mcp2515.h>
-#include <SoftwareSerial.h>
 
 #define gpsSerial Serial2
 #define Debug Serial1
-// SoftwareSerial gpsSerial(PB7 /* RX */, PB6 /* TX */);
 
 struct can_frame lngCan;
 struct can_frame latCan;
@@ -16,6 +17,11 @@ struct can_frame speedCan;
 MCP2515 mcp2515(PA4);
 TinyGPSPlus gps;
 
+// wiring
+// PA3 is RX, line to GPS TX
+// PA2 is TX, line to GPS RX
+
+// mcp2515 same as all the others
 void setup()
 {
   Debug.begin(9600);
@@ -55,9 +61,11 @@ void fillPackets()
 
 void sendPackets()
 {
-  mcp2515.sendMessage(&latCan);
-  mcp2515.sendMessage(&lngCan);
-  mcp2515.sendMessage(&speedCan);
+  // fire and forget
+  MCP2515::ERROR latErr = mcp2515.sendMessage(MCP2515::TXB0, &latCan);
+  MCP2515::ERROR lngErr = mcp2515.sendMessage(MCP2515::TXB1, &lngCan);
+  MCP2515::ERROR spdErr = mcp2515.sendMessage(MCP2515::TXB2, &speedCan);
+  Debug.printf("can send lat=%d lng=%d spd=%d", latErr, lngErr, spdErr);
 }
 
 void loop()
@@ -66,12 +74,15 @@ void loop()
   {
     if (gps.encode(gpsSerial.read()))
     {
+      Debug.println("Got a gps packet");
 
       if (gps.location.isUpdated())
       {
+        Debug.printf("Location lat=%f lng=%f", gps.location.lat(), gps.location.lng());
         fillPackets();
         sendPackets();
       }
-    }
+    } 
   }
 }
+
