@@ -61,9 +61,11 @@ void fillPackets()
 
 void sendPackets()
 {
-  mcp2515.sendMessage(&latCan);
-  mcp2515.sendMessage(&lngCan);
-  mcp2515.sendMessage(&speedCan);
+  // fire and forget
+  MCP2515::ERROR latErr = mcp2515.sendMessage(MCP2515::TXB0, &latCan);
+  MCP2515::ERROR lngErr = mcp2515.sendMessage(MCP2515::TXB1, &lngCan);
+  MCP2515::ERROR spdErr = mcp2515.sendMessage(MCP2515::TXB2, &speedCan);
+  Debug.printf("can send lat=%d lng=%d spd=%d", latErr, lngErr, spdErr);
 }
 
 void loop()
@@ -82,6 +84,5 @@ void loop()
       }
     } 
   }
-  Debug.println("No gps serial available");
 }
 
