@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-    <bibliography author="TunerStudio MS Ultra 3.2.05 - EFI Analytics, Inc." tuneComment="" writeDate="Sun Feb 16 18:26:02 PST 2025"/>
+    <bibliography author="TunerStudio MS Ultra 3.2.05 - EFI Analytics, Inc." tuneComment="&lt;html&gt;Restore Point: Project close - &lt;br&gt;" writeDate="Sun Feb 16 17:52:14 PST 2025"/>
     <versionInfo fileFormat="5.0" firmwareInfo="FOME+proteus_f7+20240916%40e3a628" nPages="1" signature="rusEFI (FOME) .2024.10.22.proteus_f7.3998132989"/>
     <page>
         <pcVariable name="tsCanId">"0"</pcVariable>
-        <pcVariable digits="0" name="tuneCrcPcVariable">17003.0</pcVariable>
+        <pcVariable digits="0" name="tuneCrcPcVariable">17199.0</pcVariable>
         <pcVariable cols="1" digits="1" name="wueAfrTargetOffset" rows="16" units=":1">
          -1.5 
          -1.4 
@@ -508,9 +508,9 @@
         <constant name="knockBankCyl11">"Channel 1"</constant>
         <constant name="knockBankCyl12">"Channel 1"</constant>
         <constant name="tcuEnabled">"false"</constant>
-        <constant name="canBroadcastUseChannelTwo">"first"</constant>
+        <constant name="canBroadcastUseChannelTwo">"second"</constant>
         <constant name="useRawOutputToDriveIdleStepper">"false"</constant>
-        <constant name="verboseCan2">"Do not print"</constant>
+        <constant name="verboseCan2">"Print all"</constant>
         <constant name="etbIo1_directionPin1">"PD10"</constant>
         <constant name="etbIo1_directionPin2">"NONE"</constant>
         <constant name="etbIo1_controlPin">"PD12"</constant>
