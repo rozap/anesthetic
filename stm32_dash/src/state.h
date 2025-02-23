@@ -1,16 +1,19 @@
 #pragma once
+#ifndef STATE_H
+#define STATE_H
+extern HardwareSerial& DebugSerial;
 
 struct CurrentEngineState
 {
   uint16_t RPM;
   uint16_t timing;
-  float oilPressure;
-  uint16_t coolantTemp;
-  float volts;
-  float lambda;
+  double oilPressure;
+  int coolantTemp;
+  int iat;
+  double volts;
+  double lambda;
   uint16_t oilTemp;
   uint16_t fuelPressure;
-  uint16_t iat;
   uint16_t fuelUsed;
   uint16_t knockCount;
   uint16_t warningCounter;
@@ -31,3 +34,4 @@ struct CurrentEngineState
   uint16_t messageCount;
   MCP2515::ERROR canState;
 };
+#endif

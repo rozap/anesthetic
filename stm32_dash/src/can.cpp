@@ -17,6 +17,19 @@ void canInit()
   mcp2515.setNormalMode();
 }
 
+void printFrame(can_frame frame)
+{
+  DebugSerial.printf("CAN FRAME %d ============\n", frame.can_id);
+  for (size_t i = 0; i < frame.can_dlc; i++)
+  {
+    if (frame.data[i] < 0x10)
+      DebugSerial.print('0'); // pad single digit hex numbers with leading 0
+    DebugSerial.print(frame.data[i], HEX);
+    DebugSerial.print(' ');
+  }
+  DebugSerial.println("\n=======================");
+}
+
 void decode512(can_frame &frame, CurrentEngineState &state)
 {
   /*
@@ -63,6 +76,8 @@ void decode512(can_frame &frame, CurrentEngineState &state)
 
 void decode513(can_frame &frame, CurrentEngineState &state)
 {
+
+  // printFrame(frame);
   /*
   BO_ 513 BASE1: 8 Vector__XXX
     SG_ RPM : 0|16@1+ (1,0) [0|0] "RPM" Vector__XXX
@@ -228,47 +243,64 @@ void decode519(const can_frame &frame, CurrentEngineState &state)
 
 #define MISSED_MESSAGE_TIMEOUT 1000
 long lastMissedMessage = 0;
+#define MAX_MSG_COUNT 10
 
-boolean updateState(CurrentEngineState &state)
+bool updateState(CurrentEngineState &state)
 {
-  MCP2515::ERROR res = mcp2515.readMessage(&canMsg);
-  state.canState = res;
-  if (res == MCP2515::ERROR_OK)
+  for (int i = 0; i < MAX_MSG_COUNT; i++)
   {
-    state.missedMessageCount = 0;
-    state.messageCount++;
-    switch (canMsg.can_id)
+    MCP2515::ERROR res = mcp2515.readMessage(&canMsg);
+    if (i == 0)
     {
-    case 513:
-      decode513(canMsg, state);
-      return true;
-    case 515:
-      decode515(canMsg, state);
-      return true;
-    case 516:
-      decode516(canMsg, state);
-      return true;
-    case 517:
-      decode517(canMsg, state);
-      return true;
-    case 518:
-      decode518(canMsg, state);
-      return true;
-    case 519:
-      decode519(canMsg, state);
-      return true;
+      state.canState = res;
     }
-  }
-  else
-  {
-    long now = millis();
-    if ((now - lastMissedMessage) > MISSED_MESSAGE_TIMEOUT)
+    else
     {
-      lastMissedMessage = now;
-      state.missedMessageCount++;
-      return true;
+      if (res == MCP2515::ERROR_NOMSG)
+      {
+        // there was at leas one message and we got all the incoming messages
+        return true;
+      }
     }
-  }
 
-  return false;
+    if (res == MCP2515::ERROR_OK)
+    {
+      // DebugSerial.printf("CAN RX: id=%d dlc=%d\n", canMsg.can_id, canMsg.can_dlc);
+      state.missedMessageCount = 0;
+      state.messageCount++;
+      // DebugSerial.printf("Message %d\n", canMsg.can_id);
+      switch (canMsg.can_id)
+      {
+      case 513:
+        decode513(canMsg, state);
+        break;
+      case 515:
+        decode515(canMsg, state);
+        break;
+      case 516:
+        decode516(canMsg, state);
+        break;
+      case 517:
+        decode517(canMsg, state);
+        break;
+      case 518:
+        decode518(canMsg, state);
+        break;
+      case 519:
+        decode519(canMsg, state);
+        break;
+      }
+    }
+    else
+    {
+      long now = millis();
+      if ((now - lastMissedMessage) > MISSED_MESSAGE_TIMEOUT)
+      {
+        lastMissedMessage = now;
+        state.missedMessageCount++;
+        return true;
+      }
+      return false;
+    }
+  }
 }

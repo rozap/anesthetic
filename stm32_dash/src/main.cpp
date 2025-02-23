@@ -42,6 +42,8 @@
 // Use data in mock_pkt.h instead of actually reading from the serial port.
 // #define USE_MOCK_DATA
 
+#define DEBUG_PRINT
+
 #define LIMIT_COOLANT_UPPER 215
 #define LIMIT_OIL_LOWER 10
 #define LIMIT_FUEL_LOWER 10
@@ -80,10 +82,6 @@
 #endif
 
 CurrentEngineState currentEngineState;
-CurrentEngineState prevEngineState;
-
-// Serial1: RX: A10, TX: A9. Debug and programming port.
-HardwareSerial DebugSerial = Serial1;
 
 long missionStartTimeMillis;
 bool everHadEcuData;
@@ -436,30 +434,8 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
   lastRenderedSecondaryInfo = secondaryInfo;
 }
 
-void renderNoConnection()
+void printCanState()
 {
-  tft.fillScreen(ILI9341_BLACK);
-  tft.setTextSize(3);
-  tft.setCursor(0, 0);
-  tft.println("No Connection");
-  DebugSerial.println("no connection");
-}
-
-void renderNoData()
-{
-  tft.setTextColor(ILI9341_LIGHTGREY);
-  tft.setTextSize(4);
-  tft.setCursor(0, 0);
-  clearLine();
-  tft.println("No Data");
-
-  tft.setTextSize(2);
-  clearLine();
-  tft.print("Timeouts ");
-  tft.print(currentEngineState.missedMessageCount);
-  tft.println("  ");
-
-  tft.setTextSize(2);
   clearLine();
   tft.print("CAN Status ");
 
@@ -485,12 +461,41 @@ void renderNoData()
     tft.print("Err No Message");
     break;
   }
+}
+
+void renderNoConnection()
+{
+
+  tft.setTextSize(3);
+  clearLine();
+  tft.setCursor(0, 0);
+  tft.println("No Connection");
+  printCanState();
+  DebugSerial.println("no connection");
+}
+
+void renderNoData()
+{
+  tft.setTextColor(ILI9341_LIGHTGREY);
+  tft.setTextSize(4);
+  tft.setCursor(0, 0);
+  clearLine();
+  tft.println("No Data");
+
+  tft.setTextSize(2);
+  clearLine();
+  tft.print("Timeouts ");
+  tft.print(currentEngineState.missedMessageCount);
+  tft.println("  ");
+
+  tft.setTextSize(2);
+  clearLine();
+  printCanState();
   tft.println("");
 
   clearLine();
   tft.print("CAN Count");
   tft.println(currentEngineState.messageCount);
-
 
   clearLine();
   tft.print("Fuel ");
@@ -498,6 +503,18 @@ void renderNoData()
   tft.println("%   ");
 
   DebugSerial.println("no data");
+}
+
+int celsiusToF(float c)
+{
+  return (int)(c * 1.8 + 32);
+}
+
+long kpaToPsi(float kpa)
+{
+  // Conversion factor: 1 kPa = 0.145038 PSI
+  const double KPA_TO_PSI = 0.145038;
+  return lround(kpa * KPA_TO_PSI);
 }
 
 void render(bool firstRender)
@@ -508,11 +525,10 @@ void render(bool firstRender)
 
   int fuel = localSensors.fuelPct;
   drawLabeledGauge(firstRender, "FUEL    ", "%3d", fuel, 0, 100, LIMIT_FUEL_LOWER, 100, okColors, errorColors);
-  drawLabeledGauge(firstRender, "RPM    ", "%4d", currentEngineState.RPM, 500, 7000, 0, LIMIT_RPM_UPPER, okColors, errorColors);
+  drawLabeledGauge(firstRender, "RPM    ", "%4d", coreInfo.RPM, 500, 7000, 0, LIMIT_RPM_UPPER, okColors, errorColors);
 
-  int coolantF = (int)(((float)currentEngineState.coolantTemp) * 1.8 + 32);
-  drawLabeledGauge(firstRender, "COOLANT ", "%3d", coolantF, 50, 250, 0, LIMIT_COOLANT_UPPER, okColors, errorColors);
-  drawLabeledGauge(firstRender, "OIL     ", "%3d", currentEngineState.oilPressure, 0, 60, LIMIT_OIL_LOWER, 999, okColors, errorColors);
+  drawLabeledGauge(firstRender, "COOLANT ", "%3d", coreInfo.coolantTemp, 50, 250, 0, LIMIT_COOLANT_UPPER, okColors, errorColors);
+  drawLabeledGauge(firstRender, "OIL     ", "%3d", coreInfo.oilPressure, 0, 60, LIMIT_OIL_LOWER, 999, okColors, errorColors);
 
   int bottomPanelY = tft.getCursorY();
   if (firstRender)
@@ -559,10 +575,18 @@ void renderBootImage()
 }
 #endif
 
+void updateCoreInfoForRender()
+{
+  coreInfo.coolantTemp = celsiusToF(currentEngineState.coolantTemp);
+  coreInfo.oilPressure = kpaToPsi(currentEngineState.oilPressure);
+  coreInfo.RPM = currentEngineState.RPM;
+  coreInfo.volts = currentEngineState.volts;
+}
+
 void updateSecondaryInfoForRender()
 {
   secondaryInfo.airFuel = currentEngineState.lambda * 14.68;
-  secondaryInfo.fuelPressure = currentEngineState.fuelPressure;
+  secondaryInfo.fuelPressure = kpaToPsi(currentEngineState.fuelPressure);
   secondaryInfo.oilTemp = currentEngineState.oilTemp;
   secondaryInfo.iat = currentEngineState.iat;
   secondaryInfo.volts = currentEngineState.volts;
@@ -571,7 +595,7 @@ void updateSecondaryInfoForRender()
 
 void updateStatusMessagesForRender()
 {
-  double coolantF = ((double)currentEngineState.coolantTemp) * 1.8 + 32;
+  double coolantF = celsiusToF(currentEngineState.coolantTemp);
   double voltage = currentEngineState.volts;
   statusMessages.fanOn = currentEngineState.fanOn; // TOO
   statusMessages.fanOff = true;                    // TODO
@@ -595,9 +619,6 @@ void updateStatusMessagesForRender()
       statusMessages.overRev ||
       statusMessages.lowVolt);
 }
-
-#define RESPONSE_LEN 128
-uint8_t speeduinoResponse[RESPONSE_LEN];
 
 // Call this once per update interval.
 // Consumers should look at localSensors.fuelPct.
@@ -697,6 +718,8 @@ void updateLocalSensors()
   localSensors.missionElapsedSeconds = (millis() - missionStartTimeMillis) / 1000;
 }
 
+HardwareSerial &DebugSerial = Serial1;
+
 void setup()
 {
   memset(&statusMessages, 0, sizeof(StatusMessages));
@@ -709,8 +732,6 @@ void setup()
   memset(&lastRenderedCoreInfo, 0, sizeof(CoreInfo));
 
   everHadEcuData = false;
-
-  DebugSerial.begin(115200);
 
   analogReadResolution(12);
 
@@ -734,10 +755,16 @@ void setup()
   tft.setRotation(1);
   requestFrame = true;
 
+  clearScreen();
+
 #ifdef BOOTSPLASH
   renderBootImage();
 #else
   renderNoConnection();
+#endif
+
+#ifdef DEBUG_PRINT
+  DebugSerial.begin(115200);
 #endif
 
   tft.setTextSize(2);
@@ -751,8 +778,13 @@ void setup()
   frameCounter = 0;
 }
 
-void updateConnectionState() {
-  if (currentEngineState.canState != MCP2515::ERROR_OK)
+void updateConnectionState()
+{
+  if (currentEngineState.canState == MCP2515::ERROR_OK)
+  {
+    screenState = SCREEN_STATE_NORMAL;
+  }
+  else
   {
     // in the state update, if X time goes by, it will increment missedMessageCount
     // so if that happens N times, we'll assume a lost connection and render no data
@@ -763,26 +795,124 @@ void updateConnectionState() {
   }
 }
 
+long lastPrint = 0;
+void printEngineState(const CurrentEngineState &state)
+{
+  long now = millis();
+  if (now - lastPrint < 1000)
+  {
+    return;
+  }
+  lastPrint = now;
+  // Basic engine parameters
+
+  // First line: Core engine data
+  DebugSerial.print(F("RPM:"));
+  DebugSerial.print(state.RPM);
+  DebugSerial.print(F(" TIM:"));
+  DebugSerial.print(state.timing);
+  DebugSerial.print(F("°"));
+  DebugSerial.print(F(" LAM:"));
+  DebugSerial.print(state.lambda, 2);
+  DebugSerial.print(F(" BAT:"));
+  DebugSerial.print(state.volts, 1);
+  DebugSerial.println(F("V"));
+
+  // Second line: Temperatures
+  DebugSerial.print(F("TEMP(C) CLT:"));
+  DebugSerial.print(state.coolantTemp);
+  DebugSerial.print(F(" OIL:"));
+  DebugSerial.print(state.oilTemp);
+  DebugSerial.print(F(" IAT:"));
+  DebugSerial.println(state.iat);
+
+  // Third line: Pressures
+  DebugSerial.print(F("PRESS OIL:"));
+  DebugSerial.print(state.oilPressure, 1);
+  DebugSerial.print(F("kPa"));
+  DebugSerial.print(F(" FUEL:"));
+  DebugSerial.print(state.fuelPressure);
+  DebugSerial.println(F("kPa"));
+
+  // Fourth line: Counters
+  DebugSerial.print(F("CNT FUEL:"));
+  DebugSerial.print(state.fuelUsed);
+  DebugSerial.print(F(" KNK:"));
+  DebugSerial.print(state.knockCount);
+  DebugSerial.print(F(" WARN:"));
+  DebugSerial.print(state.warningCounter);
+  DebugSerial.print(F(" ERR:0x"));
+  DebugSerial.println(state.lastError, HEX);
+
+  // Fifth line: Status flags (active only)
+  DebugSerial.print(F("ON:"));
+  if (state.mainRelayActive)
+    DebugSerial.print(F("RELAY "));
+  if (state.fuelPumpActive)
+    DebugSerial.print(F("PUMP "));
+  if (state.revLimiterActive)
+    DebugSerial.print(F("REV "));
+  if (state.celActive)
+    DebugSerial.print(F("CEL "));
+  if (state.egoHeaterActive)
+    DebugSerial.print(F("EGO "));
+  if (state.lambdaProtectActive)
+    DebugSerial.print(F("LPROT "));
+  if (state.fanActive)
+    DebugSerial.print(F("FAN1 "));
+  if (state.fan2Active)
+    DebugSerial.print(F("FAN2 "));
+  DebugSerial.println();
+
+  // Sixth line: Communication
+  DebugSerial.print(F("COM MSG:"));
+  DebugSerial.print(state.messageCount);
+  DebugSerial.print(F(" MISS:"));
+  DebugSerial.print(state.missedMessageCount);
+  DebugSerial.print(F(" CAN:"));
+  switch (state.canState)
+  {
+  case MCP2515::ERROR_OK:
+    DebugSerial.println(F("OK"));
+    break;
+  case MCP2515::ERROR_FAIL:
+    DebugSerial.println(F("FAIL"));
+    break;
+  case MCP2515::ERROR_ALLTXBUSY:
+    DebugSerial.println(F("BUSY"));
+    break;
+  case MCP2515::ERROR_FAILINIT:
+    DebugSerial.println(F("INIT"));
+    break;
+  default:
+    DebugSerial.println(F("UNK"));
+  }
+  DebugSerial.println(F("---"));
+}
+
 void loop(void)
 {
   requestFrame = updateState(currentEngineState);
   updateConnectionState();
   updateLocalSensors();
+  updateCoreInfoForRender();
+  updateSecondaryInfoForRender();
+  updateStatusMessagesForRender();
 
   if (screenState == SCREEN_STATE_NORMAL)
   {
+
+    printEngineState(currentEngineState);
     bool idiotLight = !statusMessages.allOk;
     updateTach(currentEngineState.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight, statusMessages.running);
   }
-
-  updateSecondaryInfoForRender();
-  updateStatusMessagesForRender();
 
   if (screenState != lastScreenState || requestFrame)
   {
     if (screenState != lastScreenState)
     {
       clearScreen();
+      DebugSerial.printf("ScreenState screenState=%d lastScreenState=%d", screenState, lastScreenState);
     }
 
     switch (screenState)
