@@ -13,21 +13,19 @@ struct CurrentEngineState
   uint16_t iat;
   uint16_t fuelUsed;
   uint16_t knockCount;
+  uint16_t warningCounter;
+  uint16_t lastError;
 
-  bool fanOff;
   bool fanOn;
-  bool engHot;
-  bool lowGas;
-  bool lowOilPressure;
-  bool lowFuelPressure;
-  bool overRev;
-  bool allOk;
-  bool engOff;
-  bool running;
-  bool cranking;
-  bool warmup;
-  bool ase;
-  bool lowVolt;
+  bool revLimiterActive;
+  bool mainRelayActive;
+  bool fuelPumpActive;
+  bool celActive;
+  bool egoHeaterActive;
+
+  bool lambdaProtectActive;
+  bool fanActive;
+  bool fan2Active;
 
   uint16_t missedMessageCount;
   MCP2515::ERROR canState;

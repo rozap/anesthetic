@@ -88,7 +88,6 @@
 
 CurrentEngineState currentEngineState;
 
-
 // Serial1: RX: A10, TX: A9. Debug and programming port.
 HardwareSerial DebugSerial = Serial1;
 
@@ -126,7 +125,6 @@ bool everHadEcuData;
 // 16 bit TFT, 5 bits red, 6 green, 5 blue
 #define BACKGROUND_COLOR ILI9341_BLACK
 #define BAR_COLOR ILI9341_CYAN
-uint8_t timeouts = 0;
 bool requestFrame = false;
 
 #define SCREEN_STATE_NO_DATA 1
@@ -136,7 +134,6 @@ uint8_t screenState = SCREEN_STATE_NO_CONNECTION;
 uint8_t lastScreenState = SCREEN_STATE_NO_CONNECTION;
 
 // Render structs used to only re-render what we need (fps 4 -> ~30).
-
 
 struct StatusMessages
 {
@@ -186,18 +183,6 @@ struct Colors
   int background;
   int text;
 } okColors, errorColors;
-
-void bumpTimeout()
-{
-  timeouts++;
-  requestFrame = true;
-  screenState = SCREEN_STATE_NO_DATA;
-}
-void resetTimeout()
-{
-  timeouts = 0;
-  requestFrame = true;
-}
 
 bool isNthBitSet(unsigned char c, int n)
 {
@@ -463,6 +448,7 @@ void renderNoConnection()
   tft.setTextSize(3);
   tft.setCursor(0, 0);
   tft.println("No Connection");
+  DebugSerial.println("no connection");
 }
 
 void renderNoData()
@@ -476,13 +462,43 @@ void renderNoData()
   tft.setTextSize(2);
   clearLine();
   tft.print("Timeouts ");
-  tft.print(timeouts);
+  tft.print(currentEngineState.missedMessageCount);
+  tft.println("  ");
+
+  tft.setTextSize(2);
+  clearLine();
+  tft.print("CAN Status ");
+
+  switch (currentEngineState.canState)
+  {
+  case MCP2515::ERROR_OK:
+    tft.print("Err Ok??");
+    break;
+
+  case MCP2515::ERROR_FAIL:
+    tft.print("Err Fail");
+    break;
+  case MCP2515::ERROR_ALLTXBUSY:
+    tft.print("Err all tx busy");
+    break;
+  case MCP2515::ERROR_FAILINIT:
+    tft.print("Err fail init");
+    break;
+  case MCP2515::ERROR_FAILTX:
+    tft.print("Err fail tx");
+    break;
+  case MCP2515::ERROR_NOMSG:
+    tft.print("Err No Message");
+    break;
+  }
   tft.println("  ");
 
   clearLine();
   tft.print("Fuel ");
   tft.print(localSensors.fuelPct);
   tft.println("%   ");
+
+  DebugSerial.println("no data");
 }
 
 void render(bool firstRender)
@@ -558,18 +574,18 @@ void updateStatusMessagesForRender()
 {
   double coolantF = ((double)currentEngineState.coolantTemp) * 1.8 + 32;
   double voltage = currentEngineState.volts;
-  statusMessages.fanOn = false; // TOO
-  statusMessages.fanOff = true; // TODO
-  statusMessages.engHot = false; // TODO
+  statusMessages.fanOn = currentEngineState.fanOn; // TOO
+  statusMessages.fanOff = true;                    // TODO
+  statusMessages.engHot = false;                   // TODO
   statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
   statusMessages.lowOilPressure = currentEngineState.oilPressure < LIMIT_OIL_LOWER;
   statusMessages.lowFuelPressure = currentEngineState.fuelPressure < LIMIT_FUEL_PRESSURE_LOWER;
 
   statusMessages.overRev = currentEngineState.RPM > LIMIT_RPM_UPPER;
-  statusMessages.running = false; // TODO
+  statusMessages.running = false;  // TODO
   statusMessages.cranking = false; // TODO
-  statusMessages.warmup = false; // TODO
-  statusMessages.ase = false; // TODO
+  statusMessages.warmup = false;   // TODO
+  statusMessages.ase = false;      // TODO
   statusMessages.engOff = !statusMessages.running && !statusMessages.cranking;
   statusMessages.lowVolt = voltage < LIMIT_VOLTAGE_LOWER;
 
@@ -690,6 +706,9 @@ void setup()
   memset(&secondaryInfo, 0, sizeof(SecondaryInfo));
   memset(&lastRenderedSecondaryInfo, 0, sizeof(SecondaryInfo));
 
+  memset(&coreInfo, 0, sizeof(CoreInfo));
+  memset(&lastRenderedCoreInfo, 0, sizeof(CoreInfo));
+
   everHadEcuData = false;
 
   DebugSerial.begin(115200);
@@ -701,7 +720,7 @@ void setup()
   // driver coming up consistently, so we just wait a bit.
   delay(250);
   tachDisplayInit();
-  canInit();
+  // canInit();
   clearTachLights();
 
   okColors.bar = ILI9341_CYAN;
@@ -714,7 +733,7 @@ void setup()
 
   tft.begin();
   tft.setRotation(1);
-  requestFrame = false;
+  requestFrame = true;
 
 #ifdef BOOTSPLASH
   renderBootImage();
@@ -726,8 +745,6 @@ void setup()
   fontHeightSize2 = tft.fontHeight();
   charWidthSize2 = tft.textWidth(" ");
 
-  DebugSerial.println("initializing radio");
-
   tachBootAnimation();
 
   missionStartTimeMillis = millis();
@@ -735,13 +752,21 @@ void setup()
   frameCounter = 0;
 }
 
-void foo(CurrentEngineState &s) {
-
-}
-
 void loop(void)
 {
-  foo(currentEngineState);
+  DebugSerial.println("Foo!");
+  delay(500);
+  return;
+  updateState(currentEngineState);
+  if (currentEngineState.canState != MCP2515::ERROR_OK)
+  {
+    // in the state update, if X time goes by, it will increment missedMessageCount
+    // so if that happens N times, we'll assume a lost connection and render no data
+    if (currentEngineState.missedMessageCount > 3)
+    {
+      screenState = SCREEN_STATE_NO_DATA;
+    }
+  }
 
   updateLocalSensors();
 

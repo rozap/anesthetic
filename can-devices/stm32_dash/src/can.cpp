@@ -3,18 +3,62 @@
 #include "state.h"
 
 struct can_frame canMsg;
-MCP2515 mcp2515(PA4);
+MCP2515 mcp2515(PB12);
 
 void canInit()
 {
-  SPI.setMOSI(PA7); // TODO these pins aren't right
-  SPI.setMISO(PA6); // TODO these pins aren't right
-  SPI.setSCLK(PA5); // TODO these pins aren't right
+  SPI.setMOSI(PB15);
+  SPI.setMISO(PB14);
+  SPI.setSCLK(PB13);
   SPI.begin();
 
   mcp2515.reset();
   mcp2515.setBitrate(CAN_500KBPS, MCP_8MHZ);
   mcp2515.setNormalMode();
+}
+
+void decode512(can_frame &frame, CurrentEngineState &state)
+{
+  /*
+  BO_ 512 BASE0: 8 Vector__XXX
+   SG_ WarningCounter : 0|16@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ LastError : 16|16@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ RevLimAct : 32|1@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ MainRelayAct : 33|1@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ FuelPumpAct : 34|1@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ CELAct : 35|1@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ EGOHeatAct : 36|1@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ LambdaProtectAct : 37|1@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ Fan : 38|1@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ Fan2 : 39|1@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ CurrentGear : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ DistanceTraveled : 48|16@1+ (0.1,0) [0|6553.5] "km" Vector__XXX
+  */
+
+  // Warning Counter: 16 bits, unsigned, scale=1, offset=0
+  state.warningCounter = (uint16_t)(frame.data[0] | (frame.data[1] << 8));
+
+  // Last Error: 16 bits, unsigned, scale=1, offset=0
+  state.lastError = (uint16_t)(frame.data[2] | (frame.data[3] << 8));
+
+  // Status bits are in bytes 4-5
+  uint16_t statusBits = (uint16_t)(frame.data[4] | (frame.data[5] << 8));
+
+  // Extract individual status bits
+  state.revLimiterActive = (statusBits >> 0) & 0x01;    // bit 32
+  state.mainRelayActive = (statusBits >> 1) & 0x01;     // bit 33
+  state.fuelPumpActive = (statusBits >> 2) & 0x01;      // bit 34
+  state.celActive = (statusBits >> 3) & 0x01;           // bit 35
+  state.egoHeaterActive = (statusBits >> 4) & 0x01;     // bit 36
+  state.lambdaProtectActive = (statusBits >> 5) & 0x01; // bit 37
+  state.fanActive = (statusBits >> 6) & 0x01;           // bit 38
+  state.fan2Active = (statusBits >> 7) & 0x01;          // bit 39
+  // Current Gear: 8 bits, unsigned, scale=1, offset=0
+  // state.currentGear = frame.data[5]; // Starting at bit 40, which is byte 5
+
+  // Distance Traveled: 16 bits, unsigned, scale=0.1, offset=0
+  // uint16_t rawDistance = (uint16_t)(frame.data[6] | (frame.data[7] << 8));
+  // state->distanceTraveled = rawDistance * 0.1f;
 }
 
 void decode513(can_frame &frame, CurrentEngineState &state)
@@ -182,12 +226,16 @@ void decode519(const can_frame &frame, CurrentEngineState &state)
   // state.fuelPressureHigh = rawFpHigh * 0.1f;
 }
 
+#define MISSED_MESSAGE_TIMEOUT 1000
+long lastMissedMessage = 0;
+
 void updateState(CurrentEngineState &state)
 {
   MCP2515::ERROR res = mcp2515.readMessage(&canMsg);
-  state.canState;
+  state.canState = res;
   if (res == MCP2515::ERROR_OK)
   {
+    state.missedMessageCount = 0;
     switch (canMsg.can_id)
     {
     case 513:
@@ -202,6 +250,15 @@ void updateState(CurrentEngineState &state)
       return decode518(canMsg, state);
     case 519:
       return decode519(canMsg, state);
+    }
+  }
+  else
+  {
+    long now = millis();
+    if ((now - lastMissedMessage) > MISSED_MESSAGE_TIMEOUT)
+    {
+      lastMissedMessage = now;
+      state.missedMessageCount++;
     }
   }
 }
