@@ -50,11 +50,6 @@
 #define LIMIT_RPM_UPPER 5800
 #define LIMIT_VOLTAGE_LOWER 12.0
 
-// Telemetry is sent at most this often. It will usually be less often, as the radio will
-// often be busy/unable to send at the exact moment. This is essentially the radio polling
-// rate.
-#define TELEMETRY_MIN_SEND_PERIOD_MS 200
-
 // Averaging window size for analog readings (oil temp and fuel level).
 #define WINDOW_SIZE 16
 
@@ -75,9 +70,8 @@
 #include "can.h"
 
 /* Radio */
-
+#define BOOTSPLASH
 // Some vestigial RadioHead stuff we can refactor out later.
-
 #ifdef BOOTSPLASH
 #include "boot_image.h"
 #endif
@@ -125,7 +119,7 @@ bool everHadEcuData;
 // 16 bit TFT, 5 bits red, 6 green, 5 blue
 #define BACKGROUND_COLOR ILI9341_BLACK
 #define BAR_COLOR ILI9341_CYAN
-bool requestFrame = false;
+bool requestFrame = true;
 
 #define SCREEN_STATE_NO_DATA 1
 #define SCREEN_STATE_NO_CONNECTION 2
