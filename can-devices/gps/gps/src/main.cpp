@@ -33,7 +33,7 @@ void setup()
   SPI.begin();
 
   mcp2515.reset();
-  mcp2515.setBitrate(CAN_125KBPS);
+  mcp2515.setBitrate(CAN_125KBPS, MCP_8MHZ);
   mcp2515.setNormalMode();
 }
 
@@ -65,7 +65,7 @@ void sendPackets()
   MCP2515::ERROR latErr = mcp2515.sendMessage(MCP2515::TXB0, &latCan);
   MCP2515::ERROR lngErr = mcp2515.sendMessage(MCP2515::TXB1, &lngCan);
   MCP2515::ERROR spdErr = mcp2515.sendMessage(MCP2515::TXB2, &speedCan);
-  Debug.printf("can send lat=%d lng=%d spd=%d", latErr, lngErr, spdErr);
+  Debug.printf("can send lat=%d lng=%d spd=%d\n", latErr, lngErr, spdErr);
 }
 
 void loop()
@@ -74,11 +74,9 @@ void loop()
   {
     if (gps.encode(gpsSerial.read()))
     {
-      Debug.println("Got a gps packet");
-
       if (gps.location.isUpdated())
       {
-        Debug.printf("Location lat=%f lng=%f", gps.location.lat(), gps.location.lng());
+        Debug.printf("Location lat=%f lng=%f\n", gps.location.lat(), gps.location.lng());
         fillPackets();
         sendPackets();
       }

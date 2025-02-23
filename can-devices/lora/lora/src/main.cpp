@@ -28,6 +28,13 @@ HardwareSerial DebugSerial = Serial1;
 SPIClass mpcSPI(PA7, PA6, PA5);
 MCP2515 mcp2515(PA4);
 
+// On mcp2515
+// A7 -> MOSI
+// A6 -> MISO
+// A5 -> SCK
+// A4 -> CS
+//
+// On lora (powered by 3.3v)
 // PC14 goes to LoRa D2
 // PB5  goes to LoRa D9
 // PB12 goes to LoRa D10
@@ -77,7 +84,7 @@ void setup()
 // 1 byte for dlc
 // 8 bytes for content
 #define FLOOR_DIV(x, y) ((x) / (y) - ((x) % (y) < 0 ? 1 : 0))
-#define FRAMES_PER_PACKET FLOOR_DIV(RH_RF95_MAX_MESSAGE_LEN, 13)
+#define FRAMES_PER_PACKET 3
 bool initialSend = true;
 uint8_t packetIndex = 0;
 struct can_frame canFrames[FRAMES_PER_PACKET];
@@ -103,43 +110,42 @@ void flushFrames()
 {
   LoRa.beginPacket();
   loraSendDummyRadioHeadHeader();
+
   for (int i = 0; i < FRAMES_PER_PACKET; i++)
   {
     // can_id is 4 bytes
-    canid_t id = canFrames[i].can_id;
-    uint8_t id0 = (id >> 24) & 0xFF;
-    uint8_t id1 = (id >> 16) & 0xFF;
-    uint8_t id2 = (id >> 8) & 0xFF;
-    uint8_t id3 = id & 0xFF;
-    LoRa.write(id0);
-    LoRa.write(id1);
-    LoRa.write(id2);
-    LoRa.write(id3);
-
-    // dlc is just one
+    LoRa.write((uint8_t *)&canFrames[i].can_id, 4);
+    // dlc just one byte
     LoRa.write(canFrames[i].can_dlc);
+    // actual payload is dlc length
+    LoRa.write(canFrames[i].data, canFrames[i].can_dlc);
 
-    // the actual payload
-    for (int i = 0; i < canFrames[i].can_dlc; i++)
-    {
-      LoRa.write(canFrames[i].data[i]);
-    }
+    DebugSerial.write((uint8_t *)&canFrames[i].can_id, 4);
+    DebugSerial.write(canFrames[i].can_dlc);
+    DebugSerial.write(canFrames[i].data, canFrames[i].can_dlc);
   }
   LoRa.endPacket(true);
-  DebugSerial.println("Sent a lora packet!");
 }
 
 void loop()
 {
+  if (LoRa.isAsyncTxDone() || initialSend)
+  {
+    initialSend = false;
+    LoRa.beginPacket();
+    loraSendDummyRadioHeadHeader();
+    LoRa.print("hello world");
+    LoRa.endPacket(true);
+    delay(500);
+    }
+  return;
 
   MCP2515::ERROR res = mcp2515.readMessage(&canFrames[packetIndex]);
   if (res == MCP2515::ERROR_OK)
   {
     packetIndex++;
-    DebugSerial.println("Got a CAN packet");
     if (packetIndex == (FRAMES_PER_PACKET - 1))
     {
-      DebugSerial.printf("Filled a lora packet, going to send; packetIndex=%d\n", packetIndex);
       // if the radio is busy we'll just start overwriting
       // can frames and in the beginning of the window
       // and hopefully send stuff on the next go-round
