@@ -28,6 +28,13 @@ HardwareSerial DebugSerial = Serial1;
 SPIClass mpcSPI(PA7, PA6, PA5);
 MCP2515 mcp2515(PA4);
 
+// On mcp2515
+// A7 -> MOSI
+// A6 -> MISO
+// A5 -> SCK
+// A4 -> CS
+//
+// On lora (powered by 3.3v)
 // PC14 goes to LoRa D2
 // PB5  goes to LoRa D9
 // PB12 goes to LoRa D10
@@ -39,8 +46,7 @@ SPIClass radioSPI(PB15, PB14, PB13); //, PB12);
 bool radioAvailable;
 uint8_t radioPktSpaceLeft;
 
-
-//https://github.com/FOME-Tech/fome-fw/blob/master/firmware/controllers/can/FOME_CAN_verbose.dbc
+// https://github.com/FOME-Tech/fome-fw/blob/master/firmware/controllers/can/FOME_CAN_verbose.dbc
 
 void setup()
 {
@@ -77,39 +83,70 @@ void setup()
 // 4 bytes for the id
 // 1 byte for dlc
 // 8 bytes for content
-#define FRAMES_PER_PACKET 19
+#define FLOOR_DIV(x, y) ((x) / (y) - ((x) % (y) < 0 ? 1 : 0))
+#define FRAMES_PER_PACKET 3
 bool initialSend = true;
 uint8_t packetIndex = 0;
 struct can_frame canFrames[FRAMES_PER_PACKET];
 struct can_frame currentFrame;
 // 19 can frames can fit in the fifo
 
+void loraSendDummyRadioHeadHeader()
+{
+  // Stub implementation of the header the RadioHead library uses.
+  // It conveys source and destination addresses as well as extra
+  // packet flags. We don't need these in our dash implementation,
+  // but since the base station uses RadioHead let's just make it
+  // happy. Perhaps we should consolidate libraries in the future.
+  // NB: If we ever need to _read_ incoming packets, discard the
+  // first 4 incoming bytes.
+  LoRa.write(RH_BROADCAST_ADDRESS); // Header: TO
+  LoRa.write(RH_BROADCAST_ADDRESS); // Header: FROM
+  LoRa.write(0);                    // Header: ID
+  LoRa.write(0);                    // Header: FLAGS
+}
+
 void flushFrames()
 {
   LoRa.beginPacket();
+  loraSendDummyRadioHeadHeader();
+
   for (int i = 0; i < FRAMES_PER_PACKET; i++)
   {
-    LoRa.write(canFrames[i].can_id);
+    // can_id is 4 bytes
+    LoRa.write((uint8_t *)&canFrames[i].can_id, 4);
+    // dlc just one byte
     LoRa.write(canFrames[i].can_dlc);
-    for (int i = 0; i < canFrames[i].can_dlc; i++)
-    {
-      LoRa.write(canFrames[i].data[i]);
-    }
+    // actual payload is dlc length
+    LoRa.write(canFrames[i].data, canFrames[i].can_dlc);
+
+    DebugSerial.write((uint8_t *)&canFrames[i].can_id, 4);
+    DebugSerial.write(canFrames[i].can_dlc);
+    DebugSerial.write(canFrames[i].data, canFrames[i].can_dlc);
   }
   LoRa.endPacket(true);
 }
 
 void loop()
 {
+  if (LoRa.isAsyncTxDone() || initialSend)
+  {
+    initialSend = false;
+    LoRa.beginPacket();
+    loraSendDummyRadioHeadHeader();
+    LoRa.print("hello world");
+    LoRa.endPacket(true);
+    delay(500);
+    }
+  return;
 
   MCP2515::ERROR res = mcp2515.readMessage(&canFrames[packetIndex]);
   if (res == MCP2515::ERROR_OK)
   {
     packetIndex++;
-    DebugSerial.println("Got a CAN packet");
     if (packetIndex == (FRAMES_PER_PACKET - 1))
     {
-      // if the radio is busy we'll just start overwriting 
+      // if the radio is busy we'll just start overwriting
       // can frames and in the beginning of the window
       // and hopefully send stuff on the next go-round
       if (LoRa.isAsyncTxDone() || initialSend)
@@ -119,7 +156,12 @@ void loop()
       }
       packetIndex = 0;
     }
-  } else {
-    DebugSerial.printf("Got CAN res: %d\n", res);
+  }
+  else
+  {
+    if (res != MCP2515::ERROR_NOMSG)
+    {
+      DebugSerial.printf("Got CAN res: %d\n", res);
+    }
   }
 }
