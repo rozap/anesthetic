@@ -1,18 +1,16 @@
 // https://www.stm32duino.com/viewtopic.php?t=619
 
-
-
 #include <SPI.h>
 #include <TinyGPSPlus.h>
 #include <mcp2515.h>
 
 #define gpsSerial Serial2
 #define Debug Serial1
+#define DEBUG
 
 struct can_frame lngCan;
 struct can_frame latCan;
 struct can_frame speedCan;
-// struct can_frame timeCan;
 
 MCP2515 mcp2515(PA4);
 TinyGPSPlus gps;
@@ -24,7 +22,9 @@ TinyGPSPlus gps;
 // mcp2515 same as all the others
 void setup()
 {
+#ifdef DEBUG
   Debug.begin(9600);
+#endif
   gpsSerial.begin(9600);
 
   SPI.setMOSI(PA7);
@@ -65,7 +65,10 @@ void sendPackets()
   MCP2515::ERROR latErr = mcp2515.sendMessage(MCP2515::TXB0, &latCan);
   MCP2515::ERROR lngErr = mcp2515.sendMessage(MCP2515::TXB1, &lngCan);
   MCP2515::ERROR spdErr = mcp2515.sendMessage(MCP2515::TXB2, &speedCan);
+
+#ifdef DEBUG
   Debug.printf("can send lat=%d lng=%d spd=%d\n", latErr, lngErr, spdErr);
+#endif
 }
 
 void loop()
@@ -76,11 +79,12 @@ void loop()
     {
       if (gps.location.isUpdated())
       {
+#ifdef DEBUG
         Debug.printf("Location lat=%f lng=%f\n", gps.location.lat(), gps.location.lng());
+#endif
         fillPackets();
         sendPackets();
       }
-    } 
+    }
   }
 }
-
