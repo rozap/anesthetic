@@ -28,5 +28,6 @@ struct CurrentEngineState
   bool fan2Active;
 
   uint16_t missedMessageCount;
+  uint16_t messageCount;
   MCP2515::ERROR canState;
 };

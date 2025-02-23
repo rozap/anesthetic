@@ -485,7 +485,12 @@ void renderNoData()
     tft.print("Err No Message");
     break;
   }
-  tft.println("  ");
+  tft.println("");
+
+  clearLine();
+  tft.print("CAN Count");
+  tft.println(currentEngineState.messageCount);
+
 
   clearLine();
   tft.print("Fuel ");
@@ -714,7 +719,7 @@ void setup()
   // driver coming up consistently, so we just wait a bit.
   delay(250);
   tachDisplayInit();
-  // canInit();
+  canInit();
   clearTachLights();
 
   okColors.bar = ILI9341_CYAN;

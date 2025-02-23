@@ -236,6 +236,7 @@ boolean updateState(CurrentEngineState &state)
   if (res == MCP2515::ERROR_OK)
   {
     state.missedMessageCount = 0;
+    state.messageCount++;
     switch (canMsg.can_id)
     {
     case 513:
