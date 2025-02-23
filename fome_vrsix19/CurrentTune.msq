@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-    <bibliography author="TunerStudio MS Ultra 3.2.05 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Feb 22 12:44:01 PST 2025"/>
+    <bibliography author="TunerStudio MS Ultra 3.2.05 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Feb 22 22:10:37 PST 2025"/>
     <versionInfo fileFormat="5.0" firmwareInfo="FOME+proteus_f7+20250220%40ec3512" nPages="1" signature="rusEFI (FOME) release_250220.2025.02.20.proteus_f7.627121193"/>
     <page>
         <pcVariable name="tsCanId">"0"</pcVariable>
-        <pcVariable digits="0" name="tuneCrcPcVariable">62451.0</pcVariable>
+        <pcVariable digits="0" name="tuneCrcPcVariable">13981.0</pcVariable>
         <pcVariable cols="1" digits="1" name="wueAfrTargetOffset" rows="16" units=":1">
          -1.5 
          -1.4 
