@@ -198,8 +198,14 @@ CircularBuffer<double, WINDOW_SIZE> fuelWindow;
 
 TFT_eSPI tft = TFT_eSPI();
 
-// Create two sprites for a DMA toggle buffer
-TFT_eSprite sprites[2] = {TFT_eSprite(&tft), TFT_eSprite(&tft)};
+HardwareSerial &DebugSerial = Serial1;
+
+TFT_eSprite coreSprite = TFT_eSprite(&tft);
+TFT_eSprite secondarySprite = TFT_eSprite(&tft);
+TFT_eSprite statusSprite = TFT_eSprite(&tft);
+// Pointers to start of Sprites in RAM (these are then "image" pointers)
+uint16_t *secondarySpritePtr;
+uint16_t *statusSpritePtr;
 
 // SPI port 2
 //                COPI   CIPO   SCLK  PSEL
@@ -225,9 +231,13 @@ double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
   return total / cb.size();
 }
 
-void clearLine(int color)
+void clearLine(TFT_eSPI &s, int color)
 {
-  tft.fillRect(tft.getCursorX(), tft.getCursorY(), tft.width(), tft.getCursorY() + tft.textsize, color);
+  s.fillRect(s.getCursorX(), s.getCursorY(), s.width(), s.getCursorY() + s.textsize, color);
+}
+void clearLine(TFT_eSprite &s, int color)
+{
+  s.fillRect(s.getCursorX(), s.getCursorY(), s.width(), s.getCursorY() + s.textsize, color);
 }
 
 void drawPlainGauge(int value, int min, int max, int y, int height, int color)
@@ -311,38 +321,34 @@ void bsod()
   tft.fillScreen(ILI9341_BLUE);
 }
 
-void moveToHalfWidth()
-{
-  tft.setCursor(WIDTH / 2 + 8, tft.getCursorY());
-  clearLine(BACKGROUND_COLOR);
-}
 
 void writeSingleStatusMessage(bool enabled, const char *msg)
 {
   if (enabled)
   {
-    moveToHalfWidth();
-    tft.println(msg);
+    statusSprite.setCursor(WIDTH / 2 + 8, statusSprite.getCursorY());
+    clearLine(statusSprite, BACKGROUND_COLOR);
+    statusSprite.println(msg);
   }
 }
 
-void renderStatusMessages(int bottomPanelY)
+void renderStatusMessages()
 {
-  if (statusMessages == lastRenderedStatusMessages)
-  {
-    return;
-  }
+  // if (statusMessages == lastRenderedStatusMessages)
+  // {
+  //   return;
+  // }
 
   lastRenderedStatusMessages = statusMessages;
 
-  tft.setCursor(WIDTH / 2 + 8, bottomPanelY);
-  tft.fillRect(WIDTH / 2 + 1, bottomPanelY - 4, WIDTH, HEIGHT, BACKGROUND_COLOR);
+  statusSprite.setCursor(0, 0);
+  statusSprite.fillRect(0, 0, WIDTH, HEIGHT, BACKGROUND_COLOR);
 
-  tft.setTextColor(okColors.text);
+  statusSprite.setTextColor(okColors.text);
   writeSingleStatusMessage(statusMessages.fanOn, "Fan On");
   writeSingleStatusMessage(!statusMessages.fanOn, "Fan Off");
 
-  tft.setTextColor(errorColors.text);
+  statusSprite.setTextColor(errorColors.text);
   writeSingleStatusMessage(statusMessages.engHot, "OVER TEMP!");
   writeSingleStatusMessage(statusMessages.lowGas, "FUEL QTY!");
   writeSingleStatusMessage(statusMessages.lowOilPressure, "OIL PRES!");
@@ -352,31 +358,33 @@ void renderStatusMessages(int bottomPanelY)
   writeSingleStatusMessage(statusMessages.lowVolt, "LOW VOLT!");
   writeSingleStatusMessage(statusMessages.engOff, "Eng Off");
 
-  tft.setTextColor(okColors.text);
+  statusSprite.setTextColor(okColors.text);
   writeSingleStatusMessage(statusMessages.allOk, "All OK");
+
+  tft.pushImageDMA(WIDTH / 2, HEIGHT / 2, WIDTH / 2, HEIGHT / 2, statusSpritePtr);
 }
 
 void renderSecondaries(bool firstRender, int bottomPanelY)
 {
-  tft.setTextColor(ILI9341_WHITE, BACKGROUND_COLOR);
+  secondarySprite.setTextColor(ILI9341_WHITE, BACKGROUND_COLOR);
 
   uint16_t numberXPos = 96;
   uint16_t numberYPos = 134;
 
   if (firstRender)
   {
-    tft.println("A/F");
-    tft.println("FL PRS");
-    tft.println("OIL T");
-    tft.println("IAT");
-    tft.println("VOLTS");
-    tft.println("STINT");
+    secondarySprite.println("A/F");
+    secondarySprite.println("FL PRS");
+    secondarySprite.println("OIL T");
+    secondarySprite.println("IAT");
+    secondarySprite.println("VOLTS");
+    secondarySprite.println("STINT");
   }
 
   if (lastRenderedSecondaryInfo.airFuel != secondaryInfo.airFuel)
   {
-    tft.setCursor(numberXPos, numberYPos);
-    tft.printf(
+    secondarySprite.setCursor(numberXPos, numberYPos);
+    secondarySprite.printf(
         "%5.1f",
         secondaryInfo.airFuel);
   }
@@ -385,58 +393,60 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
   {
     if (statusMessages.lowFuelPressure)
     {
-      tft.setTextColor(errorColors.text, BACKGROUND_COLOR);
+      secondarySprite.setTextColor(errorColors.text, BACKGROUND_COLOR);
     }
-    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 2);
-    tft.printf("%2d", secondaryInfo.fuelPressure);
+    secondarySprite.setCursor(numberXPos, numberYPos + fontHeightSize2 * 2);
+    secondarySprite.printf("%2d", secondaryInfo.fuelPressure);
 
     if (statusMessages.lowFuelPressure)
     {
-      tft.setTextColor(okColors.text, BACKGROUND_COLOR);
+      secondarySprite.setTextColor(okColors.text, BACKGROUND_COLOR);
     }
   }
 
   if (lastRenderedSecondaryInfo.oilTemp != secondaryInfo.oilTemp)
   {
-    tft.setCursor(numberXPos + charWidthSize2 * 2, numberYPos + fontHeightSize2);
-    tft.printf("%3d", secondaryInfo.oilTemp);
+    secondarySprite.setCursor(numberXPos + charWidthSize2 * 2, numberYPos + fontHeightSize2);
+    secondarySprite.printf("%3d", secondaryInfo.oilTemp);
   }
 
   if (lastRenderedSecondaryInfo.iat != secondaryInfo.iat)
   {
-    tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2 * 3);
-    tft.printf("%4d", secondaryInfo.iat);
+    secondarySprite.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2 * 3);
+    secondarySprite.printf("%4d", secondaryInfo.iat);
   }
 
   if (lastRenderedSecondaryInfo.volts != secondaryInfo.volts)
   {
     if (statusMessages.lowVolt)
     {
-      tft.setTextColor(errorColors.text, BACKGROUND_COLOR);
+      secondarySprite.setTextColor(errorColors.text, BACKGROUND_COLOR);
     }
-    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 4);
-    tft.printf("%5.1f", secondaryInfo.volts);
+    secondarySprite.setCursor(numberXPos, numberYPos + fontHeightSize2 * 4);
+    secondarySprite.printf("%5.1f", secondaryInfo.volts);
     if (statusMessages.lowVolt)
     {
-      tft.setTextColor(okColors.text, BACKGROUND_COLOR);
+      secondarySprite.setTextColor(okColors.text, BACKGROUND_COLOR);
     }
   }
 
   if (lastRenderedSecondaryInfo.missionElapsedSeconds != secondaryInfo.missionElapsedSeconds)
   {
-    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 5);
-    tft.printf(
+    secondarySprite.setCursor(numberXPos, numberYPos + fontHeightSize2 * 5);
+    secondarySprite.printf(
         "%02u:%02u",
         secondaryInfo.missionElapsedSeconds / 60,
         secondaryInfo.missionElapsedSeconds % 60);
   }
+
+  tft.pushImageDMA(0, HEIGHT / 2, WIDTH / 2, HEIGHT / 2, secondarySpritePtr);
 
   lastRenderedSecondaryInfo = secondaryInfo;
 }
 
 void printCanState()
 {
-  clearLine(BSOD_COLOR);
+  clearLine(tft, BSOD_COLOR);
   tft.print("CAN Status ");
 
   switch (currentEngineState.canState)
@@ -467,7 +477,7 @@ void renderNoConnection()
 {
   bsod();
   tft.setTextSize(3);
-  clearLine(BSOD_COLOR);
+  clearLine(tft, BSOD_COLOR);
   tft.setCursor(0, 0);
   tft.println("No Connection");
   printCanState();
@@ -480,25 +490,25 @@ void renderNoData()
   tft.setTextColor(ILI9341_LIGHTGREY);
   tft.setTextSize(4);
   tft.setCursor(0, 0);
-  clearLine(BSOD_COLOR);
+  clearLine(tft, BSOD_COLOR);
   tft.println("No Data");
 
   tft.setTextSize(2);
-  clearLine(BSOD_COLOR);
+  clearLine(tft, BSOD_COLOR);
   tft.print("Timeouts ");
   tft.print(currentEngineState.missedMessageCount);
   tft.println("  ");
 
   tft.setTextSize(2);
-  clearLine(BSOD_COLOR);
+  clearLine(tft, BSOD_COLOR);
   printCanState();
   tft.println("");
 
-  clearLine(BSOD_COLOR);
+  clearLine(tft, BSOD_COLOR);
   tft.print("CAN Count");
   tft.println(currentEngineState.messageCount);
 
-  clearLine(BSOD_COLOR);
+  clearLine(tft, BSOD_COLOR);
   tft.print("Fuel ");
   tft.print(localSensors.fuelPct);
   tft.println("%   ");
@@ -520,7 +530,7 @@ long kpaToPsi(float kpa)
 
 void render(bool firstRender)
 {
-  
+
   tft.setTextSize(3);
   tft.setCursor(0, 0);
   tft.setTextColor(ILI9341_CYAN);
@@ -544,7 +554,7 @@ void render(bool firstRender)
   bottomPanelY = bottomPanelY + 6;
   tft.setCursor(0, bottomPanelY);
   renderSecondaries(firstRender, bottomPanelY);
-  // renderStatusMessages(bottomPanelY);
+  renderStatusMessages();
 
   requestFrame = false;
 
@@ -714,10 +724,12 @@ void updateLocalSensors()
   localSensors.missionElapsedSeconds = (millis() - missionStartTimeMillis) / 1000;
 }
 
-HardwareSerial &DebugSerial = Serial1;
-
 void setup()
 {
+#ifdef DEBUG_PRINT
+  DebugSerial.begin(115200);
+#endif
+
   memset(&statusMessages, 0, sizeof(StatusMessages));
   memset(&lastRenderedStatusMessages, 0, sizeof(StatusMessages));
 
@@ -747,8 +759,17 @@ void setup()
   errorColors.background = BACKGROUND_COLOR;
   errorColors.text = ILI9341_ORANGE;
 
+
+
   tft.begin();
-  tft.initDMA();
+  if (tft.initDMA())
+  {
+    DebugSerial.println("Init DMA OK!");
+  } else {
+    DebugSerial.println("Init DMA FAIL");
+  }
+
+  
   tft.startWrite();
   tft.setRotation(1);
   requestFrame = true;
@@ -759,10 +780,6 @@ void setup()
   renderBootImage();
 #else
   renderNoConnection();
-#endif
-
-#ifdef DEBUG_PRINT
-  DebugSerial.begin(115200);
 #endif
 
   tft.setTextSize(2);
