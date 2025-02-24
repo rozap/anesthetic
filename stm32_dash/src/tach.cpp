@@ -35,16 +35,16 @@ uint16_t lastDisplayedLights;
 
 // Private
 
-void tachConfig(uint8_t configByte) {
+void tachConfig(uint8_t configByte)
+{
   TachI2C.beginTransmission(SAA_ADDR);
   TachI2C.write(SAA_ADDR_CONTROL);
   TachI2C.write(configByte | SAA_SEGMENT_MODE);
   TachI2C.endTransmission();
 }
 
-
-
-void tachLights(uint16_t lights) {
+void tachLights(uint16_t lights)
+{
   TachI2C.beginTransmission(SAA_ADDR);
   TachI2C.write(SAA_ADDR_DIGIT_1);
   TachI2C.write((lights >> 8) & 0xff);
@@ -54,61 +54,85 @@ void tachLights(uint16_t lights) {
 
 // Public
 
-void tachDisplayInit() {
+void tachDisplayInit()
+{
   TachI2C.begin();
   tachConfig(SAA_BRIGHTNESS);
   lastDisplayedLights = 0;
 }
 
-void clearTachLights() {
+void clearTachLights()
+{
   tachLights(0);
 }
 
-void updateTach(uint16_t rpm, uint16_t firstLightRpm, uint16_t redlineRpm, bool idiotLight, bool engineRunning) {
+void updateTach(uint16_t rpm, uint16_t firstLightRpm, uint16_t redlineRpm, bool idiotLight)
+{
   uint16_t lights = 0;
-  if (idiotLight) {
-    if (!engineRunning) {
-      lights |= TACH_LIGHT_IDIOT;
-    } else if (((millis() % 100) > 50)) {
+  if (idiotLight)
+  {
+    if (((millis() % 100) > 50))
+    {
       lights |= TACH_LIGHT_IDIOT;
     }
   }
 
-  if (rpm >= redlineRpm) {
+  if (rpm >= redlineRpm)
+  {
     // Blink red lights! Hope the engine survived.
     // TODO: Think about how to cut spark.
-    if (millis() % 100 > 50) {
+    if (millis() % 100 > 50)
+    {
       lights |= (TACH_LIGHT_R1 | TACH_LIGHT_R2);
     }
-  } else if (rpm >= firstLightRpm) {
+  }
+  else if (rpm >= firstLightRpm)
+  {
     // Fallthrough intentional.
-    switch(map(rpm, firstLightRpm, redlineRpm, 1, 8)) {
-      case 8: lights |= TACH_LIGHT_R2;
-      case 7: lights |= TACH_LIGHT_R1;
-      case 6: lights |= TACH_LIGHT_Y3;
-      case 5: lights |= TACH_LIGHT_Y2;
-      case 4: lights |= TACH_LIGHT_Y1;
-      case 3: lights |= TACH_LIGHT_G3;
-      case 2: lights |= TACH_LIGHT_G2;
-      case 1: lights |= TACH_LIGHT_G1;
+    switch (map(rpm, firstLightRpm, redlineRpm, 1, 8))
+    {
+    case 8:
+      lights |= TACH_LIGHT_R2;
+    case 7:
+      lights |= TACH_LIGHT_R1;
+    case 6:
+      lights |= TACH_LIGHT_Y3;
+    case 5:
+      lights |= TACH_LIGHT_Y2;
+    case 4:
+      lights |= TACH_LIGHT_Y1;
+    case 3:
+      lights |= TACH_LIGHT_G3;
+    case 2:
+      lights |= TACH_LIGHT_G2;
+    case 1:
+      lights |= TACH_LIGHT_G1;
     }
   }
 
-  if (lights != lastDisplayedLights) {
+  if (lights != lastDisplayedLights)
+  {
     tachLights(lights);
     lastDisplayedLights = lights;
   }
 }
 
-void tachBootAnimation() {
+void tachBootAnimation()
+{
   uint8_t d = 150;
 
-  tachLights(0); delay(d);
-  tachLights(TACH_LIGHT_IDIOT); delay(d);
-  tachLights(TACH_LIGHT_Y1 | TACH_LIGHT_Y2); delay(d);
-  tachLights(TACH_LIGHT_G3 | TACH_LIGHT_Y3); delay(d);
-  tachLights(TACH_LIGHT_G2 | TACH_LIGHT_R1); delay(d);
-  tachLights(TACH_LIGHT_G1 | TACH_LIGHT_R2); delay(d);
+  tachLights(0);
+  delay(d);
+  tachLights(TACH_LIGHT_IDIOT);
+  delay(d);
+  tachLights(TACH_LIGHT_Y1 | TACH_LIGHT_Y2);
+  delay(d);
+  tachLights(TACH_LIGHT_G3 | TACH_LIGHT_Y3);
+  delay(d);
+  tachLights(TACH_LIGHT_G2 | TACH_LIGHT_R1);
+  delay(d);
+  tachLights(TACH_LIGHT_G1 | TACH_LIGHT_R2);
+  delay(d);
 
   delay(500);
   tachLights(0);

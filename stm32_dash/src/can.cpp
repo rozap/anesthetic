@@ -2,8 +2,39 @@
 #include <mcp2515.h>
 #include "state.h"
 
-struct can_frame canMsg;
+#define CAN_FRAME_BUFFER_LEN 10
+volatile uint8_t canFrame = 0;
+struct can_frame frames[CAN_FRAME_BUFFER_LEN];
+#define INT_PIN PB5
 MCP2515 mcp2515(PB12);
+
+volatile bool hasChanges = false;
+void irqHandler()
+{
+  noInterrupts();
+  uint8_t hasIrq = mcp2515.getInterrupts();
+  if (hasIrq & MCP2515::CANINTF_RX0IF)
+  {
+    MCP2515::ERROR rx0res = mcp2515.readMessage(MCP2515::RXB0, &frames[canFrame]);
+    if (rx0res == MCP2515::ERROR_OK)
+    {
+      hasChanges = true;
+      canFrame = (canFrame + 1) % CAN_FRAME_BUFFER_LEN;
+    }
+  }
+
+  if (hasIrq & MCP2515::CANINTF_RX1IF)
+  {
+    MCP2515::ERROR rx1res = mcp2515.readMessage(MCP2515::RXB1, &frames[canFrame]);
+    if (rx1res == MCP2515::ERROR_OK)
+    {
+      hasChanges = true;
+      canFrame = (canFrame + 1) % CAN_FRAME_BUFFER_LEN;
+    }
+  }
+  interrupts();
+  // mcp2515.clearInterrupts();
+}
 
 void canInit()
 {
@@ -13,13 +44,16 @@ void canInit()
   SPI.begin();
 
   mcp2515.reset();
-  mcp2515.setBitrate(CAN_500KBPS, MCP_8MHZ);
+  mcp2515.setBitrate(CAN_100KBPS, MCP_8MHZ);
   mcp2515.setNormalMode();
+
+  pinMode(PB5, INPUT_PULLUP);
+  attachInterrupt(PB5, irqHandler, FALLING);
 }
 
 void printFrame(can_frame frame)
 {
-  DebugSerial.printf("CAN FRAME %d ============\n", frame.can_id);
+  DebugSerial.printf("CAN RX ID %d DLC %d: ", frame.can_id, frame.can_dlc);
   for (size_t i = 0; i < frame.can_dlc; i++)
   {
     if (frame.data[i] < 0x10)
@@ -27,7 +61,7 @@ void printFrame(can_frame frame)
     DebugSerial.print(frame.data[i], HEX);
     DebugSerial.print(' ');
   }
-  DebugSerial.println("\n=======================");
+  DebugSerial.println("");
 }
 
 void decode512(can_frame &frame, CurrentEngineState &state)
@@ -140,6 +174,7 @@ void decode515(can_frame &frame, CurrentEngineState &state)
 
 void decode516(can_frame &frame, CurrentEngineState &state)
 {
+  // printFrame(frame);
   /*
 
     BO_ 516 BASE4: 8 Vector__XXX
@@ -243,64 +278,67 @@ void decode519(const can_frame &frame, CurrentEngineState &state)
 
 #define MISSED_MESSAGE_TIMEOUT 1000
 long lastMissedMessage = 0;
-#define MAX_MSG_COUNT 10
 
-bool updateState(CurrentEngineState &state)
+void parseMessage(can_frame &frame, CurrentEngineState &state)
 {
-  for (int i = 0; i < MAX_MSG_COUNT; i++)
+  if (frame.can_dlc == 8)
   {
-    MCP2515::ERROR res = mcp2515.readMessage(&canMsg);
-    if (i == 0)
-    {
-      state.canState = res;
-    }
-    else
-    {
-      if (res == MCP2515::ERROR_NOMSG)
-      {
-        // there was at leas one message and we got all the incoming messages
-        return true;
-      }
-    }
+    state.messageCount++;
 
-    if (res == MCP2515::ERROR_OK)
+    printFrame(frame);
+    switch (frame.can_id)
     {
-      // DebugSerial.printf("CAN RX: id=%d dlc=%d\n", canMsg.can_id, canMsg.can_dlc);
-      state.missedMessageCount = 0;
-      state.messageCount++;
-      // DebugSerial.printf("Message %d\n", canMsg.can_id);
-      switch (canMsg.can_id)
-      {
-      case 513:
-        decode513(canMsg, state);
-        break;
-      case 515:
-        decode515(canMsg, state);
-        break;
-      case 516:
-        decode516(canMsg, state);
-        break;
-      case 517:
-        decode517(canMsg, state);
-        break;
-      case 518:
-        decode518(canMsg, state);
-        break;
-      case 519:
-        decode519(canMsg, state);
-        break;
-      }
-    }
-    else
-    {
-      long now = millis();
-      if ((now - lastMissedMessage) > MISSED_MESSAGE_TIMEOUT)
-      {
-        lastMissedMessage = now;
-        state.missedMessageCount++;
-        return true;
-      }
-      return false;
+    case 513:
+      decode513(frame, state);
+      break;
+    case 515:
+      decode515(frame, state);
+      break;
+    case 516:
+      decode516(frame, state);
+      break;
+    case 517:
+      decode517(frame, state);
+      break;
+    case 518:
+      decode518(frame, state);
+      break;
+    case 519:
+      decode519(frame, state);
+      break;
     }
   }
+}
+
+/*
+  Read at most MAX_MSG_COUNT from the mcp
+  and update the global state
+  return true if a re-render is explicitly requested
+*/
+long lastUpdate = 0;
+bool updateState(CurrentEngineState &state)
+{
+  if (hasChanges)
+  {
+    hasChanges = false;
+    for (int i = 0; i < canFrame; i++) {
+      parseMessage(frames[i], state);
+    }
+    // DebugSerial.printf("has message %d\n", hasIrq);
+    canFrame = 0;
+    lastUpdate = millis();
+    // DebugSerial.printf("irq=%x isrx0=%d isrx1=%d\n", irq, irq & MCP2515::CANINTF_RX0IF, irq & MCP2515::CANINTF_RX1IF);
+  }
+  else
+  {
+    long now = millis();
+    if (now - lastUpdate > 1000)
+    {
+      DebugSerial.println("no msg");
+      state.canState = MCP2515::ERROR_NOMSG;
+      lastUpdate = now;
+    }
+  }
+
+  return true;
 }

@@ -116,6 +116,8 @@ bool everHadEcuData;
 
 // 16 bit TFT, 5 bits red, 6 green, 5 blue
 #define BACKGROUND_COLOR ILI9341_BLACK
+#define BSOD_COLOR ILI9341_BLUE
+
 #define BAR_COLOR ILI9341_CYAN
 bool requestFrame = true;
 
@@ -129,7 +131,6 @@ uint8_t lastScreenState = SCREEN_STATE_NO_CONNECTION;
 
 struct StatusMessages
 {
-  bool fanOff;
   bool fanOn;
   bool engHot;
   bool lowGas;
@@ -138,10 +139,6 @@ struct StatusMessages
   bool overRev;
   bool allOk;
   bool engOff;
-  bool running;
-  bool cranking;
-  bool warmup;
-  bool ase;
   bool lowVolt;
 
   bool operator==(const StatusMessages &) const = default; // Auto == operator.
@@ -225,9 +222,9 @@ double avg(CircularBuffer<double, WINDOW_SIZE> &cb)
   return total / cb.size();
 }
 
-void clearLine()
+void clearLine(int color)
 {
-  tft.fillRect(tft.getCursorX(), tft.getCursorY(), tft.width(), tft.getCursorY() + tft.textsize, BACKGROUND_COLOR);
+  tft.fillRect(tft.getCursorX(), tft.getCursorY(), tft.width(), tft.getCursorY() + tft.textsize, color);
 }
 
 void drawPlainGauge(int value, int min, int max, int y, int height, int color)
@@ -306,11 +303,16 @@ void clearScreen()
 {
   tft.fillScreen(ILI9341_BLACK);
 }
+void bsod()
+{
+  tft.fillScreen(ILI9341_BLUE);
+}
+
 
 void moveToHalfWidth()
 {
   tft.setCursor(WIDTH / 2 + 8, tft.getCursorY());
-  clearLine();
+  clearLine(BACKGROUND_COLOR);
 }
 
 void writeSingleStatusMessage(bool enabled, const char *msg)
@@ -336,7 +338,7 @@ void renderStatusMessages(int bottomPanelY)
 
   tft.setTextColor(okColors.text);
   writeSingleStatusMessage(statusMessages.fanOn, "Fan On");
-  writeSingleStatusMessage(statusMessages.fanOff, "Fan Off");
+  writeSingleStatusMessage(!statusMessages.fanOn, "Fan Off");
 
   tft.setTextColor(errorColors.text);
   writeSingleStatusMessage(statusMessages.engHot, "OVER TEMP!");
@@ -350,10 +352,6 @@ void renderStatusMessages(int bottomPanelY)
 
   tft.setTextColor(okColors.text);
   writeSingleStatusMessage(statusMessages.allOk, "All OK");
-  writeSingleStatusMessage(statusMessages.running, "Running");
-  writeSingleStatusMessage(statusMessages.cranking, "Cranking");
-  writeSingleStatusMessage(statusMessages.warmup, "Warmup");
-  writeSingleStatusMessage(statusMessages.ase, "ASE");
 }
 
 void renderSecondaries(bool firstRender, int bottomPanelY)
@@ -436,7 +434,7 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
 
 void printCanState()
 {
-  clearLine();
+  clearLine(BSOD_COLOR);
   tft.print("CAN Status ");
 
   switch (currentEngineState.canState)
@@ -465,9 +463,9 @@ void printCanState()
 
 void renderNoConnection()
 {
-
+  bsod();
   tft.setTextSize(3);
-  clearLine();
+  clearLine(BSOD_COLOR);
   tft.setCursor(0, 0);
   tft.println("No Connection");
   printCanState();
@@ -476,28 +474,29 @@ void renderNoConnection()
 
 void renderNoData()
 {
+  bsod();
   tft.setTextColor(ILI9341_LIGHTGREY);
   tft.setTextSize(4);
   tft.setCursor(0, 0);
-  clearLine();
+  clearLine(BSOD_COLOR);
   tft.println("No Data");
 
   tft.setTextSize(2);
-  clearLine();
+  clearLine(BSOD_COLOR);
   tft.print("Timeouts ");
   tft.print(currentEngineState.missedMessageCount);
   tft.println("  ");
 
   tft.setTextSize(2);
-  clearLine();
+  clearLine(BSOD_COLOR);
   printCanState();
   tft.println("");
 
-  clearLine();
+  clearLine(BSOD_COLOR);
   tft.print("CAN Count");
   tft.println(currentEngineState.messageCount);
 
-  clearLine();
+  clearLine(BSOD_COLOR);
   tft.print("Fuel ");
   tft.print(localSensors.fuelPct);
   tft.println("%   ");
@@ -598,18 +597,12 @@ void updateStatusMessagesForRender()
   double coolantF = celsiusToF(currentEngineState.coolantTemp);
   double voltage = currentEngineState.volts;
   statusMessages.fanOn = currentEngineState.fanOn; // TOO
-  statusMessages.fanOff = true;                    // TODO
-  statusMessages.engHot = false;                   // TODO
+  statusMessages.engHot = coolantF > 210;                   // TODO
   statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
   statusMessages.lowOilPressure = currentEngineState.oilPressure < LIMIT_OIL_LOWER;
   statusMessages.lowFuelPressure = currentEngineState.fuelPressure < LIMIT_FUEL_PRESSURE_LOWER;
 
   statusMessages.overRev = currentEngineState.RPM > LIMIT_RPM_UPPER;
-  statusMessages.running = false;  // TODO
-  statusMessages.cranking = false; // TODO
-  statusMessages.warmup = false;   // TODO
-  statusMessages.ase = false;      // TODO
-  statusMessages.engOff = !statusMessages.running && !statusMessages.cranking;
   statusMessages.lowVolt = voltage < LIMIT_VOLTAGE_LOWER;
 
   statusMessages.allOk = !(
@@ -799,7 +792,7 @@ long lastPrint = 0;
 void printEngineState(const CurrentEngineState &state)
 {
   long now = millis();
-  if (now - lastPrint < 1000)
+  if (now - lastPrint < 250)
   {
     return;
   }
@@ -902,9 +895,9 @@ void loop(void)
   if (screenState == SCREEN_STATE_NORMAL)
   {
 
-    printEngineState(currentEngineState);
+    // printEngineState(currentEngineState);
     bool idiotLight = !statusMessages.allOk;
-    updateTach(currentEngineState.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight, statusMessages.running);
+    updateTach(currentEngineState.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight);
   }
 
   if (screenState != lastScreenState || requestFrame)

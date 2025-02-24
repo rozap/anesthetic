@@ -13,7 +13,7 @@ struct CurrentEngineState
   double volts;
   double lambda;
   uint16_t oilTemp;
-  uint16_t fuelPressure;
+  double fuelPressure;
   uint16_t fuelUsed;
   uint16_t knockCount;
   uint16_t warningCounter;
