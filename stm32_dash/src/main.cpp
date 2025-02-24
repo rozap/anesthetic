@@ -198,6 +198,9 @@ CircularBuffer<double, WINDOW_SIZE> fuelWindow;
 
 TFT_eSPI tft = TFT_eSPI();
 
+// Create two sprites for a DMA toggle buffer
+TFT_eSprite sprites[2] = {TFT_eSprite(&tft), TFT_eSprite(&tft)};
+
 // SPI port 2
 //                COPI   CIPO   SCLK  PSEL
 // SPIClass radioSPI(PB15, PB14, PB13); //, PB12);
@@ -307,7 +310,6 @@ void bsod()
 {
   tft.fillScreen(ILI9341_BLUE);
 }
-
 
 void moveToHalfWidth()
 {
@@ -518,6 +520,7 @@ long kpaToPsi(float kpa)
 
 void render(bool firstRender)
 {
+  
   tft.setTextSize(3);
   tft.setCursor(0, 0);
   tft.setTextColor(ILI9341_CYAN);
@@ -541,7 +544,7 @@ void render(bool firstRender)
   bottomPanelY = bottomPanelY + 6;
   tft.setCursor(0, bottomPanelY);
   renderSecondaries(firstRender, bottomPanelY);
-  renderStatusMessages(bottomPanelY);
+  // renderStatusMessages(bottomPanelY);
 
   requestFrame = false;
 
@@ -549,8 +552,8 @@ void render(bool firstRender)
   {
     double secondsForFrames = (millis() - fpsCounterStartTime) / 1000.0;
     fpsCounterStartTime = millis();
-    DebugSerial.print("render FPS: ");
-    DebugSerial.println(frameCounter / secondsForFrames);
+    DebugSerial.printf("render FPS: %f (%d messages)", frameCounter / secondsForFrames, currentEngineState.messageCount);
+    DebugSerial.println();
     frameCounter = 0;
   }
   else
@@ -597,7 +600,7 @@ void updateStatusMessagesForRender()
   double coolantF = celsiusToF(currentEngineState.coolantTemp);
   double voltage = currentEngineState.volts;
   statusMessages.fanOn = currentEngineState.fanOn; // TOO
-  statusMessages.engHot = coolantF > 210;                   // TODO
+  statusMessages.engHot = coolantF > 210;          // TODO
   statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
   statusMessages.lowOilPressure = currentEngineState.oilPressure < LIMIT_OIL_LOWER;
   statusMessages.lowFuelPressure = currentEngineState.fuelPressure < LIMIT_FUEL_PRESSURE_LOWER;
@@ -745,6 +748,8 @@ void setup()
   errorColors.text = ILI9341_ORANGE;
 
   tft.begin();
+  tft.initDMA();
+  tft.startWrite();
   tft.setRotation(1);
   requestFrame = true;
 
@@ -792,7 +797,7 @@ long lastPrint = 0;
 void printEngineState(const CurrentEngineState &state)
 {
   long now = millis();
-  if (now - lastPrint < 250)
+  if (now - lastPrint < 500)
   {
     return;
   }
@@ -886,6 +891,7 @@ void printEngineState(const CurrentEngineState &state)
 void loop(void)
 {
   requestFrame = updateState(currentEngineState);
+  // printEngineState(currentEngineState);
   updateConnectionState();
   updateLocalSensors();
   updateCoreInfoForRender();

@@ -3,37 +3,55 @@
 #include "state.h"
 
 #define CAN_FRAME_BUFFER_LEN 10
-volatile uint8_t canFrame = 0;
 struct can_frame frames[CAN_FRAME_BUFFER_LEN];
+long lastFrames[CAN_FRAME_BUFFER_LEN];
+struct can_frame tempFrame;
 #define INT_PIN PB5
 MCP2515 mcp2515(PB12);
+#define CAN_MIN_ADDRESS 512
+#define CAN_MAX_ADDRESS 519
 
-volatile bool hasChanges = false;
+// don't accept more than 1 frame of each type within this period
+// of milliseconds
+#define FRAME_THROTTLE_MS 10
+volatile uint8_t frameCount = 0;
+void copyTempFrame()
+{
+  if (tempFrame.can_id >= CAN_MIN_ADDRESS && tempFrame.can_id <= CAN_MAX_ADDRESS)
+  {
+    uint8_t index = tempFrame.can_id - CAN_MIN_ADDRESS;
+    long now = millis();
+    if ((now - lastFrames[index]) > FRAME_THROTTLE_MS)
+    {
+      memcpy(&frames[index], &tempFrame, sizeof(struct can_frame));
+      lastFrames[index] = now;
+      frameCount = frameCount + 1;
+    }
+  }
+}
+
 void irqHandler()
 {
   noInterrupts();
   uint8_t hasIrq = mcp2515.getInterrupts();
   if (hasIrq & MCP2515::CANINTF_RX0IF)
   {
-    MCP2515::ERROR rx0res = mcp2515.readMessage(MCP2515::RXB0, &frames[canFrame]);
+    MCP2515::ERROR rx0res = mcp2515.readMessage(MCP2515::RXB0, &tempFrame);
     if (rx0res == MCP2515::ERROR_OK)
     {
-      hasChanges = true;
-      canFrame = (canFrame + 1) % CAN_FRAME_BUFFER_LEN;
+      copyTempFrame();
     }
   }
 
   if (hasIrq & MCP2515::CANINTF_RX1IF)
   {
-    MCP2515::ERROR rx1res = mcp2515.readMessage(MCP2515::RXB1, &frames[canFrame]);
+    MCP2515::ERROR rx1res = mcp2515.readMessage(MCP2515::RXB1, &tempFrame);
     if (rx1res == MCP2515::ERROR_OK)
     {
-      hasChanges = true;
-      canFrame = (canFrame + 1) % CAN_FRAME_BUFFER_LEN;
+      copyTempFrame();
     }
   }
   interrupts();
-  // mcp2515.clearInterrupts();
 }
 
 void canInit()
@@ -49,6 +67,12 @@ void canInit()
 
   pinMode(PB5, INPUT_PULLUP);
   attachInterrupt(PB5, irqHandler, FALLING);
+
+  for (int i = 0; i < CAN_FRAME_BUFFER_LEN; i++)
+  {
+    memset(&frames[i], 0, sizeof(can_frame));
+    lastFrames[i] = 0;
+  }
 }
 
 void printFrame(can_frame frame)
@@ -276,16 +300,11 @@ void decode519(const can_frame &frame, CurrentEngineState &state)
   // state.fuelPressureHigh = rawFpHigh * 0.1f;
 }
 
-#define MISSED_MESSAGE_TIMEOUT 1000
-long lastMissedMessage = 0;
-
 void parseMessage(can_frame &frame, CurrentEngineState &state)
 {
   if (frame.can_dlc == 8)
   {
-    state.messageCount++;
-
-    printFrame(frame);
+    // printFrame(frame);
     switch (frame.can_id)
     {
     case 513:
@@ -318,15 +337,20 @@ void parseMessage(can_frame &frame, CurrentEngineState &state)
 long lastUpdate = 0;
 bool updateState(CurrentEngineState &state)
 {
-  if (hasChanges)
+  if (frameCount > 0)
   {
-    hasChanges = false;
-    for (int i = 0; i < canFrame; i++) {
-      parseMessage(frames[i], state);
+    for (int i = 0; i < CAN_FRAME_BUFFER_LEN; i++)
+    {
+      if (frames[i].can_id >= CAN_MIN_ADDRESS && frames[i].can_id <= CAN_MAX_ADDRESS)
+      {
+        parseMessage(frames[i], state);
+      }
     }
-    // DebugSerial.printf("has message %d\n", hasIrq);
-    canFrame = 0;
     lastUpdate = millis();
+    state.canState = MCP2515::ERROR_OK;
+    state.messageCount = state.messageCount + frameCount;
+    frameCount = 0;
+    return true;
     // DebugSerial.printf("irq=%x isrx0=%d isrx1=%d\n", irq, irq & MCP2515::CANINTF_RX0IF, irq & MCP2515::CANINTF_RX1IF);
   }
   else
@@ -338,7 +362,8 @@ bool updateState(CurrentEngineState &state)
       state.canState = MCP2515::ERROR_NOMSG;
       lastUpdate = now;
     }
+    return true;
   }
 
-  return true;
+  return false;
 }
