@@ -198,9 +198,6 @@ CircularBuffer<double, WINDOW_SIZE> fuelWindow;
 
 TFT_eSPI tft = TFT_eSPI();
 
-// Create two sprites for a DMA toggle buffer
-TFT_eSprite sprites[2] = {TFT_eSprite(&tft), TFT_eSprite(&tft)};
-
 // SPI port 2
 //                COPI   CIPO   SCLK  PSEL
 // SPIClass radioSPI(PB15, PB14, PB13); //, PB12);
@@ -437,36 +434,41 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
 void printCanState()
 {
   clearLine(BSOD_COLOR);
-  tft.print("CAN Status ");
+  tft.print("CAN Status:\n");
+  clearLine(BSOD_COLOR);
 
   switch (currentEngineState.canState)
   {
   case MCP2515::ERROR_OK:
-    tft.print("Err Ok??");
+    tft.println(" - Err Ok?");
     break;
 
   case MCP2515::ERROR_FAIL:
-    tft.print("Err Fail");
+    tft.println(" - Err Fail");
     break;
   case MCP2515::ERROR_ALLTXBUSY:
-    tft.print("Err all tx busy");
+    tft.println(" - Err all tx busy");
     break;
   case MCP2515::ERROR_FAILINIT:
-    tft.print("Err fail init");
+    tft.println(" - Err fail init");
     break;
   case MCP2515::ERROR_FAILTX:
-    tft.print("Err fail tx");
+    tft.println(" - Err fail tx");
     break;
   case MCP2515::ERROR_NOMSG:
-    tft.print("Err No Message");
+    tft.println(" - Err No Message");
     break;
   }
 }
 
-void renderNoConnection()
+void renderNoConnection(bool stateChange)
 {
-  bsod();
+  if (stateChange)
+  {
+    bsod();
+  }
   tft.setTextSize(3);
+  tft.setTextColor(ILI9341_WHITE, BSOD_COLOR);
   clearLine(BSOD_COLOR);
   tft.setCursor(0, 0);
   tft.println("No Connection");
@@ -474,10 +476,13 @@ void renderNoConnection()
   DebugSerial.println("no connection");
 }
 
-void renderNoData()
+void renderNoData(bool stateChange)
 {
-  bsod();
-  tft.setTextColor(ILI9341_LIGHTGREY);
+  if (stateChange)
+  {
+    bsod();
+  }
+  tft.setTextColor(ILI9341_WHITE, BSOD_COLOR);
   tft.setTextSize(4);
   tft.setCursor(0, 0);
   clearLine(BSOD_COLOR);
@@ -518,22 +523,27 @@ long kpaToPsi(float kpa)
   return lround(kpa * KPA_TO_PSI);
 }
 
-void render(bool firstRender)
+void render(bool stateChange)
 {
-  
+
+  if (stateChange)
+  {
+    clearScreen();
+  }
+
   tft.setTextSize(3);
   tft.setCursor(0, 0);
   tft.setTextColor(ILI9341_CYAN);
 
   int fuel = localSensors.fuelPct;
-  drawLabeledGauge(firstRender, "FUEL    ", "%3d", fuel, 0, 100, LIMIT_FUEL_LOWER, 100, okColors, errorColors);
-  drawLabeledGauge(firstRender, "RPM    ", "%4d", coreInfo.RPM, 500, 7000, 0, LIMIT_RPM_UPPER, okColors, errorColors);
+  drawLabeledGauge(stateChange, "FUEL    ", "%3d", fuel, 0, 100, LIMIT_FUEL_LOWER, 100, okColors, errorColors);
+  drawLabeledGauge(stateChange, "RPM    ", "%4d", coreInfo.RPM, 500, 7000, 0, LIMIT_RPM_UPPER, okColors, errorColors);
 
-  drawLabeledGauge(firstRender, "COOLANT ", "%3d", coreInfo.coolantTemp, 50, 250, 0, LIMIT_COOLANT_UPPER, okColors, errorColors);
-  drawLabeledGauge(firstRender, "OIL     ", "%3d", coreInfo.oilPressure, 0, 60, LIMIT_OIL_LOWER, 999, okColors, errorColors);
+  drawLabeledGauge(stateChange, "COOLANT ", "%3d", coreInfo.coolantTemp, 50, 250, 0, LIMIT_COOLANT_UPPER, okColors, errorColors);
+  drawLabeledGauge(stateChange, "OIL     ", "%3d", coreInfo.oilPressure, 0, 60, LIMIT_OIL_LOWER, 999, okColors, errorColors);
 
   int bottomPanelY = tft.getCursorY();
-  if (firstRender)
+  if (stateChange)
   {
     tft.drawLine(WIDTH / 2, bottomPanelY, WIDTH / 2, HEIGHT, ILI9341_WHITE);
     tft.drawLine(0, bottomPanelY, WIDTH, bottomPanelY, ILI9341_WHITE);
@@ -543,7 +553,7 @@ void render(bool firstRender)
 
   bottomPanelY = bottomPanelY + 6;
   tft.setCursor(0, bottomPanelY);
-  renderSecondaries(firstRender, bottomPanelY);
+  renderSecondaries(stateChange, bottomPanelY);
   // renderStatusMessages(bottomPanelY);
 
   requestFrame = false;
@@ -748,7 +758,7 @@ void setup()
   errorColors.text = ILI9341_ORANGE;
 
   tft.begin();
-  tft.initDMA();
+  // tft.initDMA();
   tft.startWrite();
   tft.setRotation(1);
   requestFrame = true;
@@ -758,7 +768,7 @@ void setup()
 #ifdef BOOTSPLASH
   renderBootImage();
 #else
-  renderNoConnection();
+  renderNoConnection(true);
 #endif
 
 #ifdef DEBUG_PRINT
@@ -905,12 +915,12 @@ void loop(void)
     bool idiotLight = !statusMessages.allOk;
     updateTach(currentEngineState.RPM, 2000 /* firstLightRPM */, LIMIT_RPM_UPPER, idiotLight);
   }
+  bool stateChange = screenState != lastScreenState;
 
-  if (screenState != lastScreenState || requestFrame)
+  if (stateChange || requestFrame)
   {
-    if (screenState != lastScreenState)
+    if (stateChange)
     {
-      clearScreen();
       DebugSerial.printf("ScreenState screenState=%d lastScreenState=%d", screenState, lastScreenState);
     }
 
@@ -918,17 +928,17 @@ void loop(void)
     {
     case SCREEN_STATE_NO_DATA:
       clearTachLights();
-      renderNoData();
+      renderNoData(stateChange);
       break;
     case SCREEN_STATE_NO_CONNECTION:
       clearTachLights();
-      renderNoConnection();
+      renderNoConnection(stateChange);
       break;
     case SCREEN_STATE_NORMAL:
-      render(screenState != lastScreenState);
+      render(stateChange);
       break;
     default:
-      render(screenState != lastScreenState);
+      render(stateChange);
       break;
     }
   }

@@ -61,7 +61,7 @@ void tachDisplayInit()
   lastDisplayedLights = 0;
 }
 
-void clearTachLights()
+void clearTachLights() 
 {
   tachLights(0);
 }
