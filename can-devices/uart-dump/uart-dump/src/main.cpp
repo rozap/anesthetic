@@ -14,10 +14,9 @@ void setup()
   SPI.begin();
 
   mcp2515.reset();
-  mcp2515.setBitrate(CAN_500KBPS, MCP_8MHZ);
+  mcp2515.setBitrate(CAN_100KBPS, MCP_8MHZ);
   mcp2515.setNormalMode();
   // mcp2515.setClkOut
-  
 
   Serial1.println("------- CAN Read ----------");
   Serial1.println("ID  DLC   DATA");
@@ -40,12 +39,36 @@ void loop()
     }
 
     Serial1.println();
-  } 
+  }
   else
   {
-    Serial1.print("No message: ");
-    Serial1.print(res);
-    Serial1.println();
-    delay(500);
+    if (millis() % 1000 == 0)
+    {
+      Serial1.print("No message: ");
+      switch (res)
+      {
+      case MCP2515::ERROR_OK:
+        Serial1.print(" - Err Ok?");
+        break;
+
+      case MCP2515::ERROR_FAIL:
+        Serial1.print(" - Err Fail");
+        break;
+      case MCP2515::ERROR_ALLTXBUSY:
+        Serial1.print(" - Err all tx busy");
+        break;
+      case MCP2515::ERROR_FAILINIT:
+        Serial1.print(" - Err fail init");
+        break;
+      case MCP2515::ERROR_FAILTX:
+        Serial1.print(" - Err fail tx");
+        break;
+      case MCP2515::ERROR_NOMSG:
+        Serial1.print(" - Err No Message");
+        break;
+      }
+      Serial1.print(res);
+      Serial1.println();
+    }
   }
 }

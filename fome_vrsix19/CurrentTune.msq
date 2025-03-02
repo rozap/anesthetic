@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-    <bibliography author="TunerStudio MS Ultra 3.2.05 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Mar 01 14:06:56 PST 2025"/>
+    <bibliography author="TunerStudio MS Ultra 3.2.05 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Mar 01 16:17:31 PST 2025"/>
     <versionInfo fileFormat="5.0" firmwareInfo="FOME+proteus_f7+20250220%40ec3512" nPages="1" signature="rusEFI (FOME) release_250220.2025.02.20.proteus_f7.627121193"/>
     <page>
         <pcVariable name="tsCanId">"0"</pcVariable>
-        <pcVariable digits="0" name="tuneCrcPcVariable">43047.0</pcVariable>
+        <pcVariable digits="0" name="tuneCrcPcVariable">14345.0</pcVariable>
         <pcVariable cols="1" digits="1" name="wueAfrTargetOffset" rows="16" units=":1">
          -1.5 
          -1.4 
@@ -742,9 +742,9 @@
         <constant digits="2" name="tpsDecelEnleanmentMultiplier" units="coeff">0.0</constant>
         <constant digits="2" name="throttlePedalSecondaryUpVoltage" units="voltage">5.0</constant>
         <constant digits="2" name="throttlePedalSecondaryWOTVoltage" units="voltage">0.0</constant>
-        <constant name="canBaudRate">"500kbps"</constant>
+        <constant name="canBaudRate">"100kbps"</constant>
         <constant name="veOverrideMode">"None"</constant>
-        <constant name="can2BaudRate">"500kbps"</constant>
+        <constant name="can2BaudRate">"100kbps"</constant>
         <constant name="afrOverrideMode">"None"</constant>
         <constant digits="1" name="mc33_hpfp_i_peak" units="A">5.0</constant>
         <constant digits="1" name="mc33_hpfp_i_hold" units="A">3.0</constant>
@@ -1389,7 +1389,7 @@
         <constant name="spi6mosiPin">"NONE"</constant>
         <constant name="spi6misoPin">"NONE"</constant>
         <constant name="spi6sckPin">"NONE"</constant>
-        <constant digits="0" name="canSleepPeriodMs" units="ms">500.0</constant>
+        <constant digits="0" name="canSleepPeriodMs" units="ms">100.0</constant>
         <constant cols="1" digits="1" name="etbBiasBins" rows="8" units="target TPS position">
          0.0 
          1.0 
