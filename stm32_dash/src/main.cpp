@@ -51,6 +51,7 @@
 
 #define LIMIT_RPM_UPPER 5800
 #define LIMIT_VOLTAGE_LOWER 12.0
+#define KNOCK_SHOW_WARNING_MILLIS 10000
 
 // Averaging window size for analog readings (oil temp and fuel level).
 #define WINDOW_SIZE 16
@@ -145,6 +146,10 @@ struct StatusMessages
   bool lowVolt;
   char message0[5];
   char message1[5];
+
+  long lastKnockTime;
+  int lastKnockCount;
+  bool hasKnocked;
 
   uint16_t messageAppearedAt;
 
@@ -363,6 +368,7 @@ void renderStatusMessages(int bottomPanelY)
   writeSingleStatusMessage(statusMessages.lowGas, "FUEL QTY!", BACKGROUND_COLOR);
   writeSingleStatusMessage(statusMessages.lowOilPressure, "OIL PRES!", BACKGROUND_COLOR);
   writeSingleStatusMessage(statusMessages.lowFuelPressure, "OIL PRES!", BACKGROUND_COLOR);
+  writeSingleStatusMessage(statusMessages.hasKnocked, "KNOCK!", BACKGROUND_COLOR);
 
   writeSingleStatusMessage(statusMessages.overRev, "ENG RPM!", BACKGROUND_COLOR);
   writeSingleStatusMessage(statusMessages.lowVolt, "LOW VOLT!", BACKGROUND_COLOR);
@@ -418,12 +424,15 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
     tft.printf("%3d", secondaryInfo.oilTemp);
   }
 
-  if (lastRenderedSecondaryInfo.knockCount != secondaryInfo.knockCount)
+  if (lastRenderedSecondaryInfo.knockCount != secondaryInfo.knockCount || firstRender)
   {
     tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2 * 3);
-    if (secondaryInfo.knockCount == 0) {
+    if (secondaryInfo.knockCount == 0)
+    {
       tft.print("OK");
-    } else {
+    }
+    else
+    {
       tft.printf("%4d", secondaryInfo.knockCount);
     }
   }
@@ -643,6 +652,14 @@ void updateStatusMessagesForRender()
   statusMessages.overRev = currentEngineState.RPM > LIMIT_RPM_UPPER;
   statusMessages.lowVolt = voltage < LIMIT_VOLTAGE_LOWER;
 
+  long now = millis();
+  if (currentEngineState.knockCount > 0 && currentEngineState.knockCount > statusMessages.lastKnockCount)
+  {
+    statusMessages.lastKnockCount = currentEngineState.knockCount;
+    statusMessages.lastKnockTime = now;
+  }
+  statusMessages.hasKnocked = now - statusMessages.lastKnockTime < KNOCK_SHOW_WARNING_MILLIS;
+
   // TODO Messages
   if (currentEngineState.messageAppearedAt > 0 && statusMessages.messageAppearedAt != currentEngineState.messageAppearedAt)
   {
@@ -659,6 +676,7 @@ void updateStatusMessagesForRender()
 
   statusMessages.allOk = !(
       statusMessages.engHot ||
+      statusMessages.hasKnocked ||
       // statusMessages.lowGas ||
       statusMessages.lowOilPressure ||
       statusMessages.overRev ||
