@@ -857,7 +857,7 @@ void updateConnectionState()
   {
     // in the state update, if X time goes by, it will increment missedMessageCount
     // so if that happens N times, we'll assume a lost connection and render no data
-    if (currentEngineState.missedMessageCount > 3)
+    if (currentEngineState.missedMessageCount > 20)
     {
       screenState = SCREEN_STATE_NO_DATA;
     }
