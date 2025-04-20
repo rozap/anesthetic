@@ -506,6 +506,7 @@ void renderNoConnection(bool stateChange)
   tft.println("No Connection");
   printCanState();
   DebugSerial.println("no connection");
+  canInit();
 }
 
 void renderNoData(bool stateChange)
@@ -541,6 +542,7 @@ void renderNoData(bool stateChange)
   tft.println("%   ");
 
   DebugSerial.println("no data");
+  canInit();
 }
 
 int celsiusToF(float c)
