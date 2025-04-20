@@ -44,6 +44,9 @@
 
 #define DEBUG_PRINT
 
+// Time between sending CAN messages with our own sensors (fuel qty).
+#define SENSOR_SEND_PERIOD_MS 1000
+
 #define LIMIT_COOLANT_UPPER 215
 #define LIMIT_OIL_LOWER 10
 #define LIMIT_FUEL_LOWER 10
@@ -218,6 +221,7 @@ TFT_eSPI tft = TFT_eSPI();
 // Note! These values are only for the main render() method.
 long fpsCounterStartTime;
 uint8_t frameCounter; // Accumulates # render frames, resets every 50 frames.
+unsigned long lastSensorFrameSendMillis; // Last time we sent out a CANBUS frame with our own sensor values.
 
 // Helpful constants for graphics code.
 uint16_t fontHeightSize2;
@@ -844,6 +848,7 @@ void setup()
 
   missionStartTimeMillis = millis();
   fpsCounterStartTime = millis();
+  lastSensorFrameSendMillis = mills();
   frameCounter = 0;
 }
 
@@ -965,6 +970,10 @@ void loop(void)
   // printEngineState(currentEngineState);
   updateConnectionState();
   updateLocalSensors();
+  if ((millis() - lastSensorFrameSendMillis) >= SENSOR_SEND_PERIOD_MS) {
+    lastSensorFrameSendMillis = millis();
+    sendFuelPctOverCan(localSensors.fuelPct);
+  }
   updateCoreInfoForRender();
   updateSecondaryInfoForRender();
   updateStatusMessagesForRender();

@@ -389,3 +389,25 @@ bool updateState(CurrentEngineState &state)
 
   return false;
 }
+
+void sendFuelPctOverCan(int fuelPct) {
+  struct can_frame frame;
+  
+  frame.can_id = 420;
+  frame.can_dlc = 1; // 1 byte for fuel percentage 0-100
+  
+  frame.data[0] = fuelPct & 0xFF;
+  
+  // Clear remaining bytes
+  for (int i = 1; i < 8; i++) {
+    frame.data[i] = 0;
+  }
+  
+  // Send the frame
+  MCP2515::ERROR sendResult = mcp2515.sendMessage(&frame);
+  
+  if (sendResult != MCP2515::ERROR_OK) {
+    DebugSerial.print("Failed to send fuel percentage over CAN: ");
+    DebugSerial.println(sendResult);
+  }
+}
