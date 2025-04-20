@@ -848,7 +848,7 @@ void setup()
 
   missionStartTimeMillis = millis();
   fpsCounterStartTime = millis();
-  lastSensorFrameSendMillis = mills();
+  lastSensorFrameSendMillis = millis();
   frameCounter = 0;
 }
 
