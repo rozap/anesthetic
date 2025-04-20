@@ -12,3 +12,6 @@ t(f,2000), 0, -INF)'\" -c:a aac -c:v libx264 -crf 29 race_day_1_session_#{i}.mp4
 3b. To produce unmodified (but well-compressed and with non-horribly-screechy audio) videos per camera for ARCHIVAL use, use the reencode_x265_archival script. This will reencode ANY mp4 file found in $CWD and move the originals to an `originals/` subfolder. This takes a LONG time, but produces much smaller files suitable for archival.
 
 TODO: There may be a delay between main and PIP feeds due to different camera startups etc... figure this out if needed later.
+
+
+
