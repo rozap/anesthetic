@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-    <bibliography author="TunerStudio MS Ultra 3.2.05 - EFI Analytics, Inc." tuneComment="" writeDate="Fri Apr 04 08:02:25 PDT 2025"/>
+    <bibliography author="TunerStudio MS Ultra 3.2.05 - EFI Analytics, Inc." tuneComment="&lt;html&gt;Restore Point: User Requested Save of Settings - &lt;br&gt;" writeDate="Thu Apr 03 22:37:31 PDT 2025"/>
     <versionInfo fileFormat="5.0" firmwareInfo="FOME+proteus_f7+20250220%40ec3512" nPages="1" signature="rusEFI (FOME) release_250220.2025.02.20.proteus_f7.627121193"/>
     <page>
         <pcVariable name="tsCanId">"0"</pcVariable>
@@ -66,7 +66,7 @@
         <constant name="engineType">"MINIMAL_PINS"</constant>
         <constant digits="0" name="sensorSnifferRpmThreshold" units="RPM">2500.0</constant>
         <constant digits="0" name="launchRpm" units="rpm">3000.0</constant>
-        <constant digits="0" name="rpmHardLimit" units="rpm">5500.0</constant>
+        <constant digits="0" name="rpmHardLimit" units="rpm">7000.0</constant>
         <constant digits="0" name="engineSnifferRpmThreshold" units="RPM">2500.0</constant>
         <constant digits="0" name="multisparkMaxRpm" units="rpm">1500.0</constant>
         <constant digits="0" name="maxAcRpm" units="rpm">5000.0</constant>
@@ -3507,7 +3507,7 @@ end
          0.0 
       </constant>
         <constant cols="6" digits="2" name="maxKnockRetardTable" rows="6" units="deg">
-         0.0 5.0 5.0 5.0 5.0 5.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 
          10.0 18.0 19.0 20.0 22.0 22.0 
          10.0 14.0 19.0 20.0 20.0 20.0 
          10.0 14.0 19.0 20.0 20.0 20.0 

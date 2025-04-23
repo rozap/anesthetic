@@ -7,3 +7,4 @@ pitwall/target/
 dash-rs/loader/stm32loader
 dash-rs/target
 TunerStudioAppDebug.txt
+.aider*

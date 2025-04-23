@@ -1,7 +1,7 @@
 #pragma once
 #ifndef STATE_H
 #define STATE_H
-extern HardwareSerial& DebugSerial;
+extern HardwareSerial &DebugSerial;
 
 struct CurrentEngineState
 {
@@ -33,5 +33,8 @@ struct CurrentEngineState
   uint16_t missedMessageCount;
   uint16_t messageCount;
   MCP2515::ERROR canState;
+
+  uint8_t message[9];
+  uint16_t messageAppearedAt;
 };
 #endif

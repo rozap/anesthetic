@@ -2,14 +2,14 @@
 #include <mcp2515.h>
 #include "state.h"
 
-#define CAN_FRAME_BUFFER_LEN 10
+#define CAN_MIN_ADDRESS 508
+#define CAN_MAX_ADDRESS 519
+#define CAN_FRAME_BUFFER_LEN (CAN_MAX_ADDRESS - CAN_MIN_ADDRESS) + 1
 struct can_frame frames[CAN_FRAME_BUFFER_LEN];
 long lastFrames[CAN_FRAME_BUFFER_LEN];
 struct can_frame tempFrame;
 #define INT_PIN PB5
 MCP2515 mcp2515(PB12);
-#define CAN_MIN_ADDRESS 512
-#define CAN_MAX_ADDRESS 519
 
 // don't accept more than 1 frame of each type within this period
 // of milliseconds
@@ -62,7 +62,7 @@ void canInit()
   SPI.begin();
 
   mcp2515.reset();
-  mcp2515.setBitrate(CAN_100KBPS, MCP_8MHZ);
+  mcp2515.setBitrate(CAN_500KBPS, MCP_8MHZ);
   mcp2515.setNormalMode();
 
   pinMode(PB5, INPUT_PULLUP);
@@ -300,13 +300,26 @@ void decode519(const can_frame &frame, CurrentEngineState &state)
   // state.fuelPressureHigh = rawFpHigh * 0.1f;
 }
 
+void decodeMessage(const can_frame &frame, CurrentEngineState &state)
+{
+  memset(state.message, 0, 8);
+
+  memcpy(state.message, frame.data, frame.can_dlc);
+  state.message[frame.can_dlc] = NULL;
+  state.messageAppearedAt = millis();
+}
+
 void parseMessage(can_frame &frame, CurrentEngineState &state)
 {
-  if (frame.can_dlc == 8)
+  if (frame.can_dlc > 0)
   {
     // printFrame(frame);
     switch (frame.can_id)
     {
+    case 508:
+      decodeMessage(frame, state);
+      break;
+
     case 513:
       decode513(frame, state);
       break;
@@ -325,6 +338,8 @@ void parseMessage(can_frame &frame, CurrentEngineState &state)
     case 519:
       decode519(frame, state);
       break;
+    default:
+      return;
     }
   }
 }
@@ -341,14 +356,20 @@ bool updateState(CurrentEngineState &state)
   {
     for (int i = 0; i < CAN_FRAME_BUFFER_LEN; i++)
     {
+      DebugSerial.printf("can_id=%d dlc=%d, ", frames[i].can_id, frames[i].can_dlc);
       if (frames[i].can_id >= CAN_MIN_ADDRESS && frames[i].can_id <= CAN_MAX_ADDRESS)
       {
         parseMessage(frames[i], state);
       }
     }
+    DebugSerial.println();
     lastUpdate = millis();
+    // we've consumer the frames - kill them all
+    memset(&frames, 0, sizeof(frames));
+
     state.canState = MCP2515::ERROR_OK;
     state.messageCount = state.messageCount + frameCount;
+    state.missedMessageCount = 0;
     frameCount = 0;
     return true;
     // DebugSerial.printf("irq=%x isrx0=%d isrx1=%d\n", irq, irq & MCP2515::CANINTF_RX0IF, irq & MCP2515::CANINTF_RX1IF);
@@ -360,10 +381,33 @@ bool updateState(CurrentEngineState &state)
     {
       DebugSerial.println("no msg");
       state.canState = MCP2515::ERROR_NOMSG;
+      state.missedMessageCount++;
       lastUpdate = now;
     }
     return true;
   }
 
   return false;
+}
+
+void sendFuelPctOverCan(int fuelPct) {
+  struct can_frame frame;
+  
+  frame.can_id = 420;
+  frame.can_dlc = 1; // 1 byte for fuel percentage 0-100
+  
+  frame.data[0] = fuelPct & 0xFF;
+  
+  // Clear remaining bytes
+  for (int i = 1; i < 8; i++) {
+    frame.data[i] = 0;
+  }
+  
+  // Send the frame
+  MCP2515::ERROR sendResult = mcp2515.sendMessage(&frame);
+  
+  if (sendResult != MCP2515::ERROR_OK) {
+    DebugSerial.print("Failed to send fuel percentage over CAN: ");
+    DebugSerial.println(sendResult);
+  }
 }

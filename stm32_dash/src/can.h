@@ -3,3 +3,4 @@
 
 void canInit();
 bool updateState(CurrentEngineState &state);
+void sendFuelPctOverCan(int fuelPct);

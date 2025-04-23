@@ -37,12 +37,15 @@
 // #define DEBUG_FUEL_LEVEL_ANALOG_READING
 
 // Display the bootsplash (disable if debugging to shorten upload times).
-// #define BOOTSPLASH false
+// #define BOOTSPLASH
 
 // Use data in mock_pkt.h instead of actually reading from the serial port.
 // #define USE_MOCK_DATA
 
 #define DEBUG_PRINT
+
+// Time between sending CAN messages with our own sensors (fuel qty).
+#define SENSOR_SEND_PERIOD_MS 1000
 
 #define LIMIT_COOLANT_UPPER 215
 #define LIMIT_OIL_LOWER 10
@@ -51,6 +54,7 @@
 
 #define LIMIT_RPM_UPPER 5800
 #define LIMIT_VOLTAGE_LOWER 12.0
+#define KNOCK_SHOW_WARNING_MILLIS 10000
 
 // Averaging window size for analog readings (oil temp and fuel level).
 #define WINDOW_SIZE 16
@@ -123,8 +127,11 @@ bool requestFrame = true;
 
 #define SCREEN_STATE_NO_DATA 1
 #define SCREEN_STATE_NO_CONNECTION 2
+#define SCREEN_STATE_INIT 3
 #define SCREEN_STATE_NORMAL 0
-uint8_t screenState = SCREEN_STATE_NO_CONNECTION;
+
+#define MESSAGE_SHOW_TIME 10000
+uint8_t screenState = SCREEN_STATE_INIT;
 uint8_t lastScreenState = SCREEN_STATE_NO_CONNECTION;
 
 // Render structs used to only re-render what we need (fps 4 -> ~30).
@@ -140,6 +147,14 @@ struct StatusMessages
   bool allOk;
   bool engOff;
   bool lowVolt;
+  char message0[5];
+  char message1[5];
+
+  long lastKnockTime;
+  int lastKnockCount;
+  bool hasKnocked;
+
+  uint16_t messageAppearedAt;
 
   bool operator==(const StatusMessages &) const = default; // Auto == operator.
 } statusMessages, lastRenderedStatusMessages;
@@ -160,6 +175,7 @@ struct SecondaryInfo
   int oilTemp;
   int fuelPressure;
   int iat;
+  int knockCount;
   double volts;
   int missionElapsedSeconds;
 
@@ -205,6 +221,7 @@ TFT_eSPI tft = TFT_eSPI();
 // Note! These values are only for the main render() method.
 long fpsCounterStartTime;
 uint8_t frameCounter; // Accumulates # render frames, resets every 50 frames.
+unsigned long lastSensorFrameSendMillis; // Last time we sent out a CANBUS frame with our own sensor values.
 
 // Helpful constants for graphics code.
 uint16_t fontHeightSize2;
@@ -308,23 +325,34 @@ void bsod()
   tft.fillScreen(ILI9341_BLUE);
 }
 
-void moveToHalfWidth()
-{
-  tft.setCursor(WIDTH / 2 + 8, tft.getCursorY());
-  clearLine(BACKGROUND_COLOR);
-}
-
-void writeSingleStatusMessage(bool enabled, const char *msg)
+void writeSingleStatusMessage(bool enabled, const char *msg, int backgroundColor)
 {
   if (enabled)
   {
-    moveToHalfWidth();
+    // move to half the width
+    tft.setCursor(WIDTH / 2 + 8, tft.getCursorY());
+    clearLine(backgroundColor);
     tft.println(msg);
   }
 }
 
 void renderStatusMessages(int bottomPanelY)
 {
+
+  if (statusMessages.messageAppearedAt > (millis() - MESSAGE_SHOW_TIME))
+  {
+    tft.setCursor(WIDTH / 2 + 8, bottomPanelY);
+    tft.fillRect(WIDTH / 2 + 1, bottomPanelY - 4, WIDTH, HEIGHT, ILI9341_CYAN);
+    tft.setTextColor(ILI9341_BLACK);
+    tft.setTextSize(5);
+
+    tft.setCursor(WIDTH / 2 + 8, tft.getCursorY());
+    tft.println(statusMessages.message0);
+    tft.setCursor(WIDTH / 2 + 8, tft.getCursorY() + 8);
+    tft.println(statusMessages.message1);
+    return;
+  }
+
   if (statusMessages == lastRenderedStatusMessages)
   {
     return;
@@ -336,21 +364,22 @@ void renderStatusMessages(int bottomPanelY)
   tft.fillRect(WIDTH / 2 + 1, bottomPanelY - 4, WIDTH, HEIGHT, BACKGROUND_COLOR);
 
   tft.setTextColor(okColors.text);
-  writeSingleStatusMessage(statusMessages.fanOn, "Fan On");
-  writeSingleStatusMessage(!statusMessages.fanOn, "Fan Off");
+  writeSingleStatusMessage(statusMessages.fanOn, "Fan On", BACKGROUND_COLOR);
+  writeSingleStatusMessage(!statusMessages.fanOn, "Fan Off", BACKGROUND_COLOR);
 
   tft.setTextColor(errorColors.text);
-  writeSingleStatusMessage(statusMessages.engHot, "OVER TEMP!");
-  writeSingleStatusMessage(statusMessages.lowGas, "FUEL QTY!");
-  writeSingleStatusMessage(statusMessages.lowOilPressure, "OIL PRES!");
-  writeSingleStatusMessage(statusMessages.lowFuelPressure, "OIL PRES!");
+  writeSingleStatusMessage(statusMessages.engHot, "OVER TEMP!", BACKGROUND_COLOR);
+  writeSingleStatusMessage(statusMessages.lowGas, "FUEL QTY!", BACKGROUND_COLOR);
+  writeSingleStatusMessage(statusMessages.lowOilPressure, "OIL PRES!", BACKGROUND_COLOR);
+  writeSingleStatusMessage(statusMessages.lowFuelPressure, "OIL PRES!", BACKGROUND_COLOR);
+  writeSingleStatusMessage(statusMessages.hasKnocked, "KNOCK!", BACKGROUND_COLOR);
 
-  writeSingleStatusMessage(statusMessages.overRev, "ENG RPM!");
-  writeSingleStatusMessage(statusMessages.lowVolt, "LOW VOLT!");
-  writeSingleStatusMessage(statusMessages.engOff, "Eng Off");
+  writeSingleStatusMessage(statusMessages.overRev, "ENG RPM!", BACKGROUND_COLOR);
+  writeSingleStatusMessage(statusMessages.lowVolt, "LOW VOLT!", BACKGROUND_COLOR);
+  writeSingleStatusMessage(statusMessages.engOff, "Eng Off", BACKGROUND_COLOR);
 
   tft.setTextColor(okColors.text);
-  writeSingleStatusMessage(statusMessages.allOk, "All OK");
+  writeSingleStatusMessage(statusMessages.allOk, "All OK", BACKGROUND_COLOR);
 }
 
 void renderSecondaries(bool firstRender, int bottomPanelY)
@@ -365,7 +394,7 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
     tft.println("A/F");
     tft.println("FL PRS");
     tft.println("OIL T");
-    tft.println("IAT");
+    tft.println("KNOCK");
     tft.println("VOLTS");
     tft.println("STINT");
   }
@@ -384,7 +413,7 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
     {
       tft.setTextColor(errorColors.text, BACKGROUND_COLOR);
     }
-    tft.setCursor(numberXPos, numberYPos + fontHeightSize2 * 2);
+    tft.setCursor(numberXPos, numberYPos + fontHeightSize2);
     tft.printf("%2d", secondaryInfo.fuelPressure);
 
     if (statusMessages.lowFuelPressure)
@@ -395,14 +424,21 @@ void renderSecondaries(bool firstRender, int bottomPanelY)
 
   if (lastRenderedSecondaryInfo.oilTemp != secondaryInfo.oilTemp)
   {
-    tft.setCursor(numberXPos + charWidthSize2 * 2, numberYPos + fontHeightSize2);
+    tft.setCursor(numberXPos + charWidthSize2 * 2, numberYPos + fontHeightSize2 * 2);
     tft.printf("%3d", secondaryInfo.oilTemp);
   }
 
-  if (lastRenderedSecondaryInfo.iat != secondaryInfo.iat)
+  if (lastRenderedSecondaryInfo.knockCount != secondaryInfo.knockCount || firstRender)
   {
     tft.setCursor(numberXPos + charWidthSize2, numberYPos + fontHeightSize2 * 3);
-    tft.printf("%4d", secondaryInfo.iat);
+    if (secondaryInfo.knockCount == 0)
+    {
+      tft.print("OK");
+    }
+    else
+    {
+      tft.printf("%4d", secondaryInfo.knockCount);
+    }
   }
 
   if (lastRenderedSecondaryInfo.volts != secondaryInfo.volts)
@@ -474,6 +510,7 @@ void renderNoConnection(bool stateChange)
   tft.println("No Connection");
   printCanState();
   DebugSerial.println("no connection");
+  canInit();
 }
 
 void renderNoData(bool stateChange)
@@ -509,6 +546,7 @@ void renderNoData(bool stateChange)
   tft.println("%   ");
 
   DebugSerial.println("no data");
+  canInit();
 }
 
 int celsiusToF(float c)
@@ -554,7 +592,7 @@ void render(bool stateChange)
   bottomPanelY = bottomPanelY + 6;
   tft.setCursor(0, bottomPanelY);
   renderSecondaries(stateChange, bottomPanelY);
-  // renderStatusMessages(bottomPanelY);
+  renderStatusMessages(bottomPanelY);
 
   requestFrame = false;
 
@@ -601,6 +639,7 @@ void updateSecondaryInfoForRender()
   secondaryInfo.fuelPressure = kpaToPsi(currentEngineState.fuelPressure);
   secondaryInfo.oilTemp = currentEngineState.oilTemp;
   secondaryInfo.iat = currentEngineState.iat;
+  secondaryInfo.knockCount = currentEngineState.knockCount;
   secondaryInfo.volts = currentEngineState.volts;
   secondaryInfo.missionElapsedSeconds = localSensors.missionElapsedSeconds;
 }
@@ -609,17 +648,41 @@ void updateStatusMessagesForRender()
 {
   double coolantF = celsiusToF(currentEngineState.coolantTemp);
   double voltage = currentEngineState.volts;
+  statusMessages.engOff = currentEngineState.RPM < 300;
   statusMessages.fanOn = currentEngineState.fanOn; // TOO
   statusMessages.engHot = coolantF > 210;          // TODO
   statusMessages.lowGas = localSensors.fuelPct < LIMIT_FUEL_LOWER;
-  statusMessages.lowOilPressure = currentEngineState.oilPressure < LIMIT_OIL_LOWER;
+  statusMessages.lowOilPressure = !statusMessages.engOff && currentEngineState.oilPressure < LIMIT_OIL_LOWER;
   statusMessages.lowFuelPressure = currentEngineState.fuelPressure < LIMIT_FUEL_PRESSURE_LOWER;
 
   statusMessages.overRev = currentEngineState.RPM > LIMIT_RPM_UPPER;
   statusMessages.lowVolt = voltage < LIMIT_VOLTAGE_LOWER;
 
+  long now = millis();
+  if (currentEngineState.knockCount > 0 && currentEngineState.knockCount > statusMessages.lastKnockCount)
+  {
+    statusMessages.lastKnockCount = currentEngineState.knockCount;
+    statusMessages.lastKnockTime = now;
+  }
+  statusMessages.hasKnocked = now - statusMessages.lastKnockTime < KNOCK_SHOW_WARNING_MILLIS;
+
+  // TODO Messages
+  if (currentEngineState.messageAppearedAt > 0 && statusMessages.messageAppearedAt != currentEngineState.messageAppearedAt)
+  {
+    statusMessages.messageAppearedAt = currentEngineState.messageAppearedAt;
+
+    memset(&statusMessages.message0, 0, 4);
+    memset(&statusMessages.message1, 0, 4);
+
+    memcpy(statusMessages.message0, currentEngineState.message, 4);
+    memcpy(statusMessages.message1, currentEngineState.message + 4, 4);
+    statusMessages.message0[4] = NULL;
+    statusMessages.message1[4] = NULL;
+  }
+
   statusMessages.allOk = !(
       statusMessages.engHot ||
+      statusMessages.hasKnocked ||
       // statusMessages.lowGas ||
       statusMessages.lowOilPressure ||
       statusMessages.overRev ||
@@ -737,6 +800,8 @@ void setup()
   memset(&coreInfo, 0, sizeof(CoreInfo));
   memset(&lastRenderedCoreInfo, 0, sizeof(CoreInfo));
 
+  memset(&currentEngineState, 0, sizeof(CurrentEngineState));
+
   everHadEcuData = false;
 
   analogReadResolution(12);
@@ -783,6 +848,7 @@ void setup()
 
   missionStartTimeMillis = millis();
   fpsCounterStartTime = millis();
+  lastSensorFrameSendMillis = millis();
   frameCounter = 0;
 }
 
@@ -796,7 +862,7 @@ void updateConnectionState()
   {
     // in the state update, if X time goes by, it will increment missedMessageCount
     // so if that happens N times, we'll assume a lost connection and render no data
-    if (currentEngineState.missedMessageCount > 3)
+    if (currentEngineState.missedMessageCount > 20)
     {
       screenState = SCREEN_STATE_NO_DATA;
     }
@@ -904,6 +970,10 @@ void loop(void)
   // printEngineState(currentEngineState);
   updateConnectionState();
   updateLocalSensors();
+  if ((millis() - lastSensorFrameSendMillis) >= SENSOR_SEND_PERIOD_MS) {
+    lastSensorFrameSendMillis = millis();
+    sendFuelPctOverCan(localSensors.fuelPct);
+  }
   updateCoreInfoForRender();
   updateSecondaryInfoForRender();
   updateStatusMessagesForRender();
@@ -936,6 +1006,9 @@ void loop(void)
       break;
     case SCREEN_STATE_NORMAL:
       render(stateChange);
+      break;
+    case SCREEN_STATE_INIT:
+      renderNoConnection(true);
       break;
     default:
       render(stateChange);
