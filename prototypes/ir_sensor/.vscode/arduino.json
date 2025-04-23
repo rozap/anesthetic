@@ -1,7 +1,0 @@
-{
-    "sketch": "ir_sensor.ino",
-    "configuration": "cpu=16MHzatmega328",
-    "board": "arduino:avr:pro",
-    "port": "/dev/ttyUSB1",
-    "programmer": "arduino:avrispmkii"
-}

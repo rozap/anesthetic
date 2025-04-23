@@ -1,0 +1,12 @@
+/home/chris/workspace/anesthetic/pitwall/target/debug/deps/serialport-c17adefb94e52af3.rmeta: /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/lib.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/mod.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/enumerate.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/error.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/ioctl.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/poll.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/termios.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/tty.rs
+
+/home/chris/workspace/anesthetic/pitwall/target/debug/deps/serialport-c17adefb94e52af3.d: /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/lib.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/mod.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/enumerate.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/error.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/ioctl.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/poll.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/termios.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/tty.rs
+
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/lib.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/mod.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/enumerate.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/error.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/ioctl.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/poll.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/termios.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/serialport-4.0.1/src/posix/tty.rs:

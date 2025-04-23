@@ -1,7 +1,0 @@
-{
-    "configuration": "cpu=16MHzatmega328",
-    "board": "arduino:avr:pro",
-    "programmer": "arduino:avrispmkii",
-    "port": "/dev/ttyUSB0",
-    "sketch": "gps.ino"
-}

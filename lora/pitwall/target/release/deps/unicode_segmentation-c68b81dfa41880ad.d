@@ -1,0 +1,11 @@
+/home/chris/workspace/anesthetic/pitwall/target/release/deps/unicode_segmentation-c68b81dfa41880ad.rmeta: /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/lib.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/grapheme.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/tables.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/word.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/sentence.rs
+
+/home/chris/workspace/anesthetic/pitwall/target/release/deps/libunicode_segmentation-c68b81dfa41880ad.rlib: /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/lib.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/grapheme.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/tables.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/word.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/sentence.rs
+
+/home/chris/workspace/anesthetic/pitwall/target/release/deps/unicode_segmentation-c68b81dfa41880ad.d: /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/lib.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/grapheme.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/tables.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/word.rs /home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/sentence.rs
+
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/lib.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/grapheme.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/tables.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/word.rs:
+/home/chris/.cargo/registry/src/github.com-1ecc6299db9ec823/unicode-segmentation-1.7.1/src/sentence.rs:
