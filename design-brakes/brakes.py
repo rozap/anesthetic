@@ -7,28 +7,41 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 
-max_desired_pedal_pressure = 150
+max_desired_pedal_pressure = 311 # 70 pounds
 
 vehicle_mass = 975 # kg
 front_bias = 0.43 # percent
-cg_height = 550 / 1000 #TODO
+cg_height = 381 / 1000 
 wheelbase = 2202 / 1000
 mc_stroke = 1.25 * 25.4 # mm
 
-tire_slr = 340 # mm TODO
+tire_slr = 273 # mm TODO
 
-rotor_effective_radius_front = 200 # mm TODO
-rotor_effective_radius_rear = 200 # mm TODO
+rotor_effective_radius_front = 220 # mm TODO
+rotor_effective_radius_rear = 220 # mm TODO
 
-front_piston_sizes = [50, 50]
-rear_piston_sizes = [40, 40]
+front_piston_sizes = [1.38 * 25.4, 1.38 * 25.4]
+rear_piston_sizes = [1.0 * 25.4, 1.0 * 25.4]
 
-pad_mu = 0.35 # TODO
+# stock X1/9
+# front_piston_sizes = [47.8]
+# rear_piston_sizes = [34]
 
-mc_diameter = 16 # mm
+# 500 front, x1/9 front at rear
+# front_piston_sizes = [54]
+# rear_piston_sizes = [47.8]
+
+
+# st43 0.51
+# r4-e 0.46
+pad_mu_front = 0.51
+pad_mu_rear = 0.51
+
+mc_diameter_front = 5/8 * 25.4 # mm
+mc_diameter_rear = 5/8 * 25.4
 brake_pedal_motion_ratio = 3.5
 
-pedal_pressure = 50 # newton meters
+pedal_pressure = 50 # newtons
 
 
 # youtube model for checking accuracy
@@ -47,8 +60,10 @@ pedal_pressure = 50 # newton meters
 
 gravity = 9.806
 
-fulcrum_to_plunger_distances = [59, 64, 81]
-plunger_to_rod_distances = [146, 164]
+# fulcrum_to_plunger_distances = [59, 64, 81]
+# plunger_to_rod_distances = [146, 164]
+fulcrum_to_plunger_distances = [81]
+plunger_to_rod_distances = [146]
 
 
 def area(diameter):
@@ -58,24 +73,19 @@ def clamping_force(force_on_pedal, fulcrum_to_plunger_distance, plunger_to_rod_d
     lever_motion_ratio = plunger_to_rod_distance / fulcrum_to_plunger_distance
 
     force_on_plunger = ((force_on_pedal * brake_pedal_motion_ratio) * lever_motion_ratio)
-    mc_area = area(mc_diameter)
+
+    mc_area_front = area(mc_diameter_front)
+    mc_area_rear  = area(mc_diameter_rear)
 
     # times two here because there are two master cylinders
-    hydraulic_pressure_n_per_mm = force_on_plunger / (mc_area * 2)
-
-    hydraulic_pressure_n_per_mm_rear = hydraulic_pressure_n_per_mm
-
-    # hydraulic_pressure_psi = hydraulic_pressure_n_per_mm * 145.037
-    # prop_valve_changeover = 300
-    # if hydraulic_pressure_psi > prop_valve_changeover:
-    #     hydraulic_pressure_n_per_mm_rear = hydraulic_pressure_n_per_mm
+    hydraulic_pressure_n_per_mm_front = force_on_plunger / (mc_area_front * 2)
+    hydraulic_pressure_n_per_mm_rear  = force_on_plunger / (mc_area_rear * 2)
 
     front_piston_area = sum([area(p) for p in front_piston_sizes])
-    rear_piston_area = sum([area(p) for p in rear_piston_sizes])
+    rear_piston_area  = sum([area(p) for p in rear_piston_sizes])
 
-    front_clamping_force = hydraulic_pressure_n_per_mm * front_piston_area
-    rear_clamping_force = hydraulic_pressure_n_per_mm_rear * rear_piston_area
-
+    front_clamping_force = hydraulic_pressure_n_per_mm_front * front_piston_area
+    rear_clamping_force  = hydraulic_pressure_n_per_mm_rear  * rear_piston_area
 
     # times 4 because 2 pads and 2 calipers
     return (front_clamping_force * 4, rear_clamping_force * 4)
@@ -88,8 +98,8 @@ def pedal_max_stroke(fulcrum_to_plunger_distance, plunger_to_rod_distance):
 
 def stopping_force(force_on_pedal, fulcrum_to_plunger_distance, plunger_to_rod_distance):
     (front_clamping_force, rear_clamping_force) = clamping_force(force_on_pedal, fulcrum_to_plunger_distance, plunger_to_rod_distance)
-    front_braking_force = front_clamping_force * pad_mu
-    rear_braking_force = rear_clamping_force * pad_mu
+    front_braking_force = front_clamping_force * pad_mu_front
+    rear_braking_force = rear_clamping_force * pad_mu_rear
 
     front = front_braking_force * (rotor_effective_radius_front / tire_slr)
     rear = rear_braking_force * (rotor_effective_radius_rear / tire_slr)
@@ -116,7 +126,7 @@ def dynamic_weights(
 
 def plot_ideal_brake_curve(mass_kg, cg_height_m, wheelbase_m, front_weight_distribution):
     # Range of deceleration rates (g-forces)
-    decelerations = np.linspace(0.0, 1.0, 50)
+    decelerations = np.linspace(0.0, 1.5, 50)
 
     front_brake_forces = []
     rear_brake_forces = []
