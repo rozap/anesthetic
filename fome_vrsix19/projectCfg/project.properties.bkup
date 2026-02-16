@@ -1,7 +1,7 @@
 #Project Attributes.
 #TunerStudio by EFI Analytics, Inc
-#Last Saved on: Wed Dec 17 21:45:12 PST 2025
-#Wed Dec 17 21:45:12 PST 2025
+#Last Saved on: Sat Feb 07 13:52:22 PST 2026
+#Sat Feb 07 13:52:22 PST 2026
 2DTable_fuelTrimTbl3_tableInitialDir=/home/chris/Desktop
 2DTable_fuelTrimTbl5_tableInitialDir=/home/chris/Desktop
 2DTable_ignitionTableTbl_tableInitialDir=/home/chris/Desktop
@@ -149,6 +149,10 @@ fuelClosedLoopDialogClosed\ loop\ fuel\ correction_X=1247
 fuelClosedLoopDialogClosed\ loop\ fuel\ correction_Y=52
 fuelClosedLoopDialogClosed\ loop\ fuel\ correction_height=600
 fuelClosedLoopDialogClosed\ loop\ fuel\ correction_width=606
+fuelLevelDialogFuel\ Level\ Sensor_X=809
+fuelLevelDialogFuel\ Level\ Sensor_Y=505
+fuelLevelDialogFuel\ Level\ Sensor_height=523
+fuelLevelDialogFuel\ Level\ Sensor_width=637
 fuelTrimTbl1Fuel\ trim\ cyl\ 1_X=817
 fuelTrimTbl1Fuel\ trim\ cyl\ 1_Y=427
 fuelTrimTbl1Fuel\ trim\ cyl\ 1_height=480
@@ -195,8 +199,8 @@ ignitionIatCorrTableTblIgnition\ Intake\ Air\ Temp\ correction_height=321
 ignitionIatCorrTableTblIgnition\ Intake\ Air\ Temp\ correction_width=298
 ignitionSettingsIgnition\ settings_X=579
 ignitionSettingsIgnition\ settings_Y=251
-ignitionSettingsIgnition\ settings_height=468
-ignitionSettingsIgnition\ settings_width=693
+ignitionSettingsIgnition\ settings_height=489
+ignitionSettingsIgnition\ settings_width=701
 ignitionTableTblIgnition\ Table_X=0
 ignitionTableTblIgnition\ Table_Y=25
 ignitionTableTblIgnition\ Table_height=630
