@@ -153,15 +153,52 @@ def load_config() -> Optional[Dict[str, Any]]:
         return None
 
 
-def set_source_mute(source_name: str, mute: bool) -> bool:
-    """Mute or unmute a PulseAudio source."""
+def get_source_description(source_name: str) -> Optional[str]:
+    """Get the description of a PulseAudio source."""
     try:
-        mute_value = "1" if mute else "0"
-        subprocess.run(
-            ["pactl", "set-source-mute", source_name, mute_value],
-            check=True,
-            capture_output=True
+        result = subprocess.run(
+            ["pactl", "list", "sources"],
+            capture_output=True,
+            text=True,
+            check=True
         )
+        
+        current_name = None
+        for line in result.stdout.split('\n'):
+            line = line.strip()
+            if line.startswith('Name:'):
+                current_name = line.split(':', 1)[1].strip()
+            elif line.startswith('Description:') and current_name == source_name:
+                return line.split(':', 1)[1].strip()
+        
+        return None
+    except subprocess.CalledProcessError:
+        return None
+
+
+def set_source_mute(source_name: str, mute: bool, use_volume: bool = False) -> bool:
+    """Mute or unmute a PulseAudio source.
+    
+    For problematic devices (like Plantronics .Audio 646 DSP), use volume control
+    instead of mute to avoid hardware mute button conflicts.
+    """
+    try:
+        if use_volume:
+            # Use volume control instead of mute for whack devices
+            volume = "0%" if mute else "100%"
+            subprocess.run(
+                ["pactl", "set-source-volume", source_name, volume],
+                check=True,
+                capture_output=True
+            )
+        else:
+            # Normal mute control
+            mute_value = "1" if mute else "0"
+            subprocess.run(
+                ["pactl", "set-source-mute", source_name, mute_value],
+                check=True,
+                capture_output=True
+            )
         return True
     except subprocess.CalledProcessError as e:
         print(f"Error setting mute state: {e}", file=sys.stderr)
@@ -184,10 +221,20 @@ def run_ptt(config: Dict[str, Any]):
     button_name = config['button_name']
     source_name = config['source_name']
     
+    # Check if this is a problematic Plantronics device
+    source_description = get_source_description(source_name)
+    use_volume_control = False
+    
+    if source_description and "Plantronics .Audio 646 DSP" in source_description:
+        use_volume_control = True
+        print(f"Detected Plantronics .Audio 646 DSP - using volume control instead of mute")
+    
     print(f"PTT Configuration:")
     print(f"  Device: {device_name}")
     print(f"  Button: {button_name}")
     print(f"  Audio Source: {source_name}")
+    if source_description:
+        print(f"  Description: {source_description}")
     print(f"\nStarting PTT... (Press Ctrl+C to exit)")
     
     device = None
@@ -198,7 +245,7 @@ def run_ptt(config: Dict[str, Any]):
     # Start with mic muted (will unmute on button press)
     # But safe state on errors/exit is UNMUTED for race car communication
     current_mute_state = True
-    set_source_mute(source_name, True)
+    set_source_mute(source_name, True, use_volume_control)
     print("Mic muted (press button to talk)")
     
     while True:
@@ -215,7 +262,7 @@ def run_ptt(config: Dict[str, Any]):
                         # Reset state on reconnect and ensure mic is muted
                         last_button_state = False
                         if not current_mute_state:
-                            set_source_mute(source_name, True)
+                            set_source_mute(source_name, True, use_volume_control)
                             current_mute_state = True
                             print("Mic muted (device reconnected)")
                     else:
@@ -250,7 +297,7 @@ def run_ptt(config: Dict[str, Any]):
                                 should_mute = not button_pressed
                                 
                                 if should_mute != current_mute_state:
-                                    if set_source_mute(source_name, should_mute):
+                                    if set_source_mute(source_name, should_mute, use_volume_control):
                                         current_mute_state = should_mute
                                         state_str = "muted" if should_mute else "UNMUTED"
                                         print(f"Mic {state_str}")
@@ -263,7 +310,7 @@ def run_ptt(config: Dict[str, Any]):
                 device = None
                 # UNMUTE on disconnect for safety (race car communication)
                 if current_mute_state:
-                    set_source_mute(source_name, False)
+                    set_source_mute(source_name, False, use_volume_control)
                     current_mute_state = False
                     print("Mic UNMUTED (device disconnected - safe state)")
                 continue
@@ -271,7 +318,7 @@ def run_ptt(config: Dict[str, Any]):
         except KeyboardInterrupt:
             print("\nExiting...")
             # UNMUTE on exit for safety (race car communication)
-            set_source_mute(source_name, False)
+            set_source_mute(source_name, False, use_volume_control)
             print("Mic UNMUTED")
             break
 
