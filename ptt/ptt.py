@@ -31,20 +31,15 @@ def get_input_devices():
     return devices
 
 
-def select_button():
+def select_button(prompt: str):
     """Wait for user to press a button and return the device and button code."""
-    print("Available input devices:")
-    devices = get_input_devices()
+    print(f"\n{prompt}")
+    print("(Axis movements will be ignored, only button presses count)")
     
+    devices = get_input_devices()
     if not devices:
         print("No input devices found!", file=sys.stderr)
         sys.exit(1)
-    
-    for i, device in enumerate(devices):
-        print(f"  [{i}] {device.name} ({device.path})")
-    
-    print("\nPress any button on the device you want to use for PTT...")
-    print("(Axis movements will be ignored, only button presses count)")
     
     # Monitor all devices for button press
     devices_dict = {dev.fd: dev for dev in devices}
@@ -57,7 +52,7 @@ def select_button():
                 # Only care about key/button events (type 1)
                 if event.type == evdev.ecodes.EV_KEY and event.value == 1:  # Button press
                     button_name = evdev.ecodes.KEY[event.code] if event.code in evdev.ecodes.KEY else f"BTN_{event.code}"
-                    print(f"\nDetected: {button_name} on {device.name}")
+                    print(f"Detected: {button_name} on {device.name}")
                     return device.path, device.name, event.code, button_name
 
 
@@ -176,32 +171,26 @@ def get_source_description(source_name: str) -> Optional[str]:
         return None
 
 
-def set_source_mute(source_name: str, mute: bool, use_volume: bool = False) -> bool:
-    """Mute or unmute a PulseAudio source.
+def set_source_volume(source_name: str, volume_percent: int) -> bool:
+    """Set the volume of a PulseAudio source.
     
-    For problematic devices (like Plantronics .Audio 646 DSP), use volume control
-    instead of mute to avoid hardware mute button conflicts.
+    Args:
+        source_name: Name of the PulseAudio source
+        volume_percent: Volume level (0-100)
+    
+    Returns:
+        True if successful, False otherwise
     """
     try:
-        if use_volume:
-            # Use volume control instead of mute for whack devices
-            volume = "0%" if mute else "100%"
-            subprocess.run(
-                ["pactl", "set-source-volume", source_name, volume],
-                check=True,
-                capture_output=True
-            )
-        else:
-            # Normal mute control
-            mute_value = "1" if mute else "0"
-            subprocess.run(
-                ["pactl", "set-source-mute", source_name, mute_value],
-                check=True,
-                capture_output=True
-            )
+        volume_percent = max(0, min(100, volume_percent))  # Clamp to 0-100
+        subprocess.run(
+            ["pactl", "set-source-volume", source_name, f"{volume_percent}%"],
+            check=True,
+            capture_output=True
+        )
         return True
     except subprocess.CalledProcessError as e:
-        print(f"Error setting mute state: {e}", file=sys.stderr)
+        print(f"Error setting volume: {e}", file=sys.stderr)
         return False
 
 
@@ -219,34 +208,38 @@ def run_ptt(config: Dict[str, Any]):
     device_name = config['device_name']
     button_code = config['button_code']
     button_name = config['button_name']
+    gain_up_code = config['gain_up_code']
+    gain_up_name = config['gain_up_name']
+    gain_down_code = config['gain_down_code']
+    gain_down_name = config['gain_down_name']
     source_name = config['source_name']
+    transmit_gain = config.get('transmit_gain', 100)  # Default to 100% if not specified
     
-    # Check if this is a problematic Plantronics device
     source_description = get_source_description(source_name)
-    use_volume_control = False
-    
-    if source_description and "Plantronics .Audio 646 DSP" in source_description:
-        use_volume_control = True
-        print(f"Detected Plantronics .Audio 646 DSP - using volume control instead of mute")
     
     print(f"PTT Configuration:")
     print(f"  Device: {device_name}")
-    print(f"  Button: {button_name}")
+    print(f"  PTT Button: {button_name}")
+    print(f"  Gain Up Button: {gain_up_name}")
+    print(f"  Gain Down Button: {gain_down_name}")
     print(f"  Audio Source: {source_name}")
     if source_description:
         print(f"  Description: {source_description}")
+    print(f"  Transmit Gain: {transmit_gain}%")
     print(f"\nStarting PTT... (Press Ctrl+C to exit)")
     
     device = None
-    last_button_state = False
+    last_ptt_state = False
+    last_gain_up_state = False
+    last_gain_down_state = False
     reconnect_delay = 1.0
     last_reconnect_attempt = 0
     
-    # Start with mic muted (will unmute on button press)
-    # But safe state on errors/exit is UNMUTED for race car communication
-    current_mute_state = True
-    set_source_mute(source_name, True, use_volume_control)
-    print("Mic muted (press button to talk)")
+    # Start with mic at 0% volume (will set to transmit_gain on button press)
+    # But safe state on errors/exit is 100% for race car communication
+    current_volume = 0
+    set_source_volume(source_name, 0)
+    print("Mic muted (0% gain - press PTT button to talk)")
     
     while True:
         try:
@@ -260,11 +253,13 @@ def run_ptt(config: Dict[str, Any]):
                     if device:
                         print(f"Connected to {device_name}")
                         # Reset state on reconnect and ensure mic is muted
-                        last_button_state = False
-                        if not current_mute_state:
-                            set_source_mute(source_name, True, use_volume_control)
-                            current_mute_state = True
-                            print("Mic muted (device reconnected)")
+                        last_ptt_state = False
+                        last_gain_up_state = False
+                        last_gain_down_state = False
+                        if current_volume != 0:
+                            set_source_volume(source_name, 0)
+                            current_volume = 0
+                            print("Mic muted (0% gain - device reconnected)")
                     else:
                         if reconnect_delay == 1.0:  # Only print once
                             print(f"Waiting for device '{device_name}' to connect...")
@@ -284,42 +279,81 @@ def run_ptt(config: Dict[str, Any]):
                 
                 if r:
                     for event in device.read():
-                        # Only process our specific button
-                        if event.type == evdev.ecodes.EV_KEY and event.code == button_code:
-                            button_pressed = (event.value == 1)
+                        if event.type == evdev.ecodes.EV_KEY:
+                            # Process PTT button
+                            if event.code == button_code:
+                                button_pressed = (event.value == 1)
+                                
+                                # Only act on state changes
+                                if button_pressed != last_ptt_state:
+                                    last_ptt_state = button_pressed
+                                    
+                                    # Button pressed = transmit at configured gain, released = 0%
+                                    # (But safe state on errors is 100% for race car communication)
+                                    target_volume = transmit_gain if button_pressed else 0
+                                    
+                                    if target_volume != current_volume:
+                                        if set_source_volume(source_name, target_volume):
+                                            current_volume = target_volume
+                                            if target_volume == 0:
+                                                print(f"Mic muted (0% gain)")
+                                            else:
+                                                print(f"Mic TRANSMITTING ({target_volume}% gain)")
+                                        else:
+                                            print("Warning: Failed to change volume (source may have disconnected)")
                             
-                            # Only act on state changes
-                            if button_pressed != last_button_state:
-                                last_button_state = button_pressed
+                            # Process gain up button
+                            elif event.code == gain_up_code:
+                                button_pressed = (event.value == 1)
                                 
-                                # Button pressed = UNMUTE, button released = MUTE
-                                # (But safe state on errors is UNMUTED for race car communication)
-                                should_mute = not button_pressed
+                                if button_pressed and not last_gain_up_state:
+                                    transmit_gain = min(100, transmit_gain + 5)
+                                    config['transmit_gain'] = transmit_gain
+                                    save_config(config)
+                                    print(f"Transmit gain increased to {transmit_gain}%")
+                                    
+                                    # If currently transmitting, update volume immediately
+                                    if last_ptt_state:
+                                        if set_source_volume(source_name, transmit_gain):
+                                            current_volume = transmit_gain
+                                            print(f"Mic TRANSMITTING ({transmit_gain}% gain)")
                                 
-                                if should_mute != current_mute_state:
-                                    if set_source_mute(source_name, should_mute, use_volume_control):
-                                        current_mute_state = should_mute
-                                        state_str = "muted" if should_mute else "UNMUTED"
-                                        print(f"Mic {state_str}")
-                                    else:
-                                        print("Warning: Failed to change mute state (source may have disconnected)")
+                                last_gain_up_state = button_pressed
+                            
+                            # Process gain down button
+                            elif event.code == gain_down_code:
+                                button_pressed = (event.value == 1)
+                                
+                                if button_pressed and not last_gain_down_state:
+                                    transmit_gain = max(0, transmit_gain - 5)
+                                    config['transmit_gain'] = transmit_gain
+                                    save_config(config)
+                                    print(f"Transmit gain decreased to {transmit_gain}%")
+                                    
+                                    # If currently transmitting, update volume immediately
+                                    if last_ptt_state:
+                                        if set_source_volume(source_name, transmit_gain):
+                                            current_volume = transmit_gain
+                                            print(f"Mic TRANSMITTING ({transmit_gain}% gain)")
+                                
+                                last_gain_down_state = button_pressed
             
             except OSError as e:
                 # Device disconnected
                 print(f"Device disconnected: {e}")
                 device = None
-                # UNMUTE on disconnect for safety (race car communication)
-                if current_mute_state:
-                    set_source_mute(source_name, False, use_volume_control)
-                    current_mute_state = False
-                    print("Mic UNMUTED (device disconnected - safe state)")
+                # Set to 100% on disconnect for safety (race car communication)
+                if current_volume != 100:
+                    set_source_volume(source_name, 100)
+                    current_volume = 100
+                    print("Mic set to 100% gain (device disconnected - safe state)")
                 continue
         
         except KeyboardInterrupt:
             print("\nExiting...")
-            # UNMUTE on exit for safety (race car communication)
-            set_source_mute(source_name, False, use_volume_control)
-            print("Mic UNMUTED")
+            # Set to 100% on exit for safety (race car communication)
+            set_source_volume(source_name, 100)
+            print("Mic set to 100% gain")
             break
 
 
@@ -327,8 +361,30 @@ def setup():
     """Run setup wizard."""
     print("=== PTT Setup ===\n")
     
-    # Select button
-    device_path, device_name, button_code, button_name = select_button()
+    print("Available input devices:")
+    devices = get_input_devices()
+    
+    if not devices:
+        print("No input devices found!", file=sys.stderr)
+        sys.exit(1)
+    
+    for i, device in enumerate(devices):
+        print(f"  [{i}] {device.name} ({device.path})")
+    
+    # Select PTT button
+    device_path, device_name, button_code, button_name = select_button(
+        "Press the button you want to use for PTT (Push-to-Talk)..."
+    )
+    
+    # Select gain up button
+    _, _, gain_up_code, gain_up_name = select_button(
+        "Press the button you want to use to INCREASE transmit gain..."
+    )
+    
+    # Select gain down button
+    _, _, gain_down_code, gain_down_name = select_button(
+        "Press the button you want to use to DECREASE transmit gain..."
+    )
     
     # Select audio source
     source_name = select_audio_source()
@@ -339,12 +395,18 @@ def setup():
         'device_name': device_name,
         'button_code': button_code,
         'button_name': button_name,
-        'source_name': source_name
+        'gain_up_code': gain_up_code,
+        'gain_up_name': gain_up_name,
+        'gain_down_code': gain_down_code,
+        'gain_down_name': gain_down_name,
+        'source_name': source_name,
+        'transmit_gain': 100  # Default to 100%
     }
     
     save_config(config)
     
     print("\nSetup complete! Run without --setup to start PTT.")
+    print(f"Default transmit gain is set to 100%. Use {gain_up_name}/{gain_down_name} to adjust during operation.")
 
 
 def main():

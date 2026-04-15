@@ -48,10 +48,12 @@ Run the setup wizard to configure your PTT button and microphone:
 
 The wizard will:
 1. Show all available input devices
-2. Wait for you to press a button on your gamepad/controller
-3. Show all available PulseAudio input sources
-4. Let you select your microphone
-5. Save the configuration to `~/.config/ptt/config.json`
+2. Wait for you to press the PTT (Push-to-Talk) button on your gamepad/controller
+3. Wait for you to press the gain up button
+4. Wait for you to press the gain down button
+5. Show all available PulseAudio input sources
+6. Let you select your microphone
+7. Save the configuration to `~/.config/ptt/config.json`
 
 ### Running PTT
 
@@ -62,19 +64,24 @@ After setup, simply run:
 ```
 
 The application will:
-- Start with your microphone **muted**
-- **Unmute** when you press and hold the configured button
-- **Mute** when you release the button
+- Start with your microphone at **0% gain** (muted)
+- Set to **configured transmit gain** when you press and hold the PTT button
+- Return to **0% gain** when you release the PTT button
+- Allow you to adjust transmit gain (in 5% increments) using the gain up/down buttons
+- Save the transmit gain setting automatically when changed
 - Log all state changes to stdout
 - Automatically reconnect if your gamepad or microphone disconnects
+- Set microphone to **100% gain** on exit or errors (safe state for race car communication)
 
-Press `Ctrl+C` to exit (microphone will be muted on exit).
+Press `Ctrl+C` to exit (microphone will be set to 100% gain for safety).
 
 ## How It Works
 
 - **Button Detection**: Uses the Linux `evdev` interface to read raw input events from your gamepad
-- **Audio Control**: Uses `pactl` (PulseAudio command-line tool) to mute/unmute your microphone
+- **Audio Control**: Uses `pactl` (PulseAudio command-line tool) to control microphone volume/gain
+- **Gain Control**: Adjustable transmit gain (0-100%) using dedicated buttons, saved to config
 - **Device Recovery**: Polls for device reconnection with exponential backoff if devices disconnect
+- **Safe Defaults**: On errors or exit, microphone is set to 100% gain for race car communication safety
 
 ## Troubleshooting
 
@@ -120,9 +127,16 @@ Configuration is stored in `~/.config/ptt/config.json`:
   "device_name": "Xbox Wireless Controller",
   "button_code": 307,
   "button_name": "BTN_WEST",
-  "source_name": "alsa_input.usb-Blue_Microphones_Yeti_Stereo_Microphone_REV8-00.analog-stereo"
+  "gain_up_code": 310,
+  "gain_up_name": "BTN_NORTH",
+  "gain_down_code": 308,
+  "gain_down_name": "BTN_SOUTH",
+  "source_name": "alsa_input.usb-Blue_Microphones_Yeti_Stereo_Microphone_REV8-00.analog-stereo",
+  "transmit_gain": 85
 }
 ```
+
+The `transmit_gain` value (0-100) is automatically updated when you adjust gain during operation.
 
 You can manually edit this file if needed, but it's easier to run `--setup` again.
 
