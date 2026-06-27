@@ -1,0 +1,233 @@
+/** OVERALL STYLE **/
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+}
+.theme-colors {
+    font-family: monospace;
+    background: black;
+    color: white;
+    font-size: 1rem;
+}
+.theme-colors a {
+    color: orange;
+    text-decoration: none;
+}
+.theme-colors a:hover {
+    text-decoration: underline;
+}
+.header {
+    padding: 1rem;
+    line-height: 1.8;
+}
+.footer {
+    padding: 1rem;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.main {
+    padding: 0 1rem 5rem 1rem;
+    max-width: 50rem;
+}
+.breadcrumb-part {
+    white-space: nowrap;
+}
+
+/** FOLDERS **/
+
+.folder-icon {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+}
+li {
+    line-height: 1.3;
+    list-style-image: none; /** prevent inheritance if inside folder **/
+}
+.li-folder {
+    list-style-image: url('icons/folder.svg');
+}
+.li-folder.li-folder-open {
+    list-style-image: url('icons/folder-open.svg');
+}
+.hidden {
+    display: none;
+}
+.selected {
+    background: rgba(255, 0, 0, 0.5);
+}
+
+/** INDENTATION **/
+
+.indent-1 {
+    white-space: pre;
+    tab-size: 2;
+}
+.indent-2 {
+    white-space: pre;
+    tab-size: 4;
+}
+.indent-3 {
+    white-space: pre;
+    tab-size: 6;
+}
+.indent-4 {
+    white-space: pre;
+    tab-size: 8;
+}
+.indent-5 {
+    white-space: pre;
+    tab-size: 10;
+}
+.indent-6 {
+    white-space: pre;
+    tab-size: 12;
+}
+.indent-7 {
+    white-space: pre;
+    tab-size: 14;
+}
+.indent-8 {
+    white-space: pre;
+    tab-size: 16;
+}
+.indent-9 {
+    white-space: pre;
+    tab-size: 18;
+}
+.indent-right-align {
+    white-space: pre;
+    tab-size: 100;
+}
+
+/** HIGHLIGHTED REGIONS **/
+
+.oxe-image {
+    position: relative;
+    display: inline-block; /* so resizes to inner image */
+    max-width: none;
+}
+.oxe-image .big-img {
+    /* for blue boxes */
+    max-width: none !important;
+    width: initial !important;
+}
+.oxe-region {
+    position: absolute;
+    display: block;
+    background: rgba(25,122,250,.3);
+}
+
+/** TABLES **/
+table {
+    border-collapse: collapse;
+}
+td, th {
+    border: 1px solid black;
+    padding: .4rem;
+}
+
+/** IMAGES **/
+
+.big-img {
+    /* usually good width for the amount of detail */
+    max-width: 50rem;
+}
+/* on mobile, can zoom in past max-width, so ok to set it to a percentage */
+@media only screen and (hover: none) {
+    html .big-img {
+        max-width: 100%;
+    }
+}
+
+/** LEMON **/
+.clsEmphBOLD {
+    font-weight: bold;
+}
+.NOTE {
+    font-style: italic;
+}
+.NOTE_label {
+    font-weight: bold;
+}
+.ICON {
+    height: 1em;
+}
+.imageHolder {
+    margin-top: 1em;
+}
+.imageCaption {
+    font-size: 1.5em;
+}
+.imageHolder img {
+    display: block;
+    /* usually not as detailed as wiring diagram, don't need to be as large */
+    max-width: 50rem;
+}
+.svgImageHolder {
+    page-break-before: always;
+    page-break-after: always;
+}
+/* we cannot set the svg width in percentage or vw, it will prevent zooming in. so instead we do horrible things with media queries. */
+/* for most screen, eg 1080p or 4k retina, may even work on 1366x768: */
+.clsArticleSvg {
+    width: 80rem;
+}
+/* smaller, maybe vertical ipad or half-screen maximized */
+@media only screen and (max-width: 75rem) {
+    .imageHolder img.clsArticleSvg {
+        width: 50rem;
+    }
+}
+/* touch display can use percentage-based width, because touch zoom bypasses weird restriction */
+@media only screen and (hover: none) {
+    html .imageHolder img.clsArticleSvg {
+        width: 100%;
+    }
+    html .imageHolder img {
+        max-width: 100%;
+    }
+}
+
+.other-warning {
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0 6px 0 6px;
+}
+.other-variant {
+    background: lightblue;
+}
+.other-car {
+    background: orange;
+}
+.other-announcement {
+    background: #ff7;
+}
+
+/** ABOUT PAGE **/
+.about-body {
+    padding: 2rem 5vw;
+}
+.about-h1 {
+    font-size: 6rem;
+    font-weight: normal;
+}
+.about-content {
+    line-height: 1.5;
+    min-width: 6rem;
+    max-width: 100%;
+    width: 30rem;
+    font-size: 1.5em;
+    margin-bottom: 1.5rem;
+    margin-left: 3vw;
+    text-justify: justify;
+}
+code {
+    background: darkred;
+}

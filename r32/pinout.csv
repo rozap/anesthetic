@@ -1,0 +1,44 @@
+Function, Bulkhead Pin No,Molex Pin No, ECU Pin No, Notes
+TPS +5v,40,,, -
+TPS Signal,29,2J3,AV6,
+TPS Gnd,8,,,
+Coolant Signal,27,2F1,AT1, -
+Coolant Gnd,7,,, -
+Oil Pressure Signal,26,2K1,AV1,  -
+Oil Pressure Gnd,8,,, -
+Oil Pressure 5v,44,,,
+Oil Tmp Signal,30,2F2,AT2, -
+Oil Tmp Gnd,7,,,
+Coil 1,46,3C3,IGN1,  -
+Coil 2,47,3B3,IGN2,  -
+Coil 3,31,3B3,IGN3,  -
+Coil 4,32,3C2,IGN4,  -
+Coil 5,36,2C3,IGN5,  -
+Coil 6,35,2B3,IGN6,  -
+Inj 1,38,2C1,LS1 ,  -
+Inj 2,37,2B1,LS2,  -
+Inj 3,24,3B4,LS3,  -
+Inj 4,23,3D2,LS4,  -
+Inj 5,22,3C4,LS8,  -
+Inj 6,21,3D3,LS7,  -
+VR+,42,,,  -
+VR-,41,,,  -
+Cam 1 Position +,13,1F2,Digital 4,  -
+Cam 1 Position -,14,,,  -
+Cam 2 Position +,20,1F1,Digital 3,  -
+Cam 2 Position -,43,,,  -
+VVT 1 Solenoid,1,3H4,LS9,  (flyback needed)
+VVT 2 Solenoid,5,3H3,LS10,  (flyback needed)
+Knock 1 +,39,1D1,Knock1, -
+Knock 1 -,17,,, -
+Knock 2 +,9,1D2,Knock2, -
+Knock 2 -,17,,, -
+MAF Signal,16,2J2,AV5, -
+MAF IAT Signal,28,2J1,AV4,  -
+IAT +5v ,45,,,
+LSU Un,25,,,
+LSU Lp,10,,,
+LSU Vm,11,,,
+LSU Trim,12,,,
+CAN-,,2D2,,
+CAN+,,2D3,,
