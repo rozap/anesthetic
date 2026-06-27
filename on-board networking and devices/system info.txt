@@ -1,0 +1,18 @@
+# Network info
+
+It's an AirLink MP70 cellular/wifi modem/router.
+Web interface lives at:
+WiFi/Ethernet: 192.168.66.1
+USB Virtual Ethernet: 192.168.14.31
+User: user password: bsod
+
+Ethernet/Wifi:
+It serves DNS @ 192.168.66.100 - 192.168.66.160
+ssid: bsod
+pw: bsodracing
+
+# Computer info
+Computer is a WYSE N03D configured in BIOS (pw: Fireport) to always turn on when power is applied.
+
+Network is set up static IP 192.168.66.5
+Camera are also static @ 192.168.66.10, .11, .12, .13
