@@ -1,5 +1,6 @@
 # Buy: 
-https://www.034motorsport.com/oil-filter-housing-adapter-vr6-24v.html
+  * 034 housing to oil fitting
+
 
 # Connectors
   ## MAF
@@ -65,12 +66,45 @@ https://www.034motorsport.com/oil-filter-housing-adapter-vr6-24v.html
   ```
 
   ## Fuel injectors 
+  * Connector: 4D0971992
   * depin: https://youtu.be/PvNKkD1PFCs?t=695
   * pins: Sumitomo 8240-0263
     * https://www.ksvlooms.com/products/sumitomo-8240-0263-rs-series-socket-terminal-22-20-awg
 
   ## VVT Connector
   * same as ETB, TE/Tyco 964275-2
+
+  ## Cam connector
+  * TE 929939-1
+
+  ## CLT Connector
+  * Same as vvt, TE/Tyco 964275-2
+
+
+  ## Order
+    * Injectors 
+      * done
+    * VVT
+      * done
+    * MAF
+    * Coils
+      * done
+    * Knock
+      * same
+    * Crank 
+      * done
+    * Cam
+      * done
+    * LSU
+      * done
+    * Coolant 
+
+    * Oil Pressure
+      * done
+    * Fuel Pressure
+      * done
+    * Oil Temp
+      * done
 
 # Specs
 * Injector flow rate: 270cc
@@ -79,44 +113,35 @@ https://www.034motorsport.com/oil-filter-housing-adapter-vr6-24v.html
 
 
 # Pinout
-Function, Bulkhead Pin No, ECU Pin No, Notes
-TPS +5v, 40, 
-MAF/IAT 5v, 40
-Coolant Signal, ?, ?, 
-Coolant Gnd, ?, ?, 
-Oil Pressure Signal, ?, ?, 
-Oil Pressure Gnd, ?, ?,
-Oil Tmp Signal, ?, ?,
-Coil 1, ?, ?, 
-Coil 2, ?, ?, 
-Coil 3, ?, ?, 
-Coil 4, ?, ?, 
-Coil 5, ?, ?, 
-Coil 6, ?, ?, 
-Inj 1,  ?, ?, 
-Inj 2,  ?, ?, 
-Inj 3,  ?, ?, 
-Inj 4,  ?, ?, 
-Inj 5,  ?, ?, 
-Inj 6,  ?, ?, 
-VR+, ?, ?, 
-VR-, ?, ?, 
-Cam 1 Position +, ?, ?, 
-Cam 1 Position -, ?, ?, 
-Cam 2 Position +, ?, ?, 
-Cam 2 Position -, ?, ?, 
-VVT 1 Solenoid, ?, ?,  (flyback needed)
-VVT 2 Solenoid, ?, ?,  (flyback needed)
-Knock 1 +, 39, ?
-Knock 1 -, ?, ?
-Knock 2 +, ?, ?
-Knock 2 -, ?, ?
-MAF Signal, ?, ?, 
-MAF IAT Signal, ?, ?, 
-Oil Pressure 5v, ?, ?,
-Oil Tmp Gnd, ?, ?,
+see pinouts.csv
 
 
 # Tuning
 ## VVT
 https://www.vwvortex.com/threads/24v-vvt-mapping.4051402/
+
+
+# TODO
+* coolant
+  * crack pipe
+  * loop old oil cooler outles
+* oil
+  * -10AN fittings
+* alternator
+  * make the mount
+  * measure belt length
+    * get belt
+* fuel
+  * move fuel lines
+  * figure out regulator and return
+    * https://www.summitracing.com/parts/aei-13129 ?
+* ignition
+  * mount the coils
+  * change the spark plugs
+* mounts
+  * make the front mount
+  * torque everything
+* exhaust
+  * make it
+    * upper flanges
+    * lower flanges? or V-band conversion

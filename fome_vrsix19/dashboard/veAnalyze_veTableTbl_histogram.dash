@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <dsh xmlns="http://www.EFIAnalytics.com/:dsh">
-    <bibliography author="TunerStudio 3.3.01 - EFI Analytics - support@efianalytics.com" company="EFI Analytics, © 2007 - 2026, All Rights Reserved." writeDate="Mon Aug 03 12:16:06 PDT 2026"/>
+    <bibliography author="TunerStudio 3.3.01 - EFI Analytics - support@efianalytics.com" company="EFI Analytics, © 2007 - 2026, All Rights Reserved." writeDate="Sat Aug 08 20:41:34 PDT 2026"/>
     <versionInfo fileFormat="3.0" firmwareSignature="rusEFI (FOME) master.2025.04.12.proteus_f7.3442962368"/>
     <gaugeCluster antiAliasing="true" backgroundDitherColor="-8355712" clusterBackgroundColor="-16777216" clusterBackgroundImageFileName="" clusterBackgroundImageStyle="Tile" forceAspect="false" forceAspectHeight="9.0" forceAspectWidth="16.0">
         <dashComp type="Gauge">
@@ -33,6 +33,7 @@
             <MinVP type="ValueProvider">0.0</MinVP>
             <MinorTicks type="double">-1.0</MinorTicks>
             <NeedleColor alpha="255" blue="255" green="255" red="0" type="Color">-16711681</NeedleColor>
+            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <NeedleSmoothing type="int">1</NeedleSmoothing>
             <RelativeBorderWidth2 type="double">NaN</RelativeBorderWidth2>
             <ShortestSize type="int">194</ShortestSize>
@@ -51,7 +52,6 @@
             <ShowHistory type="boolean">true</ShowHistory>
             <GroupId type="int">223558299</GroupId>
             <GoingDead type="boolean">false</GoingDead>
-            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <Value type="double">0.0</Value>
             <Units type="String">RPM</Units>
             <Dirty type="boolean">true</Dirty>
@@ -108,9 +108,10 @@
             <MinVP type="ValueProvider">0.0</MinVP>
             <MinorTicks type="double">-1.0</MinorTicks>
             <NeedleColor alpha="255" blue="102" green="0" red="0" type="Color">-16777114</NeedleColor>
+            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <NeedleSmoothing type="int">1</NeedleSmoothing>
             <RelativeBorderWidth2 type="double">NaN</RelativeBorderWidth2>
-            <ShortestSize type="int">64</ShortestSize>
+            <ShortestSize type="int">63</ShortestSize>
             <SmoothedValue type="double">0.0</SmoothedValue>
             <StartAngle type="int">0</StartAngle>
             <SweepAngle type="int">300</SweepAngle>
@@ -126,7 +127,6 @@
             <ShowHistory type="boolean">true</ShowHistory>
             <GroupId type="int">223558299</GroupId>
             <GoingDead type="boolean">false</GoingDead>
-            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <Value type="double">0.0</Value>
             <Units type="String"/>
             <Dirty type="boolean">true</Dirty>
@@ -183,6 +183,7 @@
             <MinVP type="ValueProvider">10.0</MinVP>
             <MinorTicks type="double">-1.0</MinorTicks>
             <NeedleColor alpha="255" blue="0" green="0" red="255" type="Color">-65536</NeedleColor>
+            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <NeedleSmoothing type="int">1</NeedleSmoothing>
             <RelativeBorderWidth2 type="double">NaN</RelativeBorderWidth2>
             <ShortestSize type="int">194</ShortestSize>
@@ -201,7 +202,6 @@
             <ShowHistory type="boolean">true</ShowHistory>
             <GroupId type="int">1270148818</GroupId>
             <GoingDead type="boolean">false</GoingDead>
-            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <Value type="double">10.0</Value>
             <Units type="String"/>
             <Dirty type="boolean">true</Dirty>
@@ -258,9 +258,10 @@
             <MinVP type="ValueProvider">10.0</MinVP>
             <MinorTicks type="double">-1.0</MinorTicks>
             <NeedleColor alpha="255" blue="102" green="0" red="0" type="Color">-16777114</NeedleColor>
+            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <NeedleSmoothing type="int">1</NeedleSmoothing>
             <RelativeBorderWidth2 type="double">NaN</RelativeBorderWidth2>
-            <ShortestSize type="int">64</ShortestSize>
+            <ShortestSize type="int">63</ShortestSize>
             <SmoothedValue type="double">10.0</SmoothedValue>
             <StartAngle type="int">0</StartAngle>
             <SweepAngle type="int">300</SweepAngle>
@@ -276,7 +277,6 @@
             <ShowHistory type="boolean">true</ShowHistory>
             <GroupId type="int">1270148818</GroupId>
             <GoingDead type="boolean">false</GoingDead>
-            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <Value type="double">10.0</Value>
             <Units type="String"/>
             <Dirty type="boolean">true</Dirty>
@@ -321,7 +321,7 @@
             <HighCriticalVP type="ValueProvider">200.0</HighCriticalVP>
             <HighWarning type="double">200.0</HighWarning>
             <HighWarningVP type="ValueProvider">200.0</HighWarningVP>
-            <HistoricalPeakValue type="double">0.0</HistoricalPeakValue>
+            <HistoricalPeakValue type="double">103.86666666666666</HistoricalPeakValue>
             <HistoryDelay type="int">15000</HistoryDelay>
             <LabelDigits type="int">0</LabelDigits>
             <LowCritical type="double">10.0</LowCritical>
@@ -333,6 +333,7 @@
             <MinVP type="ValueProvider">0.0</MinVP>
             <MinorTicks type="double">-1.0</MinorTicks>
             <NeedleColor alpha="255" blue="0" green="255" red="255" type="Color">-256</NeedleColor>
+            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <NeedleSmoothing type="int">1</NeedleSmoothing>
             <RelativeBorderWidth2 type="double">NaN</RelativeBorderWidth2>
             <ShortestSize type="int">194</ShortestSize>
@@ -351,7 +352,6 @@
             <ShowHistory type="boolean">true</ShowHistory>
             <GroupId type="int">730420433</GroupId>
             <GoingDead type="boolean">false</GoingDead>
-            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <Value type="double">0.0</Value>
             <Units type="String">kPa</Units>
             <Dirty type="boolean">true</Dirty>
@@ -396,7 +396,7 @@
             <HighCriticalVP type="ValueProvider">200.0</HighCriticalVP>
             <HighWarning type="double">200.0</HighWarning>
             <HighWarningVP type="ValueProvider">200.0</HighWarningVP>
-            <HistoricalPeakValue type="double">0.0</HistoricalPeakValue>
+            <HistoricalPeakValue type="double">103.86666666666666</HistoricalPeakValue>
             <HistoryDelay type="int">15000</HistoryDelay>
             <LabelDigits type="int">0</LabelDigits>
             <LowCritical type="double">10.0</LowCritical>
@@ -408,9 +408,10 @@
             <MinVP type="ValueProvider">0.0</MinVP>
             <MinorTicks type="double">-1.0</MinorTicks>
             <NeedleColor alpha="255" blue="102" green="0" red="0" type="Color">-16777114</NeedleColor>
+            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <NeedleSmoothing type="int">1</NeedleSmoothing>
             <RelativeBorderWidth2 type="double">NaN</RelativeBorderWidth2>
-            <ShortestSize type="int">64</ShortestSize>
+            <ShortestSize type="int">63</ShortestSize>
             <SmoothedValue type="double">0.0</SmoothedValue>
             <StartAngle type="int">0</StartAngle>
             <SweepAngle type="int">300</SweepAngle>
@@ -426,7 +427,6 @@
             <ShowHistory type="boolean">true</ShowHistory>
             <GroupId type="int">730420433</GroupId>
             <GoingDead type="boolean">false</GoingDead>
-            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <Value type="double">0.0</Value>
             <Units type="String"/>
             <Dirty type="boolean">true</Dirty>
@@ -471,7 +471,7 @@
             <HighCriticalVP type="ValueProvider">100.0</HighCriticalVP>
             <HighWarning type="double">100.0</HighWarning>
             <HighWarningVP type="ValueProvider">100.0</HighWarningVP>
-            <HistoricalPeakValue type="double">43.0</HistoricalPeakValue>
+            <HistoricalPeakValue type="double">50.5</HistoricalPeakValue>
             <HistoryDelay type="int">15000</HistoryDelay>
             <LabelDigits type="int">1</LabelDigits>
             <LowCritical type="double">10.0</LowCritical>
@@ -483,6 +483,7 @@
             <MinVP type="ValueProvider">0.0</MinVP>
             <MinorTicks type="double">-1.0</MinorTicks>
             <NeedleColor alpha="255" blue="0" green="255" red="0" type="Color">-16711936</NeedleColor>
+            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <NeedleSmoothing type="int">1</NeedleSmoothing>
             <RelativeBorderWidth2 type="double">NaN</RelativeBorderWidth2>
             <ShortestSize type="int">194</ShortestSize>
@@ -501,7 +502,6 @@
             <ShowHistory type="boolean">true</ShowHistory>
             <GroupId type="int">2012512138</GroupId>
             <GoingDead type="boolean">false</GoingDead>
-            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <Value type="double">0.0</Value>
             <Units type="String"/>
             <Dirty type="boolean">true</Dirty>
@@ -546,7 +546,7 @@
             <HighCriticalVP type="ValueProvider">100.0</HighCriticalVP>
             <HighWarning type="double">100.0</HighWarning>
             <HighWarningVP type="ValueProvider">100.0</HighWarningVP>
-            <HistoricalPeakValue type="double">43.0</HistoricalPeakValue>
+            <HistoricalPeakValue type="double">50.5</HistoricalPeakValue>
             <HistoryDelay type="int">15000</HistoryDelay>
             <LabelDigits type="int">1</LabelDigits>
             <LowCritical type="double">10.0</LowCritical>
@@ -558,9 +558,10 @@
             <MinVP type="ValueProvider">0.0</MinVP>
             <MinorTicks type="double">-1.0</MinorTicks>
             <NeedleColor alpha="255" blue="102" green="0" red="0" type="Color">-16777114</NeedleColor>
+            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <NeedleSmoothing type="int">1</NeedleSmoothing>
             <RelativeBorderWidth2 type="double">NaN</RelativeBorderWidth2>
-            <ShortestSize type="int">64</ShortestSize>
+            <ShortestSize type="int">63</ShortestSize>
             <SmoothedValue type="double">0.0</SmoothedValue>
             <StartAngle type="int">0</StartAngle>
             <SweepAngle type="int">300</SweepAngle>
@@ -576,7 +577,6 @@
             <ShowHistory type="boolean">true</ShowHistory>
             <GroupId type="int">2012512138</GroupId>
             <GoingDead type="boolean">false</GoingDead>
-            <NeedleImageFileName type="String">null</NeedleImageFileName>
             <Value type="double">0.0</Value>
             <Units type="String"/>
             <Dirty type="boolean">true</Dirty>

@@ -1,14 +1,16 @@
 Function, Bulkhead Pin No,Molex Pin No, ECU Pin No, Notes
-TPS +5v,40,,, -
+TPS +5v,40,1D4,5v sensor 1, -
 TPS Signal,29,2J3,AV6,
-TPS Gnd,8,,,
+TPS Gnd,8,1C1,Gnd,
 Coolant Signal,27,2F1,AT1, -
-Coolant Gnd,7,,, -
+Coolant Gnd,7,1B2,Gnd, -
 Oil Pressure Signal,26,2K1,AV1,  -
-Oil Pressure Gnd,8,,, -
-Oil Pressure 5v,44,,,
+Fuel Pressure Signal,43,2K2,AV2,
+Oil Pressure Gnd,8,1C1,Gnd, -
+Oil Pressure 5v,44,“1E4”,5v sensor 1,
 Oil Tmp Signal,30,2F2,AT2, -
-Oil Tmp Gnd,7,,,
+Oil Tmp Gnd,7,1B2,Gnd,
+MAP signal,14,2H1,AV7,
 Coil 1,46,3C3,IGN1,  -
 Coil 2,47,3B3,IGN2,  -
 Coil 3,31,3B3,IGN3,  -
@@ -21,24 +23,38 @@ Inj 3,24,3B4,LS3,  -
 Inj 4,23,3D2,LS4,  -
 Inj 5,22,3C4,LS8,  -
 Inj 6,21,3D3,LS7,  -
-VR+,42,,,  -
-VR-,41,,,  -
-Cam 1 Position +,13,1F2,Digital 4,  -
-Cam 1 Position -,14,,,  -
-Cam 2 Position +,20,1F1,Digital 3,  -
-Cam 2 Position -,43,,,  -
+VR+,42,2G3,Crank+,  -
+VR-,41,2F3,Crank-,  -
+Cam 1 Position Sig,13,1F2,Digital 4,  -
+Cam 1 Gnd,17,1A1,Gnd,  -
+Cam 1 +5v,40,1D4,5v sensor 1,
+Cam 2 Position Sig,20,1F1,Digital 3,  -
+Cam 2 Gnd,17,1A1,Gnd,  -
+Cam2 +5v,40,1D4,5v sensor 1,
 VVT 1 Solenoid,1,3H4,LS9,  (flyback needed)
 VVT 2 Solenoid,5,3H3,LS10,  (flyback needed)
 Knock 1 +,39,1D1,Knock1, -
-Knock 1 -,17,,, -
+Knock 1 -,19,1B1,Gnd, -
 Knock 2 +,9,1D2,Knock2, -
-Knock 2 -,17,,, -
+Knock 2 -,19,1B1,Gnd, -
 MAF Signal,16,2J2,AV5, -
-MAF IAT Signal,28,2J1,AV4,  -
-IAT +5v ,45,,,
-LSU Un,25,,,
-LSU Lp,10,,,
-LSU Vm,11,,,
-LSU Trim,12,,,
-CAN-,,2D2,,
-CAN+,,2D3,,
+MAF IAT Signal,28,“2E1”,AT3,  -
+IAT +5v ,45,1C4,5v sensor 2,
+LSU Un,25,3B1,LSU Un,
+LSU Lp,10,“3E1”,LSU Lp,
+LSU Vm,11,3D1,LSU Vm,
+LSU Trim,12,3C1,LSU Trim,
+LSU Heater Neg,6,3G1,LSU Heater Neg,
+CAN-,none,2D2,CAN-,
+CAN+,none,2D3,CAN+,
+12v key,none,2D1,12v key,
+Gnd,8,1C1,,
+Gnd,17,1A1,,
+Gnd,19,1B1,,coil logic gnd
+Gnd,18,1A2,,
+Gnd,7,1B2,,
+Gnd,33,1 C2,,
+Main Relay,15,3F3,LS14,
+Fuel Relay,none,“3E4”,LS15,
+Fan Relay,none,“3E3”,LS16,
+Fuel Level,,“2E2”,AT4,
