@@ -1,7 +1,7 @@
 #Project Attributes.
 #TunerStudio by EFI Analytics, Inc
-#Last Saved on: Tue Aug 11 19:05:10 PDT 2026
-#Tue Aug 11 19:05:10 PDT 2026
+#Last Saved on: Tue Aug 11 19:14:17 PDT 2026
+#Tue Aug 11 19:14:17 PDT 2026
 2DTable_fuelTrimTbl3_tableInitialDir=/home/chris/Desktop
 2DTable_fuelTrimTbl5_tableInitialDir=/home/chris/Desktop
 2DTable_ignitionTableTbl_tableInitialDir=/home/chris/Desktop
@@ -127,8 +127,8 @@ egoSettingsEGO\ sensor_X=829
 egoSettingsEGO\ sensor_Y=407
 egoSettingsEGO\ sensor_height=461
 egoSettingsEGO\ sensor_width=342
-egoSettingsWideband\ O2\ sensor_X=618
-egoSettingsWideband\ O2\ sensor_Y=218
+egoSettingsWideband\ O2\ sensor_X=895
+egoSettingsWideband\ O2\ sensor_Y=236
 egoSettingsWideband\ O2\ sensor_height=964
 egoSettingsWideband\ O2\ sensor_width=469
 egtInputsEGT\ inputs_X=817
@@ -282,10 +282,15 @@ lastDisplayedTuneFile=Modified - current-tune.msq
 logFileDir=/home/chris/Desktop
 logTuningPanel_selectionTable1=ignitionTableTbl
 logTuningPanel_selectionTable2=veTableTbl
+mafDecodingCurveMAF\ sensor_X=818
+mafDecodingCurveMAF\ sensor_Y=448
+mafDecodingCurveMAF\ sensor_height=636
+mafDecodingCurveMAF\ sensor_width=620
+mafDecodingCurve_Set\ X\ Axis\ Minimum=-1.0
 mafSettingsMAF\ sensor_X=980
 mafSettingsMAF\ sensor_Y=681
-mafSettingsMAF\ sensor_height=171
-mafSettingsMAF\ sensor_width=295
+mafSettingsMAF\ sensor_height=380
+mafSettingsMAF\ sensor_width=310
 mapCurvesMAP\ sampling_X=641
 mapCurvesMAP\ sampling_Y=143
 mapCurvesMAP\ sampling_height=824
