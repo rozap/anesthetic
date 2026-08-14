@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-    <bibliography author="TunerStudio MS Ultra 3.3.01 - EFI Analytics, Inc." tuneComment="Lambda target table imported from screenshot (8x10 MAP/RPM grid), bilinearly resampled onto 16x16 firmware bins" writeDate="Tue Aug 11 23:11:53 PDT 2026"/>
+    <bibliography author="TunerStudio MS Ultra 3.3.01 - EFI Analytics, Inc." tuneComment="Exhaust VVT closed loop target from the EMU base tune (CAM2, vvt-emu-2.png). EMU 12x12 rebinned to 8x8." writeDate="Thu Aug 13 22:17:22 PDT 2026"/>
     <versionInfo fileFormat="5.0" firmwareInfo="FOME+proteus_f7+20260424%40343fb8" nPages="1" signature="rusEFI (FOME) .2026.06.03.proteus_f7.3416487136"/>
     <page>
         <pcVariable name="tsCanId">"0"</pcVariable>
@@ -204,7 +204,7 @@
         <constant digits="0" name="vvtBumpAmount" units="deg">15.0</constant>
         <constant digits="2" name="benchTestOnTime" units="ms">15.0</constant>
         <constant digits="2" name="cylinderBore" units="mm">84.0</constant>
-        <constant name="fuelAlgorithm">"MAF Air Charge"</constant>
+        <constant name="fuelAlgorithm">"Speed Density"</constant>
         <constant digits="0" name="ALSMaxTPS" units="%">5.0</constant>
         <constant name="crankingInjectionMode">"Batch"</constant>
         <constant name="injectionMode">"Sequential"</constant>
@@ -255,8 +255,8 @@
         <constant digits="2" name="globalFuelCorrection" units="coef">1.0</constant>
         <constant digits="3" name="adcVcc" units="volts">3.3</constant>
         <constant digits="0" name="mapCamDetectionAnglePosition" units="Deg">0.0</constant>
-        <constant name="camInputs1">"Digital 4"</constant>
-        <constant name="camInputs2">"Digital 3"</constant>
+        <constant name="camInputs1">"Digital 3"</constant>
+        <constant name="camInputs2">"Digital 4"</constant>
         <constant name="camInputs3">"NONE"</constant>
         <constant name="camInputs4">"NONE"</constant>
         <constant name="afr_hwChannel">"NONE"</constant>
@@ -525,17 +525,17 @@
         <constant digits="1" name="stft_minAfr" units="afr">10.0</constant>
         <constant digits="1" name="stft_maxAfr" units="afr">17.0</constant>
         <constant digits="0" name="stft_startupDelay" units="seconds">60.0</constant>
-        <constant digits="0" name="stft_cellCfgs1_maxAdd" units="%">5.0</constant>
-        <constant digits="0" name="stft_cellCfgs1_maxRemove" units="%">-5.0</constant>
+        <constant digits="0" name="stft_cellCfgs1_maxAdd" units="%">10.0</constant>
+        <constant digits="0" name="stft_cellCfgs1_maxRemove" units="%">-10.0</constant>
         <constant digits="2" name="stft_cellCfgs1_timeConstant" units="sec">30.0</constant>
         <constant digits="0" name="stft_cellCfgs2_maxAdd" units="%">5.0</constant>
         <constant digits="0" name="stft_cellCfgs2_maxRemove" units="%">-5.0</constant>
         <constant digits="2" name="stft_cellCfgs2_timeConstant" units="sec">30.0</constant>
-        <constant digits="0" name="stft_cellCfgs3_maxAdd" units="%">5.0</constant>
-        <constant digits="0" name="stft_cellCfgs3_maxRemove" units="%">-5.0</constant>
+        <constant digits="0" name="stft_cellCfgs3_maxAdd" units="%">10.0</constant>
+        <constant digits="0" name="stft_cellCfgs3_maxRemove" units="%">-10.0</constant>
         <constant digits="2" name="stft_cellCfgs3_timeConstant" units="sec">30.0</constant>
-        <constant digits="0" name="stft_cellCfgs4_maxAdd" units="%">5.0</constant>
-        <constant digits="0" name="stft_cellCfgs4_maxRemove" units="%">-5.0</constant>
+        <constant digits="0" name="stft_cellCfgs4_maxAdd" units="%">10.0</constant>
+        <constant digits="0" name="stft_cellCfgs4_maxRemove" units="%">-10.0</constant>
         <constant digits="2" name="stft_cellCfgs4_timeConstant" units="sec">30.0</constant>
         <constant name="stepperDcIo1_directionPin1">"NONE"</constant>
         <constant name="stepperDcIo1_directionPin2">"NONE"</constant>
@@ -562,8 +562,8 @@
         <constant name="luaOutputPins6">"NONE"</constant>
         <constant name="luaOutputPins7">"NONE"</constant>
         <constant name="luaOutputPins8">"NONE"</constant>
-        <constant digits="1" name="vvtOffsets1" units="value">0.0</constant>
-        <constant digits="1" name="vvtOffsets2" units="value">0.0</constant>
+        <constant digits="1" name="vvtOffsets1" units="value">15.0</constant>
+        <constant digits="1" name="vvtOffsets2" units="value">15.0</constant>
         <constant digits="1" name="vvtOffsets3" units="value">0.0</constant>
         <constant digits="1" name="vvtOffsets4" units="value">0.0</constant>
         <constant name="gpPwmNote1">GPPWM0</constant>
@@ -630,10 +630,10 @@
         <constant name="isBoostControlEnabled">"false"</constant>
         <constant name="launchSmoothRetard">"false"</constant>
         <constant name="isPhaseSyncRequiredForIgnition">"false"</constant>
-        <constant name="useCltBasedRpmLimit">"no"</constant>
+        <constant name="useCltBasedRpmLimit">"yes"</constant>
         <constant name="forceO2Heating">"no"</constant>
         <constant name="invertVvtControlIntake">"advance"</constant>
-        <constant name="invertVvtControlExhaust">"advance"</constant>
+        <constant name="invertVvtControlExhaust">"retard"</constant>
         <constant name="useBiQuadOnAuxSpeedSensors">"false"</constant>
         <constant name="sdTriggerLog">"normal"</constant>
         <constant name="ALSActivateInverted">"false"</constant>
@@ -679,7 +679,7 @@
         <constant digits="2" name="throttlePedalUpVoltage" units="volts">0.0</constant>
         <constant digits="2" name="throttlePedalWOTVoltage" units="volts">5.0</constant>
         <constant digits="0" name="startUpFuelPumpDuration" units="seconds">4.0</constant>
-        <constant digits="0" name="mafFilterParameter">50.0</constant>
+        <constant digits="0" name="mafFilterParameter">15.0</constant>
         <constant digits="1" name="targetVBatt" units="volts">14.0</constant>
         <constant digits="0" name="dfcoRetardDeg" units="deg">0.0</constant>
         <constant digits="1" name="dfcoRetardRampInTime" units="s">0.0</constant>
@@ -707,7 +707,7 @@
         <constant name="canBaudRate">"500kbps"</constant>
         <constant name="veOverrideMode">"None"</constant>
         <constant name="can2BaudRate">"500kbps"</constant>
-        <constant name="afrOverrideMode">"None"</constant>
+        <constant name="afrOverrideMode">"TPS"</constant>
         <constant digits="1" name="mc33_hpfp_i_peak" units="A">5.0</constant>
         <constant digits="1" name="mc33_hpfp_i_hold" units="A">3.0</constant>
         <constant digits="0" name="mc33_hpfp_i_hold_off" units="us">10.0</constant>
@@ -866,7 +866,7 @@
         <constant digits="2" name="mafMaxVoltage" units="volts">5.0</constant>
         <constant name="vvtIntakeYAxisOverride">"Zero"</constant>
         <constant name="vvtExhaustYAxisOverride">"Zero"</constant>
-        <constant digits="0" name="ecumasterEgtToCanBaseId">1632.0</constant>
+        <constant digits="0" name="ecumasterEgtToCanBaseId">1552.0</constant>
         <constant digits="1" name="minStepperVoltage" units="V">0.0</constant>
         <constant name="stepperEnablePinMode">"default"</constant>
         <constant name="mc33816_rstb">"NONE"</constant>
@@ -874,18 +874,18 @@
         <constant name="brakePedalPin">"NONE"</constant>
         <constant name="brakePedalPinMode">"PULLUP"</constant>
         <constant name="tChargeMode">"RPM+TPS (Default)"</constant>
-        <constant digits="4" name="auxPid1_pFactor">30.0</constant>
-        <constant digits="4" name="auxPid1_iFactor">0.5</constant>
-        <constant digits="4" name="auxPid1_dFactor">0.0</constant>
-        <constant digits="0" name="auxPid1_offset">0.0</constant>
+        <constant digits="4" name="auxPid1_pFactor">4.0</constant>
+        <constant digits="4" name="auxPid1_iFactor">1.0</constant>
+        <constant digits="4" name="auxPid1_dFactor">20.0</constant>
+        <constant digits="0" name="auxPid1_offset">50.0</constant>
         <constant digits="0" name="auxPid1_minValue">20.0</constant>
-        <constant digits="0" name="auxPid1_maxValue">70.0</constant>
-        <constant digits="4" name="auxPid2_pFactor">15.0</constant>
-        <constant digits="4" name="auxPid2_iFactor">0.25</constant>
-        <constant digits="4" name="auxPid2_dFactor">0.25</constant>
-        <constant digits="0" name="auxPid2_offset">0.0</constant>
+        <constant digits="0" name="auxPid1_maxValue">100.0</constant>
+        <constant digits="4" name="auxPid2_pFactor">4.0</constant>
+        <constant digits="4" name="auxPid2_iFactor">1.0</constant>
+        <constant digits="4" name="auxPid2_dFactor">20.0</constant>
+        <constant digits="0" name="auxPid2_offset">50.0</constant>
         <constant digits="0" name="auxPid2_minValue">20.0</constant>
-        <constant digits="0" name="auxPid2_maxValue">70.0</constant>
+        <constant digits="0" name="auxPid2_maxValue">100.0</constant>
         <constant digits="4" name="injectorCorrectionPolynomial1">0.0</constant>
         <constant digits="4" name="injectorCorrectionPolynomial2">0.0</constant>
         <constant digits="4" name="injectorCorrectionPolynomial3">0.0</constant>
@@ -918,7 +918,7 @@
         <constant digits="1" name="maxInjectorDutySustainedTimeout" units="sec">0.5</constant>
         <constant name="canVssNbcType">"BMW_e46"</constant>
         <constant digits="1" name="auxFrequencyFilter" units="hz">0.0</constant>
-        <constant digits="0" name="vvtControlMinRpm" units="RPM">1500.0</constant>
+        <constant digits="0" name="vvtControlMinRpm" units="RPM">850.0</constant>
         <constant digits="0" name="launchFuelAdderPercent" units="%">0.0</constant>
         <constant digits="2" name="etbJamTimeout" units="sec">0.0</constant>
         <constant digits="0" name="coastingFuelCutRpmHigh" units="rpm">1500.0</constant>
@@ -1954,10 +1954,10 @@ end
          1.20612 
          1.20612 
          1.20612 
-         1.20612 
-         1.1345569 
-         1.1019915 
-         1.037263 
+         1.1561201 
+         1.074557 
+         1.0 
+         1.0 
          1.0050998 
          1.007059 
          1.01 
@@ -2082,259 +2082,259 @@ end
          0.0 
          0.0 
          0.0 
+         0.0 
+         0.0 
          0.001 
          0.002 
-         0.003 
+         0.004 
          0.006 
-         0.01 
-         0.015 
-         0.022 
-         0.032 
-         0.043 
-         0.058 
-         0.075 
-         0.096 
-         0.121 
-         0.15 
-         0.183 
-         0.221 
-         0.264 
-         0.313 
-         0.368 
-         0.43 
-         0.498 
-         0.573 
-         0.656 
-         0.747 
-         0.847 
-         0.955 
-         1.073 
-         1.201 
-         1.339 
-         1.487 
-         1.647 
-         1.818 
-         2.001 
-         2.197 
-         2.406 
-         2.628 
-         2.865 
-         3.115 
-         3.381 
-         3.662 
-         3.959 
-         4.273 
-         4.603 
-         4.951 
-         5.316 
-         5.701 
-         6.104 
-         6.526 
-         6.969 
-         7.432 
-         7.916 
-         8.422 
-         8.95 
-         9.501 
-         10.075 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         14.352 
-         20.875 
-         21.857 
-         22.874 
-         23.921 
-         25.007 
-         26.131 
-         27.291 
-         28.491 
-         29.727 
-         31.003 
-         32.314 
-         33.662 
-         35.044 
-         36.454 
-         37.889 
-         39.359 
-         40.852 
-         42.375 
-         43.921 
-         45.486 
-         47.072 
-         48.682 
-         50.312 
-         51.961 
-         53.626 
-         55.306 
-         57.004 
-         58.72 
-         60.45 
-         62.2 
-         63.968 
-         65.752 
-         67.561 
-         69.397 
-         71.254 
-         73.134 
-         75.04 
-         76.973 
-         78.939 
-         80.939 
-         82.973 
-         85.035 
-         87.128 
-         89.256 
-         91.423 
-         93.631 
-         95.876 
-         98.157 
-         100.47 
-         102.835 
-         105.259 
-         107.727 
-         110.237 
-         112.797 
-         115.411 
-         118.082 
-         120.813 
-         123.608 
-         126.46 
-         129.367 
-         132.326 
-         135.338 
-         138.418 
-         141.569 
-         144.784 
-         148.059 
-         151.393 
-         154.785 
-         158.235 
-         161.751 
-         165.34 
-         169.004 
-         172.732 
-         176.518 
-         180.361 
-         184.26 
-         188.214 
-         192.245 
-         196.356 
-         200.536 
-         204.779 
-         209.086 
-         213.453 
-         217.878 
-         222.367 
-         226.932 
-         231.563 
-         236.252 
-         241.007 
-         245.827 
-         250.705 
-         255.643 
-         260.647 
-         265.722 
-         270.858 
-         276.048 
-         281.294 
-         286.599 
-         291.964 
-         297.393 
-         302.884 
-         308.435 
-         314.043 
-         319.705 
-         325.427 
-         331.212 
-         337.06 
-         342.97 
-         348.94 
-         354.971 
-         361.062 
-         367.212 
-         373.42 
-         379.688 
-         386.02 
-         392.419 
-         398.885 
-         405.417 
-         412.014 
-         418.678 
-         425.406 
-         432.199 
-         439.058 
-         445.981 
-         452.979 
-         460.052 
-         467.196 
-         474.409 
-         481.692 
-         489.053 
-         496.488 
-         503.996 
-         511.616 
-         519.34 
-         527.143 
-         535.023 
-         542.983 
-         551.021 
-         559.139 
-         567.337 
-         575.616 
-         583.975 
-         592.416 
-         600.938 
-         609.542 
-         618.229 
-         626.998 
-         635.851 
-         644.787 
-         653.807 
-         662.912 
-         672.101 
-         681.376 
-         690.736 
-         700.183 
-         709.715 
-         719.335 
-         729.042 
-         738.836 
-         748.719 
-         758.69 
-         768.75 
-         778.899 
-         789.138 
-         799.466 
-         809.886 
-         820.396 
-         830.997 
-         841.691 
-         852.476 
-         863.354 
-         874.324 
-         885.388 
-         896.546 
-         907.798 
-         919.144 
-         930.585 
-         942.121 
-         953.754 
-         965.482 
-         977.307 
-         989.229 
-         1001.248 
-         1013.365 
-         1025.58 
+         0.009 
+         0.014 
+         0.021 
+         0.03 
+         0.04 
+         0.054 
+         0.071 
+         0.092 
+         0.117 
+         0.147 
+         0.181 
+         0.222 
+         0.269 
+         0.324 
+         0.386 
+         0.457 
+         0.537 
+         0.627 
+         0.728 
+         0.84 
+         0.965 
+         1.103 
+         1.256 
+         1.424 
+         1.608 
+         1.809 
+         2.029 
+         2.268 
+         2.527 
+         2.808 
+         3.112 
+         3.439 
+         3.792 
+         4.171 
+         4.577 
+         5.013 
+         5.478 
+         5.975 
+         6.506 
+         7.07 
+         7.67 
+         8.308 
+         8.984 
+         9.701 
+         10.459 
+         11.261 
+         12.108 
+         13.002 
+         13.814 
+         13.814 
+         13.856 
+         13.96 
+         13.976 
+         14.044 
+         14.345 
+         16.386 
+         20.912 
+         26.689 
+         29.08 
+         29.392 
+         29.392 
+         29.392 
+         29.392 
+         29.392 
+         29.392 
+         29.392 
+         29.392 
+         29.92 
+         30.555 
+         30.867 
+         31.108 
+         31.371 
+         31.739 
+         31.914 
+         32.189 
+         33.461 
+         35.727 
+         38.184 
+         39.838 
+         40.775 
+         41.497 
+         42.393 
+         43.59 
+         45.07 
+         46.516 
+         48.118 
+         49.969 
+         52.517 
+         54.827 
+         56.686 
+         57.984 
+         59.753 
+         62.25 
+         64.355 
+         66.162 
+         67.697 
+         69.356 
+         70.684 
+         71.756 
+         75.624 
+         79.638 
+         80.807 
+         81.539 
+         82.248 
+         83.57 
+         87.109 
+         92.378 
+         95.392 
+         98.16 
+         100.423 
+         101.441 
+         102.107 
+         102.653 
+         103.463 
+         104.941 
+         107.635 
+         111.456 
+         114.097 
+         115.72 
+         121.038 
+         126.163 
+         129.116 
+         130.883 
+         132.31 
+         133.735 
+         136.432 
+         139.698 
+         142.682 
+         146.512 
+         150.386 
+         153.449 
+         156.407 
+         158.912 
+         160.475 
+         164.502 
+         171.484 
+         179.651 
+         185.859 
+         187.654 
+         190.33 
+         194.666 
+         198.732 
+         201.918 
+         204.617 
+         210.482 
+         216.842 
+         220.689 
+         225.6 
+         230.749 
+         235.352 
+         241.386 
+         247.774 
+         253.353 
+         258.541 
+         263.755 
+         269.587 
+         275.336 
+         281.258 
+         289.19 
+         295.059 
+         297.096 
+         299.874 
+         305.846 
+         311.221 
+         315.652 
+         321.209 
+         328.878 
+         333.822 
+         338.018 
+         343.118 
+         348.408 
+         353.904 
+         362.825 
+         372.912 
+         378.324 
+         384.708 
+         391.186 
+         394.784 
+         397.701 
+         400.72 
+         405.959 
+         416.415 
+         433.883 
+         437.41 
+         440.056 
+         443.517 
+         448.126 
+         453.284 
+         458.563 
+         464.652 
+         471.624 
+         479.173 
+         484.076 
+         488.643 
+         495.308 
+         502.544 
+         509.498 
+         516.515 
+         523.593 
+         530.734 
+         537.937 
+         545.202 
+         552.531 
+         559.922 
+         567.377 
+         574.896 
+         582.479 
+         590.126 
+         597.837 
+         605.612 
+         613.453 
+         621.359 
+         629.33 
+         637.366 
+         645.469 
+         653.637 
+         661.872 
+         670.173 
+         678.541 
+         686.976 
+         695.479 
+         704.048 
+         712.686 
+         721.392 
+         730.165 
+         739.007 
+         747.918 
+         756.898 
+         765.947 
+         775.065 
+         784.253 
+         793.511 
+         802.839 
+         812.237 
+         821.706 
+         831.246 
+         840.857 
+         850.539 
+         860.292 
+         870.118 
+         880.015 
+         889.985 
+         900.027 
+         910.141 
+         920.329 
+         930.59 
+         940.924 
       </constant>
         <constant cols="1" digits="2" name="mafDecodingBins" rows="256" units="V">
          0.0 
@@ -2734,13 +2734,13 @@ end
       </constant>
         <constant cols="8" digits="0" name="vvtTable1" rows="8" units="value">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 8.0 10.0 9.0 5.0 4.0 3.0 
+         0.0 0.0 12.0 16.0 14.0 8.0 7.0 4.0 
+         0.0 0.0 17.0 22.0 20.0 11.0 9.0 6.0 
+         0.0 10.0 21.0 28.0 25.0 14.0 12.0 7.0 
+         0.0 10.0 26.0 34.0 30.0 17.0 14.0 9.0 
+         0.0 10.0 30.0 40.0 35.0 20.0 16.0 10.0 
+         0.0 10.0 30.0 40.0 35.0 20.0 16.0 10.0 
       </constant>
         <constant cols="1" digits="0" name="vvtTable1LoadBins" rows="8" units="L">
          20.0 
@@ -2750,7 +2750,7 @@ end
          53.0 
          61.0 
          69.0 
-         110.0 
+         77.0 
       </constant>
         <constant cols="1" digits="0" name="vvtTable1RpmBins" rows="8" units="RPM">
          750.0 
@@ -2766,30 +2766,30 @@ end
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 
+         -1.0 -2.0 -4.0 -4.0 -4.0 -3.0 -3.0 -2.0 
+         -1.0 -4.0 -7.0 -8.0 -7.0 -7.0 -6.0 -4.0 
+         0.0 -6.0 -12.0 -11.0 -11.0 -10.0 -9.0 -6.0 
+         0.0 -10.0 -20.0 -19.0 -18.0 -17.0 -16.0 -10.0 
       </constant>
         <constant cols="1" digits="0" name="vvtTable2LoadBins" rows="8" units="L">
          20.0 
-         30.0 
-         50.0 
-         60.0 
-         80.0 
-         90.0 
-         110.0 
-         120.0 
+         28.0 
+         45.0 
+         61.0 
+         69.0 
+         77.0 
+         85.0 
+         102.0 
       </constant>
         <constant cols="1" digits="0" name="vvtTable2RpmBins" rows="8" units="RPM">
-         650.0 
-         800.0 
-         1700.0 
-         2600.0 
-         3500.0 
-         4400.0 
-         5300.0 
+         750.0 
+         1318.0 
+         1886.0 
+         2455.0 
+         3023.0 
+         3591.0 
+         4159.0 
          7000.0 
       </constant>
         <constant cols="16" digits="1" name="ignitionTable" rows="16" units="deg">
@@ -2877,22 +2877,22 @@ end
          7000.0 
       </constant>
         <constant cols="16" digits="1" name="veTable" rows="16" units="%">
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
-         100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
+         55.2 56.2 55.5 45.6 53.1 60.7 61.7 62.8 63.8 64.9 65.9 69.0 64.9 69.5 70.0 70.7 
+         53.4 46.4 48.0 46.8 55.2 58.6 61.9 65.3 65.1 64.8 64.6 64.9 68.6 70.4 70.9 71.3 
+         48.7 48.2 50.0 51.9 56.2 56.6 62.0 67.5 66.2 76.5 74.9 78.1 81.8 79.9 80.0 80.4 
+         54.3 56.1 58.0 59.8 62.8 64.4 66.1 70.7 68.7 78.6 76.2 79.1 84.2 82.7 82.3 82.8 
+         60.0 65.7 61.8 65.3 62.7 74.5 76.1 77.6 79.2 80.8 80.0 82.1 81.6 85.6 86.1 86.6 
+         61.8 63.4 64.1 64.8 65.5 78.1 78.8 81.0 81.8 82.7 83.2 84.7 85.7 88.6 94.4 97.3 
+         60.2 60.8 62.4 64.0 70.1 76.1 78.2 81.4 84.4 87.2 87.4 88.1 88.5 91.2 96.5 99.2 
+         61.2 62.4 63.9 65.3 70.3 75.2 76.9 85.7 88.6 91.3 91.1 90.6 90.3 92.7 97.4 99.8 
+         62.5 63.4 64.8 66.3 71.2 76.0 77.8 85.3 88.2 90.9 91.5 93.5 94.8 99.1 99.7 100.2 
+         62.4 63.4 65.3 67.3 72.1 76.9 78.8 84.8 87.7 90.4 90.9 92.5 93.6 99.0 99.7 100.2 
+         62.0 63.0 65.7 68.4 73.1 77.8 79.8 84.3 87.2 90.0 90.4 91.5 92.3 99.0 99.7 100.2 
+         62.0 62.6 66.0 69.4 73.9 78.4 80.3 83.9 86.8 89.5 89.8 90.6 91.2 99.0 99.7 100.2 
+         62.6 63.0 66.7 70.4 74.8 79.2 81.0 83.4 86.3 89.1 90.5 94.9 97.8 99.0 99.7 100.2 
+         62.1 62.8 67.1 71.5 75.8 80.0 81.3 82.9 85.8 88.6 90.3 95.3 98.6 99.0 99.7 100.2 
+         62.9 65.7 68.5 71.3 74.1 76.9 79.7 82.5 85.4 88.2 91.0 99.4 105.0 105.0 103.1 105.0 
+         62.8 65.6 68.4 71.2 74.1 76.9 79.7 82.5 85.3 88.1 90.9 99.4 105.0 105.0 105.0 105.0 
       </constant>
         <constant cols="1" digits="0" name="veLoadBins" rows="16" units="kPa">
          20.0 
@@ -2931,40 +2931,40 @@ end
          7800.0 
       </constant>
         <constant cols="16" digits="2" name="lambdaTable" rows="16" units="lambda">
-         0.9863946 0.9863946 0.9863946 0.9863946 0.9863946 0.9863946 0.9795918 0.9659864 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9455782 
-         0.9863946 0.9863946 0.9863946 0.9863946 0.9863946 0.9863946 0.9795918 0.9659864 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9455782 
-         0.9863946 0.9863946 0.9863946 0.9863946 0.9863946 0.9863946 0.9795918 0.9659864 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9455782 
-         0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9727891 0.9659864 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9455782 
-         0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9727891 0.9659864 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.952381 0.9455782 
-         0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9727891 0.9659864 0.9659864 0.9591837 0.9591837 0.9591837 0.9591837 0.9591837 0.952381 0.952381 0.9455782 
-         0.9795918 0.9795918 0.9795918 0.9795918 0.9727891 0.9727891 0.9659864 0.9659864 0.9591837 0.9591837 0.9591837 0.9591837 0.952381 0.952381 0.952381 0.9387755 
-         0.952381 0.952381 0.952381 0.9455782 0.9455782 0.9455782 0.9387755 0.9387755 0.9387755 0.9387755 0.9387755 0.9319728 0.9319728 0.9319728 0.9319728 0.9251701 
-         0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9115646 0.9115646 0.9115646 0.9115646 0.9115646 0.9115646 0.9115646 0.9115646 0.9115646 
+         0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 
+         0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 
+         0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 0.9795918 
+         0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 0.9183673 
          0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
          0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
          0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
-         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8911565 0.8911565 0.8911565 0.8979592 0.8979592 0.8979592 0.8979592 
-         0.8911565 0.8911565 0.8911565 0.8911565 0.8911565 0.8911565 0.8911565 0.8911565 0.8843537 0.8843537 0.8843537 0.8843537 0.8911565 0.8911565 0.8911565 0.8911565 
-         0.8911565 0.8911565 0.8911565 0.8911565 0.8911565 0.8911565 0.8843537 0.8843537 0.877551 0.877551 0.8707483 0.877551 0.8843537 0.8911565 0.8911565 0.8911565 
-         0.8911565 0.8911565 0.8911565 0.8911565 0.8911565 0.8911565 0.8843537 0.8843537 0.877551 0.877551 0.8707483 0.877551 0.8843537 0.8911565 0.8911565 0.8911565 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
+         0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 0.8979592 
       </constant>
         <constant cols="1" digits="0" name="lambdaLoadBins" rows="16">
          30.0 
-         35.0 
          40.0 
-         45.0 
          50.0 
-         55.0 
          60.0 
-         65.0 
          70.0 
-         75.0 
          80.0 
-         85.0 
          90.0 
-         95.0 
          100.0 
-         105.0 
+         110.0 
+         120.0 
+         130.0 
+         150.0 
+         175.0 
+         200.0 
+         225.0 
+         250.0 
       </constant>
         <constant cols="1" digits="0" name="lambdaRpmBins" rows="16" units="RPM">
          650.0 
@@ -3338,11 +3338,11 @@ end
       </constant>
         <constant cols="6" digits="2" name="maxKnockRetardTable" rows="6" units="deg">
          0.0 1.0 5.0 5.0 5.0 5.0 
-         1.0 1.0 14.0 14.0 14.0 14.0 
-         10.0 14.0 15.0 16.0 16.0 16.0 
-         10.0 14.0 15.0 16.0 16.0 16.0 
-         10.0 14.0 15.0 16.0 16.0 16.0 
-         10.0 14.0 15.0 16.0 16.0 16.0 
+         1.0 6.0 8.0 8.0 8.0 8.0 
+         8.0 10.0 10.0 10.0 10.0 10.0 
+         8.0 10.0 10.0 10.0 10.0 10.0 
+         8.0 10.0 10.0 10.0 10.0 10.0 
+         8.0 10.0 10.0 10.0 10.0 10.0 
       </constant>
         <constant cols="1" digits="0" name="maxKnockRetardLoadBins" rows="6" units="%">
          30.0 
@@ -4306,12 +4306,12 @@ end
          -15.5 
          -14.0 
          -13.0 
-         -12.5 
-         -12.5 
          -12.0 
-         -10.0 
-         -9.0 
-         -7.0 
+         -11.0 
+         -9.5 
+         -8.0 
+         -6.5 
+         -5.5 
          -4.0 
       </constant>
         <constant cols="1" digits="0" name="tpsTspCorrValuesBins" rows="4" units="RPM">
@@ -4329,14 +4329,14 @@ end
         <constant cols="1" digits="0" name="cltRevLimitRpmBins" rows="4" units="C">
          -20.0 
          0.0 
-         40.0 
-         80.0 
+         105.0 
+         106.0 
       </constant>
         <constant cols="1" digits="0" name="cltRevLimitRpm" rows="4" units="RPM">
-         0.0 
-         0.0 
-         0.0 
-         0.0 
+         7000.0 
+         7000.0 
+         7000.0 
+         1500.0 
       </constant>
         <constant cols="1" digits="3" name="fuelLevelBins" rows="8" units="volt">
          0.38 
@@ -4617,12 +4617,12 @@ end
          0.0 0.0 0.0 0.0 0.0 0.0 
       </constant>
         <constant cols="6" digits="0" name="knockGains2_table" rows="6" units="dB">
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
       </constant>
         <constant cols="6" digits="0" name="knockGains3_table" rows="6" units="dB">
          0.0 0.0 0.0 0.0 0.0 0.0 
@@ -4633,12 +4633,12 @@ end
          0.0 0.0 0.0 0.0 0.0 0.0 
       </constant>
         <constant cols="6" digits="0" name="knockGains4_table" rows="6" units="dB">
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
       </constant>
         <constant cols="6" digits="0" name="knockGains5_table" rows="6" units="dB">
          0.0 0.0 0.0 0.0 0.0 0.0 
@@ -4649,12 +4649,12 @@ end
          0.0 0.0 0.0 0.0 0.0 0.0 
       </constant>
         <constant cols="6" digits="0" name="knockGains6_table" rows="6" units="dB">
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
       </constant>
         <constant cols="6" digits="0" name="knockGains7_table" rows="6" units="dB">
          0.0 0.0 0.0 0.0 0.0 0.0 
@@ -5059,5 +5059,6 @@ end
         <userComment name="auxPid1_maxValue" value=""/>
         <userComment name="tpsMin" value=""/>
         <userComment name="canNbcType" value=""/>
+        <userComment name="vvtItermMax2" value=""/>
     </userComments>
 </msq>
