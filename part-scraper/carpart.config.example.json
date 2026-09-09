@@ -1,0 +1,32 @@
+{
+  "browser": {
+    "headless": true,
+    "userDataDir": ".pw-profile",
+    "delayMs": 1500
+  },
+  "storage": {
+    "path": "data/seen.json"
+  },
+  "discord": {
+    "webhookUrl": "${DISCORD_WEBHOOK_URL}",
+    "mention": ""
+  },
+  "searches": [
+    {
+      "name": "touareg-vr6",
+      "year": "2004-2007",
+      "model": "Volkswagen Touareg",
+      "part": "Engine",
+      "location": "USA",
+      "zip": "98103",
+      "sort": "price",
+      "interchange": "3\\.2",
+      "maxPages": 5,
+      "notifyIf": {
+        "maxPriceUsd": 2000,
+        "maxDistanceMiles": 1500,
+        "descriptionExcludes": "core|parts only|junk"
+      }
+    }
+  ]
+}
