@@ -1,5 +1,12 @@
+# The CPU-only torch build comes from PyTorch's own index. It is a few hundred
+# MB against a couple of GB for the default CUDA build, which is dead weight on
+# a machine with no NVIDIA card. pip prefers the +cpu wheel over the plain one
+# on PyPI because a local version sorts above the public version it tags.
+# On macOS there is no +cpu wheel and PyPI's torch is already CPU-only, so this
+# line is a no-op there.
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+torch>=2.5
+torchvision>=0.20
 ultralytics>=8.3
-numpy
-# Install torch CPU-only first, it is much smaller than the CUDA build:
-#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-torch
+numpy>=1.24

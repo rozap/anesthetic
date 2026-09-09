@@ -3,16 +3,13 @@
 Finds the parts of a long endurance-race video where racing is actually happening, and cuts them
 into a highlight reel.
 
-A stint is mostly empty track, and running YOLO over seven hours of 1080p to find the good bits
-costs more than the footage is worth. So there are two passes:
-
 | pass | what it touches | cost |
 |---|---|---|
 | analyse | a cropped, downscaled, low-frame-rate proxy decoded on the fly | ~17x realtime |
 | cut | the untouched HD original, only the chosen ranges | seconds per cut |
 
 Nothing is written between the passes except a small JSON of detections, so a 3-hour source is
-analysed once and can then be recut at any length or ratio instantly.
+analysed once and can then be recut at any length or ratio quickly.
 
 ## Install
 
@@ -20,12 +17,12 @@ Needs `ffmpeg` and `ffprobe` on `PATH`.
 
 ```sh
 python3 -m venv .venv
-.venv/bin/pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-.venv/bin/pip install ultralytics numpy
+.venv/bin/pip install -r requirements.txt
 ```
 
-The CPU-only torch build is deliberate. On a machine without an NVIDIA card the CUDA build is a
-multi-gigabyte download that never gets used.
+That pulls the CPU-only torch build, which `requirements.txt` arranges with an `--extra-index-url`.
+On a machine without an NVIDIA card the default CUDA build is a multi-gigabyte download that never
+gets used.
 
 ## Use
 
@@ -95,13 +92,99 @@ run gets its own cache entry, because `--sample-fps` and `--model` both affect d
 .venv/bin/python racecut.py sunday.mp4 20 120 --start 3600 --end 3840 --model yolo11s.pt
 ```
 
-Recutting the same analysis at a different length or ratio is instant, since neither flag affects
+Recutting the same analysis at a different length or ratio is quick, since neither flag affects
 detection:
 
 ```sh
 .venv/bin/python racecut.py sunday.mp4 25 600 -o short.mp4
 .venv/bin/python racecut.py sunday.mp4 25 1800 --battle-ratio 0.0 -o long-traffic.mp4
 ```
+
+## Options
+
+Every option has a default that works on the footage this was built for. The sections after this
+one explain the measures and filters these flags control, and why the defaults are where they are.
+
+### Output and scoring
+
+| flag | default | meaning |
+|---|---|---|
+| `-o`, `--output` | `highlights.mp4` | where to write the reel |
+| `--battle-ratio` | 0.5 | share of output time from battles vs traffic. 1.0 is all battle, 0.0 all traffic |
+| `--closeness-weight` | 0.3 | how much close racing raises a score. 0 ignores it, 1 scales fully with it |
+| `--closeness-ref` | 0.10 | box width, as a fraction of frame width, counted as maximally close |
+| `--speed-weight` | 0.3 | how much ego speed raises a score, same shape as closeness |
+| `--speed-roi` | `0,0.699,0.172,0.977` | x0,y0,x1,y1 fractions holding the speedometer |
+| `--delta-weight` | 0.2 | how much a low delta raises a score. Pulls against the other two |
+| `--delta-ref` | 5.0 | seconds off the session best that counts as fully off the pace |
+| `--delta-roi` | `0.677,0.912,0.844,0.986` | x0,y0,x1,y1 fractions holding the delta timer |
+| `--delta-hold` | 3.0 | seconds an unreadable delta keeps its last value before going unknown |
+
+### Detection
+
+| flag | default | meaning |
+|---|---|---|
+| `--model` | `yolo11n.pt` | any ultralytics checkpoint. `yolo11s.pt` is slower and finds more |
+| `--sample-fps` | 4.0 | frames per second analysed in the proxy pass |
+| `--imgsz` | 768 | detection width. The ROI is scaled to this |
+| `--conf` | 0.35 | YOLO confidence floor |
+| `--roi-top` | 0.10 | crop away everything above this fraction (HUD banner) |
+| `--roi-bottom` | 0.72 | crop away everything below this fraction (hood, gauges) |
+| `--min-car-width` | 0.026 | ignore boxes narrower than this fraction of frame width |
+| `--max-car-width` | 0.35 | ignore boxes wider than this (own car, HUD furniture) |
+| `--min-person-width` | 0.008 | ignore people narrower than this, for the pit filter |
+
+### Tracking
+
+| flag | default | meaning |
+|---|---|---|
+| `--min-track-sec` | 1.5 | discard tracks shorter than this (scenery, parked cars) |
+| `--min-hits` | 3 | discard tracks seen in fewer frames than this |
+| `--track-max-age` | 1.0 | seconds a track survives without a detection before it closes |
+
+### Selection
+
+| flag | default | meaning |
+|---|---|---|
+| `--max-cut` | 3x `min_cut` | longest a single cut may grow to |
+| `--stride` | 1.0 | granularity of the candidate window search, seconds |
+| `--extend-frac` | 0.6 | grow a cut while the neighbouring score is this fraction of the seed score |
+| `--min-gap` | 2.0 | minimum gap between two cuts before they are merged |
+| `--bridge-gap` | 3.0 | keep the footage in a jump this short instead of cutting it out. 0 disables |
+| `--pad-start` | 1.0 | seconds of lead-in kept before each scored segment |
+| `--pad-end` | 1.0 | seconds of run-out kept after each scored segment |
+| `--pad` | | shorthand setting both of the above |
+
+### Pit and yellow filters
+
+| flag | default | meaning |
+|---|---|---|
+| `--pit-person-frac` | 0.08 | reject a window if people appear in more than this fraction of its frames |
+| `--pit-smooth` | 20.0 | seconds over which person sightings are averaged into a density |
+| `--pit-dilate` | 45.0 | seconds either side of a pit region also rejected |
+| `--no-pit-filter` | off | keep pit and paddock footage |
+| `--lap-roi` | `0.28,0.010,0.42,0.075` | x0,y0,x1,y1 fractions holding the lap counter |
+| `--lap-min-frac` | 0.04 | fraction of that band that must be near-white for the counter to count as drawn |
+| `--yellow-frac` | 0.4 | treat footage as under yellow above this fraction of frames with no counter |
+| `--yellow-smooth` | 6.0 | seconds over which the counter is averaged before that test |
+| `--no-yellow-filter` | off | keep yellow-flag laps and the opening laps before the HUD acquires |
+
+### Performance and IO
+
+| flag | default | meaning |
+|---|---|---|
+| `--threads` | all cores | torch inference threads |
+| `--ffmpeg-threads` | 0 | decode threads, 0 lets ffmpeg choose |
+| `--batch` | 16 | frames per forward pass |
+| `--jobs` | 4 | segment encodes run in parallel |
+| `--crf` | 18 | x264 quality for the output, lower is better and bigger |
+| `--preset` | `veryfast` | x264 speed preset |
+| `--start` | 0.0 | analyse from here, as a position on the combined timeline of all inputs |
+| `--end` | | analyse up to here, on the combined timeline |
+| `--cache-dir` | `.racecut-cache` | where detection JSON is kept |
+| `--no-cache` | off | ignore and do not write the cache |
+| `--analyse-only` | off | report the segments it would cut and write no video |
+| `--dump-scores` | | write per-window scores to this CSV |
 
 ## What counts as interesting
 
