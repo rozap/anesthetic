@@ -1,0 +1,7 @@
+.venv/
+.racecut-cache/
+*.pt
+*.onnx
+highlights*.mp4
+sunday.mp4
+test_cut.mp4

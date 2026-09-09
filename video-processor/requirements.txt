@@ -1,0 +1,5 @@
+ultralytics>=8.3
+numpy
+# Install torch CPU-only first, it is much smaller than the CUDA build:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+torch
