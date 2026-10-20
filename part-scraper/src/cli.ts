@@ -1,7 +1,7 @@
 import { search, type Listing } from './carpart.js';
 import { loadConfig, parseYears, resolveDiscord, type Config, type SearchConfig } from './config.js';
 import { notify } from './discord.js';
-import { Store, type StoredListing } from './store.js';
+import { Store, listingId, type StoredListing } from './store.js';
 
 interface Args {
   [k: string]: string | boolean;
@@ -35,23 +35,57 @@ has not seen before to Discord.
   --quiet           only print the summary lines
 `;
 
-function passesFilters(l: Listing, f: SearchConfig['notifyIf']): boolean {
-  if (!f) return true;
-  if (f.requirePrice && l.priceUsd == null) return false;
-  if (f.maxPriceUsd != null && (l.priceUsd == null || l.priceUsd > f.maxPriceUsd)) return false;
-  if (
-    f.maxDistanceMiles != null &&
-    (l.distanceMiles == null || l.distanceMiles > f.maxDistanceMiles)
-  ) {
-    return false;
+/** Returns why the listing fails the notify filters, or null when it passes. */
+function filterFailure(l: Listing, f: SearchConfig['notifyIf']): string | null {
+  if (!f) return null;
+  if (f.requirePrice && l.priceUsd == null) return 'no price';
+  if (f.maxPriceUsd != null && l.priceUsd == null) return 'no price';
+  if (f.maxPriceUsd != null && l.priceUsd! > f.maxPriceUsd) return `price over $${f.maxPriceUsd}`;
+  if (f.maxDistanceMiles != null && l.distanceMiles == null) return 'no distance';
+  if (f.maxDistanceMiles != null && l.distanceMiles! > f.maxDistanceMiles) {
+    return `over ${f.maxDistanceMiles} mi`;
   }
   if (f.descriptionMatches && !new RegExp(f.descriptionMatches, 'i').test(l.description)) {
-    return false;
+    return 'description does not match';
   }
   if (f.descriptionExcludes && new RegExp(f.descriptionExcludes, 'i').test(l.description)) {
-    return false;
+    return 'description excluded';
   }
-  return true;
+  return null;
+}
+
+function passesFilters(l: Listing, f: SearchConfig['notifyIf']): boolean {
+  return filterFailure(l, f) === null;
+}
+
+/**
+ * One line per listing found, cheapest first, saying whether it is new and
+ * whether it passes the notify filters. Rows that share an id are folded to the
+ * cheapest, as Store.merge does.
+ */
+function resultLines(sc: SearchConfig, listings: Listing[], fresh: StoredListing[], repricedIds: Set<string>): string[] {
+  const byId = new Map<string, Listing>();
+  for (const l of listings) {
+    const id = listingId(sc.name, l);
+    const prev = byId.get(id);
+    if (!prev || (l.priceUsd ?? Infinity) < (prev.priceUsd ?? Infinity)) byId.set(id, l);
+  }
+  const freshIds = new Set(fresh.map((l) => l.id));
+  return [...byId]
+    .sort(([, a], [, b]) => (a.priceUsd ?? Infinity) - (b.priceUsd ?? Infinity))
+    .map(([id, l]) => {
+      const status = freshIds.has(id) ? 'new' : repricedIds.has(id) ? 'repriced' : 'seen';
+      const failure = filterFailure(l, sc.notifyIf);
+      const verdict = failure ? `fail (${failure})` : 'PASS';
+      const facts = [
+        l.price || 'call',
+        [l.year, l.model, l.part].filter(Boolean).join(' '),
+        l.distanceMiles == null ? 'distance n/a' : `${l.distanceMiles} mi`,
+        [l.dealer, l.location].filter(Boolean).join(', '),
+        l.stockNumber && `stock ${l.stockNumber}`,
+      ].filter(Boolean);
+      return `[${sc.name}] ${verdict.padEnd(24)} ${status.padEnd(8)} ${facts.join(' · ')}`;
+    });
 }
 
 function printTable(listings: StoredListing[]): void {
@@ -73,7 +107,7 @@ function printTable(listings: StoredListing[]): void {
   for (const r of rows) console.log(r.map((c, i) => (c ?? '').padEnd(widths[i])).join('  ').trimEnd());
 }
 
-async function runSearch(cfg: Config, sc: SearchConfig, store: Store, args: Args): Promise<void> {
+async function runSearch(cfg: Config, sc: SearchConfig, store: Store, args: Args): Promise<string[]> {
   const quiet = Boolean(args.quiet);
   const log = (m: string) => console.error(`[${sc.name}] ${m}`);
 
@@ -121,6 +155,7 @@ async function runSearch(cfg: Config, sc: SearchConfig, store: Store, args: Args
   }
 
   if (!quiet) printTable(notifiable);
+  return quiet ? [] : resultLines(sc, result.listings, fresh, new Set(repriced.map((r) => r.listing.id)));
 }
 
 const args = parseArgs(process.argv.slice(2));
@@ -141,9 +176,10 @@ async function main(): Promise<void> {
   console.error(`[carpart] store ${storePath} holds ${store.size} listing(s)`);
 
   let failed = false;
+  const results: string[] = [];
   for (const sc of searches) {
     try {
-      await runSearch(cfg, sc, store, args);
+      results.push(...(await runSearch(cfg, sc, store, args)));
     } catch (err) {
       failed = true;
       console.error(`[${sc.name}] failed: ${(err as Error).message}`);
@@ -151,6 +187,11 @@ async function main(): Promise<void> {
       // Persist after each search so a later failure cannot lose earlier results.
       if (!args['dry-run']) store.save();
     }
+  }
+
+  if (results.length) {
+    console.error(`[carpart] all results, ${results.length} listing(s):`);
+    for (const line of results) console.error(line);
   }
   if (failed) process.exit(1);
 }
