@@ -43,6 +43,8 @@ export interface Config {
     headless?: boolean;
     userDataDir?: string;
     delayMs?: number;
+    /** Fingerprint OS Camoufox presents: "windows" (default), "macos", "linux". */
+    fingerprintOs?: SearchOptions['fingerprintOs'];
   };
   storage?: {
     /** JSON file holding every listing seen so far. */

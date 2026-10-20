@@ -1,4 +1,5 @@
-import { chromium, type BrowserContext, type Page } from 'playwright';
+import { Camoufox } from 'camoufox-js';
+import type { BrowserContext, Page } from 'playwright-core';
 
 export interface SearchOptions {
   /** Model year(s) to search. Car-Part searches one year at a time; several are run in sequence. */
@@ -20,6 +21,8 @@ export interface SearchOptions {
   headless?: boolean;
   /** Persisted browser profile, so the Cloudflare clearance cookie survives runs. */
   userDataDir?: string;
+  /** Fingerprint OS Camoufox presents. Pinned per profile; changing it between runs is itself a signal. */
+  fingerprintOs?: 'windows' | 'macos' | 'linux';
   /** Milliseconds between page fetches. */
   delayMs?: number;
   onLog?: (msg: string) => void;
@@ -60,8 +63,7 @@ const RADIO_LABEL_HELPER = `window.radioLabel = function (el) {
 };`;
 
 const HOME = 'https://www.car-part.com/';
-const UA =
-  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+const DEFAULT_PROFILE = '.camoufox-profile';
 
 /** Cloudflare serves an interstitial that resolves itself; wait it out. */
 async function settle(page: Page, log: (m: string) => void): Promise<void> {
@@ -182,18 +184,18 @@ export async function search(opts: SearchOptions): Promise<SearchResult> {
   const maxPages = opts.maxPages ?? 5;
   const delayMs = opts.delayMs ?? 1500;
 
-  let ctx: BrowserContext;
-  if (opts.userDataDir) {
-    ctx = await chromium.launchPersistentContext(opts.userDataDir, {
-      headless: opts.headless ?? true,
-      channel: 'chrome',
-      userAgent: UA,
-      viewport: { width: 1400, height: 1000 },
-    });
-  } else {
-    const browser = await chromium.launch({ headless: opts.headless ?? true, channel: 'chrome' });
-    ctx = await browser.newContext({ userAgent: UA, viewport: { width: 1400, height: 1000 } });
-  }
+  // Camoufox, not stock Chrome: Cloudflare fingerprints headless Chrome and serves
+  // an interstitial that never resolves. Camoufox is a patched Firefox whose
+  // fingerprint is generated at launch, and it clears the challenge.
+  // The profile is always persistent so the clearance cookie survives between runs.
+  const ctx: BrowserContext = await Camoufox({
+    user_data_dir: opts.userDataDir ?? DEFAULT_PROFILE,
+    headless: opts.headless ?? true,
+    os: opts.fingerprintOs ?? 'windows',
+    humanize: true,
+    geoip: true,
+    window: [1400, 1000],
+  });
 
   await ctx.addInitScript(RADIO_LABEL_HELPER);
   const page = ctx.pages()[0] ?? (await ctx.newPage());

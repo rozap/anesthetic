@@ -87,7 +87,8 @@ async function runSearch(cfg: Config, sc: SearchConfig, store: Store, args: Args
     interchange: sc.interchange ? new RegExp(sc.interchange, 'i') : undefined,
     maxPages: args.pages ? Number(args.pages) : (sc.maxPages ?? 5),
     headless: args.headed ? false : (cfg.browser?.headless ?? true),
-    userDataDir: cfg.browser?.userDataDir ?? '.pw-profile',
+    userDataDir: cfg.browser?.userDataDir ?? '.camoufox-profile',
+    fingerprintOs: cfg.browser?.fingerprintOs,
     delayMs: cfg.browser?.delayMs ?? 1500,
     onLog: quiet ? () => {} : log,
   });

@@ -6,7 +6,9 @@ Watches car-part.com for used-part listings and posts new ones to Discord.
 
 The search is a plain form POST to `/cgi-bin/search.cgi`, but Cloudflare puts a JS
 challenge in front of that endpoint, so raw `curl`/`fetch` gets a 403 no matter how the
-headers are shaped. The scraper therefore drives a real Chrome through Playwright and
+headers are shaped. Stock headless Chrome does not get through either; Cloudflare
+fingerprints it and serves an interstitial that never resolves. The scraper therefore
+drives Camoufox, a patched Firefox that generates a fresh fingerprint at launch, and
 waits the interstitial out. Everything after that is ordinary HTML parsing.
 
 The flow is three steps:
@@ -31,9 +33,21 @@ npm start -- --seed      # record what is listed today without posting it
 npm start                # from here on, post anything new
 ```
 
-Chrome is used through Playwright's `channel: 'chrome'`, so a system Chrome install is
-required and no Playwright browser download is needed. The browser profile lives in
-`.pw-profile/` so the Cloudflare clearance cookie survives between runs.
+`npm install` pulls in `camoufox-js`, but the browser itself is a separate ~660MB
+download plus a ~65MB GeoIP database:
+
+```
+npx camoufox-js fetch
+```
+
+No system Chrome or Playwright browser download is needed. The profile lives in
+`.camoufox-profile/` so the Cloudflare clearance cookie survives between runs. The
+fingerprint OS is pinned to Windows via `browser.fingerprintOs`, because a profile whose
+fingerprint changes shape between runs is itself a signal; change it only when starting
+a fresh profile.
+
+If runs start coming back as `Cloudflare challenge did not clear`, delete
+`.camoufox-profile/` and let the next run build a new one.
 
 Get the webhook URL from Discord: Server Settings, Integrations, Webhooks, New Webhook,
 pick the channel, Copy Webhook URL. A webhook is already bound to one server and one
@@ -97,6 +111,8 @@ Lines starting with `//` are stripped, so the file can be annotated.
 | `searches[].discord` | per-search override of the top-level Discord block |
 | `discord.mention` | prefixed to each message, e.g. `<@&ROLE_ID>` |
 | `discord.enabled` | `false` to scrape and store without posting |
+| `browser.userDataDir` | profile directory, default `.camoufox-profile` |
+| `browser.fingerprintOs` | `windows` (default), `macos`, `linux` |
 
 `notifyIf` accepts `maxPriceUsd`, `maxDistanceMiles`, `requirePrice`,
 `descriptionMatches` and `descriptionExcludes` (the last two are regexes).

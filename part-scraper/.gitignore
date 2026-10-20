@@ -1,6 +1,9 @@
 node_modules/
 dist/
 .pw-profile/
+.camoufox-profile/
 data/
 log/
 carpart.config.json
+32-vr6.config.json
+lancia-2ar.config.json

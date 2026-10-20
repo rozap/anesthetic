@@ -1,7 +1,7 @@
 {
   "browser": {
     "headless": true,
-    "userDataDir": ".pw-profile",
+    "userDataDir": ".camoufox-profile",
     "delayMs": 1500
   },
   "storage": {
