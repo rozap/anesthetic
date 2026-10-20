@@ -55,7 +55,7 @@ channel. To use a bot instead, set `discord.botToken` and `discord.channelId`; t
 needs View Channel and Send Messages there.
 
 The first run must be `--seed`, otherwise every listing currently on the site counts as
-new and you get a few hundred embeds.
+new and you get a few hundred Discord messages.
 
 ## Running it on a schedule
 

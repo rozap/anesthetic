@@ -72,7 +72,7 @@ test('the store survives a round trip through disk', () => {
   assert.equal(reopened.merge('s', [listing()]).fresh.length, 0);
 });
 
-test('notify batches embeds ten to a message', async () => {
+test('notify posts one line per listing, cheapest first, split under 2000 characters', async () => {
   const received: Array<Record<string, any>> = [];
   const server = createServer((req, res) => {
     let body = '';
@@ -86,9 +86,18 @@ test('notify batches embeds ten to a message', async () => {
   const { port } = server.address() as { port: number };
 
   const store = Store.open(storePath());
+  const prices = [900, 300, null, 700, 100, 500, 800, 200, 600, 400, 1000, 1100];
   const { fresh } = store.merge(
     'touareg-vr6',
-    Array.from({ length: 12 }, (_, i) => listing({ stockNumber: `S${i}` })),
+    prices.map((p, i) =>
+      listing({
+        stockNumber: `S${i}`,
+        price: p == null ? '' : `$${p}`,
+        priceUsd: p,
+        photoUrl: i === 0 ? 'https://imageappoh.car-part.com/image?partGUID=0' : undefined,
+        yardUrl: 'http://www.whiteys.example/',
+      }),
+    ),
   );
 
   const sent = await notify(
@@ -97,13 +106,42 @@ test('notify batches embeds ten to a message', async () => {
   );
   server.close();
 
-  assert.equal(sent, 2);
-  assert.equal(received.length, 2);
-  assert.equal(received[0].embeds.length, 10);
-  assert.equal(received[1].embeds.length, 2);
-  assert.match(received[0].content, /<@&1> \*\*touareg-vr6\*\*: 12 new listings/);
-  assert.equal(received[1].content, undefined);
-  assert.equal(received[0].embeds[0].title, '2005 Engine Assembly Volkswagen Touareg');
+  assert.equal(sent, received.length);
+  assert.ok(sent >= 2, 'twelve listings do not fit in one message');
+  for (const m of received) {
+    assert.ok(m.content.length <= 2000);
+    assert.equal(m.embeds, undefined);
+  }
+  assert.match(received[0].content, /^<@&1> \*\*touareg-vr6\*\*: 12 new listings\n/);
+
+  const all = received.map((m) => m.content).join('\n');
+  const order = [...all.matchAll(/^\*\*(\$\d+|call)\*\*/gm)].map((m) => m[1]);
+  assert.deepEqual(order, [...prices.filter((p) => p != null).sort((a, b) => a! - b!).map((p) => `$${p}`), 'call']);
+  assert.match(all, /\*\*\$900\*\* · 2005 Volkswagen Touareg Engine Assembly · 153,599 miles · grade A · 231 mi away · /);
+  assert.match(all, /\[photo\]\(<https:\/\/imageappoh\.car-part\.com\/image\?partGUID=0>\) · \[yard site\]\(<http:\/\/www\.whiteys\.example\/>\)/);
+  assert.match(all, /\n> 3\.2L \\\(VIN G, 5th digit, V6\\\)/);
+});
+
+test('a price change shows the old price', async () => {
+  const received: Array<Record<string, any>> = [];
+  const server = createServer((req, res) => {
+    let body = '';
+    req.on('data', (c) => (body += c));
+    req.on('end', () => {
+      received.push(JSON.parse(body));
+      res.writeHead(204).end();
+    });
+  });
+  await new Promise<void>((r) => server.listen(0, r));
+  const { port } = server.address() as { port: number };
+
+  const store = Store.open(storePath());
+  store.merge('s', [listing()]);
+  const { repriced } = store.merge('s', [listing({ price: '$400', priceUsd: 400 })]);
+  await notify({ webhookUrl: `http://127.0.0.1:${port}/webhook` }, { searchName: 's', fresh: [], repriced });
+  server.close();
+
+  assert.match(received[0].content, /^\*\*s\*\*: 1 price change\n\*\*\$400\*\* \(was \$550\) · /);
 });
 
 test('notify sends nothing when there is nothing new', async () => {

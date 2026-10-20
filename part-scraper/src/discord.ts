@@ -1,47 +1,51 @@
 import type { DiscordConfig } from './config.js';
 import type { StoredListing } from './store.js';
 
-interface Embed {
-  title: string;
-  description?: string;
-  color?: number;
-  fields: Array<{ name: string; value: string; inline?: boolean }>;
-  footer?: { text: string };
-  timestamp?: string;
+// Plain message text rather than embeds: embeds are fixed at ~520px wide and
+// lay fields out three to a row, so each listing ran five or six rows tall.
+const MAX_CONTENT = 2000;
+const MAX_DESCRIPTION = 200;
+// Webhook message flag: do not unfurl link previews under the listings.
+const SUPPRESS_EMBEDS = 1 << 2;
+
+interface Entry {
+  listing: StoredListing;
+  /** Previous price, set for a price change. */
+  from?: string;
 }
 
-const GREEN = 0x27ae60;
-const AMBER = 0xf2c744;
-const EMBEDS_PER_MESSAGE = 10;
-
-function field(name: string, value: string, inline = true) {
-  return { name, value: value.trim() || 'n/a', inline };
+/** Backslash-escapes Discord markdown so yard text cannot bold or strike a line. */
+function esc(s: string): string {
+  return s.replace(/([\\*_~`|>[\]()])/g, '\\$1');
 }
 
-function listingEmbed(l: StoredListing, color: number): Embed {
-  const title = [l.year, l.part, l.model].filter(Boolean).join(' ').slice(0, 256);
-  return {
-    title,
-    description: l.description ? l.description.slice(0, 500) : undefined,
-    color,
-    fields: [
-      field('Price', l.price || 'call'),
-      field('Miles', l.mileage),
-      field('Grade', l.grade),
-      field('Distance', l.distanceMiles == null ? 'n/a' : `${l.distanceMiles} mi`),
-      field('Stock #', l.stockNumber),
-      field('Phone', l.phone),
-      field('Yard', `${l.dealer}${l.location ? ` — ${l.location}` : ''}`.slice(0, 1024), false),
-    ],
-    footer: { text: `${l.search} · ${l.id}` },
-    timestamp: l.firstSeen,
-  };
+function line(e: Entry): string {
+  const l = e.listing;
+  const price = `**${esc(l.price || 'call')}**${e.from != null ? ` (was ${esc(e.from || 'call')})` : ''}`;
+  const facts = [
+    price,
+    esc([l.year, l.model, l.part].filter(Boolean).join(' ')),
+    l.mileage && `${esc(l.mileage)} miles`,
+    l.grade && `grade ${esc(l.grade)}`,
+    l.distanceMiles != null && `${l.distanceMiles} mi away`,
+    esc([l.dealer, l.location].filter(Boolean).join(', ')),
+    l.phone && esc(l.phone),
+    l.stockNumber && `stock ${esc(l.stockNumber)}`,
+    l.photoUrl && `[photo](<${l.photoUrl}>)`,
+    l.yardUrl && `[yard site](<${l.yardUrl}>)`,
+  ].filter(Boolean);
+
+  let text = facts.join(' · ');
+  if (l.description) {
+    const d = l.description.length > MAX_DESCRIPTION ? `${l.description.slice(0, MAX_DESCRIPTION - 1)}…` : l.description;
+    text += `\n> ${esc(d)}`;
+  }
+  return text.slice(0, MAX_CONTENT);
 }
 
-function repriceEmbed(l: StoredListing, from: string): Embed {
-  const e = listingEmbed(l, AMBER);
-  e.fields.unshift(field('Price change', `${from || 'call'} → ${l.price || 'call'}`, false));
-  return e;
+/** Cheapest first; listings priced "call" go last. */
+function byPrice(a: Entry, b: Entry): number {
+  return (a.listing.priceUsd ?? Infinity) - (b.listing.priceUsd ?? Infinity);
 }
 
 async function post(cfg: DiscordConfig, body: unknown): Promise<void> {
@@ -67,7 +71,10 @@ async function post(cfg: DiscordConfig, body: unknown): Promise<void> {
   throw new Error('Discord rate limited five times in a row, giving up');
 }
 
-/** Posts one message per batch of ten embeds. Returns the number of messages sent. */
+/**
+ * Posts one line per listing, cheapest first, packed into as few messages as
+ * the 2000-character limit allows. Returns the number of messages sent.
+ */
 export async function notify(
   cfg: DiscordConfig,
   opts: {
@@ -77,11 +84,8 @@ export async function notify(
   },
 ): Promise<number> {
   const repriced = opts.repriced ?? [];
-  const embeds = [
-    ...opts.fresh.map((l) => listingEmbed(l, GREEN)),
-    ...repriced.map(({ listing, from }) => repriceEmbed(listing, from)),
-  ];
-  if (embeds.length === 0) return 0;
+  const entries: Entry[] = [...opts.fresh.map((listing) => ({ listing })), ...repriced].sort(byPrice);
+  if (entries.length === 0) return 0;
 
   const summary = [
     opts.fresh.length ? `${opts.fresh.length} new listing${opts.fresh.length === 1 ? '' : 's'}` : '',
@@ -90,16 +94,25 @@ export async function notify(
     .filter(Boolean)
     .join(' and ');
 
-  let sent = 0;
-  for (let i = 0; i < embeds.length; i += EMBEDS_PER_MESSAGE) {
-    const batch = embeds.slice(i, i + EMBEDS_PER_MESSAGE);
-    const first = i === 0;
-    const content = first
-      ? `${cfg.mention ? `${cfg.mention} ` : ''}**${opts.searchName}**: ${summary}`
-      : undefined;
-    await post(cfg, { content, embeds: batch, allowed_mentions: { parse: ['roles', 'users'] } });
-    sent++;
-    if (i + EMBEDS_PER_MESSAGE < embeds.length) await new Promise((r) => setTimeout(r, 750));
+  const messages: string[] = [];
+  let current = `${cfg.mention ? `${cfg.mention} ` : ''}**${esc(opts.searchName)}**: ${summary}`;
+  for (const text of entries.map(line)) {
+    if (current.length + 1 + text.length > MAX_CONTENT) {
+      messages.push(current);
+      current = text;
+    } else {
+      current += `\n${text}`;
+    }
   }
-  return sent;
+  messages.push(current);
+
+  for (let i = 0; i < messages.length; i++) {
+    await post(cfg, {
+      content: messages[i],
+      flags: SUPPRESS_EMBEDS,
+      allowed_mentions: { parse: ['roles', 'users'] },
+    });
+    if (i + 1 < messages.length) await new Promise((r) => setTimeout(r, 750));
+  }
+  return messages.length;
 }

@@ -44,6 +44,10 @@ export interface Listing {
   location: string;
   phone: string;
   stockNumber: string;
+  /** Car-Part photo of the part, when the yard uploaded one. */
+  photoUrl?: string;
+  /** The yard's own website or Car-Part storefront. */
+  yardUrl?: string;
 }
 
 export interface SearchResult {
@@ -101,23 +105,30 @@ async function parseListings(page: Page, searchedYear: number): Promise<Listing[
         /stock/i.test((tr as HTMLElement).innerText || '') &&
         /price/i.test((tr as HTMLElement).innerText || ''),
     );
-    if (!headerRow) return { headers: [] as string[], body: [] as string[][] };
+    if (!headerRow) return { headers: [] as string[], body: [] as string[][], links: [] as Array<Array<{ text: string; href: string }>> };
 
     const headers = [...headerRow.querySelectorAll('td,th')].map((c) =>
       ((c as HTMLElement).innerText || '').replace(/\s+/g, ' ').trim(),
     );
     const table = headerRow.closest('table');
-    const body = [...(table?.querySelectorAll('tr') ?? [])]
-      .filter((tr) => tr !== headerRow && tr.querySelectorAll('td').length >= headers.length - 1)
-      .map((tr) =>
-        [...tr.querySelectorAll('td')].map((c) =>
-          ((c as HTMLElement).innerText || '')
-            .replace(/\u00a0/g, ' ')
-            .replace(/[ \t]+/g, ' ')
-            .trim(),
-        ),
-      );
-    return { headers, body };
+    const trBody = [...(table?.querySelectorAll('tr') ?? [])].filter(
+      (tr) => tr !== headerRow && tr.querySelectorAll('td').length >= headers.length - 1,
+    );
+    const body = trBody.map((tr) =>
+      [...tr.querySelectorAll('td')].map((c) =>
+        ((c as HTMLElement).innerText || '')
+          .replace(/\u00a0/g, ' ')
+          .replace(/[ \t]+/g, ' ')
+          .trim(),
+      ),
+    );
+    const links = trBody.map((tr) =>
+      [...tr.querySelectorAll('a[href]')].map((a) => ({
+        text: ((a as HTMLElement).innerText || '').trim(),
+        href: (a as HTMLAnchorElement).href,
+      })),
+    );
+    return { headers, body, links };
   });
 
   const idx = (...names: string[]): number =>
@@ -135,7 +146,7 @@ async function parseListings(page: Page, searchedYear: number): Promise<Listing[
   const at = (cells: string[], i: number): string => (i >= 0 ? (cells[i] ?? '') : '');
 
   const listings: Listing[] = [];
-  for (const cells of rows.body) {
+  for (const [r, cells] of rows.body.entries()) {
     const priceCell = at(cells, iPrice);
     if (!/\d/.test(priceCell) && !at(cells, iStock)) continue;
 
@@ -174,9 +185,31 @@ async function parseListings(page: Page, searchedYear: number): Promise<Listing[
       location: locMatch ? locMatch[1].replace(/\s+/g, ' ') : '',
       phone,
       stockNumber: at(cells, iStock),
+      ...rowLinks(rows.links[r] ?? []),
     });
   }
   return listings;
+}
+
+/**
+ * Keeps the two row links that still work outside this browser session. The
+ * quote form and map links carry the session's tk1..tk6 tokens and expire.
+ */
+function rowLinks(links: Array<{ text: string; href: string }>): Pick<Listing, 'photoUrl' | 'yardUrl'> {
+  let photoUrl: string | undefined;
+  let yardUrl: string | undefined;
+  for (const { href } of links) {
+    let u: URL;
+    try {
+      u = new URL(href);
+    } catch {
+      continue;
+    }
+    if (!/^https?:$/.test(u.protocol)) continue;
+    if (/^image[a-z]*\.car-part\.com$/i.test(u.hostname)) photoUrl ??= href;
+    else if (!/^(www|appcgi)\.car-part\.com$/i.test(u.hostname)) yardUrl ??= href;
+  }
+  return { photoUrl, yardUrl };
 }
 
 export async function search(opts: SearchOptions): Promise<SearchResult> {
