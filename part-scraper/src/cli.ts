@@ -1,6 +1,6 @@
 import { search, type Listing } from './carpart.js';
 import { loadConfig, parseYears, resolveDiscord, type Config, type SearchConfig } from './config.js';
-import { notify } from './discord.js';
+import { notify, notifyNone } from './discord.js';
 import { Store, listingId, type StoredListing } from './store.js';
 
 interface Args {
@@ -151,6 +151,9 @@ async function runSearch(cfg: Config, sc: SearchConfig, store: Store, args: Args
         repriced: notifiableReprices,
       });
       console.error(`[${sc.name}] posted ${sent} Discord message(s)`);
+    } else {
+      await notifyNone(discord, sc.name);
+      console.error(`[${sc.name}] posted no-new-parts message`);
     }
   }
 

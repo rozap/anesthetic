@@ -48,6 +48,15 @@ function byPrice(a: Entry, b: Entry): number {
   return (a.listing.priceUsd ?? Infinity) - (b.listing.priceUsd ?? Infinity);
 }
 
+/** Posts a one-line note that a search ran and turned up nothing new. */
+export async function notifyNone(cfg: DiscordConfig, searchName: string): Promise<void> {
+  await post(cfg, {
+    content: `No new parts found for search ${esc(searchName)}`,
+    flags: SUPPRESS_EMBEDS,
+    allowed_mentions: { parse: [] },
+  });
+}
+
 async function post(cfg: DiscordConfig, body: unknown): Promise<void> {
   const [url, headers] = cfg.webhookUrl
     ? [cfg.webhookUrl, { 'content-type': 'application/json' }]
