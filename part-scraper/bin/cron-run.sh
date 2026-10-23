@@ -24,7 +24,7 @@ main() {
     npm ci --silent && echo "$lock_sum" > node_modules/.lock-sha1
   fi
 
-  for cfg in 32-vr6.config.json lancia-2ar.config.json; do
+  for cfg in 32-vr6.config.json; do
     echo "=== $(date -Is) $cfg"
     npm start --silent -- --headed --config "$cfg" || echo "=== $cfg exited $?"
   done
